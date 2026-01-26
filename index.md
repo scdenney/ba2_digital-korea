@@ -32,18 +32,18 @@ By the end of this module, students will be able to:
 ---
 
 ## Weekly Schedule
--Week 1 (Feb. 02): Introduction & Getting Started
--Week 2 (Feb. 09): Foundations of Computational Text Analysis
--Week 3 (Feb. 16): Text Preprocessing Basics
--Week 4 (Feb. 23): Text Preprocessing Practice
--Week 5 (Mar. 02): Descriptive Patterns in Text
--Week 6 (Mar. 09): Midterm Review & Assessment
--Week 7 (Mar. 16): Clustering
--Week 8 (Mar. 30): Classification I – Dictionary & Rule-Based
--Week 9 (Apr. 13): Classification II – Machine Learning (SVM)
--Week 10 (Apr. 20): Topic Modeling (LDA)
--Week 11 (May 11): Final Review & Assessment
--Week 12 (May 18): Research Methods Project Workshop
+- Week 1 (Feb. 02): Introduction & Getting Started
+- Week 2 (Feb. 09): Foundations of Computational Text Analysis
+- Week 3 (Feb. 16): Text Preprocessing Basics
+- Week 4 (Feb. 23): Text Preprocessing Practice
+- Week 5 (Mar. 02): Descriptive Patterns in Text
+- Week 6 (Mar. 09): Midterm Review & Assessment
+- Week 7 (Mar. 16): Clustering
+- Week 8 (Mar. 30): Classification I – Dictionary & Rule-Based
+- Week 9 (Apr. 13): Classification II – Machine Learning (SVM)
+- Week 10 (Apr. 20): Topic Modeling (LDA)
+- Week 11 (May 11): Final Review & Assessment
+- Week 12 (May 18): Research Methods Project Workshop
 
 *Note: Course content subject to change.*
 
