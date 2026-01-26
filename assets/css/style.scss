@@ -1,0 +1,87 @@
+---
+---
+@import "{{ site.theme }}";
+
+:root {
+  --leiden-blue: #002147;
+  --leiden-gold: #c4a000;
+}
+
+body {
+  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  color: #1d1d1d;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-header {
+  background: var(--leiden-blue);
+  color: #ffffff;
+  padding: 2.5rem 0 2rem;
+  border-bottom: 6px solid var(--leiden-gold);
+}
+
+.site-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  margin: 0 0 0.25rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.site-title {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.site-description {
+  margin: 0.5rem 0 1rem;
+  font-size: 1.1rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-weight: 600;
+}
+
+.site-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.1rem;
+}
+
+.site-nav a:hover,
+.site-nav a:focus {
+  border-bottom-color: var(--leiden-gold);
+}
+
+main {
+  padding: 2rem 0 3rem;
+}
+
+main h2 {
+  color: var(--leiden-blue);
+  margin-top: 2.5rem;
+}
+
+main h3 {
+  color: var(--leiden-blue);
+}
+
+.site-footer {
+  background: #f5f7fb;
+  padding: 1.5rem 0;
+  border-top: 1px solid #dfe3ee;
+}
+
+.site-footer p {
+  margin: 0;
+  color: #4a4a4a;
+}

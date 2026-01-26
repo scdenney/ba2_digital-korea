@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title }} | {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <p class="site-eyebrow">Leiden University · Korean Studies</p>
+        <h1 class="site-title">{{ site.title }}</h1>
+        <p class="site-description">{{ site.description }}</p>
+        <nav class="site-nav">
+          <a href="{{ '/' | relative_url }}">Home</a>
+          <a href="{{ '/syllabus/syllabus.html' | relative_url }}">Syllabus</a>
+          <a href="{{ '/assignments/' | relative_url }}">Assignments</a>
+          <a href="{{ '/explainers/' | relative_url }}">Explainers</a>
+          <a href="{{ '/presentations/' | relative_url }}">Presentations</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>BA3 Korean Studies · Leiden University</p>
+      </div>
+    </footer>
+  </body>
+</html>
