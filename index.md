@@ -1,57 +1,68 @@
 ---
 layout: default
-title: BA3 Text as Data
+title: BA2 Digital Korea
 ---
 
 # Topical Reading: Digital Humanities
-Course: BA3 Korean Studies, Leiden University  
+Course: BA2 Korean Studies, Leiden University  
 Instructor: Dr. Steven Denney  
-Time & Place: Fridays, 11:15–13:00, Huizinga 0.09  
-Duration: 6 seminars starting October 10 and ending November 21
+Time & Place: Mondays, 15:15-17:00, Huizinga 0.09 (DH Lab) & Arsenaal B0.05
+Duration: 12 sessions starting Feburary 02 and ending April 18
 
 ---
 
 ## Course Description
-This is the DH strand of the BA3 course Contemporary Korea and Digital Humanities. This course is meant to introduce students to digital humanities (DH) methods, focusing on text-as-data approaches. Using Orange Data Mining and pre-prepared Korean corpora, students will learn how to clean, analyze, and interpret textual data.
+This course introduces computational text analysis as a research method in Korean studies and for students in the humanities and social sciences generally. Students learn to treat text as data, transforming written sources into formats that can be analyzed computationally. The course covers pre-processing, descriptive analysis, clustering, classification, and topic modeling using Orange Data Mining, a visual platform that makes computational methods accessible without advanced programming skills. Students also develop foundational R programming through tutorial exercises. No prior programming experience is required. The course culminates in a Research Methods Project applying text analysis to Korean-language materials, which is subsequently applied to a research paper.
 
-The DH strand complements the topical reading seminars by equipping students with methodological skills that may support their undergraduate thesis research. There are no programming requirements whatsoever in this course, although students will have the opportunity to explore ways to acquire such skills.
+For more information, see the following pages:
 
-- **Syllabus:** [Course syllabus]({{ '/syllabus/syllabus.html' | relative_url }})
-- **Assignments:** [Weekly assignments]({{ '/assignments/' | relative_url }})
-- **Explainers:** [Guides and walkthroughs]({{ '/explainers/' | relative_url }})
+- [**Syllabus:**]({{ '/syllabus/syllabus.html' | relative_url }})
+- [**Assignments:**]({{ '/assignments/' | relative_url }})
+- [**Data**]({{ '/data/' | relative_url }})
 
 ---
 
 ## Learning Objectives
-By the end of the DH module, students will be able to:
-- Understand the role of Digital Humanities in Korean Studies.
-- Apply text preprocessing techniques to prepare data.
-- Conduct descriptive text analysis (frequency, keywords, word clouds).
-- Use classification, clustering, and topic modeling for analysis.
-- Practice data management and transparency with GitHub.
-- Reflect on how computational methods may strengthen thesis projects.
+By the end of this module, students will be able to:
+- Apply text preprocessing, descriptive analysis, clustering, classification, and topic modeling
+- Practice data management and transparency best practices
+- Establish a foundation in the R programming language
+- Reflect on the strengths and limitations of computational methods in research
 
 ---
 
 ## Weekly Schedule
-- Week 1 (Oct. 10): Introduction to DH, GitHub & Data Management
-- Week 2 (Oct. 17): Text Preprocessing
-- Week 3 (Oct. 24): Descriptive Patterns
-- Week 4 (Nov. 7): Classification & Prediction
-- Week 5 (Nov. 14): Clustering & Similarity
-- Week 6 (Nov. 21): Topic Modeling & Wrap-Up
-- Final Project (Dec. 05): Text-as-Data Analysis
+Week 1 (Feb. 02): Introduction & Getting Started
+Week 2 (Feb. 09): Foundations of Computational Text Analysis
+Week 3 (Feb. 16): Text Preprocessing Basics
+Week 4 (Feb. 23): Text Preprocessing Practice
+Week 5 (Mar. 02): Descriptive Patterns in Text
+Week 6 (Mar. 09): Midterm Review & Assessment
+Week 7 (Mar. 16): Clustering
+Week 8 (Mar. 30): Classification I – Dictionary & Rule-Based
+Week 9 (Apr. 13): Classification II – Machine Learning (SVM)
+Week 10 (Apr. 20): Topic Modeling (LDA)
+Week 11 (May 11): Final Review & Assessment
+Week 12 (May 18): Research Methods Project Workshop
 
 *Note: Course content subject to change.*
 
 ---
+# Course Resources
 
-## Tools
-- **[Orange Data Mining](https://orangedatamining.com/)** (main application)
-- **GitHub** (data management & transparency)
-- Provided **Korean corpora** (in `/data`)
+## **Textbook**
+Grimmer, J., Roberts, M. E., & Stewart, B. M. (2022). *Text as Data: A New Framework for Machine Learning and the Social Sciences*. Princeton University Press.
+
+## **R Programming Resources**
+- **Swirl** - Interactive R tutorials completed in RStudio
+- **DataCamp** - Online courses (institutional access provided)
+- **quanteda** - R package for Quantitative Analysis of Textual Data (reference: https://quanteda.io) [we do not use this; it is merely a useful resource for those interested]
+
+## **Orange Data Mining (ODM)**
+- **Orange Widget Catalog** - Comprehensive reference for all Orange widgets; students should bookmark for regular consultation throughout the semester
+- **Getting Started Tutorials** - Video series introducing Orange functionality (assigned throughout semester)
 
 ---
 
 ## License & Use
-This repository is for educational use in the KoreaStudies program at Leiden University.
+This repository is for educational use in the KoreaStudies program in the Humanities Faculty at Leiden University.
