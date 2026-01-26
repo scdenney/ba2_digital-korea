@@ -1,0 +1,9 @@
+This pattern filters out endings. If you want to add, use '|`what you want to remove'
+
+
+\b(?![가-힣]*(?:을|를|이|가|은|는|의|에서|으로|로|와|과|에게|께|한|하다|하고|하며|했던|했다|했다가|주의|에)\b)([가-힣]{2,})\b
+
+This pattern filters out syllables of length 1.
+
+^.$
+

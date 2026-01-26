@@ -1,0 +1,12 @@
+Field,Description
+book_id,"Unique identifier for each textbook. Derived from NIKH filenames or IDs (e.g., ta_m71_gh). Used as the primary key for joining with pages and metadata."
+title,Full title of the textbook. Extracted directly from source data. Often includes school level or historical focus.
+curriculum,"National curriculum period the book belongs to (e.g., '5th Curriculum', '7th Curriculum'). Inferred from patterns in the book_id (e.g., m71, m61, etc.)."
+nikh_period,Source assigned period in which the textbook was published.
+period,"Historical period in which the textbook was produced (e.g., 'Colonial', 'Postwar', 'Democratic'). Inferred from curriculum codes and coded qualitatively by data manager."
+level,"Educational level of the textbook: 'Elementary', 'Middle School', or 'High School'. Inferred from title, ID, or TOC metadata."
+publisher,"Publishing institution or company. Placeholder for now — to be extracted from TOC, GEI metadata, or scraped sources if available."
+year,Year of textbook publication.
+num_sections,"Number of structural sections (e.g., chapters, units) listed in the book metadata. Calculated from the sections field in nikh_books.jsonl."
+full_text,"Fully digitized text, with no pre-processing or cleaning."
+clean_text,"Text cleaned, with moderate pre-processing. Ready for initial analysis."
