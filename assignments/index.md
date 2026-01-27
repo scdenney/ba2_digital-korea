@@ -19,7 +19,7 @@ Assignments will be posted here as they are assigned. Not every week has an assi
 
 ## Uploading Your Work
 
-It is recommended that you use a GitHub repository to organize and submit your coursework. See the [Getting Started]({{ '/getting-started/' | relative_url }}) guide for setup instructions.
+All coursework not completed on DataCamp must be documented with screenshots and other relevant files, then uploaded to your individual GitHub repository. See the [Getting Started]({{ '/getting-started/' | relative_url }}) guide for repository setup and structure.
 
 ---
 

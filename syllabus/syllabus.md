@@ -96,7 +96,7 @@ Information and guidelines are provided in class. Methods assessments (Week 6 an
 
 #### Final Paper {#final-paper}
 
-The final paper is a ~5,000 word research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion.
+The final paper is a 3,000-word research report (+/- 10%) applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion.
 
 Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
 

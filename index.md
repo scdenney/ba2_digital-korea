@@ -15,7 +15,9 @@ title: Home
 
 ## Course Overview
 
-This course introduces computational text analysis as a research method in Korean studies. You will learn to treat text as data, transforming written sources into formats that can be analyzed computationally.
+This course introduces computational text analysis as a research method in Korean and area studies. You will learn to treat text as data, transforming written sources into formats that can be analyzed computationally.
+
+While this course is designed primarily for students in the Korea Studies program at Leiden University, it welcomes students from other programs and will support the use of primary source materials in languages other than Korean.
 
 Using **Orange Data Mining**, a visual platform that makes computational methods accessible without advanced programming, you will work through the complete text analysis pipeline:
 
