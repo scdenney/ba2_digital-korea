@@ -43,10 +43,13 @@ title: Syllabus
   <div class="page-content" markdown="1">
 # Digital Korea
 ## Course Schedule
-
+    
 ---
 
 ## Expanded Description {#expanded-description}
+# Course Syllabus: Digital Korea
+
+## Expanded Description
 
 This course introduces students to computational text analysis as a research method in Korean (Area) Studies. Students will learn to treat text as data, transforming written sources into formats that can be analyzed using computational tools. The course covers the full text analysis pipeline: preprocessing (preparing text for analysis), descriptive analysis (finding patterns in word usage), clustering (discovering natural groupings in documents), classification (categorizing texts using both rule-based and machine learning approaches), and topic modeling (uncovering hidden themes across document collections).
 
@@ -57,6 +60,25 @@ Throughout the course, students engage with the possibilities and limitations of
 ## Course Policies {#course-policies}
 
 ### Academic Integrity {#academic-integrity}
+### Assessment
+- Participation (15%) [attendance, R programming assigsnments]
+- Research Methods Project (35%) [in-class assessments, Week 12 workshop]
+- Final Paper (60%)
+
+#### Participation
+Each R Programming exercise or assignment listed below is assessed as complete (1) or incomplete (0). To receive credit, assignments must be submitted by the start of the next class. Late submissions receive no credit; partial credit is possible at the instructor's discretion.
+
+Full attendance is not only expected but, for a hands-on class such as this, extremely important. Each class you are marked as present (1) or absent (0). If you miss a class, you must catch up immediately by reviewing lecture material and consulting your peers. With exceptions for extenuating circumstances, absences are not excused and no extensions for assignments will be granted.
+
+The final participation grade is calculated as the proportion of completed items (assignments and attendance), scaled to 10.
+
+#### Research Methods Project
+The Research Methods Project (RMP) requires students to apply course methods to a research question of their choosing, generating data and analysis that will both constitute a grade ('Project on Research Methods') and inform their final papers. The RMP is due at the end of Week 12. It will be assessed out of 10. Information and guidelines are provided in class. Methods assessments (Week 6 and Week 11) also contribute to this grade. Each assessment is a multiple choice and/or short answer test administered in class, also out of 10 total points. The final grade is the average of the RMP and assesments.
+
+#### Final Paper
+The final paper is a ~5,000 word research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion. Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
+
+### Academic Integrity
 - All work must be your own
 - Generative AI tools (ChatGPT, Claude, etc.) may be used for assistance
 - Using AI to write analysis text or interpretations is not permitted
@@ -390,3 +412,4 @@ More information about this workshop will be provided in class.
 
   </div>
 </div>
+
