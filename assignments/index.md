@@ -13,13 +13,13 @@ Assignments will be posted here as they are assigned. Not every week has an assi
 
 ## Current Assignments
 
-*No assignments posted yet. Check back after class.*
+*No assignments posted yet. Check back later.*
 
 ---
 
 ## Uploading Your Work
 
-All coursework not completed on DataCamp must be documented with screenshots and other relevant files, then uploaded to your individual GitHub repository. See the [Getting Started]({{ '/getting-started/' | relative_url }}) guide for repository setup and structure.
+All coursework not completed on DataCamp must be documented with screenshots and other relevant files, then uploaded to your individual GitHub repository. See the [Getting Started]({{ '/getting-started/' | relative_url }}) guide for repository setup and structure. More guidance will be provided in class.
 
 ---
 
