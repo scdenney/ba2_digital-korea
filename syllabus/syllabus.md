@@ -59,6 +59,7 @@ Throughout the course, students engage with the possibilities and limitations of
 
 ## Course Policies {#course-policies}
 
+
 ### Academic Integrity {#academic-integrity}
 ### Assessment
 - Participation (15%) [attendance, R programming assigsnments]
