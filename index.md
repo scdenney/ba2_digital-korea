@@ -29,6 +29,8 @@ You will also develop foundational **R programming** skills through guided tutor
 
 The course culminates in a **Research Methods Project** applying text analysis to Korean-language materials.
 
+Before the first class, please complete the software installation steps in the [Getting Started]({{ '/getting-started/' | relative_url }}) guide.
+
 ---
 
 ## Learning Objectives
