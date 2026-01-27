@@ -83,11 +83,6 @@ main h3 {
 
 .page-sidebar {
   align-self: start;
-  position: static;
-}
-
-.page-sidebar-inner {
-  position: static;
 }
 
 .page-sidebar-inner {
@@ -137,10 +132,6 @@ main h3 {
 @media (max-width: 900px) {
   .page-layout {
     grid-template-columns: 1fr;
-  }
-
-  .page-sidebar-inner {
-    position: static;
   }
 }
 
