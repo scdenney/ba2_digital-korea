@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-# Digital Korea: Computational Text Analysis
+# Overview
 
 **Course:** BA2 Korean Studies, Leiden University<br>
 **Instructor:** Dr. Steven Denney<br>
@@ -13,9 +13,9 @@ title: Home
 
 ---
 
-## Course Overview
+## Brief Course Description
 
-This course introduces computational text analysis as a research method in Korean and area studies. You will learn to treat text as data, transforming written sources into formats that can be analyzed computationally.
+This course introduces computational text analysis as a research method in Korean and area studies. You will learn to treat text as data, transforming written sources into formats that can be analyzed computationally. The course emphasizes Korean-language primary sources, while allowing students to supplement these with other language materials, which will be organized and analyzed as text corpora. In addition, the course reviews recent research that applies digital tools and methods in the digital humanities and computational social sciences.
 
 While this course is designed primarily for students in the Korea Studies program at Leiden University, it welcomes students from other programs and will support the use of primary source materials in languages other than Korean.
 
