@@ -41,7 +41,7 @@ This opening week establishes the foundation for the course. Students will ensur
 - GitHub setup; clone course repository; share repository link with - instructor
 - Confirm DataCamp enrollment
 - Verify installations: RStudio, Swirl and Swirl courses, Orange Data Mining.
-- *Note:* To continue in this class, these assisgnments must be completed.
+- *Note:* To continue in this class, these assignments must be completed.
 
 **R Programming:**
 - Complete Swirl R Programming lessons 1, 2, 4, 6, 7, 12: Basic Building Blocks, Workspace and Files, Vectors, Subsetting Vectors, Matrices and Data Frames, Looking at Data. Due by start of next class.
@@ -172,7 +172,7 @@ This week consolidates learning from Weeks 1-5, covering setup and tools, founda
 
 ## **Week 7 (Mar. 16): Clustering**
 
-Clustering introduces "unsupervised" learning, where algorithms discover patterns in data without human-provided asssistance. We explore how documents can be represented as vectors and words analyzed as numbers, then learn two clustering approaches: hierarchical clustering, which builds a tree of nested clusters, and k-means clustering, which partitions documents into groups.
+Clustering introduces "unsupervised" learning, where algorithms discover patterns in data without human-provided assistance. We explore how documents can be represented as vectors and words analyzed as numbers, then learn two clustering approaches: hierarchical clustering, which builds a tree of nested clusters, and k-means clustering, which partitions documents into groups.
 
 **Topics:**
 - Introduction to unsupervised learning
@@ -341,6 +341,5 @@ More information aobut this workshop will be provided in class.
 
 
 *Note: This schedule is subject to adjustment based on class progress and needs. Any changes will be communicated in advance.*
-
 
 
