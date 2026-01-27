@@ -1,3 +1,8 @@
+---
+layout: default
+title: 12-Week Syllabus
+---
+
 # Topical Reading: Digital Humanities
 Course: BA2 Korean Studies, Leiden University
 Instructor: Dr. Steven Denney
