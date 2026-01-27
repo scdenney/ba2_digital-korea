@@ -146,3 +146,108 @@ main h3 {
   margin: 0;
   color: #4a4a4a;
 }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #dfe3ee;
+}
+
+th {
+  background: #f5f7fb;
+  font-weight: 600;
+  color: var(--leiden-blue);
+}
+
+tr:hover {
+  background: #fafbfd;
+}
+
+/* Code blocks */
+code {
+  background: #f5f7fb;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre {
+  background: #f5f7fb;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid #dfe3ee;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Links */
+main a {
+  color: var(--leiden-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--leiden-gold);
+  text-underline-offset: 2px;
+}
+
+main a:hover {
+  text-decoration-color: var(--leiden-blue);
+}
+
+/* Lists */
+main ul, main ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+main li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/* Horizontal rules */
+hr {
+  border: none;
+  border-top: 1px solid #dfe3ee;
+  margin: 2rem 0;
+}
+
+/* Blockquotes for callouts */
+blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: #f5f7fb;
+  border-left: 4px solid var(--leiden-gold);
+  border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* Strong text in headers */
+main h1 + p strong {
+  display: inline-block;
+  min-width: 90px;
+}
+
+/* Improve paragraph spacing */
+main p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* First paragraph after h1 - course info styling */
+main h1 + p {
+  line-height: 2;
+}
