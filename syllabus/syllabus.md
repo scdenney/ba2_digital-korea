@@ -1,3 +1,52 @@
+---
+layout: default
+title: Syllabus
+---
+
+<div class="page-layout">
+  <aside class="page-sidebar">
+    <div class="page-sidebar-inner">
+      <h2 class="page-sidebar-title">On this page</h2>
+      <nav class="page-toc">
+        <ul>
+          <li><a href="#expanded-description">Expanded Description</a></li>
+          <li>
+            <a href="#course-policies">Course Policies</a>
+            <ul>
+              <li><a href="#academic-integrity">Academic Integrity</a></li>
+              <li><a href="#collaboration">Collaboration</a></li>
+              <li><a href="#assessment">Assessment</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#schedule">Schedule</a>
+            <ul>
+              <li><a href="#week-1">Week 1 (Feb. 02)</a></li>
+              <li><a href="#week-2">Week 2 (Feb. 09)</a></li>
+              <li><a href="#week-3">Week 3 (Feb. 16)</a></li>
+              <li><a href="#week-4">Week 4 (Feb. 23)</a></li>
+              <li><a href="#week-5">Week 5 (Mar. 02)</a></li>
+              <li><a href="#week-6">Week 6 (Mar. 09)</a></li>
+              <li><a href="#week-7">Week 7 (Mar. 16)</a></li>
+              <li><a href="#week-8">Week 8 (Mar. 30)</a></li>
+              <li><a href="#week-9">Week 9 (Apr. 13)</a></li>
+              <li><a href="#week-10">Week 10 (Apr. 20)</a></li>
+              <li><a href="#week-11">Week 11 (May 11)</a></li>
+              <li><a href="#week-12">Week 12 (May 18)</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="page-content" markdown="1">
+# Digital Korea
+## Course Schedule
+    
+---
+
+## Expanded Description {#expanded-description}
 # Course Syllabus: Digital Korea
 
 ## Expanded Description
@@ -8,8 +57,9 @@ Students work primarily with Orange Data Mining, a widget-based, drag-and-drop s
 
 Throughout the course, students engage with the possibilities and limitations of computational approaches to cultural and textual analysis. They learn to work with data according to FAIR principles (Findable, Accessible, Interoperable, Reusable) and develop practical and transferable skills in documenting and sharing research workflows. The course culminates in a Research Methods Project in which students apply text analysis methods to Korean-language materials (or another primary source Asian language), generating data and analysis that will inform their final papers.
 
-## Course Policies
+## Course Policies {#course-policies}
 
+### Academic Integrity {#academic-integrity}
 ### Assessment
 - Participation (15%) [attendance, R programming assigsnments]
 - Research Methods Project (35%) [in-class assessments, Week 12 workshop]
@@ -34,16 +84,19 @@ The final paper is a ~5,000 word research report applying computational text ana
 - Using AI to write analysis text or interpretations is not permitted
 - Plagiarism will result in failing the course
 
-### Collaboration
+### Collaboration {#collaboration}
 - Assignments are individual work
 - Discussing concepts and troubleshooting with peers is encouraged
 - Sharing code/workflows directly is not permitted for individual assignments
 
+### Assessment {#assessment}
+- Assessment expectations are covered in class and in the schedule below (Weeks 6 and 11).
+
 ---
 
-# Schedule
+## Schedule {#schedule}
 
-## **Week 1 (Feb. 02): Introduction & Getting Started**
+### Week 1 (Feb. 02): Introduction & Getting Started {#week-1}
 
 This opening week establishes the foundation for the course. Students will ensure they have the right technical setup and understand course expectations. We'll configure essential tools including GitHub for version control and collaboration, R and RStudio for programming with Swirl, DataCamp for guided learning modules in R, and Orange Data Mining as our primary analysis tool.
 
@@ -53,7 +106,7 @@ This opening week establishes the foundation for the course. Students will ensur
 - Introduction to course tools and platforms
 
 **In-Class Assignments:**
-- GitHub setup; clone course repository; share repository link with - instructor
+- GitHub setup; clone course repository; share repository link with instructor
 - Confirm DataCamp enrollment
 - Verify installations: RStudio, Swirl and Swirl courses, Orange Data Mining.
 - *Note:* To continue in this class, these assignments must be completed.
@@ -63,7 +116,7 @@ This opening week establishes the foundation for the course. Students will ensur
 
 ---
 
-## **Week 2 (Feb. 09): Foundations of Computational Text Analysis**
+### Week 2 (Feb. 09): Foundations of Computational Text Analysis {#week-2}
 
 This week introduces the conceptual foundations of computational text analysis and its role across computational social science and digital humanities. Students will learn what makes text analysis "computational," understand the concept of a corpus, and explore available text data sources. Practical skills include GitHub workflow management and an introduction to writing in Markdown.
 
@@ -94,7 +147,7 @@ This week introduces the conceptual foundations of computational text analysis a
 
 ---
 
-## **Week 3 (Feb. 16): Text Preprocessing Basics**
+### Week 3 (Feb. 16): Text Preprocessing Basics {#week-3}
 
 Preprocessing transforms raw text into a format suitable for computational analysis. This week covers fundamental concepts including tokenization (breaking text into meaningful units), part-of-speech (POS) tagging, and the preprocessing pipeline. Students will learn to use custom Python scripts within Orange Data Mining on both Mac and Windows platforms, addressing platform-specific considerations and limitations with Korean-language morphemes.
 
@@ -121,7 +174,7 @@ Preprocessing transforms raw text into a format suitable for computational analy
 
 ---
 
-## **Week 4 (Feb. 23): Text Preprocessing Practice**
+### Week 4 (Feb. 23): Text Preprocessing Practice {#week-4}
 
 Building on Week 3, this week provides hands-on practice with preprocessing workflows. We'll explore morphological analysis (word structure and formation), deepen our understanding of the bag-of-words approach, specifically, how text gets transformed into a document-term matrix (DTM), the table of word counts that makes computational analysis possible. We introduce term frequency (TF) as our first measurement approach and preview term frequency-inverse document frequency (TF-IDF). Students will work through complete preprocessing pipelines from raw text to analysis-ready data.
 
@@ -144,7 +197,7 @@ Building on Week 3, this week provides hands-on practice with preprocessing work
 
 ---
 
-## **Week 5 (Mar. 02): Descriptive Patterns in Text**
+### Week 5 (Mar. 02): Descriptive Patterns in Text {#week-5}
 
 This week introduces methods for describing and visualizing patterns in text data. Students review how to calculate term frequency (TF) and frequency-inverse document frequency (TF-IDF) measures. Visualization techniques including word clouds, frequency distributions, and bar charts for exploring and communicating patterns in corpora.
 
@@ -175,7 +228,7 @@ This week introduces methods for describing and visualizing patterns in text dat
 
 ---
 
-## **Week 6 (Mar. 09): Midterm Review & Assessment**
+### Week 6 (Mar. 09): Midterm Review & Assessment {#week-6}
 
 This week consolidates learning from Weeks 1-5, covering setup and tools, foundational concepts, preprocessing workflows, and descriptive analysis. The midterm assessment, administered in class, evaluates understanding of core concepts and practical skills developed thus far. More information about this assessment will be provided in class. Weeks 7-10 require your complete understanding of everything to this point.
 
@@ -185,7 +238,7 @@ This week consolidates learning from Weeks 1-5, covering setup and tools, founda
 
 ---
 
-## **Week 7 (Mar. 16): Clustering**
+### Week 7 (Mar. 16): Clustering {#week-7}
 
 Clustering introduces "unsupervised" learning, where algorithms discover patterns in data without human-provided assistance. We explore how documents can be represented as vectors and words analyzed as numbers, then learn two clustering approaches: hierarchical clustering, which builds a tree of nested clusters, and k-means clustering, which partitions documents into groups.
 
@@ -228,7 +281,7 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 
 ---
 
-## **Week 8 (Mar. 30): Classification I – Dictionary and Rule-Based Approaches**
+### Week 8 (Mar. 30): Classification I – Dictionary and Rule-Based Approaches {#week-8}
 
 Classification assigns documents to predefined categories. This week focuses on dictionary-based methods, where humans define rules (like lists of positive and negative words for sentiment analysis) and the computer applies them. These interpretable, transparent methods serve as foundation for understanding more complex machine learning approaches in Week 9. We will use sentiment analysis in this week.
 
@@ -258,7 +311,7 @@ Classification assigns documents to predefined categories. This week focuses on 
 
 ---
 
-## **Week 9 (Apr. 13): Classification II – Machine Learning with Support Vector Machines**
+### Week 9 (Apr. 13): Classification II – Machine Learning with Support Vector Machines {#week-9}
 
 This week introduces supervised machine learning for classification. Unlike dictionary methods where we write the rules, supervised learning involves providing labeled examples and letting algorithms learn classification patterns. We focus on Support Vector Machines (SVM), a powerful classification algorithm. Students learn to split data into training and testing sets, train classifiers, and evaluate performance using appropriate metrics. This is the most challenging thing leanred in this class. 
 
@@ -286,7 +339,7 @@ This week introduces supervised machine learning for classification. Unlike dict
 
 ---
 
-## **Week 10 (Apr. 20): Topic Modeling with Latent Dirichlet Allocation**
+### Week 10 (Apr. 20): Topic Modeling with Latent Dirichlet Allocation {#week-10}
 
 Topic modeling finds hidden thematic structure in document collections. Latent Dirichlet Allocation (LDA) assumes documents are mixtures of topics, and topics are mixtures of words. Unlike clustering, which assigns each document to one group, topic modeling allows documents to belong partially to multiple topics. Students learn to fit topic models, choose appropriate numbers of topics, and interpret results using visualization tools.
 
@@ -318,7 +371,7 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 
 ---
 
-## **Week 11 (May 11): Final Review & Assessment**
+### Week 11 (May 11): Final Review & Assessment {#week-11}
 
 This second assessment, administered in class, evaluates understanding of core concepts and practical skills developed from Week 7.
 
@@ -327,15 +380,15 @@ Following the assessment, we will review our learning across the entire course, 
 **Topics:**
 - Second assessment
 - Comprehensive review
-- Overvivew of Week 12 Workshop
+- Overview of Week 12 Workshop
 
 ---
 
-## **Week 12 (May 18): Research Methods Project Workshop**
+### Week 12 (May 18): Research Methods Project Workshop {#week-12}
 
 This intensive workshop session provides dedicated time for students to work on their Research Methods Projects in a supportive environment. The RMP requires students to apply course methods to a research question, generating data and analysis that will both constitute a grade ('Project on Research Methods') and inform their final papers. 
 
-More information aobut this workshop will be provided in class.
+More information about this workshop will be provided in class.
 
 **Topics:**
 - Hands-on project development
@@ -357,4 +410,6 @@ More information aobut this workshop will be provided in class.
 
 *Note: This schedule is subject to adjustment based on class progress and needs. Any changes will be communicated in advance.*
 
+  </div>
+</div>
 
