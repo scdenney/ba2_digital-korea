@@ -75,6 +75,68 @@ main h3 {
   color: var(--leiden-blue);
 }
 
+.page-layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.page-sidebar {
+  align-self: start;
+}
+
+.page-sidebar-inner {
+  position: sticky;
+  top: 1.5rem;
+  border: 1px solid #dfe3ee;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.page-sidebar-title {
+  margin-top: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4a4a4a;
+}
+
+.page-toc ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.page-toc li {
+  margin-bottom: 0.5rem;
+}
+
+.page-toc ul ul {
+  margin-top: 0.35rem;
+  padding-left: 1rem;
+}
+
+.page-toc a {
+  color: var(--leiden-blue);
+  text-decoration: none;
+}
+
+.page-toc a:hover,
+.page-toc a:focus {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .page-sidebar-inner {
+    position: static;
+  }
+}
+
 .site-footer {
   background: #f5f7fb;
   padding: 1.5rem 0;
