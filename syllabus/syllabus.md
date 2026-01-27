@@ -78,7 +78,7 @@ The Research Methods Project (RMP) requires students to apply course methods to 
 #### Final Paper
 The final paper is a ~5,000 word research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion. Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
 
-### Academic Integrity
+### Academic Integrity {#academic-integrity}
 - All work must be your own
 - Generative AI tools (ChatGPT, Claude, etc.) may be used for assistance
 - Using AI to write analysis text or interpretations is not permitted
