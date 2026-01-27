@@ -86,10 +86,14 @@ main h3 {
 }
 
 .page-sidebar-inner {
+  position: sticky;
+  top: 1.5rem;
   border: 1px solid #dfe3ee;
   border-radius: 8px;
   padding: 1rem;
   background: #ffffff;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
 }
 
 .page-sidebar-title {
@@ -128,6 +132,10 @@ main h3 {
 @media (max-width: 900px) {
   .page-layout {
     grid-template-columns: 1fr;
+  }
+
+  .page-sidebar-inner {
+    position: static;
   }
 }
 
