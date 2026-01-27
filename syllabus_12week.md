@@ -1,5 +1,5 @@
 # Topical Reading: Digital Humanities
-Course: BA3 Korean Studies, Leiden University
+Course: BA2 Korean Studies, Leiden University
 Instructor: Dr. Steven Denney
 Time & Place: [To be determined]
 Duration: 12 seminars (12 weeks of instruction + final project week)
@@ -8,7 +8,7 @@ Duration: 12 seminars (12 weeks of instruction + final project week)
 
 ## Expanded Course Description
 
-This is the DH strand of the BA3 course **Contemporary Korea and Digital Humanities**. This course is meant to introduce students to digital humanities (DH) methods, focusing on text-as-data approaches. Using Orange Data Mining and pre-prepared Korean corpora, students will learn how to clean, analyze, and interpret textual data.
+This is the DH strand of the BA2 course **Digital Korea**. This course is meant to introduce students to digital humanities (DH) methods, focusing on text-as-data approaches. Using Orange Data Mining and pre-prepared Korean corpora, students will learn how to clean, analyze, and interpret textual data.
 
 The DH strand complements the topical reading seminars by equipping students with methodological skills to support their undergraduate research and to introduce them to the DH side of research in the Humanities and Social Sciences. There are no programming requirements whatsoever in this course, although students will have the opportunity to explore ways to acquire such skills.
 
