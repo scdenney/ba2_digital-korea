@@ -5,7 +5,7 @@ title: Assignments
 
 # Assignments
 
-Assignments will be posted here as they are assigned throughout the course. Refer to the [Syllabus]({{ '/syllabus/syllabus.html' | relative_url }}) to see what is assigned each week.
+Assignments will be posted here as they are assigned. Not every week has an assignment; some weeks involve only R programming practice. Refer to the [Syllabus]({{ '/syllabus/syllabus.html' | relative_url }}) for the complete schedule and assignment details.
 
 **Standing policy:** All assignments are due by the beginning of the next class unless otherwise specified.
 
@@ -20,20 +20,6 @@ Assignments will be posted here as they are assigned throughout the course. Refe
 ## Uploading Your Work
 
 It is recommended that you use a GitHub repository to organize and submit your coursework. See the [Getting Started]({{ '/getting-started/' | relative_url }}) guide for setup instructions.
-
-**Recommended structure:**
-
-```
-DH-TopicalReading-<Surname>/
-├── assignments/
-│   ├── week01/
-│   │   ├── week01-deliverable.md
-│   │   └── screenshots/
-│   ├── week02/
-│   │   └── ...
-│   └── final-project/
-└── README.md
-```
 
 ---
 

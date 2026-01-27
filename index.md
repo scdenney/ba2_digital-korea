@@ -5,17 +5,11 @@ title: Home
 
 # Digital Korea: Computational Text Analysis
 
-<div class="course-info">
-
-| | |
-|---|---|
-| **Course** | BA2 Korean Studies, Leiden University |
-| **Instructor** | Dr. Steven Denney |
-| **Time** | Mondays, 15:15-17:00 |
-| **Location** | Huizinga 0.09 (DH Lab) & Arsenaal B0.05 |
-| **Duration** | 12 sessions (February 02 - May 18) |
-
-</div>
+**Course:** BA2 Korean Studies, Leiden University<br>
+**Instructor:** Dr. Steven Denney<br>
+**Time:** Mondays, 15:15-17:00<br>
+**Location:** Huizinga 0.09 (DH Lab) & Arsenaal B0.05<br>
+**Duration:** 12 sessions (February 02 - May 18)
 
 ---
 
