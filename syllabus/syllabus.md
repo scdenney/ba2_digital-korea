@@ -15,7 +15,14 @@ title: Syllabus
             <ul>
               <li><a href="#academic-integrity">Academic Integrity</a></li>
               <li><a href="#collaboration">Collaboration</a></li>
-              <li><a href="#assessment">Assessment</a></li>
+              <li>
+                <a href="#assessment">Assessment</a>
+                <ul>
+                  <li><a href="#participation">Participation</a></li>
+                  <li><a href="#research-methods-project">Research Methods Project</a></li>
+                  <li><a href="#final-paper">Final Paper</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li>
@@ -68,7 +75,30 @@ Throughout the course, students engage with the possibilities and limitations of
 - Sharing code/workflows directly is not permitted for individual assignments
 
 ### Assessment {#assessment}
-- Assessment expectations are covered in class and in the schedule below (Weeks 6 and 11).
+
+- Participation (15%) — attendance, R programming assignments
+- Research Methods Project (35%) — in-class assessments, Week 12 workshop
+- Final Paper (50%)
+
+#### Participation {#participation}
+
+Each R Programming exercise or assignment listed below is assessed as complete (1) or incomplete (0). To receive credit, assignments must be submitted by the start of the next class. Late submissions receive no credit; partial credit is possible at the instructor's discretion.
+
+Full attendance is not only expected but, for a hands-on class such as this, extremely important. Each class you are marked as present (1) or absent (0). If you miss a class, you must catch up immediately by reviewing lecture material and consulting your peers. With exceptions for extenuating circumstances, absences are not excused and no extensions for assignments will be granted.
+
+The final participation grade is calculated as the proportion of completed items (assignments and attendance), scaled to 10.
+
+#### Research Methods Project {#research-methods-project}
+
+The Research Methods Project (RMP) requires students to apply course methods to a research question of their choosing, generating data and analysis that will both constitute a grade and inform their final papers. The RMP is due at the end of Week 12. It will be assessed out of 10.
+
+Information and guidelines are provided in class. Methods assessments (Week 6 and Week 11) also contribute to this grade. Each assessment is a multiple choice and/or short answer test administered in class, also out of 10 total points. The final grade is the average of the RMP and assessments.
+
+#### Final Paper {#final-paper}
+
+The final paper is a ~5,000 word research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion.
+
+Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
 
 ---
 
