@@ -82,7 +82,8 @@ main h3 {
 }
 
 .page-sidebar {
-  align-self: start;
+  /* No align-self here - let it stretch to full grid row height
+     so the sticky inner element has room to scroll */
 }
 
 .page-sidebar-inner {
