@@ -7,7 +7,7 @@ title: BA2 Digital Korea
 Course: BA2 Korean Studies, Leiden University  
 Instructor: Dr. Steven Denney  
 Time & Place: Mondays, 15:15-17:00, Huizinga 0.09 (DH Lab) & Arsenaal B0.05
-Duration: 12 sessions starting Feburary 02 and ending April 18
+Duration: 12 sessions starting February 02 and ending May 18
 
 ---
 
