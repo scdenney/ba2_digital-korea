@@ -247,7 +247,26 @@ main p {
   margin-bottom: 1rem;
 }
 
-/* First paragraph after h1 - course info styling */
-main h1 + p {
-  line-height: 2;
+/* Course info table on homepage */
+.course-info table {
+  width: auto;
+  margin: 1rem 0;
+  border: none;
+}
+
+.course-info th,
+.course-info td {
+  padding: 0.25rem 0.75rem 0.25rem 0;
+  border: none;
+  background: none;
+  vertical-align: top;
+}
+
+.course-info tr:hover {
+  background: none;
+}
+
+.course-info td:first-child {
+  font-weight: 600;
+  white-space: nowrap;
 }
