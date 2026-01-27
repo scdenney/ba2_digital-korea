@@ -100,6 +100,8 @@ The final paper is a 3,000-word research report (+/- 10%) applying computational
 
 Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
 
+*A reset is possible for a failing grade on the final paper. However, a reset will only constitute a re-grade of the final paper's proportion of the overall grade and can only be attempted if an original final paper was submitted.*
+
 ---
 
 ## Schedule {#schedule}
