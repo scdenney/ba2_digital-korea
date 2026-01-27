@@ -43,7 +43,7 @@ title: Syllabus
   <div class="page-content" markdown="1">
 # Digital Korea
 ## Course Schedule
-
+    
 ---
 
 ## Expanded Description {#expanded-description}
