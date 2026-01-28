@@ -25,6 +25,7 @@ title: Syllabus
               </li>
             </ul>
           </li>
+          <li><a href="#on-data">On Data</a></li>
           <li>
             <a href="#schedule">Schedule</a>
             <ul>
@@ -100,6 +101,16 @@ The final paper is a 3,000-word research report (+/- 10%) applying computational
 Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
 
 *A resit is possible for a failing grade on the final paper. However, a reset will only constitute a re-grade of the final paper's proportion of the overall grade and can only be attempted if an original final paper was submitted.*
+
+---
+
+## On Data {#on-data}
+
+This course uses primary source corpora curated by the instructor. These corpora are maintained in a dedicated repository: [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora). The repository includes datasets spanning historical texts, periodicals, political speeches, social media, and interview data relevant to the study of Korea.
+
+The focus is on Korean-language corpora. For students who do not read Korean, accommodations will be made using English-language materials or primary sources in another Asian language.
+
+In many cases, we will work with truncated versions of the corpora to facilitate in-class exercises and manage processing requirements. Additional supporting files for preprocessing and other tasks will be provided in due course and documented for reference and reuse.
 
 ---
 
