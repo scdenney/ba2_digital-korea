@@ -123,8 +123,8 @@ You will use GitHub to manage and submit your coursework. GitHub is a platform f
 ### Creating Your Repository {#creating-your-repository}
 
 1. Create a GitHub account at [github.com](https://github.com) if you do not have one
-2. Create a new **private** repository named: `DH-TopicalReading-<Surname>`
-   - Replace `<Surname>` with your last name (e.g., `DH-TopicalReading-Kim`)
+2. Create a new **private** repository named: `BA2-DigitalKorea-<Surname>`
+   - Replace `<Surname>` with your last name (e.g., `BA2-DigitalKorea-Kim`)
 3. Add the instructor as a collaborator:
    - Go to your repository's **Settings**
    - Select **Collaborators** from the left menu
