@@ -22,6 +22,7 @@ title: Getting Started
             <a href="#github-setup">GitHub Setup</a>
             <ul>
               <li><a href="#creating-your-repository">Creating Your Repository</a></li>
+              <li><a href="#installing-github-desktop">Installing GitHub Desktop</a></li>
               <li><a href="#repository-structure">Repository Structure</a></li>
               <li><a href="#submitting-your-repo-link">Submitting Your Repo Link</a></li>
             </ul>
@@ -138,6 +139,31 @@ You will use GitHub to manage and submit your coursework. GitHub is a platform f
    - Click **Add people**
    - Enter the instructor's username: **scdenney**
    - Send the invitation
+
+### Installing GitHub Desktop {#installing-github-desktop}
+
+GitHub Desktop is a free application that lets you work with GitHub repositories on your computer without using the command line. It provides a visual interface for common Git operations like committing changes, syncing with GitHub, and managing files.
+
+**Why use GitHub Desktop?**
+
+- **No command line required:** You can manage your repository entirely through a graphical interface
+- **Visual file tracking:** Easily see which files have changed and what the changes are
+- **Simple syncing:** Push your local changes to GitHub and pull updates with one click
+- **Error prevention:** The app guides you through the workflow and helps avoid common mistakes
+
+**Installation steps:**
+
+1. Go to [desktop.github.com](https://desktop.github.com/)
+2. Download the installer for your operating system (Windows or macOS)
+3. Run the installer and follow the prompts
+4. Sign in with your GitHub account when prompted
+5. Clone your `BA2-DigitalKorea-<Surname>` repository to your computer:
+   - Click **Clone a repository from the Internet**
+   - Select your repository from the list
+   - Choose a local folder where you want to store your files
+   - Click **Clone**
+
+You will now have a local copy of your repository. Any changes you make to files in this folder can be committed and pushed to GitHub using the app.
 
 ### Repository Structure {#repository-structure}
 
