@@ -32,7 +32,7 @@ Complete the following Swirl R Programming lessons:
 2. Type `library(swirl)` then `swirl()` in the console
 3. Select "R Programming" and work through each lesson listed above
 
-**Submission:** Honor system. You will confirm completion via an in-class poll at the start of Week 2. No screenshots or documentation required.
+**Submission:** You will confirm completion via an in-class poll at the start of Week 2. No screenshots or documentation required.
 
 ---
 
