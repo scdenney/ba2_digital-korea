@@ -114,6 +114,13 @@ Orange is our primary analysis tool. It is a visual, drag-and-drop platform for 
 
 The Text add-on provides the widgets we will use for text analysis throughout the course.
 
+**Learning Orange:**
+
+Throughout the course, you will work through Orange's official video tutorials. Bookmark these resources:
+
+- **Getting Started Tutorials** (YouTube playlist): [Orange Getting Started](https://www.youtube.com/playlist?list=PLmNPvQr9Tf-ZSDLwOzxpvY-HrE0yv-8Fy)
+- **Widget Catalog**: [orangedatamining.com/widget-catalog](https://orangedatamining.com/widget-catalog/) — Your go-to reference when learning new widgets or troubleshooting
+
 ---
 
 ## GitHub Setup {#github-setup}
