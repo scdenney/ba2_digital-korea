@@ -144,7 +144,7 @@ You will use GitHub to manage and submit your coursework. GitHub is a platform f
 Organize your repository with the following folder structure:
 
 ```
-DH-TopicalReading-<Surname>/
+DH-DigitalKorea-<Surname>/
 ├── assignments/
 │   ├── week01/
 │   │   ├── week01-deliverable.md
