@@ -100,17 +100,16 @@ Complete DataCamp: Introduction to Text Analysis in R -- Chapter 1: Wrangling Te
 
 For extra practice, replicate the in-class demo by loading the presidential speeches corpus into Orange Data Mining and exploring it with the Corpus widget.
 
-**Corpus file:** [Download presidential speeches (democratic era)]({{ '/data/president_speeches_democratic_era.csv' | relative_url }}) (~4.4 MB, 749 speeches)
-
-This file contains a proportionally sampled subset of Korean presidential speeches from the democratic era (노태우 through 문재인). See the [data documentation]({{ '/data/README.md' | relative_url }}) for details on the sampling method and variables.
+Download the corpus from the [Data]({{ '/data/' | relative_url }}) page.
 
 **Steps:**
-1. Download the CSV file above
-2. Add it to a `/data` folder in your GitHub repository
-3. Open Orange Data Mining
-4. Add a **Corpus** widget and load the CSV from your `/data` folder
-5. Explore the corpus -- browse speeches, filter, search
-6. Save your workflow (`.ows` file)
+1. Download the presidential speeches CSV from the Data page
+2. Add it to a subfolder in your repo (e.g., `/data/president_speeches/`)
+3. Commit and push via GitHub Desktop
+4. Open Orange Data Mining
+5. Add a **Corpus** widget and load the CSV from your data folder
+6. Explore the corpus -- browse speeches, filter, search
+7. Save your workflow (`.ows` file)
 
 **Submission:** Upload your `.ows` file and a screenshot of your Orange workflow to your GitHub repository.
 
