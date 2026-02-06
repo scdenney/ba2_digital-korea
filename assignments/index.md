@@ -85,6 +85,33 @@ Complete the following Swirl R Programming lessons:
 </div>
 </details>
 
+<details>
+<summary>Week 2: Orange Data Mining Demo &mdash; Loading a Corpus</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Feb. 09
+**Due:** Feb. 16 (before class)
+
+This is an optional, supplementary assignment for students who want extra practice with Orange Data Mining. Replicate the in-class demo by loading the presidential speeches corpus and exploring it.
+
+**Corpus file:** [Download presidential speeches (democratic era)]({{ '/data/president_speeches_democratic_era.csv' | relative_url }}) (~4.4 MB, 749 speeches)
+
+This file contains a proportionally sampled subset of Korean presidential speeches from the democratic era (노태우 through 문재인). See the [data documentation]({{ '/data/README.md' | relative_url }}) for details on the sampling method and variables.
+
+**Steps:**
+1. Download the CSV file above
+2. Open Orange Data Mining
+3. Add a **Corpus** widget and load the CSV
+4. Connect a **Corpus Viewer** widget to browse individual speeches
+5. Connect a **Data Table** widget to see the structured data
+6. Connect a **Word Cloud** widget to preview word frequencies
+7. Save your workflow (`.ows` file)
+
+**Submission:** Upload your `.ows` file and a screenshot of your Orange workflow to your GitHub repository.
+
+</div>
+</details>
+
 </div>
 
 ---

@@ -12,7 +12,7 @@ Lecture slides are posted here after each session.
 | Week | Date | Topic | Slides |
 |------|------|-------|--------|
 | 1 | Feb. 02 | Introduction & Getting Started | [PDF](week01-intro.pdf) |
-| 2 | Feb. 09 | Foundations of Computational Text Analysis | — |
+| 2 | Feb. 09 | Foundations of Computational Text Analysis | [PDF](week02-foundations.pdf) |
 | 3 | Feb. 16 | Text Preprocessing Basics | — |
 | 4 | Feb. 23 | Text Preprocessing Practice | — |
 | 5 | Mar. 02 | Descriptive Patterns in Text | — |
