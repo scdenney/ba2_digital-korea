@@ -13,7 +13,7 @@ This page provides truncated corpora used in class demonstrations and assignment
 
 | Week | Corpus | Description | Truncation | Full Corpus | Download |
 |------|--------|-------------|------------|-------------|----------|
-| 2 | Presidential Speeches (Democratic Era) | 749 Korean presidential speeches from the democratic era (6th Republic onward): Roh Tae-woo through Moon Jae-in. Variables include president, title, date, location, speech type, and full text. | Proportionally sampled from 5,840 speeches (random seed 42), with representation across all 7 democratic-era presidents. | [Full corpus](https://github.com/scdenney/nlp_corpora/tree/main/data/president_speeches) | [CSV](president_speeches_democratic_era.csv) (~4.4 MB) |
+| 2 | Presidential Speeches (Democratic Era) | 749 Korean presidential speeches from the democratic era (6th Republic onward): Roh Tae-woo through Moon Jae-in. Variables include president, title, date, location, speech type, and full text. | Proportionally sampled from 5,840 speeches (random seed 42), with representation across all 7 democratic-era presidents. | [Full corpus](https://github.com/scdenney/nlp_corpora/tree/main/data/president_speeches) | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
 
 ---
 
@@ -24,4 +24,4 @@ This page provides truncated corpora used in class demonstrations and assignment
 3. Commit and push via GitHub Desktop
 4. Load the file in Orange Data Mining using the Corpus widget
 
-For details on sampling methods and variable descriptions, see the [data documentation](README.md).
+For details on sampling methods and variable descriptions, see the [data documentation](president_speeches/README.md).
