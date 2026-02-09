@@ -30,6 +30,7 @@ SYNC_ITEMS=(
     "classlist.pdf"
     "CLAUDE.md"
     "presentations/tex"
+    "odm_files"
 )
 
 # Create symlinks
