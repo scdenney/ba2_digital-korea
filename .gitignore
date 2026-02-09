@@ -1,3 +1,6 @@
+# macOS
+.DS_Store
+
 # Student data
 emails.md
 attendance.csv
