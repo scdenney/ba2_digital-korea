@@ -324,11 +324,14 @@ title: Interactive
 }
 
 /* ── POS tag toggles ─────────────────────────────────────────────── */
+.pos-controls {
+  margin-bottom: 1rem;
+}
+
 .pos-toggles {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 1rem;
   padding: 0.6rem 0.75rem;
   background: #f9fafb;
   border-radius: 6px;
@@ -343,6 +346,7 @@ title: Interactive
   letter-spacing: 0.06em;
   color: #6b7280;
   margin-right: 0.3rem;
+  white-space: nowrap;
 }
 
 .pos-toggle {
@@ -354,22 +358,32 @@ title: Interactive
   border: 2px solid;
   transition: all 0.2s ease;
   user-select: none;
+  line-height: 1.3;
+}
+
+.pos-toggle .tag-code {
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  font-size: 0.72rem;
+  opacity: 0.7;
+  margin-left: 0.2rem;
 }
 
 .pos-toggle.off {
-  opacity: 0.4;
-  filter: grayscale(0.6);
+  opacity: 0.35;
+  filter: grayscale(0.7);
 }
 
-.pos-toggle.tgl-noun     { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
-.pos-toggle.tgl-verb     { background: #ccfbf1; border-color: #5eead4; color: #0f766e; }
-.pos-toggle.tgl-adjective { background: #fef9c3; border-color: #fde047; color: #854d0e; }
-.pos-toggle.tgl-adverb   { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
-.pos-toggle.tgl-particle { background: #f3f4f6; border-color: #d1d5db; color: #6b7280; }
-.pos-toggle.tgl-ending   { background: #f3f4f6; border-color: #d1d5db; color: #6b7280; }
-.pos-toggle.tgl-affix    { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
-.pos-toggle.tgl-symbol   { background: #f3f4f6; border-color: #d1d5db; color: #9ca3af; }
-.pos-toggle.tgl-other    { background: #f3f4f6; border-color: #d1d5db; color: #9ca3af; }
+/* Individual POS tag colors */
+.pos-toggle.tgl-NNG { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
+.pos-toggle.tgl-NNP { background: #bfdbfe; border-color: #60a5fa; color: #1e3a8a; }
+.pos-toggle.tgl-VV  { background: #ccfbf1; border-color: #5eead4; color: #0f766e; }
+.pos-toggle.tgl-VA  { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+.pos-toggle.tgl-MAG { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+.pos-toggle.tgl-NNB { background: #e0f2fe; border-color: #7dd3fc; color: #075985; }
+.pos-toggle.tgl-NR  { background: #f0fdf4; border-color: #86efac; color: #166534; }
+.pos-toggle.tgl-NP  { background: #eef2ff; border-color: #a5b4fc; color: #3730a3; }
+.pos-toggle.tgl-XR  { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+.pos-toggle.tgl-stopwords { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
@@ -434,26 +448,25 @@ title: Interactive
     { label: "Affix",     bg: "#fce7f3", border: "#f9a8d4" }
   ];
 
-  // ── POS toggle definitions ──────────────────────────────────────
-  var POS_CATEGORIES = [
-    { id: "noun",      label: "Nouns",       tags: ["NNG","NNP","NNB","NR","NP"], defaultOn: true },
-    { id: "verb",      label: "Verbs",       tags: ["VV","VX","VCP","VCN"],       defaultOn: true },
-    { id: "adjective", label: "Adjectives",  tags: ["VA"],                        defaultOn: true },
-    { id: "adverb",    label: "Adverbs",     tags: ["MAG","MAJ"],                 defaultOn: true },
-    { id: "particle",  label: "Particles",   tags: ["JKS","JKC","JKG","JKO","JKB","JKV","JKQ","JX","JC"], defaultOn: false },
-    { id: "ending",    label: "Endings",     tags: ["EP","EF","EC","ETN","ETM"],  defaultOn: false },
-    { id: "affix",     label: "Affixes",     tags: ["XPN","XSN","XSV","XSA","XR"], defaultOn: false },
-    { id: "symbol",    label: "Symbols",     tags: ["SF","SP","SS","SE","SO","SN","SL","SH","SW"], defaultOn: false },
-    { id: "other",     label: "Other",       tags: ["MM","IC","UN"],              defaultOn: false }
+  // ── POS tag toggle definitions (individual Kiwi tags) ───────────
+  // These match the POS_TAGS setting in the Orange preprocessing scripts.
+  // Default: NNG + NNP only (standard for Korean topic modeling).
+  var POS_TAG_TOGGLES = [
+    { tag: "NNG", label: "Common Noun",  defaultOn: true },
+    { tag: "NNP", label: "Proper Noun",  defaultOn: true },
+    { tag: "VV",  label: "Verb",         defaultOn: false },
+    { tag: "VA",  label: "Adjective",    defaultOn: false },
+    { tag: "MAG", label: "Adverb",       defaultOn: false },
+    { tag: "NNB", label: "Bound Noun",   defaultOn: false },
+    { tag: "NR",  label: "Numeral",      defaultOn: false },
+    { tag: "NP",  label: "Pronoun",      defaultOn: false },
+    { tag: "XR",  label: "Root",         defaultOn: false }
   ];
 
-  // Build a tag → category lookup and initialize active set
-  var tagToCat = {};
-  var activePosCats = {};
-  POS_CATEGORIES.forEach(function (cat) {
-    activePosCats[cat.id] = cat.defaultOn;
-    cat.tags.forEach(function (t) { tagToCat[t] = cat.id; });
-  });
+  // Active state for each tag toggle + stopwords toggle
+  var activeTags = {};
+  POS_TAG_TOGGLES.forEach(function (t) { activeTags[t.tag] = t.defaultOn; });
+  var removeStopwords = true;
 
   // ── State ───────────────────────────────────────────────────────
   var data = [];
@@ -638,8 +651,12 @@ title: Interactive
 
   // ── Token chip builder ──────────────────────────────────────────
   function isTokenKept(t) {
-    var cat = tagToCat[t.tag] || "other";
-    return activePosCats[cat] && !t.is_stopword && t.form.length >= 2 && !isDigitOnly(t.form);
+    var tagOn = activeTags[t.tag] || false;
+    if (!tagOn) return false;
+    if (removeStopwords && t.is_stopword) return false;
+    if (t.form.length < 2) return false;
+    if (isDigitOnly(t.form)) return false;
+    return true;
   }
 
   function buildTokenChips(showTags, showFilter) {
@@ -649,7 +666,7 @@ title: Interactive
       var classes = "token-chip cat-" + t.category;
 
       if (showFilter) {
-        if (t.is_stopword) {
+        if (removeStopwords && t.is_stopword) {
           classes += " stopword";
         } else if (!isTokenKept(t)) {
           classes += " dimmed";
@@ -671,26 +688,46 @@ title: Interactive
 
   // ── POS toggle builder ────────────────────────────────────────
   function buildPosToggles() {
-    var html = '<div class="pos-toggles"><span class="pos-toggles-label">Keep:</span>';
-    POS_CATEGORIES.forEach(function (cat) {
-      var on = activePosCats[cat.id];
-      html += '<button class="pos-toggle tgl-' + cat.id + (on ? '' : ' off') + '" data-cat="' + cat.id + '">';
-      html += escHtml(cat.label);
+    var html = '<div class="pos-controls">';
+    // POS tag row
+    html += '<div class="pos-toggles" style="margin-bottom:0.4rem;">';
+    html += '<span class="pos-toggles-label">POS Tags:</span>';
+    POS_TAG_TOGGLES.forEach(function (t) {
+      var on = activeTags[t.tag];
+      html += '<button class="pos-toggle tgl-' + t.tag + (on ? '' : ' off') + '" data-tag="' + t.tag + '">';
+      html += escHtml(t.label) + ' <span class="tag-code">' + t.tag + '</span>';
       html += '</button>';
     });
+    html += '</div>';
+    // Stopwords row
+    html += '<div class="pos-toggles">';
+    html += '<span class="pos-toggles-label">Stopwords:</span>';
+    html += '<button class="pos-toggle tgl-stopwords' + (removeStopwords ? '' : ' off') + '" data-action="stopwords">';
+    html += 'Remove stopwords';
+    html += '</button>';
+    html += '</div>';
     html += '</div>';
     return html;
   }
 
   function bindToggleEvents() {
-    var btns = vizContent.querySelectorAll(".pos-toggle");
-    btns.forEach(function (btn) {
+    // POS tag toggles
+    var tagBtns = vizContent.querySelectorAll(".pos-toggle[data-tag]");
+    tagBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var cat = btn.getAttribute("data-cat");
-        activePosCats[cat] = !activePosCats[cat];
-        renderStep(); // re-render current step with new selection
+        var tag = btn.getAttribute("data-tag");
+        activeTags[tag] = !activeTags[tag];
+        renderStep();
       });
     });
+    // Stopwords toggle
+    var swBtn = vizContent.querySelector(".pos-toggle[data-action='stopwords']");
+    if (swBtn) {
+      swBtn.addEventListener("click", function () {
+        removeStopwords = !removeStopwords;
+        renderStep();
+      });
+    }
   }
 
   // ── Helpers ─────────────────────────────────────────────────────

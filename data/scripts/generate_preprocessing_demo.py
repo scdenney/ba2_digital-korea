@@ -25,6 +25,7 @@ OUTPUT_DIR = SCRIPT_DIR.parent.parent / "interactive"
 OUTPUT_JSON = OUTPUT_DIR / "preprocessing_data.json"
 
 # ── config ───────────────────────────────────────────────────────────
+STOPWORDS_FILE = SCRIPT_DIR.parent / "stopwords_ko.txt"
 SENTENCES_PER_PRESIDENT = 22          # ~154 total across 7 presidents
 MIN_CHARS = 20
 MAX_CHARS = 120
@@ -33,11 +34,31 @@ SEED = 42
 # POS tags we keep as "content words"
 CONTENT_TAGS = {"NNG", "NNP", "VV", "VA", "MAG"}
 
-# Stopwords (same set used in the Orange preprocessing scripts)
-STOPWORDS = {
-    "있다", "없다", "되다", "하다", "그", "저", "이", "것", "등", "및",
-    "수", "때", "년", "월", "일", "더", "또", "즉", "통해", "위해",
-}
+
+def load_stopwords() -> set[str]:
+    """Load stopwords from stopwords_ko.txt.
+
+    For morpheme-level matching we keep single-token entries as-is.
+    For verb/adjective dictionary forms ending in 다, we also add the
+    stem (without 다) since Kiwi splits stems from endings.
+    """
+    stopwords: set[str] = set()
+    with open(STOPWORDS_FILE, encoding="utf-8") as f:
+        for line in f:
+            word = line.strip()
+            if not word:
+                continue
+            # Skip multi-word phrases (contain spaces)
+            if " " in word:
+                continue
+            stopwords.add(word)
+            # Add verb/adj stems: 하다→하, 있다→있, etc.
+            if len(word) > 1 and word.endswith("다"):
+                stopwords.add(word[:-1])
+    return stopwords
+
+
+STOPWORDS = load_stopwords()
 
 # Human-readable POS tag labels (Korean linguistic terms simplified)
 TAG_LABELS = {
