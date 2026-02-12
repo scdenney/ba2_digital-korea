@@ -30,7 +30,7 @@ title: Interactive
 .demo-controls {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.75rem;
 }
 
@@ -78,6 +78,9 @@ title: Interactive
   cursor: pointer;
   height: 38px;
   box-sizing: border-box;
+  margin: 0;
+  vertical-align: middle;
+  -webkit-appearance: menulist-button;
 }
 
 .btn {
