@@ -1,12 +1,12 @@
 # ============================================================
-# Korean Word Cloud Generator
+# Korean Text Preprocessing + Word Cloud
 # BA2 Digital Korea — Week 3 Optional Assignment
 #
-# This script:
-#   1. Reads the presidential speeches corpus
-#   2. Preprocesses Korean text using Kiwi (via Python)
-#   3. Generates a word cloud
-#   4. Saves it as a PNG image
+# This script walks through the Korean text preprocessing
+# pipeline: reading a corpus, tokenizing with Kiwi (a Korean
+# morphological analyzer), filtering by POS tags, and removing
+# stopwords. The word cloud at the end is a quick way to verify
+# your preprocessing produced meaningful output.
 #
 # Before running, make sure you have the presidential speeches
 # CSV in your data folder. Download it from the course Data page.

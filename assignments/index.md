@@ -127,9 +127,9 @@ Download the corpus from the [Data]({{ '/data/' | relative_url }}) page.
 
 Complete DataCamp: Introduction to Text Analysis in R — Chapter 1: Wrangling Text.
 
-**Optional — Word Cloud (choose one or both):**
+**Optional — Preprocessing Practice (choose one or both):**
 
-Create a word cloud from the presidential speeches corpus using either Orange Data Mining, R, or both.
+Practice the full Korean text preprocessing pipeline on the presidential speeches corpus using Orange Data Mining, R, or both. To demonstrate your preprocessing, generate a word cloud from the result — this is a quick way to verify that your pipeline is working and producing meaningful output.
 
 **Option A: Orange Data Mining**
 
