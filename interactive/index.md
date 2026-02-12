@@ -11,6 +11,7 @@ title: Interactive
 
 .demo-header {
   margin-bottom: 1.5rem;
+  margin-top: 1rem;
 }
 
 .demo-header h1 {
@@ -46,6 +47,8 @@ title: Interactive
   color: var(--leiden-blue);
   font-weight: 600;
   transition: background 0.15s, border-color 0.15s;
+  height: 38px;
+  box-sizing: border-box;
 }
 
 .btn:hover {
@@ -68,9 +71,18 @@ title: Interactive
   border: 1px solid #dfe3ee;
   border-radius: 6px;
   font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
   color: var(--leiden-blue);
   background: #fff;
   cursor: pointer;
+  height: 38px;
+  box-sizing: border-box;
+}
+
+.btn {
+  height: 38px;
+  box-sizing: border-box;
 }
 
 /* ── Sentence card ──────────────────────────────────────────────── */
@@ -307,7 +319,7 @@ title: Interactive
 
 /* ── Legend ───────────────────────────────────────────────────────── */
 .legend {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.5rem;
@@ -315,6 +327,10 @@ title: Interactive
   background: #f9fafb;
   border-radius: 6px;
   border: 1px solid #e5e7eb;
+}
+
+.legend.visible {
+  display: flex;
 }
 
 .legend-item {
@@ -571,6 +587,13 @@ title: Interactive
     updateStepButtons();
     renderStep();
     updateNav();
+    // Show POS color legend only on Tokenize and POS Tag steps
+    var stepId = STEPS[n].id;
+    if (stepId === "tokenize" || stepId === "pos") {
+      legendEl.classList.add("visible");
+    } else {
+      legendEl.classList.remove("visible");
+    }
   }
 
   function updateStepButtons() {
