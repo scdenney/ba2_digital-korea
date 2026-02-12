@@ -35,19 +35,18 @@ title: Interactive
 }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: inline-block;
   padding: 0.5rem 1rem;
   border: 1px solid #dfe3ee;
   border-radius: 6px;
   background: #fff;
   font-size: 0.9rem;
+  line-height: 1.2;
   cursor: pointer;
   color: var(--leiden-blue);
   font-weight: 600;
+  font-family: inherit;
   transition: background 0.15s, border-color 0.15s;
-  height: 38px;
   box-sizing: border-box;
 }
 
@@ -71,20 +70,12 @@ title: Interactive
   border: 1px solid #dfe3ee;
   border-radius: 6px;
   font-size: 0.9rem;
+  line-height: 1.2;
   font-weight: 600;
   font-family: inherit;
   color: var(--leiden-blue);
   background: #fff;
   cursor: pointer;
-  height: 38px;
-  box-sizing: border-box;
-  margin: 0;
-  vertical-align: middle;
-  -webkit-appearance: menulist-button;
-}
-
-.btn {
-  height: 38px;
   box-sizing: border-box;
 }
 
@@ -495,7 +486,7 @@ title: Interactive
     { id: "clean",    label: "2. Clean",      desc: "Punctuation, URLs, and special characters are removed." },
     { id: "tokenize", label: "3. Tokenize",   desc: "The sentence is split into individual morphemes (smallest meaningful units)." },
     { id: "pos",      label: "4. POS Tag",    desc: "Each morpheme is labelled with its part-of-speech category." },
-    { id: "filter",   label: "5. Filter",     desc: "Select which POS tags to keep and whether to remove stopwords. Function morphemes (particles, endings, suffixes) are always excluded." },
+    { id: "filter",   label: "5. Filter",     desc: "Select which POS tags to keep and whether to remove stopwords." },
     { id: "result",   label: "6. Result",     desc: "The final preprocessed output based on your selected filters \u2014 ready for computational analysis." }
   ];
 
@@ -627,8 +618,8 @@ title: Interactive
     } else {
       legendEl.classList.remove("visible");
     }
-    // Show footnote only on Filter and Result steps
-    if (stepId === "filter" || stepId === "result") {
+    // Show footnote only on Filter step
+    if (stepId === "filter") {
       footnoteEl.classList.add("visible");
     } else {
       footnoteEl.classList.remove("visible");
