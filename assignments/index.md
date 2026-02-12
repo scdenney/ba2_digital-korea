@@ -116,6 +116,61 @@ Download the corpus from the [Data]({{ '/data/' | relative_url }}) page.
 </div>
 </details>
 
+<details>
+<summary>Week 3: Text Preprocessing &amp; Word Cloud</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Feb. 16
+**Due:** Feb. 23 (before class)
+
+**Required — R Programming:**
+
+Complete DataCamp: Introduction to Text Analysis in R — Chapter 1: Wrangling Text.
+
+**Optional — Word Cloud (choose one or both):**
+
+Create a word cloud from the presidential speeches corpus using either Orange Data Mining, R, or both.
+
+**Option A: Orange Data Mining**
+
+1. Open Orange and create a new workflow
+2. Load the presidential speeches corpus using the **Corpus** widget
+3. Add a **Preprocess Text** widget — connect it to Corpus
+4. Add the Korean preprocessing Python script (provided in class) using the **Python Script** widget
+5. Add a **Word Cloud** widget — connect it to the output
+6. Adjust settings until you have a meaningful word cloud
+7. Save your deliverables (see below)
+
+**Saving your ODM work:**
+- **Screenshot:** Right-click the canvas background and select **Save As Image**, or use your system screenshot tool (`Cmd+Shift+4` on macOS, `Win+Shift+S` on Windows)
+- **Workflow file:** Go to **File → Save As** and save with the `.ows` extension
+
+**Option B: RStudio**
+
+1. Download the R script: [week3_wordcloud.R]({{ '/data/scripts/week3_wordcloud.R' | relative_url }})
+2. Open it in RStudio
+3. Read the comments — the script walks you through each step
+4. Run the script section by section (select lines and press `Ctrl+Enter` / `Cmd+Enter`)
+5. The script will save `wordcloud.png` to your working directory
+
+**Note:** The first run installs Python + Kiwi automatically (this takes a few minutes). After that, you can skip the installation steps.
+
+**Submitting your work:**
+
+1. Create a `week03/` folder inside `assignments/` in your repository
+2. Add your deliverables to that folder:
+   - **ODM:** screenshot (`.png`) + workflow file (`.ows`)
+   - **R:** the saved word cloud image (`wordcloud.png`)
+3. In GitHub Desktop: you will see the new files listed as changes
+4. Write a short commit message (e.g., "Add week 3 word cloud")
+5. Click **Commit to main**, then **Push origin**
+6. Confirm your files appear on github.com in your repository
+
+The instructor has access to your repository and will review your submission there.
+
+</div>
+</details>
+
 </div>
 
 ---
