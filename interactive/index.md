@@ -694,15 +694,14 @@ title: Interactive
 
   function renderResult() {
     vizLabel.textContent = "Preprocessed Result";
-    var html = buildPosToggles();
     var tokens = currentEntry.tokens;
     var kept = [];
     tokens.forEach(function (t) {
       if (isTokenKept(t)) kept.push(t.form);
     });
-    html += '<div class="result-tokens">';
+    var html = '<div class="result-tokens">';
     if (kept.length === 0) {
-      html += '<span style="color:#6b7280;font-style:italic;">No tokens match the current filter.</span>';
+      html += '<span style="color:#6b7280;font-style:italic;">No tokens match the current filter. Go back to step 5 to adjust.</span>';
     } else {
       kept.forEach(function (w) {
         html += '<span class="result-token">' + escHtml(w) + '</span>';
@@ -711,7 +710,6 @@ title: Interactive
     html += '</div>';
     vizContent.innerHTML = html;
     vizArea.classList.remove("show-tags");
-    bindToggleEvents();
   }
 
   // ── Token chip builder ──────────────────────────────────────────
