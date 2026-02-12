@@ -147,7 +147,7 @@ Practice the full Korean text preprocessing pipeline on the presidential speeche
 
 **Option B: RStudio**
 
-1. Download the R script: [week3_wordcloud.R]({{ '/data/scripts/week3_wordcloud.R' | relative_url }})
+1. Download the R script: [week03_preprocessing.R]({{ '/data/scripts/week03_preprocessing.R' | relative_url }})
 2. Open it in RStudio
 3. Read the comments — the script walks you through each step
 4. Run the script section by section (select lines and press `Ctrl+Enter` / `Cmd+Enter`)
