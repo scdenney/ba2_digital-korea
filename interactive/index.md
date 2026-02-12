@@ -410,6 +410,31 @@ title: Interactive
 .pos-toggle.tgl-XR  { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
 .pos-toggle.tgl-stopwords { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
 
+/* ── Footnote ────────────────────────────────────────────────────── */
+.demo-footnote {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #f5f7fb;
+  border-left: 4px solid var(--leiden-gold);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #4a4a4a;
+}
+
+.demo-footnote.visible {
+  display: block;
+}
+
+.demo-footnote p {
+  margin: 0;
+}
+
+.demo-footnote code {
+  font-size: 0.8rem;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .demo-header h1 { font-size: 1.3rem; }
@@ -451,6 +476,10 @@ title: Interactive
   </div>
 
   <div class="legend" id="legend"></div>
+
+  <div class="demo-footnote" id="footnote">
+    <p><strong>Why can't I select every token?</strong> Korean is an agglutinative language — words are built by attaching grammatical morphemes (particles, endings, suffixes) to content morphemes (nouns, verbs, adjectives). The toggles above control which <em>content</em> POS tags to keep. Grammatical morphemes like subject particles (<code>JKS</code>: 이/가), object particles (<code>JKO</code>: 을/를), verb endings (<code>EF</code>, <code>EC</code>), and derivational suffixes (<code>XSV</code>: 하) are always filtered out because they carry structural rather than semantic meaning. This is standard practice in Korean computational text analysis.</p>
+  </div>
 </div>
 
 <script>
@@ -463,8 +492,8 @@ title: Interactive
     { id: "clean",    label: "2. Clean",      desc: "Punctuation, URLs, and special characters are removed." },
     { id: "tokenize", label: "3. Tokenize",   desc: "The sentence is split into individual morphemes (smallest meaningful units)." },
     { id: "pos",      label: "4. POS Tag",    desc: "Each morpheme is labelled with its part-of-speech category." },
-    { id: "filter",   label: "5. Filter",     desc: "Only content words (nouns, verbs, adjectives, adverbs) are kept; stopwords and short tokens are removed." },
-    { id: "result",   label: "6. Result",     desc: "The final preprocessed output \u2014 ready for computational analysis." }
+    { id: "filter",   label: "5. Filter",     desc: "Select which POS tags to keep and whether to remove stopwords. Function morphemes (particles, endings, suffixes) are always excluded." },
+    { id: "result",   label: "6. Result",     desc: "The final preprocessed output based on your selected filters \u2014 ready for computational analysis." }
   ];
 
   var LEGEND_DATA = [
@@ -515,6 +544,7 @@ title: Interactive
   var nextBtn        = document.getElementById("nextBtn");
   var stepDesc       = document.getElementById("stepDesc");
   var legendEl       = document.getElementById("legend");
+  var footnoteEl     = document.getElementById("footnote");
 
   // ── Build static UI ─────────────────────────────────────────────
   function buildStepButtons() {
@@ -593,6 +623,12 @@ title: Interactive
       legendEl.classList.add("visible");
     } else {
       legendEl.classList.remove("visible");
+    }
+    // Show footnote only on Filter and Result steps
+    if (stepId === "filter" || stepId === "result") {
+      footnoteEl.classList.add("visible");
+    } else {
+      footnoteEl.classList.remove("visible");
     }
   }
 
