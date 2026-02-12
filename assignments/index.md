@@ -117,7 +117,7 @@ Download the corpus from the [Data]({{ '/data/' | relative_url }}) page.
 </details>
 
 <details>
-<summary>Week 3: Text Preprocessing &amp; Word Cloud</summary>
+<summary>Week 3: Text Preprocessing Basics</summary>
 <div class="assignment-content" markdown="1">
 
 **Assigned:** Feb. 16
@@ -132,6 +132,8 @@ Complete DataCamp: Introduction to Text Analysis in R — Chapter 1: Wrangling T
 Practice the full Korean text preprocessing pipeline on the presidential speeches corpus using Orange Data Mining, R, or both. To demonstrate your preprocessing, generate a word cloud from the result — this is a quick way to verify that your pipeline is working and producing meaningful output.
 
 **Option A: Orange Data Mining**
+
+*Note: These steps are simplified. Refer to the preprocessing pipeline demonstrated in class for the full workflow.*
 
 1. Open Orange and create a new workflow
 2. Load the presidential speeches corpus using the **Corpus** widget
