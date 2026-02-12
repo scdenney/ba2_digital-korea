@@ -124,9 +124,17 @@ TAG_CATEGORIES = {
     "other":     {"MM", "IC", "UN"},
 }
 
+def base_tag(tag: str) -> str:
+    """Strip Kiwi's -R (regular) / -I (irregular) conjugation suffixes."""
+    if tag.endswith("-R") or tag.endswith("-I"):
+        return tag.rsplit("-", 1)[0]
+    return tag
+
+
 def tag_to_category(tag: str) -> str:
+    bt = base_tag(tag)
     for cat, tags in TAG_CATEGORIES.items():
-        if tag in tags:
+        if bt in tags:
             return cat
     return "other"
 
@@ -156,16 +164,16 @@ def process_sentence(kiwi_instance: Kiwi, raw: str) -> dict | None:
 
     tokens = []
     for t in kiwi_tokens:
-        tag = t.tag
-        is_content = tag in CONTENT_TAGS
-        lemma = t.form
-        # For verbs/adjectives Kiwi gives the stem; we keep it as-is
-        is_stopword = lemma in STOPWORDS
+        raw_tag = t.tag
+        bt = base_tag(raw_tag)
+        is_content = bt in CONTENT_TAGS
+        is_stopword = t.form in STOPWORDS
         tokens.append({
             "form": t.form,
-            "tag": tag,
-            "tag_label": TAG_LABELS.get(tag, tag),
-            "category": tag_to_category(tag),
+            "tag": bt,              # normalized (no -R/-I suffix)
+            "tag_raw": raw_tag,     # original Kiwi tag for reference
+            "tag_label": TAG_LABELS.get(bt, bt),
+            "category": tag_to_category(raw_tag),
             "is_content": is_content,
             "is_stopword": is_stopword,
         })

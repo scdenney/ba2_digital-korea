@@ -10,18 +10,27 @@ title: Interactive
 }
 
 .demo-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
 .demo-header h1 {
-  margin: 0;
+  margin: 0 0 0.5rem;
   font-size: 1.6rem;
   color: var(--leiden-blue);
-  flex: 1 1 100%;
+}
+
+.demo-intro {
+  color: #4a4a4a;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
 }
 
 .btn {
@@ -398,10 +407,13 @@ title: Interactive
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>Text Preprocessing Pipeline</h1>
-    <button class="btn btn-primary" id="randomBtn">Random Sentence</button>
-    <select class="filter-select" id="presidentFilter">
-      <option value="all">All Presidents</option>
-    </select>
+    <p class="demo-intro">Step through the text preprocessing pipeline on real sentences from Korean presidential speeches. Each step shows what happens to the text — from raw input to cleaned, analysis-ready output. Use the POS tag and stopword controls in steps 5–6 to experiment with different filtering settings.</p>
+    <div class="demo-controls">
+      <button class="btn btn-primary" id="randomBtn">Random Sentence</button>
+      <select class="filter-select" id="presidentFilter">
+        <option value="all">All Presidents</option>
+      </select>
+    </div>
   </div>
 
   <div class="sentence-card" id="sentenceCard">
