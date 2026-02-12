@@ -442,7 +442,7 @@ title: Interactive
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>Text Preprocessing Pipeline</h1>
-    <p class="demo-intro">Step through the text preprocessing pipeline on real sentences from Korean presidential speeches. Each step shows what happens to the text — from raw input to cleaned, analysis-ready output. Use the POS tag and stopword controls in steps 5–6 to experiment with different filtering settings.</p>
+    <p class="demo-intro">Step through the text preprocessing pipeline on real sentences from Korean presidential speeches. Each step shows what happens to the text — from raw input to cleaned, analysis-ready output. Use the POS tag and stopword controls in step 5 to experiment with different filtering settings.</p>
     <div class="demo-controls">
       <button class="btn btn-primary" id="randomBtn">Random Sentence</button>
       <select class="filter-select" id="presidentFilter">
