@@ -611,9 +611,9 @@ title: Interactive
     updateStepButtons();
     renderStep();
     updateNav();
-    // Show POS color legend only on Tokenize and POS Tag steps
+    // Show POS color legend only on POS Tag step
     var stepId = STEPS[n].id;
-    if (stepId === "tokenize" || stepId === "pos") {
+    if (stepId === "pos") {
       legendEl.classList.add("visible");
     } else {
       legendEl.classList.remove("visible");
@@ -674,7 +674,7 @@ title: Interactive
 
   function renderTokenize() {
     vizLabel.textContent = "Morpheme Tokens";
-    vizContent.innerHTML = buildTokenChips(false, false);
+    vizContent.innerHTML = buildTokenChips(false, false, true);
     vizArea.classList.remove("show-tags");
   }
 
@@ -722,11 +722,11 @@ title: Interactive
     return true;
   }
 
-  function buildTokenChips(showTags, showFilter) {
+  function buildTokenChips(showTags, showFilter, plain) {
     var tokens = currentEntry.tokens;
     var html = '<div class="token-container">';
     tokens.forEach(function (t) {
-      var classes = "token-chip cat-" + t.category;
+      var classes = "token-chip " + (plain ? "cat-other" : "cat-" + t.category);
 
       if (showFilter) {
         if (removeStopwords && t.is_stopword) {
