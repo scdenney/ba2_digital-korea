@@ -323,6 +323,54 @@ title: Interactive
   border: 1px solid rgba(0,0,0,0.1);
 }
 
+/* ── POS tag toggles ─────────────────────────────────────────────── */
+.pos-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  align-items: center;
+}
+
+.pos-toggles-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-right: 0.3rem;
+}
+
+.pos-toggle {
+  padding: 0.3rem 0.7rem;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.pos-toggle.off {
+  opacity: 0.4;
+  filter: grayscale(0.6);
+}
+
+.pos-toggle.tgl-noun     { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
+.pos-toggle.tgl-verb     { background: #ccfbf1; border-color: #5eead4; color: #0f766e; }
+.pos-toggle.tgl-adjective { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+.pos-toggle.tgl-adverb   { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+.pos-toggle.tgl-particle { background: #f3f4f6; border-color: #d1d5db; color: #6b7280; }
+.pos-toggle.tgl-ending   { background: #f3f4f6; border-color: #d1d5db; color: #6b7280; }
+.pos-toggle.tgl-affix    { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+.pos-toggle.tgl-symbol   { background: #f3f4f6; border-color: #d1d5db; color: #9ca3af; }
+.pos-toggle.tgl-other    { background: #f3f4f6; border-color: #d1d5db; color: #9ca3af; }
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .demo-header h1 { font-size: 1.3rem; }
@@ -385,6 +433,27 @@ title: Interactive
     { label: "Particle / Ending", bg: "#f3f4f6", border: "#d1d5db" },
     { label: "Affix",     bg: "#fce7f3", border: "#f9a8d4" }
   ];
+
+  // ── POS toggle definitions ──────────────────────────────────────
+  var POS_CATEGORIES = [
+    { id: "noun",      label: "Nouns",       tags: ["NNG","NNP","NNB","NR","NP"], defaultOn: true },
+    { id: "verb",      label: "Verbs",       tags: ["VV","VX","VCP","VCN"],       defaultOn: true },
+    { id: "adjective", label: "Adjectives",  tags: ["VA"],                        defaultOn: true },
+    { id: "adverb",    label: "Adverbs",     tags: ["MAG","MAJ"],                 defaultOn: true },
+    { id: "particle",  label: "Particles",   tags: ["JKS","JKC","JKG","JKO","JKB","JKV","JKQ","JX","JC"], defaultOn: false },
+    { id: "ending",    label: "Endings",     tags: ["EP","EF","EC","ETN","ETM"],  defaultOn: false },
+    { id: "affix",     label: "Affixes",     tags: ["XPN","XSN","XSV","XSA","XR"], defaultOn: false },
+    { id: "symbol",    label: "Symbols",     tags: ["SF","SP","SS","SE","SO","SN","SL","SH","SW"], defaultOn: false },
+    { id: "other",     label: "Other",       tags: ["MM","IC","UN"],              defaultOn: false }
+  ];
+
+  // Build a tag → category lookup and initialize active set
+  var tagToCat = {};
+  var activePosCats = {};
+  POS_CATEGORIES.forEach(function (cat) {
+    activePosCats[cat.id] = cat.defaultOn;
+    cat.tags.forEach(function (t) { tagToCat[t] = cat.id; });
+  });
 
   // ── State ───────────────────────────────────────────────────────
   var data = [];
@@ -539,23 +608,40 @@ title: Interactive
 
   function renderFilter() {
     vizLabel.textContent = "Content-Word Filtering";
-    vizContent.innerHTML = buildTokenChips(true, true);
+    var html = buildPosToggles() + buildTokenChips(true, true);
+    vizContent.innerHTML = html;
     vizArea.classList.add("show-tags");
+    bindToggleEvents();
   }
 
   function renderResult() {
     vizLabel.textContent = "Preprocessed Result";
-    var words = currentEntry.result.split(" ");
-    var html = '<div class="result-tokens">';
-    words.forEach(function (w) {
-      html += '<span class="result-token">' + escHtml(w) + '</span>';
+    var html = buildPosToggles();
+    var tokens = currentEntry.tokens;
+    var kept = [];
+    tokens.forEach(function (t) {
+      if (isTokenKept(t)) kept.push(t.form);
     });
+    html += '<div class="result-tokens">';
+    if (kept.length === 0) {
+      html += '<span style="color:#6b7280;font-style:italic;">No tokens match the current filter.</span>';
+    } else {
+      kept.forEach(function (w) {
+        html += '<span class="result-token">' + escHtml(w) + '</span>';
+      });
+    }
     html += '</div>';
     vizContent.innerHTML = html;
     vizArea.classList.remove("show-tags");
+    bindToggleEvents();
   }
 
   // ── Token chip builder ──────────────────────────────────────────
+  function isTokenKept(t) {
+    var cat = tagToCat[t.tag] || "other";
+    return activePosCats[cat] && !t.is_stopword && t.form.length >= 2 && !isDigitOnly(t.form);
+  }
+
   function buildTokenChips(showTags, showFilter) {
     var tokens = currentEntry.tokens;
     var html = '<div class="token-container">';
@@ -563,10 +649,9 @@ title: Interactive
       var classes = "token-chip cat-" + t.category;
 
       if (showFilter) {
-        var isKept = t.is_content && !t.is_stopword && t.form.length >= 2 && !isDigitOnly(t.form);
         if (t.is_stopword) {
           classes += " stopword";
-        } else if (!isKept) {
+        } else if (!isTokenKept(t)) {
           classes += " dimmed";
         } else {
           classes += " kept";
@@ -582,6 +667,30 @@ title: Interactive
     });
     html += '</div>';
     return html;
+  }
+
+  // ── POS toggle builder ────────────────────────────────────────
+  function buildPosToggles() {
+    var html = '<div class="pos-toggles"><span class="pos-toggles-label">Keep:</span>';
+    POS_CATEGORIES.forEach(function (cat) {
+      var on = activePosCats[cat.id];
+      html += '<button class="pos-toggle tgl-' + cat.id + (on ? '' : ' off') + '" data-cat="' + cat.id + '">';
+      html += escHtml(cat.label);
+      html += '</button>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function bindToggleEvents() {
+    var btns = vizContent.querySelectorAll(".pos-toggle");
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var cat = btn.getAttribute("data-cat");
+        activePosCats[cat] = !activePosCats[cat];
+        renderStep(); // re-render current step with new selection
+      });
+    });
   }
 
   // ── Helpers ─────────────────────────────────────────────────────
