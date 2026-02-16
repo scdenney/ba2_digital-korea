@@ -15,7 +15,7 @@
 
 # ── Step 1: Install required R packages (only needed once) ──────
 
-install.packages(c("reticulate", "wordcloud", "RColorBrewer"))
+install.packages(c("tidyverse", "ggwordcloud", "reticulate"))
 
 
 # ── Step 2: Set up Python + Kiwi (only needed once) ────────────
@@ -43,33 +43,43 @@ cat("kiwipiepy installed:", py_module_available("kiwipiepy"), "\n")
 
 # ── Step 3: Load libraries ─────────────────────────────────────
 
-library(wordcloud)
-library(RColorBrewer)
+library(tidyverse)
+library(ggwordcloud)
+library(reticulate)
 
 
-# ── Step 4: Read the corpus ────────────────────────────────────
-# IMPORTANT: Change this path to match where YOUR CSV file is.
+# ── Step 4: Set file paths ─────────────────────────────────────
+# Automatically detect where this script lives so all paths work
+# regardless of your working directory.
 
-speeches <- read.csv(
-  "data/president_speeches/president_speeches_democratic_era.csv",
-  stringsAsFactors = FALSE
+script_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+data_dir   <- dirname(script_dir)   # data/scripts/ -> data/
+
+
+# ── Step 5: Read the corpus ────────────────────────────────────
+
+speeches <- read_csv(
+  file.path(data_dir, "president_speeches",
+            "president_speeches_democratic_era.csv"),
+  show_col_types = FALSE
 )
 
 cat("Loaded", nrow(speeches), "speeches\n")
 
 
-# ── Step 5: Set up Kiwi for Korean preprocessing ───────────────
+# ── Step 6: Set up Kiwi for Korean preprocessing ───────────────
 # Kiwi is a Python package, so we call it from R using reticulate.
 # The code below defines a preprocessing function in Python.
 
-py_run_string("
+stopword_file <- file.path(data_dir, "stopwords_ko.txt")
+
+py_run_string(sprintf("
 from kiwipiepy import Kiwi
 kiwi = Kiwi()
 
-# Stopwords: common words that don't carry meaning for analysis
 stopwords = set()
 try:
-    with open('data/stopwords_ko.txt', encoding='utf-8') as f:
+    with open('%s', encoding='utf-8') as f:
         for line in f:
             w = line.strip()
             if w and ' ' not in w:
@@ -83,61 +93,52 @@ def preprocess(text, pos_tags=['NNG', 'NNP']):
     \"\"\"Tokenize Korean text and keep only selected POS tags.\"\"\"
     if not text or not isinstance(text, str):
         return []
-    tokens = kiwi.tokenize(text)
-    result = []
-    for t in tokens:
-        tag = t.tag.split('-')[0]  # normalize VV-R -> VV, etc.
-        if tag in pos_tags and len(t.form) >= 2 and t.form not in stopwords:
-            result.append(t.form)
-    return result
-")
+    return [
+        t.form for t in kiwi.tokenize(text)
+        if t.tag.split('-')[0] in pos_tags
+        and len(t.form) >= 2
+        and t.form not in stopwords
+    ]
+", stopword_file))
 
 cat("Kiwi ready\n")
 
 
-# ── Step 6: Preprocess all speeches ────────────────────────────
+# ── Step 7: Preprocess all speeches ────────────────────────────
 # This may take a minute. We extract nouns (NNG + NNP) by default.
 # To also include verbs and adjectives, change the line below to:
 #   pos_tags <- c("NNG", "NNP", "VV", "VA")
 
 pos_tags <- c("NNG", "NNP")
 
-all_words <- c()
-for (i in seq_len(nrow(speeches))) {
-  text <- speeches$speech_text[i]
-  words <- py$preprocess(text, pos_tags)
-  all_words <- c(all_words, unlist(words))
-
-  if (i %% 100 == 0) cat("  Processed", i, "of", nrow(speeches), "\n")
-}
+all_words <- speeches$speech_text |>
+  map(~ py$preprocess(.x, pos_tags), .progress = "Tokenizing") |>
+  list_c()
 
 cat("Total words extracted:", length(all_words), "\n")
 
 
-# ── Step 7: Count word frequencies ─────────────────────────────
+# ── Step 8: Count word frequencies ─────────────────────────────
 
-word_freq <- as.data.frame(table(all_words), stringsAsFactors = FALSE)
-colnames(word_freq) <- c("word", "freq")
-word_freq <- word_freq[order(-word_freq$freq), ]
+word_freq <- tibble(word = all_words) |>
+  count(word, sort = TRUE)
 
 cat("Top 10 words:\n")
 print(head(word_freq, 10))
 
 
-# ── Step 8: Generate and save the word cloud ───────────────────
+# ── Step 9: Generate and save the word cloud ───────────────────
 
-png("wordcloud.png", width = 800, height = 600, res = 150)
+wc <- word_freq |>
+  slice_max(n, n = 100) |>
+  ggplot(aes(label = word, size = n, color = n)) +
+  geom_text_wordcloud(seed = 42) +
+  scale_size_area(max_size = 14) +
+  scale_color_viridis_c() +
+  theme_void()
 
-wordcloud(
-  words = word_freq$word,
-  freq  = word_freq$freq,
-  max.words = 100,
-  random.order = FALSE,
-  colors = brewer.pal(8, "Dark2"),
-  scale = c(3, 0.5)
-)
+ggsave(file.path(script_dir, "wordcloud.png"),
+       plot = wc, width = 8, height = 6, dpi = 150)
 
-dev.off()
-
-cat("\nDone! Word cloud saved as 'wordcloud.png'\n")
-cat("Upload this file to your GitHub repository.\n")
+cat("\nDone! Word cloud saved to the scripts folder.\n")
+cat("Upload wordcloud.png to your GitHub repository.\n")
