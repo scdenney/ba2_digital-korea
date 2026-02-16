@@ -125,7 +125,7 @@ Download the corpus from the [Data & Scripts]({{ '/data/' | relative_url }}) pag
 
 **Required — R Programming:**
 
-Complete DataCamp: Introduction to Text Analysis in R — Chapter 1: Wrangling Text.
+Complete DataCamp: Introduction to R — Chapter 1 (Intro to Basics) and Chapter 2 (Vectors).
 
 **Optional — Preprocessing Practice (choose one or both):**
 
@@ -133,15 +133,16 @@ Practice the full Korean text preprocessing pipeline on the presidential speeche
 
 **Option A: Orange Data Mining**
 
-*Note: These steps are simplified. Refer to the preprocessing pipeline demonstrated in class for the full workflow.*
+Download the preprocessing script for your OS from the [Data & Scripts]({{ '/data/' | relative_url }}) page. Refer to the widget pipeline on the [Presentations]({{ '/presentations/' | relative_url }}) page (Orange column) for the full workflow.
 
 1. Open Orange and create a new workflow
 2. Load the presidential speeches corpus using the **Corpus** widget
 3. Add a **Preprocess Text** widget — connect it to Corpus
-4. Add the Korean preprocessing Python script (provided in class) using the **Python Script** widget
-5. Add a **Word Cloud** widget — connect it to the output
-6. Adjust settings until you have a meaningful word cloud
-7. Save your deliverables (see below)
+4. Add a **Python Script** widget and paste the preprocessing script
+5. Change `TEXT_COLUMN` to match your corpus column name
+6. Add a **Word Cloud** widget — connect it to the output
+7. Adjust settings until you have a meaningful word cloud
+8. Save your deliverables (see below)
 
 **Saving your ODM work:**
 - **Screenshot:** Right-click the canvas background and select **Save As Image**, or use your system screenshot tool (`Cmd+Shift+4` on macOS, `Win+Shift+S` on Windows)
