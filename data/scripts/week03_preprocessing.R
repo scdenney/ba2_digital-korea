@@ -26,8 +26,9 @@ library(reticulate)
 # Say "yes" if prompted.
 install_miniconda()
 
-# Install the Kiwi Korean tokenizer
-py_install("kiwipiepy")
+# Install the Kiwi Korean tokenizer (pip = TRUE is required;
+# this package is not available on conda-forge)
+py_install("kiwipiepy", pip = TRUE)
 
 
 # ── Step 3: Load libraries ─────────────────────────────────────
