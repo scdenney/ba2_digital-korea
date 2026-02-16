@@ -19,16 +19,26 @@ install.packages(c("reticulate", "wordcloud", "RColorBrewer"))
 
 
 # ── Step 2: Set up Python + Kiwi (only needed once) ────────────
+# After running this step for the first time, RESTART RStudio
+# before continuing to Step 3.
 
 library(reticulate)
 
-# This installs a small Python environment managed by R.
-# Say "yes" if prompted.
-install_miniconda()
+# If you don't already have Python, this gives you one.
+# If you do, it will say so and move on. Say "yes" if prompted.
+tryCatch(install_miniconda(), error = function(e) {
+  message("Miniconda already installed or not needed — continuing.")
+})
 
-# Install the Kiwi Korean tokenizer (pip = TRUE is required;
-# this package is not available on conda-forge)
+# Install the Kiwi Korean tokenizer.
+# pip = TRUE is required — this package is not on conda-forge.
 py_install("kiwipiepy", pip = TRUE)
+
+# Verify it worked (should print TRUE).
+# If it prints FALSE, restart RStudio and run only the two lines below:
+#   library(reticulate)
+#   cat("kiwipiepy installed:", py_module_available("kiwipiepy"), "\n")
+cat("kiwipiepy installed:", py_module_available("kiwipiepy"), "\n")
 
 
 # ── Step 3: Load libraries ─────────────────────────────────────
