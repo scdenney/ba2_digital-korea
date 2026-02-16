@@ -190,7 +190,7 @@ Preprocessing transforms raw text into a format suitable for computational analy
 - Bag of Words (creating document-term matrix)
 
 **R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 1: Wrangling Text.
+- Complete DataCamp: Introduction to R - Chapter 1: Intro to Basics and Chapter 2: Vectors. Due by start of next class.
 
 ---
 
@@ -212,8 +212,8 @@ Building on Week 3, this week provides hands-on practice with preprocessing work
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
 
-**Optional R Programming:**
-- Complete DataCamp: Text Mining with Bag-of-Words in R - Chapter 1: Jumping into Text Mining with Bag-of-Words
+**R Programming:**
+- Complete DataCamp: Introduction to R - Chapter 4: Factors and Chapter 5: Data Frames. Due by start of next class.
 
 ---
 
@@ -241,10 +241,7 @@ This week introduces methods for describing and visualizing patterns in text dat
 - Bar Plot (comparative visualization)
 
 **R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 2: Visualizing Text.
-
-**Optional R Programming:**
-- Complete DataCamp: Text Mining with Bag-of-Words in R - Chapter 2: Word Clouds and More Interesting Visuals
+- Complete DataCamp: Introduction to Text Analysis in R - Chapter 1: Wrangling Text and Chapter 2: Visualizing Text. Due by start of next class.
 
 ---
 
@@ -293,9 +290,6 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 **R Programming:**
 - Complete Swirl Exploratory Data Analysis: Lessons 11 and 12 (Hierarchical Clustering, K-Means Clustering)
 
-**Optional R Programming:**
-- Complete DataCamp: Text Mining with Bag-of-Words in R - Chapter 3: Adding to Your TM Skills
-
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow. Also upload screenshots showing completion of Swirl exercises.
 
@@ -324,7 +318,7 @@ Classification assigns documents to predefined categories. This week focuses on 
 - Score Documents (custom dictionary scoring)
 
 **R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 3: Sentiment Analysis
+- Complete DataCamp: Introduction to Text Analysis in R - Chapter 3: Sentiment Analysis and Intermediate R - Chapter 1: Conditionals and Control Flow. Due by start of next class.
 
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
