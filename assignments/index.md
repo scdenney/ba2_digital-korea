@@ -100,7 +100,7 @@ Complete DataCamp: Introduction to Text Analysis in R -- Chapter 1: Wrangling Te
 
 For extra practice, replicate the in-class demo by loading the presidential speeches corpus into Orange Data Mining and exploring it with the Corpus widget.
 
-Download the corpus from the [Data]({{ '/data/' | relative_url }}) page.
+Download the corpus from the [Data & Scripts]({{ '/data/' | relative_url }}) page.
 
 **Steps:**
 1. Download the presidential speeches CSV from the Data page

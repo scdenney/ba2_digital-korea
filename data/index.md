@@ -1,27 +1,43 @@
 ---
 layout: default
-title: Data
+title: Data & Scripts
 ---
 
-# Data
+# Data & Scripts
 
-This page provides truncated corpora used in class demonstrations and assignments. These are sampled subsets of larger corpora maintained in the [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora) repository.
+This page collects the datasets and scripts we use throughout the course. Resources are added each week as needed — check back for updates.
 
-**Organizing your data folder:** We recommend creating subfolders within your `/data` directory organized by file type or corpus name -- for example, `/data/president_speeches/`, `/data/newspapers/`, etc. This will keep things tidy as we work with more datasets throughout the semester.
+Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora) repository. For full corpora and detailed documentation, see that repository.
 
----
-
-| Week(s) | Corpus | Description | Truncation | Full Corpus | Download |
-|------|--------|-------------|------------|-------------|----------|
-| 2, 3 | Presidential Speeches (Democratic Era) | 749 Korean presidential speeches from the democratic era (6th Republic onward): Roh Tae-woo through Moon Jae-in. Variables include president, title, date, location, speech type, and full text. | Proportionally sampled from 5,840 speeches (random seed 42), with representation across all 7 democratic-era presidents. | [Full corpus](https://github.com/scdenney/nlp_corpora/tree/main/data/president_speeches) | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
+**Organizing your files:** Create subfolders within your `/data` directory by corpus or file type — e.g., `/data/president_speeches/`, `/data/scripts/`. This keeps things tidy as we accumulate more files over the semester.
 
 ---
 
-## How to Use These Files
+## Datasets
 
-1. Download the CSV file from the link above
-2. Add it to a subfolder in your GitHub repository (e.g., `/data/president_speeches/`)
+| Week(s) | Dataset | Description | Download |
+|---------|---------|-------------|----------|
+| 2–5 | Presidential Speeches | 749 democratic-era presidential speeches (Roh Tae-woo–Moon Jae-in), sampled from 5,840. See [documentation](president_speeches/README.md). | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
+
+## Scripts
+
+| Week | Script | Description | Download |
+|------|--------|-------------|----------|
+| 3 | Korean Preprocessing (Mac) | POS-based tokenization for Orange Data Mining. Auto-installs kiwipiepy. | [Python](scripts/custom_preprocessing_mac-users.py) |
+| 3 | Korean Preprocessing (Windows) | Same as above but requires kiwipiepy pre-installed. | [Python](scripts/custom_preprocessing_windows-users.py) |
+
+---
+
+## How to Use
+
+**Datasets:**
+1. Download the CSV file
+2. Save it to a subfolder in your GitHub repository (e.g., `/data/president_speeches/`)
 3. Commit and push via GitHub Desktop
 4. Load the file in Orange Data Mining using the Corpus widget
 
-For details on sampling methods and variable descriptions, see the [data documentation](president_speeches/README.md).
+**Scripts:**
+1. Download the `.py` file for your operating system
+2. In Orange, add a **Python Script** widget and paste the code
+3. Change `TEXT_COLUMN` to match your corpus column name (see the script comments)
+4. Connect it to your data flow and run
