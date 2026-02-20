@@ -12,5 +12,5 @@ CLAUDE.md
 # LaTeX source files
 presentations/tex/
 
-# Orange Data Mining files
-odm_files/
+# Orange Data Mining files (directory and local symlink)
+odm_files
