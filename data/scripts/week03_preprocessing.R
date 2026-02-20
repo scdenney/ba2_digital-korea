@@ -15,24 +15,46 @@
 
 # ── Step 1: Install required R packages (only needed once) ──────
 
-install.packages(c("tidyverse", "ggwordcloud", "reticulate"))
+install.packages(c("tidyverse", "reticulate"))
+
+# ggwordcloud: try CRAN first; if that fails (e.g., your R version
+# is newer than the latest CRAN binary), install from GitHub instead.
+if (!requireNamespace("ggwordcloud", quietly = TRUE)) {
+  tryCatch(
+    install.packages("ggwordcloud"),
+    warning = function(w) {
+      message("CRAN install failed — trying GitHub instead...")
+      if (!requireNamespace("remotes", quietly = TRUE))
+        install.packages("remotes")
+      remotes::install_github("lepennec/ggwordcloud")
+    }
+  )
+}
 
 
 # ── Step 2: Set up Python + Kiwi (only needed once) ────────────
 # After running this step for the first time, RESTART RStudio
 # before continuing to Step 3.
+#
+# NOTE: Recent versions of reticulate (1.40+) changed how Python
+# environments work. The code below handles both old and new versions.
 
 library(reticulate)
 
-# If you don't already have Python, this gives you one.
-# If you do, it will say so and move on. Say "yes" if prompted.
-tryCatch(install_miniconda(), error = function(e) {
-  message("Miniconda already installed or not needed — continuing.")
-})
-
-# Install the Kiwi Korean tokenizer.
-# pip = TRUE is required — this package is not on conda-forge.
-py_install("kiwipiepy", pip = TRUE)
+# New reticulate (1.40+) uses py_require() to declare Python
+# dependencies. Older versions need install_miniconda() + py_install().
+if (packageVersion("reticulate") >= "1.40") {
+  # py_require() tells reticulate to make kiwipiepy available.
+  # It manages the environment automatically — no need to install
+  # miniconda or call py_install().
+  py_require("kiwipiepy")
+} else {
+  # Older reticulate: set up miniconda and install manually.
+  tryCatch(install_miniconda(), error = function(e) {
+    message("Miniconda already installed or not needed — continuing.")
+  })
+  py_install("kiwipiepy", pip = TRUE)
+}
 
 # Verify it worked (should print TRUE).
 # If it prints FALSE, restart RStudio and run only the two lines below:
