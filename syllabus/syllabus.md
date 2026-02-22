@@ -194,51 +194,46 @@ Preprocessing transforms raw text into a format suitable for computational analy
 
 ---
 
-### Week 4 (Feb. 23): Text Preprocessing Practice {#week-4}
+### Week 4 (Feb. 23): From Words to Numbers: Bag of Words, TF-IDF, and Visualization {#week-4}
 
-Building on Week 3, this week provides hands-on practice with preprocessing workflows. We'll explore morphological analysis (word structure and formation), deepen our understanding of the bag-of-words approach, specifically, how text gets transformed into a document-term matrix (DTM), the table of word counts that makes computational analysis possible. We introduce term frequency (TF) as our first measurement approach and preview term frequency-inverse document frequency (TF-IDF). Students will work through complete preprocessing pipelines from raw text to analysis-ready data.
+This week covers the full arc from preprocessing to quantitative text representation. We begin with a brief review of Week 3's preprocessing pipeline, then introduce the bag-of-words (BoW) model and its assumptions, term frequency (TF), document frequency (DF), and the document-term matrix (DTM). We then develop TF-IDF weighting as a method for identifying distinctive words. The session concludes with a live Orange demo showing how to build a complete workflow from corpus to visualization.
 
 **Topics:**
-- Review and reinforcement of Week 3 concepts
-- Morphological preparation and analysis
-- Bag-of-words representation
-- Term frequency measurements
+- Bag-of-words assumptions and trade-offs
+- Term frequency (TF): raw counts and normalization
+- Document frequency (DF) and word rarity
+- The document-term matrix (DTM) and sparsity
+- TF-IDF weighting: identifying distinctive words
+- Visualization: word clouds, frequency distributions, bar charts
 
-**Hands-On:**
-- Complete preprocessing workflows
-- Build document-term matrices
-- Calculate and interpret term frequencies
+**Recommended Reading:**
+- Grimmer, Roberts, and Stewart - Chapters 6-7: The Multinomial Language Model; The Vector Space Model and Similarity Metrics
+- Bollen, J., et al. (2021). Historical language records reveal a surge of cognitive distortions in recent decades. *Proceedings of the National Academy of Sciences*, 118(30) (optional)
+
+**Orange Widgets to Master:**
+- Bag of Words (Count, Binary, Sublinear, TF-IDF)
+- Word Cloud (visual representation of word frequencies)
+- Statistics (frequency analysis and TF-IDF sorting)
+- Distributions (exploring patterns across presidents)
+- Bar Plot (comparative visualization)
 
 **Assignment:**
-- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
+- Reproduce the in-class Orange workflow (corpus → preprocessing → Bag of Words with TF-IDF → at least two visualization widgets). Upload .ows file and screenshot to `week04/` folder.
 
 **R Programming:**
 - Complete DataCamp: Introduction to R - Chapter 4: Factors and Chapter 5: Data Frames. Due by start of next class.
 
 ---
 
-### Week 5 (Mar. 02): Descriptive Patterns in Text {#week-5}
+### Week 5 (Mar. 02): Practice & Deepen: Hands-On Lab {#week-5}
 
-This week introduces methods for describing and visualizing patterns in text data. Students review how to calculate term frequency (TF) and frequency-inverse document frequency (TF-IDF) measures. Visualization techniques including word clouds, frequency distributions, and bar charts for exploring and communicating patterns in corpora.
+A practice week to consolidate everything from Weeks 3-4 before the midterm. Students work through extended BoW/TF-IDF workflows, compare presidential speech patterns using multiple visualization widgets, and practice interpreting results. No new readings — focus is on deepening practical skills and preparing for the Week 6 assessment.
 
 **Topics:**
-- Term frequency (TF) and TF-IDF weighting
-- Measuring word importance across documents
-- Visualization techniques for text data
-- Interpreting descriptive patterns
-
-**Recommended Reading:**
-- Grimmer, Roberts, and Stewart - Chapters 6-7: The Multinomial Language Model; The Vector Space Model and Similarity Metrics
-- Bollen, J., et al. (2021). Historical language records reveal a surge of cognitive distortions in recent decades. *Proceedings of the National Academy of Sciences*, 118(30)
-
-**Orange Data Mining Tutorials:**
-- Getting Started 19: How to Import Text Documents (optional)
-
-**Orange Widgets to Master:**
-- Word Cloud (visual representation of word frequencies)
-- Statistics (frequency analysis)
-- Distributions (exploring data patterns)
-- Bar Plot (comparative visualization)
+- Extended practice with BoW and TF-IDF workflows
+- Comparing presidents using word clouds, bar plots, and distributions
+- Interpreting TF vs TF-IDF rankings
+- Midterm preparation and review
 
 **R Programming:**
 - Complete DataCamp: Introduction to Text Analysis in R - Chapter 1: Wrangling Text and Chapter 2: Visualizing Text. Due by start of next class.

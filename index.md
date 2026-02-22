@@ -53,8 +53,8 @@ By the end of this course, you will be able to:
 | 1 | Feb. 02 | Introduction & Getting Started |
 | 2 | Feb. 09 | Foundations of Computational Text Analysis |
 | 3 | Feb. 16 | Text Preprocessing Basics |
-| 4 | Feb. 23 | Text Preprocessing Practice |
-| 5 | Mar. 02 | Descriptive Patterns in Text |
+| 4 | Feb. 23 | From Words to Numbers: BoW, TF-IDF & Visualization |
+| 5 | Mar. 02 | Practice & Deepen: Hands-On Lab |
 | 6 | Mar. 09 | Midterm Review & Assessment |
 | 7 | Mar. 16 | Clustering |
 | 8 | Mar. 30 | Classification I - Dictionary & Rule-Based |
