@@ -206,6 +206,7 @@ Reproduce the in-class Orange workflow to practice building a complete text anal
 3. In GitHub Desktop: write a short commit message (e.g., "Add week 4 workflow")
 4. Click **Commit to main**, then **Push origin**
 5. Confirm your files appear on github.com in your repository
+6. Mark your completion on the [shared Google Sheet](https://docs.google.com/spreadsheets/d/1gYzaIKDgJ81MEp4xa3GYrV_oFpU1OSAw3YyaddeLfqk/edit?usp=sharing)
 
 </div>
 </details>
