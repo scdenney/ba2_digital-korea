@@ -203,6 +203,7 @@ Reproduce the in-class Orange workflow to practice building a complete text anal
 2. Add your deliverables:
    - Workflow file (`.ows`)
    - Screenshot of your Orange workflow (`.png`)
+   - Two visualization figures (`.png`): one from **raw counts** (BoW Count) and one from **TF-IDF** (e.g., Word Cloud, Bar Plot, or another widget for each)
 3. In GitHub Desktop: write a short commit message (e.g., "Add week 4 workflow")
 4. Click **Commit to main**, then **Push origin**
 5. Confirm your files appear on github.com in your repository
