@@ -7,6 +7,9 @@ attendance.csv
 classlist.pdf
 student_tracking.csv
 
+# Announcements / drafts
+*_announcement.txt
+
 # Project instructions
 CLAUDE.md
 
