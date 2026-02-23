@@ -182,7 +182,8 @@ Preprocessing transforms raw text into a format suitable for computational analy
 - Denny, M. J., & Spirling, A. (2018). Text preprocessing for unsupervised learning: Why it matters, when it misleads, and what to do about it. *Political Analysis*, 26(2), 168-189
 
 **Orange Data Mining Tutorials:**
-- Getting Started 16: Text Preprocessing
+- [Text Preprocessing](https://www.youtube.com/watch?v=nAIqoCxvIqc) (Text Mining playlist #6)
+- Getting Started 16: Text Preprocessing (supplementary — older but still useful)
 
 **Orange Widgets to Master:**
 - Corpus (loading text data)
@@ -209,6 +210,9 @@ This week covers the full arc from preprocessing to quantitative text representa
 **Recommended Reading:**
 - Grimmer, Roberts, and Stewart - Chapters 6-7: The Multinomial Language Model; The Vector Space Model and Similarity Metrics
 - Bollen, J., et al. (2021). Historical language records reveal a surge of cognitive distortions in recent decades. *Proceedings of the National Academy of Sciences*, 118(30) (optional)
+
+**Orange Data Mining Tutorials:**
+- [Bag of Words](https://www.youtube.com/watch?v=eCdYyaDtjjQ) (Text Mining playlist #7)
 
 **Orange Widgets to Master:**
 - Bag of Words (Count, Binary, Sublinear, TF-IDF)
@@ -267,7 +271,8 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 - Grimmer, Roberts, and Stewart - Chapter 12: Clustering
 
 **Orange Data Mining Tutorials:**
-- Getting Started 05: Hierarchical Clustering
+- [Document Clustering and Cluster Exploration](https://www.youtube.com/watch?v=v5Kgoq6xn8A) (Text Mining playlist #9)
+- Getting Started 05: Hierarchical Clustering (supplementary — general clustering concepts)
 - Getting Started 11: k-Means
 - Getting Started 12: k-Means Explained
 
@@ -305,7 +310,7 @@ Classification assigns documents to predefined categories. This week focuses on 
 - Young, L., & Soroka, S. (2012). Affective news: The automated coding of sentiment in political texts. *Political Communication*, 29(2), 205-231
 
 **Orange Data Mining Tutorials:**
-- Getting Started 17: Text Clustering (for workflow understanding)
+- [Sentiment Analysis](https://www.youtube.com/watch?v=CK_F1JktzHk) (Text Mining playlist #10)
 
 **Orange Widgets to Master:**
 - Sentiment Analysis (applying sentiment dictionaries)
@@ -336,8 +341,8 @@ This week introduces supervised machine learning for classification. Unlike dict
 - Barberá, P., et al. (2021). Automated text classification of news articles: A practical guide. *Political Analysis*, 29(1), 19-42
 
 **Orange Data Mining Tutorials:**
-- Getting Started 18: Text Classification
-- Getting Started 06: Making Predictions
+- [Explainable Document Classification](https://www.youtube.com/watch?v=FVIcW-NxVy4) (Text Mining playlist #8)
+- Getting Started 06: Making Predictions (supplementary — general prediction concepts)
 - Getting Started 07: Model Evaluation and Scoring
 
 **Orange Widgets to Master:**
@@ -365,7 +370,8 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 - Roberts, M. E., et al. (2014). Structural topic models for open-ended survey responses. *American Journal of Political Science*, 58(4), 1064-1082
 
 **Orange Data Mining Tutorials:**
-- Getting Started 09: Principal Component Analysis (not totally related; for conceptual background)
+- [Topic Modeling](https://www.youtube.com/watch?v=RRhGlSi2Dio) (Text Mining playlist #11)
+- [Exploring Topics](https://www.youtube.com/watch?v=jFabEv8JalE) (Text Mining playlist #12)
 
 **Orange Widgets to Master:**
 - Topic Modelling (fitting LDA models)

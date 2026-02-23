@@ -25,6 +25,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 |------|--------|-------------|----------|
 | 3 | Korean Preprocessing (Mac) | POS-based tokenization for Orange Data Mining. Auto-installs kiwipiepy. | [Python](scripts/custom_preprocessing_mac-users.py) |
 | 3 | Korean Preprocessing (Windows) | Same as above but requires kiwipiepy pre-installed. | [Python](scripts/custom_preprocessing_windows-users.py) |
+| 4 | Korean Preprocessing — Annotated (Mac) | Fully annotated version of the Mac preprocessing script. Read this to understand what each step does and why. | [Python](scripts/korean_preprocessing_annotated-mac-ver.py) |
 
 ---
 
