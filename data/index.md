@@ -18,6 +18,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 | Week(s) | Dataset | Description | Download |
 |---------|---------|-------------|----------|
 | 2–5 | Presidential Speeches | 749 democratic-era presidential speeches (Roh Tae-woo–Moon Jae-in), sampled from 5,840. See [documentation](president_speeches/README.md). | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
+| 4+ | Korean Stopwords | 678 Korean stopwords (punctuation, numbers, and high-frequency grammatical words). Load in the Preprocess Text widget under Filtering → Stopwords → From File. | [TXT](stopwords_ko.txt) |
 
 ## Scripts
 
