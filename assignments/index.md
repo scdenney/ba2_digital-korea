@@ -174,6 +174,42 @@ The instructor has access to your repository and will review your submission the
 </div>
 </details>
 
+<details>
+<summary>Week 4: From Words to Numbers — BoW &amp; TF-IDF</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Feb. 23
+**Due:** Mar. 02 (before class)
+
+**Required — R Programming:**
+
+Complete DataCamp: Introduction to R — Chapter 4 (Factors) and Chapter 5 (Data Frames).
+
+**Orange Data Mining Workflow:**
+
+Reproduce the in-class Orange workflow to practice building a complete text analysis pipeline from corpus to visualization.
+
+1. **Corpus** widget: load the presidential speeches CSV
+2. **Python Script** widget: paste the preprocessing script for your OS
+3. **Corpus** widget (second): reload to pick up processed text
+4. **Preprocess Text**: tokenize by whitespace, load stopword list
+5. **Bag of Words**: select **TF-IDF** weighting
+6. Connect at least **two visualization widgets** (Word Cloud, Bar Plot, Distributions, or Statistics)
+7. Take a screenshot of your workflow
+
+**Submitting your work:**
+
+1. Create a `week04/` folder inside `assignments/` in your repository
+2. Add your deliverables:
+   - Workflow file (`.ows`)
+   - Screenshot of your Orange workflow (`.png`)
+3. In GitHub Desktop: write a short commit message (e.g., "Add week 4 workflow")
+4. Click **Commit to main**, then **Push origin**
+5. Confirm your files appear on github.com in your repository
+
+</div>
+</details>
+
 </div>
 
 ---
