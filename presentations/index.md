@@ -14,7 +14,7 @@ Lecture slides and Orange Data Mining workflows are posted here after each sessi
 | 1 | Feb. 02 | Introduction & Getting Started | [PDF](week01-intro.pdf) | — |
 | 2 | Feb. 09 | Foundations of Computational Text Analysis | [PDF](week02-foundations.pdf) | — |
 | 3 | Feb. 16 | Text Preprocessing Basics | [PDF](week03-preprocessing.pdf) | [SVG](odm_screenshots/ba2_week03.svg?v=2) |
-| 4 | Feb. 23 | From Words to Numbers: BoW & TF-IDF | [PDF](week04-bow-tfidf.pdf) | — |
+| 4 | Feb. 23 | From Words to Numbers: BoW & TF-IDF | [PDF](week04-bow-tfidf.pdf) | [PNG](odm_screenshots/week04.png) |
 | 5 | Mar. 02 | Practice & Deepen Lab | — | — |
 | 6 | Mar. 09 | Midterm Review & Assessment | — | — |
 | 7 | Mar. 16 | Clustering | — | — |
