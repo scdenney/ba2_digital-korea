@@ -131,9 +131,6 @@ This opening week establishes the foundation for the course. Students will ensur
 - Verify installations: RStudio, Swirl and Swirl courses, Orange Data Mining.
 - *Note:* To continue in this class, these assignments must be completed.
 
-**R Programming:**
-- Complete Swirl R Programming lessons 1, 2, 4, 6, 7, 12: Basic Building Blocks, Workspace and Files, Vectors, Subsetting Vectors, Matrices and Data Frames, Looking at Data. Due by start of next class.
-
 ---
 
 ### Week 2 (Feb. 09): Foundations of Computational Text Analysis {#week-2}
@@ -190,9 +187,6 @@ Preprocessing transforms raw text into a format suitable for computational analy
 - Preprocess Text (tokenization, normalization, filtering)
 - Bag of Words (creating document-term matrix)
 
-**R Programming:**
-- Complete DataCamp: Introduction to R - Chapter 1: Intro to Basics and Chapter 2: Vectors. Due by start of next class.
-
 ---
 
 ### Week 4 (Feb. 23): From Words to Numbers: Bag of Words, TF-IDF, and Visualization {#week-4}
@@ -225,7 +219,8 @@ This week covers the full arc from preprocessing to quantitative text representa
 - Reproduce the in-class Orange workflow (corpus → preprocessing → Bag of Words with TF-IDF → at least two visualization widgets). Upload .ows file and screenshot to `week04/` folder.
 
 **R Programming:**
-- Complete DataCamp: Introduction to R - Chapter 4: Factors and Chapter 5: Data Frames. Due by start of next class.
+- Complete DataCamp: Introduction to R — Factors Chapter and Matrices Chapter.
+- **Extended deadline: March 09, 15:15 (start of Week 6).**
 
 ---
 
@@ -238,9 +233,6 @@ A practice week to consolidate everything from Weeks 3-4 before the midterm. Stu
 - Comparing presidents using word clouds, bar plots, and distributions
 - Interpreting TF vs TF-IDF rankings
 - Midterm preparation and review
-
-**R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 1: Wrangling Text and Chapter 2: Visualizing Text. Due by start of next class.
 
 ---
 
@@ -287,9 +279,6 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 - Apply hierarchical clustering; interpret the dendrogram
 - Apply k-means clustering
 
-**R Programming:**
-- Complete Swirl Exploratory Data Analysis: Lessons 11 and 12 (Hierarchical Clustering, K-Means Clustering)
-
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow. Also upload screenshots showing completion of Swirl exercises.
 
@@ -316,9 +305,6 @@ Classification assigns documents to predefined categories. This week focuses on 
 - Sentiment Analysis (applying sentiment dictionaries)
 - Corpus Viewer (examining classified documents)
 - Score Documents (custom dictionary scoring)
-
-**R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 3: Sentiment Analysis and Intermediate R - Chapter 1: Conditionals and Control Flow. Due by start of next class.
 
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
@@ -377,9 +363,6 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 - Topic Modelling (fitting LDA models)
 - LDAvis (interactive topic visualization and interpretation)
 - Corpus Viewer (examining documents by topic)
-
-**R Programming:**
-- Complete DataCamp: Introduction to Text Analysis in R - Chapter 4: Topic Modeling
 
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
