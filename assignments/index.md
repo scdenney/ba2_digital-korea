@@ -179,11 +179,11 @@ The instructor has access to your repository and will review your submission the
 <div class="assignment-content" markdown="1">
 
 **Assigned:** Feb. 23
-**Due:** Mar. 02 (before class)
+**Due:** Mar. 02 (before class) | **R Programming extended deadline: Mar. 09, 15:15**
 
 **Required — R Programming:**
 
-Complete DataCamp: Introduction to R — Chapter 4 (Factors) and Chapter 5 (Data Frames).
+Complete DataCamp: Introduction to R — Factors Chapter and Matrices Chapter.
 
 **Orange Data Mining Workflow:**
 
