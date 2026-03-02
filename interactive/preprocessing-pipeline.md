@@ -482,12 +482,12 @@ title: "Text Preprocessing Pipeline"
 
   // ── Step definitions ────────────────────────────────────────────
   var STEPS = [
-    { id: "raw",      label: "1. Raw Text",  desc: "The original sentence exactly as it appears in the speech." },
-    { id: "clean",    label: "2. Clean",      desc: "Punctuation, URLs, and special characters are removed." },
-    { id: "tokenize", label: "3. Tokenize",   desc: "The sentence is split into individual morphemes (smallest meaningful units)." },
-    { id: "pos",      label: "4. POS Tag",    desc: "Each morpheme is labelled with its part-of-speech category." },
-    { id: "filter",   label: "5. Filter",     desc: "Select which POS tags to keep and whether to remove stopwords." },
-    { id: "result",   label: "6. Result",     desc: "The final preprocessed output based on your selected filters \u2014 ready for computational analysis." }
+    { id: "raw",      label: "1. Raw Text",  desc: "The original sentence exactly as it appears in the corpus." },
+    { id: "clean",    label: "2. Clean",      desc: "clean_text() removes URLs, emails, @mentions, and non-Korean characters, then collapses whitespace. This gives Kiwi cleaner input." },
+    { id: "tokenize", label: "3. Tokenize",   desc: "Kiwi\u2019s morphological analyzer (\ud615\ud0dc\uc18c \ubd84\uc11d) breaks the text into morphemes \u2014 the smallest meaningful units \u2014 and returns their base forms." },
+    { id: "pos",      label: "4. POS Tag",    desc: "Kiwi assigns a part-of-speech tag to each morpheme (e.g., NNG = common noun, NNP = proper noun, VV = verb)." },
+    { id: "filter",   label: "5. Filter",     desc: "Four filters applied in sequence: (1) POS tag filter \u2014 keep only selected tags, (2) stopword removal, (3) drop single-character tokens, (4) drop pure-number tokens." },
+    { id: "result",   label: "6. Result",     desc: "The final preprocessed tokens \u2014 ready to be passed to a Bag of Words widget to build a document-term matrix." }
   ];
 
   var LEGEND_DATA = [
@@ -518,6 +518,8 @@ title: "Text Preprocessing Pipeline"
   var activeTags = {};
   POS_TAG_TOGGLES.forEach(function (t) { activeTags[t.tag] = t.defaultOn; });
   var removeStopwords = true;
+  var removeShortTokens = true;
+  var removeNumbers = true;
 
   // ── State ───────────────────────────────────────────────────────
   var data = [];
@@ -663,7 +665,7 @@ title: "Text Preprocessing Pipeline"
   }
 
   function renderClean() {
-    vizLabel.textContent = "Cleaned Text";
+    vizLabel.textContent = "Cleaned Text \u2014 clean_text()";
     // Diff raw vs cleaned to highlight removals
     var raw = currentEntry.raw;
     var cleaned = currentEntry.cleaned;
@@ -673,7 +675,7 @@ title: "Text Preprocessing Pipeline"
   }
 
   function renderTokenize() {
-    vizLabel.textContent = "Morpheme Tokens";
+    vizLabel.textContent = "Kiwi Morpheme Tokens";
     vizContent.innerHTML = buildTokenChips(false, false, true);
     vizArea.classList.remove("show-tags");
   }
@@ -717,8 +719,8 @@ title: "Text Preprocessing Pipeline"
     var tagOn = activeTags[t.tag] || false;
     if (!tagOn) return false;
     if (removeStopwords && t.is_stopword) return false;
-    if (t.form.length < 2) return false;
-    if (isDigitOnly(t.form)) return false;
+    if (removeShortTokens && t.form.length < 2) return false;
+    if (removeNumbers && isDigitOnly(t.form)) return false;
     return true;
   }
 
@@ -752,9 +754,9 @@ title: "Text Preprocessing Pipeline"
   // ── POS toggle builder ────────────────────────────────────────
   function buildPosToggles() {
     var html = '<div class="pos-controls">';
-    // POS tag row
+    // 1. POS tag row
     html += '<div class="pos-toggles" style="margin-bottom:0.4rem;">';
-    html += '<span class="pos-toggles-label">POS Tags:</span>';
+    html += '<span class="pos-toggles-label">(1) POS Tags:</span>';
     POS_TAG_TOGGLES.forEach(function (t) {
       var on = activeTags[t.tag];
       html += '<button class="pos-toggle tgl-' + t.tag + (on ? '' : ' off') + '" data-tag="' + t.tag + '">';
@@ -762,11 +764,25 @@ title: "Text Preprocessing Pipeline"
       html += '</button>';
     });
     html += '</div>';
-    // Stopwords row
-    html += '<div class="pos-toggles">';
-    html += '<span class="pos-toggles-label">Stopwords:</span>';
+    // 2. Stopwords row
+    html += '<div class="pos-toggles" style="margin-bottom:0.4rem;">';
+    html += '<span class="pos-toggles-label">(2) Stopwords:</span>';
     html += '<button class="pos-toggle tgl-stopwords' + (removeStopwords ? '' : ' off') + '" data-action="stopwords">';
     html += 'Remove stopwords';
+    html += '</button>';
+    html += '</div>';
+    // 3. Min length row
+    html += '<div class="pos-toggles" style="margin-bottom:0.4rem;">';
+    html += '<span class="pos-toggles-label">(3) Min length:</span>';
+    html += '<button class="pos-toggle tgl-stopwords' + (removeShortTokens ? '' : ' off') + '" data-action="short">';
+    html += 'Drop single-character tokens <span class="tag-code">MIN_TOKEN_LENGTH = 2</span>';
+    html += '</button>';
+    html += '</div>';
+    // 4. Numbers row
+    html += '<div class="pos-toggles">';
+    html += '<span class="pos-toggles-label">(4) Numbers:</span>';
+    html += '<button class="pos-toggle tgl-stopwords' + (removeNumbers ? '' : ' off') + '" data-action="numbers">';
+    html += 'Drop pure-digit tokens <span class="tag-code">REMOVE_NUMBERS = True</span>';
     html += '</button>';
     html += '</div>';
     html += '</div>';
@@ -783,14 +799,17 @@ title: "Text Preprocessing Pipeline"
         renderStep();
       });
     });
-    // Stopwords toggle
-    var swBtn = vizContent.querySelector(".pos-toggle[data-action='stopwords']");
-    if (swBtn) {
-      swBtn.addEventListener("click", function () {
-        removeStopwords = !removeStopwords;
+    // Action toggles (stopwords, short tokens, numbers)
+    var actionBtns = vizContent.querySelectorAll(".pos-toggle[data-action]");
+    actionBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var action = btn.getAttribute("data-action");
+        if (action === "stopwords") removeStopwords = !removeStopwords;
+        else if (action === "short") removeShortTokens = !removeShortTokens;
+        else if (action === "numbers") removeNumbers = !removeNumbers;
         renderStep();
       });
-    }
+    });
   }
 
   // ── Helpers ─────────────────────────────────────────────────────
