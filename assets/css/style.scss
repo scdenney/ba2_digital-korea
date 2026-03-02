@@ -32,6 +32,25 @@ body {
   z-index: 100;
 }
 
+.github-link {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-bottom-color 0.15s;
+}
+
+.github-link:hover,
+.github-link:focus {
+  color: #ffffff;
+  border-bottom-color: var(--leiden-gold);
+}
+
 .site-eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.12em;
