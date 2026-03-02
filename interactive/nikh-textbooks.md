@@ -575,32 +575,26 @@ era_counts <span class="r-operator">|&gt;</span>
 
 <div class="code-block">
   <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── Count 통일 per document with L2 normalization ─────────────────</span>
-<span class="r-comment"># L2 norm: divide each term count by the document's Euclidean length</span>
-<span class="r-comment"># (same as Orange Data Mining's L2 regularization)</span>
-book_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
-  <span class="r-function">count</span>(book_id, word, name <span class="r-operator">=</span> <span class="r-string">"n"</span>)
-
-<span class="r-comment"># Euclidean norm per book: sqrt(sum of squared term counts)</span>
-l2_norms <span class="r-operator">&lt;-</span> book_counts <span class="r-operator">|&gt;</span>
-  <span class="r-function">group_by</span>(book_id) <span class="r-operator">|&gt;</span>
-  <span class="r-function">summarise</span>(l2_norm <span class="r-operator">=</span> <span class="r-function">sqrt</span>(<span class="r-function">sum</span>(n<span class="r-operator">^</span><span class="r-number">2</span>)))
-
-tongil_counts <span class="r-operator">&lt;-</span> book_counts <span class="r-operator">|&gt;</span>
+  <pre><code><span class="r-comment"># ── Count 통일 per document ───────────────────────────────────────</span>
+tongil_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">filter</span>(word <span class="r-operator">==</span> <span class="r-string">"통일"</span>) <span class="r-operator">|&gt;</span>
-  <span class="r-function">left_join</span>(l2_norms, by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>) <span class="r-operator">|&gt;</span>
-  <span class="r-function">mutate</span>(tongil_l2 <span class="r-operator">=</span> n <span class="r-operator">/</span> l2_norm) <span class="r-operator">|&gt;</span>
-  <span class="r-function">left_join</span>(corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, era, title), by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>)
+  <span class="r-function">count</span>(book_id, era, name <span class="r-operator">=</span> <span class="r-string">"tongil_n"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(
+    tokens <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(book_id, name <span class="r-operator">=</span> <span class="r-string">"total_n"</span>),
+    by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>
+  ) <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(per_1k <span class="r-operator">=</span> tongil_n <span class="r-operator">/</span> total_n <span class="r-operator">*</span> <span class="r-number">1000</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, title), by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>)
 
 <span class="r-comment"># ── Plot ──────────────────────────────────────────────────────────</span>
 tongil_counts <span class="r-operator">|&gt;</span>
   <span class="r-function">mutate</span>(title <span class="r-operator">=</span> <span class="r-function">str_trunc</span>(title, <span class="r-number">25</span>)) <span class="r-operator">|&gt;</span>
-  <span class="r-function">mutate</span>(title <span class="r-operator">=</span> <span class="r-function">fct_reorder</span>(title, tongil_l2)) <span class="r-operator">|&gt;</span>
-  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> tongil_l2, y <span class="r-operator">=</span> title, fill <span class="r-operator">=</span> era)) <span class="r-operator">+</span>
+  <span class="r-function">mutate</span>(title <span class="r-operator">=</span> <span class="r-function">fct_reorder</span>(title, per_1k)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> per_1k, y <span class="r-operator">=</span> title, fill <span class="r-operator">=</span> era)) <span class="r-operator">+</span>
   <span class="r-function">geom_col</span>() <span class="r-operator">+</span>
   <span class="r-function">scale_fill_manual</span>(values <span class="r-operator">=</span> era_colors) <span class="r-operator">+</span>
   <span class="r-function">labs</span>(
-    x <span class="r-operator">=</span> <span class="r-string">"L2 normalized weight"</span>,
+    x <span class="r-operator">=</span> <span class="r-string">"Occurrences per 1,000 tokens"</span>,
     y <span class="r-operator">=</span> <span class="r-keyword">NULL</span>,
     fill <span class="r-operator">=</span> <span class="r-string">"Era"</span>,
     title <span class="r-operator">=</span> <span class="r-string">"통일 (unification) across textbooks"</span>
@@ -612,7 +606,7 @@ tongil_counts <span class="r-operator">|&gt;</span>
   <div class="output-panel-header">Output</div>
   <div class="output-panel-body">
     <div class="toggle-group" id="barToggle">
-      <button class="toggle-btn active" data-mode="l2">L2 normalized</button>
+      <button class="toggle-btn active" data-mode="per1k">Per 1,000 tokens</button>
       <button class="toggle-btn" data-mode="raw">Raw count</button>
     </div>
     <div class="chart-legend">
@@ -625,7 +619,7 @@ tongil_counts <span class="r-operator">|&gt;</span>
 </div>
 
 <div class="callout callout-info">
-  <strong>Reading the chart:</strong> <em>Raw count</em> is simply how many times 통일 appears in each textbook. But longer books naturally contain more of every word, so raw counts can be misleading. <em>L2 normalized</em> adjusts for document length so that a long textbook doesn't dominate simply because it has more words. Higher values mean 통일 is more prominent relative to everything else in that textbook. This is the same "L2" normalization available in Orange's Bag of Words widget.
+  <strong>Reading the chart:</strong> <em>Raw count</em> is simply how many times 통일 appears in each textbook. But longer books naturally contain more of every word, so raw counts can be misleading. <em>Per 1,000 tokens</em> adjusts for document length: divide the raw count by the total number of tokens in that book, then multiply by 1,000. This gives you a rate &mdash; "out of every 1,000 words, how many are 통일?" &mdash; so you can fairly compare books of different lengths.
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -728,7 +722,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
     .then(function (json) {
       DATA = json;
       renderWordClouds();
-      renderBarChart("l2");
+      renderBarChart("per1k");
     });
 
   // ── Word clouds ──────────────────────────────────────────────────
@@ -772,29 +766,26 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
   }
 
   // ── Bar chart ────────────────────────────────────────────────────
-  function getVal(b, mode) {
-    if (mode === "l2") return b.tongil_l2 || 0;
-    return b.tongil_count;
-  }
-
   function renderBarChart(mode) {
     var container = document.getElementById("barChart");
     container.innerHTML = "";
 
     var books = DATA.book_tongil_counts.slice().sort(function (a, b) {
-      return getVal(b, mode) - getVal(a, mode);
+      var valA = mode === "per1k" ? (a.tongil_count / a.total_tokens * 1000) : a.tongil_count;
+      var valB = mode === "per1k" ? (b.tongil_count / b.total_tokens * 1000) : b.tongil_count;
+      return valB - valA;
     });
 
     var maxVal = 0;
     books.forEach(function (b) {
-      var val = getVal(b, mode);
+      var val = mode === "per1k" ? (b.tongil_count / b.total_tokens * 1000) : b.tongil_count;
       if (val > maxVal) maxVal = val;
     });
 
     books.forEach(function (b) {
-      var val = getVal(b, mode);
+      var val = mode === "per1k" ? (b.tongil_count / b.total_tokens * 1000) : b.tongil_count;
       var pct = maxVal > 0 ? (val / maxVal * 100) : 0;
-      var displayVal = mode === "l2" ? val.toFixed(4) : val;
+      var displayVal = mode === "per1k" ? val.toFixed(1) : val;
 
       var row = document.createElement("div");
       row.className = "bar-row";
