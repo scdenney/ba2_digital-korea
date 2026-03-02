@@ -139,7 +139,6 @@ title: Interactive
         <p class="exercise-card-desc">Step through the six-stage Korean text preprocessing pipeline on real presidential speech sentences. Toggle POS tags and stopwords to see how filtering choices shape the final output.</p>
       </div>
       <div class="exercise-card-footer">
-        <span class="exercise-tag">JavaScript</span>
         <span class="exercise-tag">Presidential Speeches</span>
         <span class="exercise-tag">Kiwi / POS tags</span>
       </div>
