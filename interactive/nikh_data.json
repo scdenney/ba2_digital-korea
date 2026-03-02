@@ -977,7 +977,9 @@
       "level": "",
       "year": "",
       "tongil_count": 11,
-      "total_tokens": 1751
+      "total_tokens": 1751,
+      "l2_norm": 160.7,
+      "tongil_l2": 0.06845
     },
     {
       "book_id": "ta_p32r",
@@ -988,7 +990,9 @@
       "level": "",
       "year": "",
       "tongil_count": 0,
-      "total_tokens": 2852
+      "total_tokens": 2852,
+      "l2_norm": 184.29,
+      "tongil_l2": 0.0
     },
     {
       "book_id": "ta_p41r",
@@ -999,7 +1003,9 @@
       "level": "",
       "year": "",
       "tongil_count": 36,
-      "total_tokens": 9080
+      "total_tokens": 9080,
+      "l2_norm": 547.15,
+      "tongil_l2": 0.065795
     },
     {
       "book_id": "ta_e11",
@@ -1010,7 +1016,9 @@
       "level": "Elementary",
       "year": "1954.0",
       "tongil_count": 40,
-      "total_tokens": 6500
+      "total_tokens": 6500,
+      "l2_norm": 457.59,
+      "tongil_l2": 0.087415
     },
     {
       "book_id": "ta_h21",
@@ -1021,7 +1029,9 @@
       "level": "High School",
       "year": "1963.0",
       "tongil_count": 61,
-      "total_tokens": 18491
+      "total_tokens": 18491,
+      "l2_norm": 683.05,
+      "tongil_l2": 0.089306
     },
     {
       "book_id": "ta_m41",
@@ -1032,7 +1042,9 @@
       "level": "Middle School",
       "year": "1981.0",
       "tongil_count": 97,
-      "total_tokens": 14229
+      "total_tokens": 14229,
+      "l2_norm": 725.44,
+      "tongil_l2": 0.133712
     },
     {
       "book_id": "ta_m62",
@@ -1043,7 +1055,9 @@
       "level": "Middle School",
       "year": "1995.0",
       "tongil_count": 42,
-      "total_tokens": 17588
+      "total_tokens": 17588,
+      "l2_norm": 877.73,
+      "tongil_l2": 0.047851
     },
     {
       "book_id": "ta_h61",
@@ -1054,7 +1068,9 @@
       "level": "High School",
       "year": "1995.0",
       "tongil_count": 106,
-      "total_tokens": 26162
+      "total_tokens": 26162,
+      "l2_norm": 1159.08,
+      "tongil_l2": 0.091452
     },
     {
       "book_id": "ta_e71",
@@ -1065,7 +1081,9 @@
       "level": "Elementary",
       "year": "2002.0",
       "tongil_count": 39,
-      "total_tokens": 9093
+      "total_tokens": 9093,
+      "l2_norm": 486.67,
+      "tongil_l2": 0.080136
     }
   ]
 }
