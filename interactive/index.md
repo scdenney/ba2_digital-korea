@@ -7,6 +7,7 @@ title: Interactive
 .interactive-page { max-width: 100%; }
 
 .interactive-header {
+  margin-top: 1rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 2px solid #e2e8f0;
