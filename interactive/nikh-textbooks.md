@@ -624,6 +624,10 @@ tongil_counts <span class="r-operator">|&gt;</span>
   </div>
 </div>
 
+<div class="callout callout-info">
+  <strong>Reading the chart:</strong> <em>Raw count</em> is simply how many times 통일 appears in each textbook. But longer books naturally contain more of every word. <em>L2 normalized</em> adjusts for this by dividing each word's count by the document's <strong>Euclidean length</strong> &mdash; the square root of the sum of all squared term counts (<code>count / sqrt(&Sigma; c<sub>i</sub>&sup2;)</code>). This is the same normalization Orange Data Mining applies when you select "L2" in the Bag of Words widget. Higher values mean the word is more <em>prominent</em> relative to the overall vocabulary of that textbook.
+</div>
+
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
   <span class="section-number">5</span>
