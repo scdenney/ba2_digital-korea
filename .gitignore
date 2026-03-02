@@ -10,6 +10,9 @@ student_tracking.csv
 # Announcements / drafts
 *_announcement.txt
 
+# Assessment guides
+*_assessment_guide.md
+
 # Project instructions
 CLAUDE.md
 

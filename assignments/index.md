@@ -212,6 +212,36 @@ Reproduce the in-class Orange workflow to practice building a complete text anal
 </div>
 </details>
 
+<details>
+<summary>Week 5: Practice &amp; Deepen — Midterm Prep</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Mar. 02
+**Due:** Mar. 09 (before class)
+
+**Required — R Programming:**
+
+Complete DataCamp: Introduction to R — Factors Chapter and Matrices Chapter (extended deadline: **Mar. 09, 15:15**).
+
+**Midterm Preparation:**
+
+The **Week 6 midterm assessment** has two parts:
+
+1. **Online quiz** (~20 min) — multiple-choice questions covering concepts from Weeks 1–5.
+2. **Hands-on task** (~20 min) — download a small new corpus, preprocess it in Orange, and produce a clean Word Cloud. Upload your `.ows` file, a saved Word Cloud image, and a short `.md` file (research question + expected findings) to your GitHub repo.
+
+Use the study guide to review all key concepts, the preprocessing pipeline, BoW/TF-IDF, and the Orange workflow.
+
+**Study Guide:** [Week 6 Assessment Study Guide (PDF)]({{ '/presentations/week05-study-guide.pdf' | relative_url }})
+
+**How to prepare:**
+- Review the study guide — work through the self-check questions
+- Practice building Orange workflows end-to-end (File → Corpus → Python Script → Corpus → BoW → Visualization)
+- Make sure you understand *why* each preprocessing step exists, not just *how* to do it
+
+</div>
+</details>
+
 </div>
 
 ---
