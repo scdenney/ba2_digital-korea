@@ -19,6 +19,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 |---------|---------|-------------|----------|
 | 2–5 | Presidential Speeches | 749 democratic-era presidential speeches (Roh Tae-woo–Moon Jae-in), sampled from 5,840. See [documentation](president_speeches/README.md). | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
 | 2–5 | Presidential Speeches (Small) | 100 randomly selected speeches from the last three presidents (Lee Myung-bak, Park Geun-hye, Moon Jae-in). Use this if Orange runs slowly or crashes with the full file. | [CSV](president_speeches/president_speeches_small.csv) (~500 KB) |
+| 5+ | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 51-book NIKH corpus. See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | [CSV](nikh_textbooks/nikh_textbooks_demo.csv) (~1.8 MB) |
 | 4+ | Korean Stopwords | 678 Korean stopwords (punctuation, numbers, and high-frequency grammatical words). Load in the Preprocess Text widget under Filtering → Stopwords → From File. | [TXT](stopwords_ko.txt) |
 
 ## Scripts
