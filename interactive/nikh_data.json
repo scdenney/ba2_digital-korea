@@ -1,0 +1,1071 @@
+{
+  "era_top_words": {
+    "Colonial": [
+      {
+        "word": "신라",
+        "count": 261
+      },
+      {
+        "word": "일본",
+        "count": 225
+      },
+      {
+        "word": "고려",
+        "count": 223
+      },
+      {
+        "word": "고구려",
+        "count": 201
+      },
+      {
+        "word": "나라",
+        "count": 196
+      },
+      {
+        "word": "백제",
+        "count": 184
+      },
+      {
+        "word": "조선",
+        "count": 155
+      },
+      {
+        "word": "천황",
+        "count": 152
+      },
+      {
+        "word": "사람",
+        "count": 142
+      },
+      {
+        "word": "군대",
+        "count": 124
+      },
+      {
+        "word": "시대",
+        "count": 112
+      },
+      {
+        "word": "당나라",
+        "count": 110
+      },
+      {
+        "word": "멸망",
+        "count": 104
+      },
+      {
+        "word": "중국",
+        "count": 83
+      },
+      {
+        "word": "즉위",
+        "count": 79
+      },
+      {
+        "word": "이후",
+        "count": 75
+      },
+      {
+        "word": "처음",
+        "count": 71
+      },
+      {
+        "word": "태조",
+        "count": 71
+      },
+      {
+        "word": "불교",
+        "count": 68
+      },
+      {
+        "word": "공격",
+        "count": 66
+      },
+      {
+        "word": "영토",
+        "count": 66
+      },
+      {
+        "word": "원나라",
+        "count": 64
+      },
+      {
+        "word": "몽고",
+        "count": 60
+      },
+      {
+        "word": "지금",
+        "count": 59
+      },
+      {
+        "word": "관계",
+        "count": 57
+      },
+      {
+        "word": "도읍",
+        "count": 57
+      },
+      {
+        "word": "메이지",
+        "count": 56
+      },
+      {
+        "word": "반도",
+        "count": 53
+      },
+      {
+        "word": "원년",
+        "count": 53
+      },
+      {
+        "word": "아들",
+        "count": 52
+      },
+      {
+        "word": "거란",
+        "count": 52
+      },
+      {
+        "word": "통일",
+        "count": 47
+      },
+      {
+        "word": "복속",
+        "count": 47
+      },
+      {
+        "word": "사신",
+        "count": 46
+      },
+      {
+        "word": "전래",
+        "count": 46
+      },
+      {
+        "word": "임나",
+        "count": 42
+      },
+      {
+        "word": "장수",
+        "count": 41
+      },
+      {
+        "word": "사용",
+        "count": 40
+      },
+      {
+        "word": "기록",
+        "count": 40
+      },
+      {
+        "word": "이성계",
+        "count": 40
+      },
+      {
+        "word": "전설",
+        "count": 40
+      },
+      {
+        "word": "수도",
+        "count": 39
+      },
+      {
+        "word": "지방",
+        "count": 38
+      },
+      {
+        "word": "설치",
+        "count": 38
+      },
+      {
+        "word": "왕건",
+        "count": 38
+      },
+      {
+        "word": "세상",
+        "count": 36
+      },
+      {
+        "word": "청나라",
+        "count": 36
+      },
+      {
+        "word": "메이지 천황",
+        "count": 36
+      },
+      {
+        "word": "삼국",
+        "count": 35
+      },
+      {
+        "word": "황제",
+        "count": 35
+      },
+      {
+        "word": "시조",
+        "count": 34
+      },
+      {
+        "word": "태종",
+        "count": 34
+      },
+      {
+        "word": "왕위",
+        "count": 33
+      },
+      {
+        "word": "요청",
+        "count": 33
+      },
+      {
+        "word": "차례",
+        "count": 33
+      },
+      {
+        "word": "신하",
+        "count": 33
+      },
+      {
+        "word": "금나라",
+        "count": 33
+      },
+      {
+        "word": "정치",
+        "count": 33
+      },
+      {
+        "word": "연호",
+        "count": 33
+      },
+      {
+        "word": "함락",
+        "count": 32
+      },
+      {
+        "word": "항복",
+        "count": 32
+      },
+      {
+        "word": "문무왕",
+        "count": 30
+      },
+      {
+        "word": "세력",
+        "count": 30
+      },
+      {
+        "word": "명나라",
+        "count": 30
+      },
+      {
+        "word": "조약",
+        "count": 30
+      },
+      {
+        "word": "이태",
+        "count": 30
+      },
+      {
+        "word": "성종",
+        "count": 29
+      },
+      {
+        "word": "송나라",
+        "count": 29
+      },
+      {
+        "word": "기자",
+        "count": 28
+      },
+      {
+        "word": "광개토왕",
+        "count": 28
+      },
+      {
+        "word": "평양",
+        "count": 27
+      },
+      {
+        "word": "살해",
+        "count": 27
+      },
+      {
+        "word": "만주",
+        "count": 26
+      },
+      {
+        "word": "궁예",
+        "count": 26
+      },
+      {
+        "word": "이름",
+        "count": 26
+      },
+      {
+        "word": "국경",
+        "count": 26
+      },
+      {
+        "word": "강의",
+        "count": 26
+      },
+      {
+        "word": "교수",
+        "count": 25
+      },
+      {
+        "word": "제국",
+        "count": 25
+      },
+      {
+        "word": "남쪽",
+        "count": 25
+      }
+    ],
+    "Authoritarian": [
+      {
+        "word": "나라",
+        "count": 530
+      },
+      {
+        "word": "고려",
+        "count": 398
+      },
+      {
+        "word": "사회",
+        "count": 377
+      },
+      {
+        "word": "문화",
+        "count": 355
+      },
+      {
+        "word": "신라",
+        "count": 337
+      },
+      {
+        "word": "국가",
+        "count": 282
+      },
+      {
+        "word": "정치",
+        "count": 277
+      },
+      {
+        "word": "민족",
+        "count": 274
+      },
+      {
+        "word": "시대",
+        "count": 262
+      },
+      {
+        "word": "고구려",
+        "count": 251
+      },
+      {
+        "word": "생활",
+        "count": 245
+      },
+      {
+        "word": "일본",
+        "count": 244
+      },
+      {
+        "word": "조선",
+        "count": 233
+      },
+      {
+        "word": "사람",
+        "count": 226
+      },
+      {
+        "word": "지방",
+        "count": 221
+      },
+      {
+        "word": "발전",
+        "count": 217
+      },
+      {
+        "word": "운동",
+        "count": 215
+      },
+      {
+        "word": "세력",
+        "count": 201
+      },
+      {
+        "word": "통일",
+        "count": 198
+      },
+      {
+        "word": "활동",
+        "count": 178
+      },
+      {
+        "word": "제도",
+        "count": 171
+      },
+      {
+        "word": "삼국",
+        "count": 160
+      },
+      {
+        "word": "발달",
+        "count": 159
+      },
+      {
+        "word": "국민",
+        "count": 157
+      },
+      {
+        "word": "경제",
+        "count": 151
+      },
+      {
+        "word": "백제",
+        "count": 146
+      },
+      {
+        "word": "불교",
+        "count": 142
+      },
+      {
+        "word": "독립",
+        "count": 133
+      },
+      {
+        "word": "서울",
+        "count": 129
+      },
+      {
+        "word": "중심",
+        "count": 124
+      },
+      {
+        "word": "정부",
+        "count": 124
+      },
+      {
+        "word": "역사",
+        "count": 119
+      },
+      {
+        "word": "중국",
+        "count": 116
+      },
+      {
+        "word": "국제",
+        "count": 113
+      },
+      {
+        "word": "토지",
+        "count": 112
+      },
+      {
+        "word": "정책",
+        "count": 111
+      },
+      {
+        "word": "귀족",
+        "count": 102
+      },
+      {
+        "word": "노력",
+        "count": 98
+      },
+      {
+        "word": "연구",
+        "count": 97
+      },
+      {
+        "word": "기관",
+        "count": 95
+      },
+      {
+        "word": "관계",
+        "count": 94
+      },
+      {
+        "word": "세기",
+        "count": 93
+      },
+      {
+        "word": "한편",
+        "count": 92
+      },
+      {
+        "word": "지배",
+        "count": 91
+      },
+      {
+        "word": "설치",
+        "count": 90
+      },
+      {
+        "word": "정권",
+        "count": 89
+      },
+      {
+        "word": "교육",
+        "count": 88
+      },
+      {
+        "word": "세계",
+        "count": 87
+      },
+      {
+        "word": "시작",
+        "count": 86
+      },
+      {
+        "word": "연합",
+        "count": 85
+      },
+      {
+        "word": "침략",
+        "count": 85
+      },
+      {
+        "word": "이후",
+        "count": 84
+      },
+      {
+        "word": "침입",
+        "count": 83
+      },
+      {
+        "word": "한국",
+        "count": 83
+      },
+      {
+        "word": "만주",
+        "count": 82
+      },
+      {
+        "word": "문제",
+        "count": 79
+      },
+      {
+        "word": "조직",
+        "count": 78
+      },
+      {
+        "word": "학문",
+        "count": 77
+      },
+      {
+        "word": "강화",
+        "count": 76
+      },
+      {
+        "word": "농민",
+        "count": 76
+      },
+      {
+        "word": "중앙",
+        "count": 74
+      },
+      {
+        "word": "영향",
+        "count": 74
+      },
+      {
+        "word": "유교",
+        "count": 73
+      },
+      {
+        "word": "몽고",
+        "count": 72
+      },
+      {
+        "word": "양반",
+        "count": 72
+      },
+      {
+        "word": "농업",
+        "count": 71
+      },
+      {
+        "word": "부족",
+        "count": 70
+      },
+      {
+        "word": "전쟁",
+        "count": 70
+      },
+      {
+        "word": "학교",
+        "count": 68
+      },
+      {
+        "word": "대한",
+        "count": 67
+      },
+      {
+        "word": "관리",
+        "count": 66
+      },
+      {
+        "word": "발해",
+        "count": 66
+      },
+      {
+        "word": "학습",
+        "count": 66
+      },
+      {
+        "word": "근대",
+        "count": 63
+      },
+      {
+        "word": "계획",
+        "count": 62
+      },
+      {
+        "word": "정신",
+        "count": 61
+      },
+      {
+        "word": "전개",
+        "count": 61
+      },
+      {
+        "word": "중요",
+        "count": 60
+      },
+      {
+        "word": "편찬",
+        "count": 60
+      },
+      {
+        "word": "실시",
+        "count": 60
+      }
+    ],
+    "Democratic": [
+      {
+        "word": "사회",
+        "count": 525
+      },
+      {
+        "word": "민족",
+        "count": 486
+      },
+      {
+        "word": "나라",
+        "count": 469
+      },
+      {
+        "word": "문화",
+        "count": 462
+      },
+      {
+        "word": "운동",
+        "count": 433
+      },
+      {
+        "word": "정치",
+        "count": 407
+      },
+      {
+        "word": "고려",
+        "count": 397
+      },
+      {
+        "word": "조선",
+        "count": 390
+      },
+      {
+        "word": "일본",
+        "count": 313
+      },
+      {
+        "word": "발전",
+        "count": 309
+      },
+      {
+        "word": "시대",
+        "count": 293
+      },
+      {
+        "word": "농민",
+        "count": 291
+      },
+      {
+        "word": "국가",
+        "count": 287
+      },
+      {
+        "word": "독립",
+        "count": 271
+      },
+      {
+        "word": "세력",
+        "count": 269
+      },
+      {
+        "word": "신라",
+        "count": 266
+      },
+      {
+        "word": "경제",
+        "count": 258
+      },
+      {
+        "word": "정부",
+        "count": 257
+      },
+      {
+        "word": "사람",
+        "count": 235
+      },
+      {
+        "word": "활동",
+        "count": 233
+      },
+      {
+        "word": "고구려",
+        "count": 232
+      },
+      {
+        "word": "역사",
+        "count": 231
+      },
+      {
+        "word": "발달",
+        "count": 223
+      },
+      {
+        "word": "지방",
+        "count": 222
+      },
+      {
+        "word": "중심",
+        "count": 221
+      },
+      {
+        "word": "생활",
+        "count": 204
+      },
+      {
+        "word": "제도",
+        "count": 200
+      },
+      {
+        "word": "이후",
+        "count": 191
+      },
+      {
+        "word": "통일",
+        "count": 187
+      },
+      {
+        "word": "세기",
+        "count": 179
+      },
+      {
+        "word": "정책",
+        "count": 179
+      },
+      {
+        "word": "침략",
+        "count": 167
+      },
+      {
+        "word": "귀족",
+        "count": 164
+      },
+      {
+        "word": "중국",
+        "count": 159
+      },
+      {
+        "word": "대한",
+        "count": 157
+      },
+      {
+        "word": "전쟁",
+        "count": 157
+      },
+      {
+        "word": "백제",
+        "count": 154
+      },
+      {
+        "word": "개혁",
+        "count": 150
+      },
+      {
+        "word": "불교",
+        "count": 148
+      },
+      {
+        "word": "전개",
+        "count": 147
+      },
+      {
+        "word": "일제",
+        "count": 147
+      },
+      {
+        "word": "중앙",
+        "count": 140
+      },
+      {
+        "word": "교육",
+        "count": 139
+      },
+      {
+        "word": "삼국",
+        "count": 139
+      },
+      {
+        "word": "토지",
+        "count": 136
+      },
+      {
+        "word": "지역",
+        "count": 134
+      },
+      {
+        "word": "지배",
+        "count": 129
+      },
+      {
+        "word": "발해",
+        "count": 128
+      },
+      {
+        "word": "백성",
+        "count": 127
+      },
+      {
+        "word": "강화",
+        "count": 127
+      },
+      {
+        "word": "조직",
+        "count": 125
+      },
+      {
+        "word": "추진",
+        "count": 124
+      },
+      {
+        "word": "국민",
+        "count": 124
+      },
+      {
+        "word": "성장",
+        "count": 123
+      },
+      {
+        "word": "서울",
+        "count": 122
+      },
+      {
+        "word": "한국",
+        "count": 121
+      },
+      {
+        "word": "학습",
+        "count": 121
+      },
+      {
+        "word": "세계",
+        "count": 118
+      },
+      {
+        "word": "유교",
+        "count": 117
+      },
+      {
+        "word": "사상",
+        "count": 112
+      },
+      {
+        "word": "양반",
+        "count": 112
+      },
+      {
+        "word": "실시",
+        "count": 112
+      },
+      {
+        "word": "신분",
+        "count": 111
+      },
+      {
+        "word": "동학",
+        "count": 110
+      },
+      {
+        "word": "관계",
+        "count": 109
+      },
+      {
+        "word": "노력",
+        "count": 105
+      },
+      {
+        "word": "체제",
+        "count": 104
+      },
+      {
+        "word": "주장",
+        "count": 104
+      },
+      {
+        "word": "사용",
+        "count": 104
+      },
+      {
+        "word": "민국",
+        "count": 103
+      },
+      {
+        "word": "후기",
+        "count": 101
+      },
+      {
+        "word": "연구",
+        "count": 99
+      },
+      {
+        "word": "기술",
+        "count": 97
+      },
+      {
+        "word": "모습",
+        "count": 97
+      },
+      {
+        "word": "관리",
+        "count": 95
+      },
+      {
+        "word": "과정",
+        "count": 94
+      },
+      {
+        "word": "근대",
+        "count": 94
+      },
+      {
+        "word": "시작",
+        "count": 94
+      },
+      {
+        "word": "집권",
+        "count": 93
+      },
+      {
+        "word": "통치",
+        "count": 92
+      }
+    ]
+  },
+  "book_tongil_counts": [
+    {
+      "book_id": "ta_p31r",
+      "title": "심상소학국사보충아동용 - 1",
+      "full_title": "심상소학국사보충아동용 - 1",
+      "era": "Colonial",
+      "period": "Colonial Period",
+      "level": "",
+      "year": "",
+      "tongil_count": 11,
+      "total_tokens": 1751
+    },
+    {
+      "book_id": "ta_p32r",
+      "title": "심상소학국사보충아동용 - 2",
+      "full_title": "심상소학국사보충아동용 - 2",
+      "era": "Colonial",
+      "period": "Colonial Period",
+      "level": "",
+      "year": "",
+      "tongil_count": 0,
+      "total_tokens": 2852
+    },
+    {
+      "book_id": "ta_p41r",
+      "title": "심상소학국사보충교재 교수참고서 - 1",
+      "full_title": "심상소학국사보충교재 교수참고서 - 1",
+      "era": "Colonial",
+      "period": "Colonial Period",
+      "level": "",
+      "year": "",
+      "tongil_count": 36,
+      "total_tokens": 9080
+    },
+    {
+      "book_id": "ta_e11",
+      "title": "초등학교 사회생활 6-1(1차)",
+      "full_title": "초등학교 사회생활 6-1(1차)",
+      "era": "Authoritarian",
+      "period": "Postwar Authoritarian",
+      "level": "Elementary",
+      "year": "1954.0",
+      "tongil_count": 40,
+      "total_tokens": 6500
+    },
+    {
+      "book_id": "ta_h21",
+      "title": "고등학교 국사 2차",
+      "full_title": "고등학교 국사 2차",
+      "era": "Authoritarian",
+      "period": "Postwar Authoritarian",
+      "level": "High School",
+      "year": "1963.0",
+      "tongil_count": 61,
+      "total_tokens": 18491
+    },
+    {
+      "book_id": "ta_m41",
+      "title": "중학교 국사 4차(상)",
+      "full_title": "중학교 국사 4차(상)",
+      "era": "Authoritarian",
+      "period": "Chun/Roh Transitional",
+      "level": "Middle School",
+      "year": "1981.0",
+      "tongil_count": 97,
+      "total_tokens": 14229
+    },
+    {
+      "book_id": "ta_m62",
+      "title": "중학교 국사 6차(하)",
+      "full_title": "중학교 국사 6차(하)",
+      "era": "Democratic",
+      "period": "Early Democratic",
+      "level": "Middle School",
+      "year": "1995.0",
+      "tongil_count": 42,
+      "total_tokens": 17588
+    },
+    {
+      "book_id": "ta_h61",
+      "title": "고등학교 국사 6차(상)",
+      "full_title": "고등학교 국사 6차(상)",
+      "era": "Democratic",
+      "period": "Early Democratic",
+      "level": "High School",
+      "year": "1995.0",
+      "tongil_count": 106,
+      "total_tokens": 26162
+    },
+    {
+      "book_id": "ta_e71",
+      "title": "초등학교 사회 6-1(7차)",
+      "full_title": "초등학교 사회 6-1(7차)",
+      "era": "Democratic",
+      "period": "Democratic Consolidation",
+      "level": "Elementary",
+      "year": "2002.0",
+      "tongil_count": 39,
+      "total_tokens": 9093
+    }
+  ]
+}
