@@ -151,7 +151,7 @@ title: Interactive
       <div class="exercise-card-body">
         <div class="exercise-card-week">Week 5</div>
         <div class="exercise-card-title">Exploring Korean History Textbooks in R</div>
-        <p class="exercise-card-desc">Word clouds, frequency analysis, and concordance using the NIKH history textbook corpus. Compare how language differs across colonial, authoritarian, and democratic eras &mdash; with copyable R code you can run yourself.</p>
+        <p class="exercise-card-desc">Word clouds, frequency analysis, and concordance using the NIKH history textbook corpus. Compare how language differs across colonial, authoritarian, and democratic eras &mdash; with optional R code you can expand and run yourself.</p>
       </div>
       <div class="exercise-card-footer">
         <span class="exercise-tag">R</span>

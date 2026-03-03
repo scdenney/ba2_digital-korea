@@ -418,6 +418,77 @@ title: "Exploring Korean History Textbooks in R"
   text-align: right;
 }
 
+/* ── R code ribbon (collapsible) ─────────────────────────────────── */
+.code-ribbon {
+  margin: 1rem 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-ribbon summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #1e293b, #334155);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: background 0.2s;
+}
+
+.code-ribbon summary::-webkit-details-marker { display: none; }
+
+.code-ribbon summary::before {
+  content: "\25B6";
+  font-size: 0.65rem;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.code-ribbon[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.code-ribbon summary:hover {
+  background: linear-gradient(to right, #0f172a, #1e293b);
+}
+
+.code-ribbon summary .ribbon-label {
+  flex: 1;
+}
+
+.code-ribbon summary .ribbon-tag {
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(255,255,255,0.12);
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.code-ribbon .code-ribbon-body {
+  border-top: 1px solid #334155;
+}
+
+.code-ribbon .code-block {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.code-ribbon .callout {
+  margin: 0;
+  border-radius: 0;
+  border-left-width: 3px;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .wordcloud-grid { grid-template-columns: 1fr; }
@@ -451,9 +522,12 @@ title: "Exploring Korean History Textbooks in R"
   We use <strong>tidyverse</strong> for data wrangling, <strong>tidytext</strong> for text analysis structure, <strong>elbird</strong> for Korean morphological analysis (it wraps the same Kiwi engine used in our Orange preprocessing scripts), and <strong>ggwordcloud</strong> for word clouds.
 </p>
 
-<div class="code-block">
-  <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: load packages, corpus, and stopwords</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
 <span class="r-function">library</span>(tidyverse)
 <span class="r-function">library</span>(tidytext)
 <span class="r-function">library</span>(elbird)
@@ -469,11 +543,12 @@ stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read
 
 <span class="r-comment"># Quick look at the data</span>
 corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, title, era, period) <span class="r-operator">|&gt;</span> <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">9</span>)</code></pre>
-</div>
-
-<div class="callout callout-info">
-  <strong>About elbird:</strong> Install it with <code>install.packages("elbird")</code>. It wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same Korean morphological analyzer used in our Orange preprocessing scripts. First run downloads the model automatically.
-</div>
+    </div>
+    <div class="callout callout-info">
+      <strong>About elbird:</strong> Install it with <code>install.packages("elbird")</code>. It wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same Korean morphological analyzer used in our Orange preprocessing scripts. First run downloads the model automatically.
+    </div>
+  </div>
+</details>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
@@ -485,9 +560,12 @@ corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</sp
   We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same pipeline as our Orange workflow.
 </p>
 
-<div class="code-block">
-  <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── Helper: tokenize one text with Kiwi via elbird ────────────────</span>
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: tokenize, filter nouns, remove stopwords</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Helper: tokenize one text with Kiwi via elbird ────────────────</span>
 tokenize_kiwi <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {
   result <span class="r-operator">&lt;-</span> <span class="r-function">tokenize</span>(text, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)
   <span class="r-function">tibble</span>(form <span class="r-operator">=</span> result<span class="r-operator">$</span>form, tag <span class="r-operator">=</span> result<span class="r-operator">$</span>tag)
@@ -517,11 +595,12 @@ era_counts <span class="r-operator">|&gt;</span>
   <span class="r-function">group_by</span>(era) <span class="r-operator">|&gt;</span>
   <span class="r-function">slice_max</span>(n, n <span class="r-operator">=</span> <span class="r-number">10</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">30</span>)</code></pre>
-</div>
-
-<div class="callout callout-tip">
-  <strong>Note on <code>tokenize_kiwi()</code>:</strong> This helper wraps elbird's <code>tokenize()</code> function and returns a tidy tibble with <code>form</code> (the surface word) and <code>tag</code> (the POS tag). The <code>flatten = TRUE</code> argument returns all tokens in a single flat structure.
-</div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Note on <code>tokenize_kiwi()</code>:</strong> This helper wraps elbird's <code>tokenize()</code> function and returns a tidy tibble with <code>form</code> (the surface word) and <code>tag</code> (the POS tag). The <code>flatten = TRUE</code> argument returns all tokens in a single flat structure.
+    </div>
+  </div>
+</details>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
@@ -533,9 +612,12 @@ era_counts <span class="r-operator">|&gt;</span>
   Word clouds give a quick visual sense of what each era's textbooks emphasize. The colonial-era texts (written under Japanese rule) feature terms about kingdoms and military conflict. The authoritarian-era texts foreground <strong>nation</strong>, <strong>society</strong>, and <strong>culture</strong>. The democratic-era texts add <strong>movements</strong>, <strong>independence</strong>, and <strong>development</strong>.
 </p>
 
-<div class="code-block">
-  <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── Word clouds by era ────────────────────────────────────────────</span>
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: generate word clouds with ggwordcloud</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Word clouds by era ────────────────────────────────────────────</span>
 <span class="r-comment"># Colorblind-friendly palette (Okabe-Ito inspired)</span>
 era_colors <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(
   Colonial      <span class="r-operator">=</span> <span class="r-string">"#b45309"</span>,  <span class="r-comment"># amber</span>
@@ -554,7 +636,9 @@ era_counts <span class="r-operator">|&gt;</span>
   <span class="r-function">facet_wrap</span>(<span class="r-operator">~</span> era) <span class="r-operator">+</span>
   <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>
   <span class="r-function">theme</span>(strip.text <span class="r-operator">=</span> <span class="r-function">element_text</span>(face <span class="r-operator">=</span> <span class="r-string">"bold"</span>, size <span class="r-operator">=</span> <span class="r-number">12</span>))</code></pre>
-</div>
+    </div>
+  </div>
+</details>
 
 <div class="output-panel">
   <div class="output-panel-header">Output</div>
@@ -573,9 +657,12 @@ era_counts <span class="r-operator">|&gt;</span>
   The word <strong>통일</strong> (<em>tongil</em>, unification) appears in all three eras, but its meaning shifts dramatically. In colonial-era textbooks, it refers to ancient territorial unification of kingdoms. In authoritarian-era texts, it takes on nationalist overtones. In democratic-era texts, it centers on North-South reunification and peace.
 </p>
 
-<div class="code-block">
-  <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── Count 통일 per document ───────────────────────────────────────</span>
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: count and plot 통일 frequency per textbook</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Count 통일 per document ───────────────────────────────────────</span>
 tongil_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">filter</span>(word <span class="r-operator">==</span> <span class="r-string">"통일"</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">count</span>(book_id, era, name <span class="r-operator">=</span> <span class="r-string">"tongil_n"</span>) <span class="r-operator">|&gt;</span>
@@ -600,7 +687,9 @@ tongil_counts <span class="r-operator">|&gt;</span>
     title <span class="r-operator">=</span> <span class="r-string">"통일 (unification) across textbooks"</span>
   ) <span class="r-operator">+</span>
   <span class="r-function">theme_minimal</span>(base_size <span class="r-operator">=</span> <span class="r-number">12</span>)</code></pre>
-</div>
+    </div>
+  </div>
+</details>
 
 <div class="output-panel">
   <div class="output-panel-header">Output</div>
@@ -632,9 +721,12 @@ tongil_counts <span class="r-operator">|&gt;</span>
   A word count tells you <em>how often</em>. Concordance tells you <em>how</em>. Below are five sentences containing 통일, one or two from each era. Notice how the same word carries entirely different meanings depending on the political context in which the textbook was written.
 </p>
 
-<div class="code-block">
-  <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-  <pre><code><span class="r-comment"># ── KWIC concordance for 통일 ─────────────────────────────────────</span>
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: KWIC concordance search for 통일</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── KWIC concordance for 통일 ─────────────────────────────────────</span>
 kwic_results <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span>
   <span class="r-function">mutate</span>(
     sentences <span class="r-operator">=</span> <span class="r-function">map</span>(full_text, <span class="r-operator">~</span> <span class="r-function">str_split</span>(.x, <span class="r-string">"(?&lt;=[다요])\\s+"</span>) <span class="r-operator">|&gt;</span> <span class="r-function">pluck</span>(<span class="r-number">1</span>))
@@ -645,7 +737,9 @@ kwic_results <span class="r-operator">&lt;-</span> corpus <span class="r-operato
 
 <span class="r-comment"># Browse the results</span>
 kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">20</span>)</code></pre>
-</div>
+    </div>
+  </div>
+</details>
 
 <div class="output-panel">
   <div class="output-panel-header">Curated Concordance</div>
