@@ -504,12 +504,12 @@ title: "Exploring Korean History Textbooks in R"
   <div class="tutorial-meta">
     <span>Week 5</span>
     <span>R + tidyverse + tidytext</span>
-    <span>NIKH History Textbook Corpus (demo subset)</span>
+    <span>NIKH History Textbook Corpus (9-book demo from 67-book corpus, 1895–2016)</span>
   </div>
 </div>
 
 <p class="narrative">
-  This walkthrough replicates part of the Week 5 hands-on lesson in R. We load 9 Korean history textbooks from three political eras, preprocess the text, and explore how language differs across eras using word clouds and concordance analysis. All code runs top to bottom in RStudio.
+  This walkthrough replicates part of the Week 5 hands-on lesson in R. We load 9 Korean history textbooks from three political eras — Colonial, Authoritarian, and Democratic — sampled from the 67-book NIKH corpus (1895–2016). We preprocess the text and explore how language differs across eras using word clouds and concordance analysis. All code runs top to bottom in RStudio.
 </p>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -557,7 +557,7 @@ corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</sp
 </div>
 
 <p class="narrative">
-  We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same pipeline as our Orange workflow.
+  We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same pipeline as our Orange workflow. The demo CSV also includes a <code>processed_text</code> column with pre-tokenized nouns if you want to skip the tokenization step and work directly with the cleaned tokens.
 </p>
 
 <details class="code-ribbon">
@@ -763,7 +763,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
       <span class="concordance-era-tag" style="background:#7c3aed;">Authoritarian</span>
       <p class="concordance-korean">신라는 우리 땅을 지배하려는 당을 몰아 내고 마침내 삼국 <span class="kw-highlight">통일</span>을 이룩하여, 민족의 굳건한 기백을 보여 주었다.</p>
       <p class="concordance-english">Silla drove out Tang, which sought to dominate our land, and finally achieved the Three Kingdoms <span class="kw-highlight-en">unification</span>, demonstrating the unyielding spirit of the nation.</p>
-      <p class="concordance-source">중학교 국사 4차(상) &middot; Chun/Roh Transitional &middot; 1981</p>
+      <p class="concordance-source">중학교 국사 4차(상) &middot; Authoritarian &middot; 1981</p>
     </div>
 
     <!-- Sentence 3: Authoritarian — Cold War aspiration for unification -->
@@ -771,7 +771,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
       <span class="concordance-era-tag" style="background:#7c3aed;">Authoritarian</span>
       <p class="concordance-korean">우리는 바라던 독립을 차지하였으나, 아직도 <span class="kw-highlight">통일</span>을 이루지 못하고 있으니, 앞으로 더욱 뭉쳐서 <span class="kw-highlight">통일</span>과 발전을 위하여 노력하여야 하겠다.</p>
       <p class="concordance-english">We have achieved the independence we longed for, but have still not achieved <span class="kw-highlight-en">unification</span>; we must unite further and strive for <span class="kw-highlight-en">unification</span> and national development.</p>
-      <p class="concordance-source">초등학교 사회생활 6-1(1차) &middot; Postwar Authoritarian &middot; 1954</p>
+      <p class="concordance-source">초등학교 사회생활 6-1(1차) &middot; Authoritarian &middot; 1954</p>
     </div>
 
     <!-- Sentence 4: Democratic — inter-Korean peace process -->
@@ -779,7 +779,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
       <span class="concordance-era-tag" style="background:#0891b2;">Democratic</span>
       <p class="concordance-korean">이러한 평화 <span class="kw-highlight">통일</span>을 위한 노력은 남북 대화가 중단된 후에도 계속되어 우리 정부는 북한에 상호 불가침 협정을 제안하기도 하였다.</p>
       <p class="concordance-english">These efforts for peaceful <span class="kw-highlight-en">unification</span> continued even after inter-Korean dialogue was suspended, and our government proposed a mutual non-aggression pact to North Korea.</p>
-      <p class="concordance-source">중학교 국사 6차(하) &middot; Early Democratic &middot; 1995</p>
+      <p class="concordance-source">중학교 국사 6차(하) &middot; Democratic &middot; 1995</p>
     </div>
 
     <!-- Sentence 5: Democratic — democratic nation-building vision -->
@@ -787,7 +787,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
       <span class="concordance-era-tag" style="background:#0891b2;">Democratic</span>
       <p class="concordance-korean">광복 후 분단을 딛고 일어선 대한 민국은 민주 정치의 발전, 경제적 번영, 그리고 복지 사회 건설과 민족 <span class="kw-highlight">통일</span>을 목표로 성장해 왔다.</p>
       <p class="concordance-english">Since liberation, the Republic of Korea has risen above division and grown with the goals of democratic development, economic prosperity, welfare society, and national <span class="kw-highlight-en">unification</span>.</p>
-      <p class="concordance-source">초등학교 사회 6-1(7차) &middot; Democratic Consolidation &middot; 2002</p>
+      <p class="concordance-source">초등학교 사회 6-1(7차) &middot; Democratic &middot; 2002</p>
     </div>
 
   </div>

@@ -3,15 +3,19 @@
     "Colonial": [
       {
         "word": "신라",
-        "count": 261
+        "count": 262
       },
       {
-        "word": "일본",
-        "count": 225
+        "word": "천황",
+        "count": 222
       },
       {
         "word": "고려",
-        "count": 223
+        "count": 221
+      },
+      {
+        "word": "일본",
+        "count": 220
       },
       {
         "word": "고구려",
@@ -19,7 +23,7 @@
       },
       {
         "word": "나라",
-        "count": 196
+        "count": 199
       },
       {
         "word": "백제",
@@ -27,11 +31,7 @@
       },
       {
         "word": "조선",
-        "count": 155
-      },
-      {
-        "word": "천황",
-        "count": 152
+        "count": 156
       },
       {
         "word": "사람",
@@ -54,6 +54,10 @@
         "count": 104
       },
       {
+        "word": "메이지",
+        "count": 92
+      },
+      {
         "word": "중국",
         "count": 83
       },
@@ -63,15 +67,15 @@
       },
       {
         "word": "이후",
-        "count": 75
-      },
-      {
-        "word": "처음",
-        "count": 71
+        "count": 73
       },
       {
         "word": "태조",
         "count": 71
+      },
+      {
+        "word": "처음",
+        "count": 70
       },
       {
         "word": "불교",
@@ -91,7 +95,7 @@
       },
       {
         "word": "몽고",
-        "count": 60
+        "count": 62
       },
       {
         "word": "지금",
@@ -103,19 +107,11 @@
       },
       {
         "word": "도읍",
-        "count": 57
-      },
-      {
-        "word": "메이지",
         "count": 56
       },
       {
         "word": "반도",
-        "count": 53
-      },
-      {
-        "word": "원년",
-        "count": 53
+        "count": 54
       },
       {
         "word": "아들",
@@ -124,6 +120,10 @@
       {
         "word": "거란",
         "count": 52
+      },
+      {
+        "word": "원년",
+        "count": 51
       },
       {
         "word": "통일",
@@ -166,12 +166,12 @@
         "count": 40
       },
       {
-        "word": "수도",
+        "word": "지방",
         "count": 39
       },
       {
-        "word": "지방",
-        "count": 38
+        "word": "수도",
+        "count": 39
       },
       {
         "word": "설치",
@@ -190,10 +190,6 @@
         "count": 36
       },
       {
-        "word": "메이지 천황",
-        "count": 36
-      },
-      {
         "word": "삼국",
         "count": 35
       },
@@ -204,122 +200,6 @@
       {
         "word": "시조",
         "count": 34
-      },
-      {
-        "word": "태종",
-        "count": 34
-      },
-      {
-        "word": "왕위",
-        "count": 33
-      },
-      {
-        "word": "요청",
-        "count": 33
-      },
-      {
-        "word": "차례",
-        "count": 33
-      },
-      {
-        "word": "신하",
-        "count": 33
-      },
-      {
-        "word": "금나라",
-        "count": 33
-      },
-      {
-        "word": "정치",
-        "count": 33
-      },
-      {
-        "word": "연호",
-        "count": 33
-      },
-      {
-        "word": "함락",
-        "count": 32
-      },
-      {
-        "word": "항복",
-        "count": 32
-      },
-      {
-        "word": "문무왕",
-        "count": 30
-      },
-      {
-        "word": "세력",
-        "count": 30
-      },
-      {
-        "word": "명나라",
-        "count": 30
-      },
-      {
-        "word": "조약",
-        "count": 30
-      },
-      {
-        "word": "이태",
-        "count": 30
-      },
-      {
-        "word": "성종",
-        "count": 29
-      },
-      {
-        "word": "송나라",
-        "count": 29
-      },
-      {
-        "word": "기자",
-        "count": 28
-      },
-      {
-        "word": "광개토왕",
-        "count": 28
-      },
-      {
-        "word": "평양",
-        "count": 27
-      },
-      {
-        "word": "살해",
-        "count": 27
-      },
-      {
-        "word": "만주",
-        "count": 26
-      },
-      {
-        "word": "궁예",
-        "count": 26
-      },
-      {
-        "word": "이름",
-        "count": 26
-      },
-      {
-        "word": "국경",
-        "count": 26
-      },
-      {
-        "word": "강의",
-        "count": 26
-      },
-      {
-        "word": "교수",
-        "count": 25
-      },
-      {
-        "word": "제국",
-        "count": 25
-      },
-      {
-        "word": "남쪽",
-        "count": 25
       }
     ],
     "Authoritarian": [
@@ -329,11 +209,11 @@
       },
       {
         "word": "고려",
-        "count": 398
+        "count": 399
       },
       {
         "word": "사회",
-        "count": 377
+        "count": 378
       },
       {
         "word": "문화",
@@ -425,11 +305,11 @@
       },
       {
         "word": "백제",
-        "count": 146
+        "count": 147
       },
       {
         "word": "불교",
-        "count": 142
+        "count": 141
       },
       {
         "word": "독립",
@@ -440,11 +320,11 @@
         "count": 129
       },
       {
-        "word": "중심",
-        "count": 124
+        "word": "정부",
+        "count": 126
       },
       {
-        "word": "정부",
+        "word": "중심",
         "count": 124
       },
       {
@@ -453,7 +333,7 @@
       },
       {
         "word": "중국",
-        "count": 116
+        "count": 117
       },
       {
         "word": "국제",
@@ -477,7 +357,7 @@
       },
       {
         "word": "연구",
-        "count": 97
+        "count": 96
       },
       {
         "word": "기관",
@@ -492,10 +372,6 @@
         "count": 93
       },
       {
-        "word": "한편",
-        "count": 92
-      },
-      {
         "word": "지배",
         "count": 91
       },
@@ -505,11 +381,11 @@
       },
       {
         "word": "정권",
-        "count": 89
+        "count": 88
       },
       {
         "word": "교육",
-        "count": 88
+        "count": 87
       },
       {
         "word": "세계",
@@ -526,122 +402,6 @@
       {
         "word": "침략",
         "count": 85
-      },
-      {
-        "word": "이후",
-        "count": 84
-      },
-      {
-        "word": "침입",
-        "count": 83
-      },
-      {
-        "word": "한국",
-        "count": 83
-      },
-      {
-        "word": "만주",
-        "count": 82
-      },
-      {
-        "word": "문제",
-        "count": 79
-      },
-      {
-        "word": "조직",
-        "count": 78
-      },
-      {
-        "word": "학문",
-        "count": 77
-      },
-      {
-        "word": "강화",
-        "count": 76
-      },
-      {
-        "word": "농민",
-        "count": 76
-      },
-      {
-        "word": "중앙",
-        "count": 74
-      },
-      {
-        "word": "영향",
-        "count": 74
-      },
-      {
-        "word": "유교",
-        "count": 73
-      },
-      {
-        "word": "몽고",
-        "count": 72
-      },
-      {
-        "word": "양반",
-        "count": 72
-      },
-      {
-        "word": "농업",
-        "count": 71
-      },
-      {
-        "word": "부족",
-        "count": 70
-      },
-      {
-        "word": "전쟁",
-        "count": 70
-      },
-      {
-        "word": "학교",
-        "count": 68
-      },
-      {
-        "word": "대한",
-        "count": 67
-      },
-      {
-        "word": "관리",
-        "count": 66
-      },
-      {
-        "word": "발해",
-        "count": 66
-      },
-      {
-        "word": "학습",
-        "count": 66
-      },
-      {
-        "word": "근대",
-        "count": 63
-      },
-      {
-        "word": "계획",
-        "count": 62
-      },
-      {
-        "word": "정신",
-        "count": 61
-      },
-      {
-        "word": "전개",
-        "count": 61
-      },
-      {
-        "word": "중요",
-        "count": 60
-      },
-      {
-        "word": "편찬",
-        "count": 60
-      },
-      {
-        "word": "실시",
-        "count": 60
       }
     ],
     "Democratic": [
@@ -651,7 +411,7 @@
       },
       {
         "word": "민족",
-        "count": 486
+        "count": 489
       },
       {
         "word": "나라",
@@ -671,11 +431,11 @@
       },
       {
         "word": "고려",
-        "count": 397
+        "count": 396
       },
       {
         "word": "조선",
-        "count": 390
+        "count": 393
       },
       {
         "word": "일본",
@@ -738,11 +498,11 @@
         "count": 223
       },
       {
-        "word": "지방",
-        "count": 222
+        "word": "중심",
+        "count": 221
       },
       {
-        "word": "중심",
+        "word": "지방",
         "count": 221
       },
       {
@@ -759,7 +519,7 @@
       },
       {
         "word": "통일",
-        "count": 187
+        "count": 188
       },
       {
         "word": "세기",
@@ -782,12 +542,12 @@
         "count": 159
       },
       {
-        "word": "대한",
+        "word": "전쟁",
         "count": 157
       },
       {
-        "word": "전쟁",
-        "count": 157
+        "word": "대한",
+        "count": 156
       },
       {
         "word": "백제",
@@ -795,7 +555,7 @@
       },
       {
         "word": "개혁",
-        "count": 150
+        "count": 153
       },
       {
         "word": "불교",
@@ -807,7 +567,7 @@
       },
       {
         "word": "일제",
-        "count": 147
+        "count": 146
       },
       {
         "word": "중앙",
@@ -838,132 +598,12 @@
         "count": 128
       },
       {
-        "word": "백성",
-        "count": 127
-      },
-      {
         "word": "강화",
         "count": 127
       },
       {
-        "word": "조직",
-        "count": 125
-      },
-      {
-        "word": "추진",
-        "count": 124
-      },
-      {
-        "word": "국민",
-        "count": 124
-      },
-      {
-        "word": "성장",
-        "count": 123
-      },
-      {
-        "word": "서울",
-        "count": 122
-      },
-      {
-        "word": "한국",
-        "count": 121
-      },
-      {
-        "word": "학습",
-        "count": 121
-      },
-      {
-        "word": "세계",
-        "count": 118
-      },
-      {
-        "word": "유교",
-        "count": 117
-      },
-      {
-        "word": "사상",
-        "count": 112
-      },
-      {
-        "word": "양반",
-        "count": 112
-      },
-      {
-        "word": "실시",
-        "count": 112
-      },
-      {
-        "word": "신분",
-        "count": 111
-      },
-      {
-        "word": "동학",
-        "count": 110
-      },
-      {
-        "word": "관계",
-        "count": 109
-      },
-      {
-        "word": "노력",
-        "count": 105
-      },
-      {
-        "word": "체제",
-        "count": 104
-      },
-      {
-        "word": "주장",
-        "count": 104
-      },
-      {
-        "word": "사용",
-        "count": 104
-      },
-      {
-        "word": "민국",
-        "count": 103
-      },
-      {
-        "word": "후기",
-        "count": 101
-      },
-      {
-        "word": "연구",
-        "count": 99
-      },
-      {
-        "word": "기술",
-        "count": 97
-      },
-      {
-        "word": "모습",
-        "count": 97
-      },
-      {
-        "word": "관리",
-        "count": 95
-      },
-      {
-        "word": "과정",
-        "count": 94
-      },
-      {
-        "word": "근대",
-        "count": 94
-      },
-      {
-        "word": "시작",
-        "count": 94
-      },
-      {
-        "word": "집권",
-        "count": 93
-      },
-      {
-        "word": "통치",
-        "count": 92
+        "word": "백성",
+        "count": 127
       }
     ]
   },
@@ -973,99 +613,99 @@
       "title": "심상소학국사보충아동용 - 1",
       "full_title": "심상소학국사보충아동용 - 1",
       "era": "Colonial",
-      "period": "Colonial Period",
+      "period": "Colonial",
       "level": "",
       "year": "",
       "tongil_count": 11,
-      "total_tokens": 1751
+      "total_tokens": 1752
     },
     {
       "book_id": "ta_p32r",
       "title": "심상소학국사보충아동용 - 2",
       "full_title": "심상소학국사보충아동용 - 2",
       "era": "Colonial",
-      "period": "Colonial Period",
+      "period": "Colonial",
       "level": "",
       "year": "",
       "tongil_count": 0,
-      "total_tokens": 2852
+      "total_tokens": 2906
     },
     {
       "book_id": "ta_p41r",
       "title": "심상소학국사보충교재 교수참고서 - 1",
       "full_title": "심상소학국사보충교재 교수참고서 - 1",
       "era": "Colonial",
-      "period": "Colonial Period",
+      "period": "Colonial",
       "level": "",
       "year": "",
       "tongil_count": 36,
-      "total_tokens": 9080
+      "total_tokens": 9037
     },
     {
       "book_id": "ta_e11",
       "title": "초등학교 사회생활 6-1(1차)",
       "full_title": "초등학교 사회생활 6-1(1차)",
       "era": "Authoritarian",
-      "period": "Postwar Authoritarian",
+      "period": "Postwar",
       "level": "Elementary",
       "year": "1954.0",
       "tongil_count": 40,
-      "total_tokens": 6500
+      "total_tokens": 6478
     },
     {
       "book_id": "ta_h21",
       "title": "고등학교 국사 2차",
       "full_title": "고등학교 국사 2차",
       "era": "Authoritarian",
-      "period": "Postwar Authoritarian",
+      "period": "Postwar",
       "level": "High School",
       "year": "1963.0",
       "tongil_count": 61,
-      "total_tokens": 18491
+      "total_tokens": 18429
     },
     {
       "book_id": "ta_m41",
       "title": "중학교 국사 4차(상)",
       "full_title": "중학교 국사 4차(상)",
       "era": "Authoritarian",
-      "period": "Chun/Roh Transitional",
+      "period": "Authoritarian",
       "level": "Middle School",
       "year": "1981.0",
       "tongil_count": 97,
-      "total_tokens": 14229
-    },
-    {
-      "book_id": "ta_m62",
-      "title": "중학교 국사 6차(하)",
-      "full_title": "중학교 국사 6차(하)",
-      "era": "Democratic",
-      "period": "Early Democratic",
-      "level": "Middle School",
-      "year": "1995.0",
-      "tongil_count": 42,
-      "total_tokens": 17588
+      "total_tokens": 14181
     },
     {
       "book_id": "ta_h61",
       "title": "고등학교 국사 6차(상)",
       "full_title": "고등학교 국사 6차(상)",
       "era": "Democratic",
-      "period": "Early Democratic",
+      "period": "Democratic",
       "level": "High School",
       "year": "1995.0",
-      "tongil_count": 106,
-      "total_tokens": 26162
+      "tongil_count": 107,
+      "total_tokens": 26102
+    },
+    {
+      "book_id": "ta_m62",
+      "title": "중학교 국사 6차(하)",
+      "full_title": "중학교 국사 6차(하)",
+      "era": "Democratic",
+      "period": "Democratic",
+      "level": "Middle School",
+      "year": "1995.0",
+      "tongil_count": 42,
+      "total_tokens": 17572
     },
     {
       "book_id": "ta_e71",
       "title": "초등학교 사회 6-1(7차)",
       "full_title": "초등학교 사회 6-1(7차)",
       "era": "Democratic",
-      "period": "Democratic Consolidation",
+      "period": "Democratic",
       "level": "Elementary",
       "year": "2002.0",
       "tongil_count": 39,
-      "total_tokens": 9093
+      "total_tokens": 9085
     }
   ]
 }
