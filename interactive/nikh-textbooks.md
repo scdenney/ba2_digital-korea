@@ -794,7 +794,7 @@ kwic_results <span class="r-operator">|&gt;</span> <span class="r-function">prin
 </div>
 
 <p class="narrative">
-  The same word, 통일, carries the weight of its era. Colonial textbooks use it as a neutral historical term for ancient territorial consolidation. Authoritarian-era texts frame it through nationalist ideology — unification as proof of the Korean people's spirit, and as an urgent Cold War imperative. Democratic-era texts reframe it around <strong>peace</strong>, <strong>diplomacy</strong>, and <strong>democratic values</strong>. This is what concordance analysis reveals: not just <em>how often</em> a word appears, but <em>how it means</em>.
+  The same word, 통일, carries the weight of its era. Colonial textbooks use it as a neutral historical term for ancient territorial consolidation. Authoritarian-era texts frame it through nationalist ideology — unification as proof of the Korean people's spirit, and as an urgent Cold War imperative. Democratic-era texts reframe it around <strong>peace</strong>, <strong>diplomacy</strong>, and <strong>democratic values</strong>. This is what concordance analysis reveals: not just <em>how often</em> a word appears, but <em>what it means</em>.
 </p>
 
 </div><!-- /tutorial-page -->
