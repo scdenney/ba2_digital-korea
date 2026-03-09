@@ -3,16 +3,92 @@ layout: default
 title: Midterm Assessment
 ---
 
+<style>
+.schedule-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.25rem;
+}
+.schedule-card .row {
+  display: flex;
+  align-items: baseline;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.95rem;
+}
+.schedule-card .row:last-child { border-bottom: none; }
+.schedule-card .time {
+  width: 130px;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #002147;
+}
+.schedule-card .label { color: #374151; }
+.clock-note {
+  font-size: 0.95rem;
+  color: #002147;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+.quiz-button {
+  display: block;
+  background: #002147;
+  color: #fff !important;
+  text-align: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 1rem 0;
+  text-decoration: none !important;
+}
+.quiz-button:hover { background: #003366; }
+.password-box {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+.password-box strong { color: #92400e; }
+.warning-box {
+  background: #fef2f2;
+  border-left: 3px solid #ef4444;
+  padding: 0.6rem 1rem;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+  color: #991b1b;
+  margin: 1rem 0;
+}
+</style>
+
 # Midterm Assessment
 
 **Date:** Monday, March 9, 2026 · In class
 
-**15:15–15:20** — Announcements
-**15:20–16:00** — Midterm assessment (40 minutes)
-**16:00–16:10** — Break
-**16:10–17:00** — Discussion: the rest of the term
+<div class="schedule-card">
+  <div class="row">
+    <span class="time">15:15–15:20</span>
+    <span class="label">Announcements</span>
+  </div>
+  <div class="row">
+    <span class="time">15:20–16:00</span>
+    <span class="label">Midterm assessment (40 minutes)</span>
+  </div>
+  <div class="row">
+    <span class="time">16:00–16:10</span>
+    <span class="label">Break</span>
+  </div>
+  <div class="row">
+    <span class="time">16:10–17:00</span>
+    <span class="label">Discussion: the rest of the term</span>
+  </div>
+</div>
 
-You have **40 minutes** to complete both parts of the assessment. The clock starts at 15:20.
+<p class="clock-note">You have 40 minutes to complete both parts. The clock starts at 15:20.</p>
 
 ---
 
@@ -22,9 +98,11 @@ Complete the online multiple-choice quiz covering key concepts from Weeks 1–5:
 
 **Please take this on your laptop** (not your phone).
 
-**Survey link:** [https://leidenuniv.eu.qualtrics.com/jfe/form/SV_e2LcUtDEfwYS7jg](https://leidenuniv.eu.qualtrics.com/jfe/form/SV_e2LcUtDEfwYS7jg)
+<a class="quiz-button" href="https://leidenuniv.eu.qualtrics.com/jfe/form/SV_e2LcUtDEfwYS7jg" target="_blank" rel="noopener">Take the Quiz</a>
 
-**Password:** `ba2`
+<div class="password-box">
+  <strong>Password:</strong> <code>ba2</code>
+</div>
 
 - 10 multiple-choice questions, one per page
 - Work independently
@@ -37,9 +115,9 @@ Complete the online multiple-choice quiz covering key concepts from Weeks 1–5:
 
 Download a small corpus of 15 presidential speeches that you have **not** worked with before. Build a complete preprocessing and visualization pipeline **from scratch** in Orange Data Mining.
 
-### Before you begin
-
-**Start a fresh Orange session.** Close any existing Orange windows and do **not** load a previously saved workflow — build the pipeline from scratch. This is part of the assessment.
+<div class="warning-box">
+  <strong>Start a fresh Orange session.</strong> Close any existing Orange windows and do <strong>not</strong> load a previously saved workflow — build the pipeline from scratch. This is part of the assessment.
+</div>
 
 ### Corpus
 
