@@ -182,7 +182,7 @@ Preprocessing transforms raw text into a format suitable for computational analy
 - Denny, M. J., & Spirling, A. (2018). Text preprocessing for unsupervised learning: Why it matters, when it misleads, and what to do about it. *Political Analysis*, 26(2), 168-189
 
 **Orange Data Mining Tutorials:**
-- [Text Preprocessing](https://www.youtube.com/watch?v=nAIqoCxvIqc) (Text Mining playlist #6)
+- [Text Preprocessing](https://www.youtube.com/watch?v=nAIqoCxvIqc) (Text Mining #06)
 - Getting Started 16: Text Preprocessing (supplementary — older but still useful)
 
 **Orange Widgets to Master:**
@@ -212,7 +212,7 @@ This week covers the full arc from preprocessing to quantitative text representa
 - Bollen, J., et al. (2021). Historical language records reveal a surge of cognitive distortions in recent decades. *Proceedings of the National Academy of Sciences*, 118(30) (optional)
 
 **Orange Data Mining Tutorials:**
-- [Bag of Words](https://www.youtube.com/watch?v=eCdYyaDtjjQ) (Text Mining playlist #7)
+- [Bag of Words](https://www.youtube.com/watch?v=eCdYyaDtjjQ) (Text Mining #07)
 
 **Orange Widgets to Master:**
 - Bag of Words (Count, Binary, Sublinear, TF-IDF)
@@ -263,16 +263,14 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 - K-means clustering (partition-based methods)
 - Choosing appropriate number of clusters
 
-> **Special Lecture:** Brief introduction to word embeddings and distributed representations (TBD and conditional on sufficient demand)
-
 **Recommended Reading:**
 - Grimmer, Roberts, and Stewart - Chapter 12: Clustering
 
 **Orange Data Mining Tutorials:**
-- [Document Clustering and Cluster Exploration](https://www.youtube.com/watch?v=v5Kgoq6xn8A) (Text Mining playlist #9)
-- Getting Started 05: Hierarchical Clustering (supplementary — general clustering concepts)
-- Getting Started 11: k-Means
-- Getting Started 12: k-Means Explained
+- [Hierarchical Clustering](https://www.youtube.com/watch?v=dJ5z2SRwzgs) (Getting Started #05)
+- [k-Means](https://www.youtube.com/watch?v=vgmL808eSw4) (Getting Started #11)
+- [k-Means Explained](https://www.youtube.com/watch?v=I0e0Qyev8Ac) (Getting Started #12)
+- [Document Clustering and Cluster Exploration](https://www.youtube.com/watch?v=v5Kgoq6xn8A) (Text Mining #09)
 
 **Orange Widgets to Master:**
 - Hierarchical Clustering (tree-based grouping)
@@ -290,9 +288,34 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 
 ---
 
-### Week 8 (Mar. 30): Classification I – Dictionary and Rule-Based Approaches {#week-8}
+### Week 8 (Mar. 30): Word Embeddings {#week-8}
 
-Classification assigns documents to predefined categories. This week focuses on dictionary-based methods, where humans define rules (like lists of positive and negative words for sentiment analysis) and the computer applies them. These interpretable, transparent methods serve as foundation for understanding more complex machine learning approaches in Week 9. We will use sentiment analysis in this week.
+Word embeddings represent words as dense vectors in a continuous space, capturing semantic relationships that bag-of-words models miss. This week introduces the concept of distributed representations: words with similar meanings appear near each other in vector space. Students learn how embeddings enable semantic search, analogy tasks, and document-level representations that can improve downstream analysis like clustering and classification.
+
+**Topics:**
+- From sparse vectors (BoW) to dense vectors (embeddings)
+- Word embedding concepts and nearest neighbors
+- Semantic search and word similarity
+- Document embeddings: representing entire documents as vectors
+
+**Orange Data Mining Tutorials:**
+- [Word Embedding and Nearest Neighbors](https://www.youtube.com/watch?v=RIFwBbbbvbI) (Text Mining #01)
+- [Semantic Word Search](https://www.youtube.com/watch?v=6Luj-nPZjJA) (Text Mining #02)
+- [Document Embedding](https://www.youtube.com/watch?v=QQqaWZEdE58) (Text Mining #05)
+
+**Orange Widgets to Master:**
+- Document Embedding (creating document vectors)
+- Nearest Neighbors (finding similar words/documents)
+- Corpus Viewer (examining results)
+
+**Assignment:**
+- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
+
+---
+
+### Week 9 (Apr. 13): Sentiment Analysis – Dictionary and Rule-Based Approaches {#week-9}
+
+Sentiment analysis assigns valence (positive, negative, neutral) to texts using predefined dictionaries or rules. This week focuses on dictionary-based methods, where humans define rules (like lists of positive and negative words) and the computer applies them. These interpretable, transparent methods are widely used in computational social science and digital humanities research. Students learn to apply sentiment dictionaries, build custom scoring rules, and critically evaluate the strengths and limitations of dictionary-based approaches.
 
 **Topics:**
 - Dictionary-based sentiment analysis
@@ -305,7 +328,7 @@ Classification assigns documents to predefined categories. This week focuses on 
 - Young, L., & Soroka, S. (2012). Affective news: The automated coding of sentiment in political texts. *Political Communication*, 29(2), 205-231
 
 **Orange Data Mining Tutorials:**
-- [Sentiment Analysis](https://www.youtube.com/watch?v=CK_F1JktzHk) (Text Mining playlist #10)
+- [Sentiment Analysis](https://www.youtube.com/watch?v=CK_F1JktzHk) (Text Mining #10)
 
 **Orange Widgets to Master:**
 - Sentiment Analysis (applying sentiment dictionaries)
@@ -314,34 +337,6 @@ Classification assigns documents to predefined categories. This week focuses on 
 
 **Assignment:**
 - Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
-
----
-
-### Week 9 (Apr. 13): Classification II – Machine Learning with Support Vector Machines {#week-9}
-
-This week introduces supervised machine learning for classification. Unlike dictionary methods where we write the rules, supervised learning involves providing labeled examples and letting algorithms learn classification patterns. We focus on Support Vector Machines (SVM), a powerful classification algorithm. Students learn to split data into training and testing sets, train classifiers, and evaluate performance using appropriate metrics. This is the most challenging thing leanred in this class. 
-
-**Topics:**
-- Introduction to supervised learning
-- Support Vector Machines (SVM) for text classification
-- Training and testing workflows
-- Evaluation metrics
-- Comparing dictionary and machine learning approaches
-
-**Recommended Reading:**
-- Grimmer, Roberts, and Stewart - Chapters 17-19: Overview of Supervised Classification; Coding a Training Set; Classifying Documents with Supervised Learning
-- Barberá, P., et al. (2021). Automated text classification of news articles: A practical guide. *Political Analysis*, 29(1), 19-42
-
-**Orange Data Mining Tutorials:**
-- [Explainable Document Classification](https://www.youtube.com/watch?v=FVIcW-NxVy4) (Text Mining playlist #8)
-- Getting Started 06: Making Predictions (supplementary — general prediction concepts)
-- Getting Started 07: Model Evaluation and Scoring
-
-**Orange Widgets to Master:**
-- SVM (training support vector machine classifier)
-- Test and Score (evaluating model performance)
-- Predictions (applying trained models to new data)
-- Select Columns (preparing train/test splits)
 
 ---
 
@@ -362,8 +357,8 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 - Roberts, M. E., et al. (2014). Structural topic models for open-ended survey responses. *American Journal of Political Science*, 58(4), 1064-1082
 
 **Orange Data Mining Tutorials:**
-- [Topic Modeling](https://www.youtube.com/watch?v=RRhGlSi2Dio) (Text Mining playlist #11)
-- [Exploring Topics](https://www.youtube.com/watch?v=jFabEv8JalE) (Text Mining playlist #12)
+- [Topic Modeling](https://www.youtube.com/watch?v=RRhGlSi2Dio) (Text Mining #11)
+- [Exploring Topics](https://www.youtube.com/watch?v=jFabEv8JalE) (Text Mining #12)
 
 **Orange Widgets to Master:**
 - Topic Modelling (fitting LDA models)
@@ -379,7 +374,7 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 
 This second assessment, administered in class, evaluates understanding of core concepts and practical skills developed from Week 7.
 
-Following the assessment, we will review our learning across the entire course, from preprocessing through clustering, classification, and topic modeling. It will focus more on content learned in the second half of the class. It will also prepare students for the week 12 Workshop. 
+Following the assessment, we will review our learning across the entire course, from preprocessing through clustering, word embeddings, sentiment analysis, and topic modeling. It will focus more on content learned in the second half of the class. It will also prepare students for the week 12 Workshop. 
 
 **Topics:**
 - Second assessment

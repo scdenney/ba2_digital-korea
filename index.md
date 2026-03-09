@@ -57,8 +57,8 @@ By the end of this course, you will be able to:
 | 5 | Mar. 02 | Practice & Deepen: Hands-On Lab |
 | 6 | Mar. 09 | Midterm Review & Assessment |
 | 7 | Mar. 16 | Clustering |
-| 8 | Mar. 30 | Classification I - Dictionary & Rule-Based |
-| 9 | Apr. 13 | Classification II - Machine Learning (SVM) |
+| 8 | Mar. 30 | Word Embeddings |
+| 9 | Apr. 13 | Sentiment Analysis - Dictionary & Rule-Based |
 | 10 | Apr. 20 | Topic Modeling (LDA) |
 | 11 | May 11 | Final Review & Assessment |
 | 12 | May 18 | Research Methods Project Workshop |

@@ -242,6 +242,29 @@ Use the study guide to review all key concepts, the preprocessing pipeline, BoW/
 </div>
 </details>
 
+<details>
+<summary>Week 6: Midterm Assessment</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Mar. 09
+**Due:** Mar. 16 (before class)
+
+**R Programming:**
+
+Complete DataCamp: Introduction to R — Data Frames Chapter and Matrices Chapter.
+
+**Orange Data Mining Tutorials:**
+
+Watch the following four tutorials before next class. These cover the clustering methods we will use in Week 7:
+
+- [Hierarchical Clustering](https://www.youtube.com/watch?v=dJ5z2SRwzgs) (Getting Started #05)
+- [k-Means](https://www.youtube.com/watch?v=vgmL808eSw4) (Getting Started #11)
+- [k-Means Explained](https://www.youtube.com/watch?v=I0e0Qyev8Ac) (Getting Started #12)
+- [Document Clustering and Cluster Exploration](https://www.youtube.com/watch?v=v5Kgoq6xn8A) (Text Mining #09)
+
+</div>
+</details>
+
 </div>
 
 ---
@@ -265,6 +288,7 @@ For students interested in developing deeper R programming skills:
 - Lesson 13: Dimension Reduction
 
 **DataCamp:**
+- Intermediate R — Conditionals and Control Flow
+- Intermediate R — Loops
 - Data Manipulation & Visualization
-- Intermediate R
 - Text Mining with Bag-of-Words in R
