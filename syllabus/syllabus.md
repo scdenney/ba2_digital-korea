@@ -275,16 +275,12 @@ Clustering introduces "unsupervised" learning, where algorithms discover pattern
 **Orange Widgets to Master:**
 - Hierarchical Clustering (tree-based grouping)
 - k-Means (partition-based grouping)
-- Distance Matrix (calculating document similarities)
 - Distances (choosing distance metrics)
 
 **Hands-On:**
 - Complete workflow from corpus through preprocessing to clustering
 - Apply hierarchical clustering; interpret the dendrogram
 - Apply k-means clustering
-
-**Assignment:**
-- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow. Also upload screenshots showing completion of Swirl exercises.
 
 ---
 
@@ -307,9 +303,6 @@ Word embeddings represent words as dense vectors in a continuous space, capturin
 - Document Embedding (creating document vectors)
 - Nearest Neighbors (finding similar words/documents)
 - Corpus Viewer (examining results)
-
-**Assignment:**
-- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
 
 ---
 
@@ -334,9 +327,6 @@ Sentiment analysis assigns valence (positive, negative, neutral) to texts using 
 - Sentiment Analysis (applying sentiment dictionaries)
 - Corpus Viewer (examining classified documents)
 - Score Documents (custom dictionary scoring)
-
-**Assignment:**
-- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
 
 ---
 
@@ -364,9 +354,6 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 - Topic Modelling (fitting LDA models)
 - LDAvis (interactive topic visualization and interpretation)
 - Corpus Viewer (examining documents by topic)
-
-**Assignment:**
-- Reproduce class demo; upload .ows file and screenshot of ODM whiteboard/workflow.
 
 ---
 
@@ -402,9 +389,6 @@ More information about this workshop will be provided in class.
 
 **Orange Data Mining:**
 - Review and apply relevant tutorials from throughout the semester as needed for project requirements
-
-**Assignment:**
-- The project is due at the end of the working day (17:00).
 
 
 *Note: This schedule is subject to adjustment based on class progress and needs. Any changes will be communicated in advance.*

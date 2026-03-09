@@ -243,7 +243,7 @@ Use the study guide to review all key concepts, the preprocessing pipeline, BoW/
 </details>
 
 <details>
-<summary>Week 6: Midterm Assessment</summary>
+<summary>Week 6: Midterm Review Week</summary>
 <div class="assignment-content" markdown="1">
 
 **Assigned:** Mar. 09
