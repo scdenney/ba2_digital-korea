@@ -100,9 +100,6 @@ Complete the online multiple-choice quiz covering key concepts from Weeks 1–5:
 
 <a class="quiz-button" href="https://leidenuniv.eu.qualtrics.com/jfe/form/SV_e2LcUtDEfwYS7jg" target="_blank" rel="noopener">Take the Quiz</a>
 
-<div class="password-box">
-  <strong>Password:</strong> <code>ba2</code>
-</div>
 
 - 10 multiple-choice questions, one per page
 - Work independently
