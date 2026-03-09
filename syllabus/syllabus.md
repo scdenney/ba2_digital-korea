@@ -250,6 +250,16 @@ This week consolidates learning from Weeks 1-5, covering setup and tools, founda
 - Comprehensive review of Weeks 1-5
 - Midterm assessment
 
+**R Programming:**
+- Complete DataCamp: Introduction to R — Data Frames Chapter and Matrices Chapter. Due by start of next class.
+- *Optional:* DataCamp: Intermediate R — Conditionals and Control Flow, Loops.
+
+**Orange Data Mining Tutorials:**
+- [Hierarchical Clustering](https://www.youtube.com/watch?v=dJ5z2SRwzgs) (Getting Started #05)
+- [k-Means](https://www.youtube.com/watch?v=vgmL808eSw4) (Getting Started #11)
+- [k-Means Explained](https://www.youtube.com/watch?v=I0e0Qyev8Ac) (Getting Started #12)
+- [Document Clustering and Cluster Exploration](https://www.youtube.com/watch?v=v5Kgoq6xn8A) (Text Mining #09)
+
 ---
 
 ### Week 7 (Mar. 16): Clustering {#week-7}
