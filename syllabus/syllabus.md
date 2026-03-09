@@ -251,7 +251,7 @@ This week consolidates learning from Weeks 1-5, covering setup and tools, founda
 - Midterm assessment
 
 **R Programming:**
-- Complete DataCamp: Introduction to R — Data Frames Chapter and Matrices Chapter. Due by start of next class.
+- Complete DataCamp: Introduction to R — Lists Chapter and Data Frames Chapter. Due by start of next class.
 - *Optional:* DataCamp: Intermediate R — Conditionals and Control Flow, Loops.
 
 **Orange Data Mining Tutorials:**

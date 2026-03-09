@@ -251,7 +251,7 @@ Use the study guide to review all key concepts, the preprocessing pipeline, BoW/
 
 **R Programming:**
 
-Complete DataCamp: Introduction to R — Data Frames Chapter and Matrices Chapter.
+Complete DataCamp: Introduction to R — Lists Chapter and Data Frames Chapter.
 
 **Orange Data Mining Tutorials:**
 
