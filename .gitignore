@@ -15,8 +15,9 @@ student_tracking.csv
 assignments/week06-answer-guide.*
 assignments/week06-midterm.qsf
 
-# Local preview files
+# Local preview and instructor files
 midterm/preview.html
+midterm/answer-guide.html
 
 # Project instructions
 CLAUDE.md
