@@ -10,8 +10,13 @@ student_tracking.csv
 # Announcements / drafts
 *_announcement.txt
 
-# Assessment guides
+# Assessment guides and instructor materials
 *_assessment_guide.md
+assignments/week06-answer-guide.*
+assignments/week06-midterm.qsf
+
+# Local preview files
+midterm/preview.html
 
 # Project instructions
 CLAUDE.md
