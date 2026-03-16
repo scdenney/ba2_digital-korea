@@ -270,7 +270,7 @@ Watch the following four tutorials before next class. These cover the clustering
 <div class="assignment-content" markdown="1">
 
 **Assigned:** Mar. 16
-**Due:** Mar. 23 (before class)
+**Due:** Mar. 30 (before class)
 
 **Orange Data Mining — Hierarchical Clustering:**
 
@@ -282,7 +282,13 @@ Replicate the in-class hierarchical clustering demo using the NIKH clustering de
 4. Run **Hierarchical Clustering** (Ward linkage)
 5. Select **two clusters** from the dendrogram
 6. Explore each cluster using descriptive tools of your choice (e.g., Word Cloud, Bar Plot, Corpus Viewer) — try to understand what makes these clusters different
-7. Write a short summary (a few sentences in a `.md` or `.txt` file) describing what you found: which books ended up in each cluster, and what vocabulary or themes distinguish them
+
+**Write-up:** Create a short Markdown file (`analysis.md`) describing:
+- **What you did** — which settings you chose and how you set up your workflow
+- **Why you did it** — your reasoning for the choices you made
+- **What you found** — which books ended up in each cluster, and what vocabulary or themes distinguish them
+
+This does not need to be long — a few clear paragraphs is adequate. The goal is to reflect on the process and interpret what the clustering reveals.
 
 **Submitting your work:**
 
@@ -290,9 +296,11 @@ Replicate the in-class hierarchical clustering demo using the NIKH clustering de
 2. Add the following to that folder:
    - Your Orange workflow file (`.ows`)
    - Visualization screenshots (`.png`) showing your two-cluster comparison
-   - A short analysis summary (`.md` or `.txt`) describing what you found
-3. Commit and push via GitHub Desktop
-4. Confirm your files appear on github.com in your repository
+   - Your analysis write-up (`analysis.md`)
+3. In GitHub Desktop: write a short commit message (e.g., "Add week 7 clustering")
+4. Click **Commit to main**, then **Push origin**
+5. Confirm your files appear on github.com in your repository
+6. Mark your completion on the [shared Google Sheet](https://docs.google.com/spreadsheets/d/1gYzaIKDgJ81MEp4xa3GYrV_oFpU1OSAw3YyaddeLfqk/edit?gid=963967460#gid=963967460)
 
 **R Programming — Swirl Tutorials:**
 
@@ -320,6 +328,18 @@ For more details on installing Swirl courses, see the [Swirl student page](https
 | 12 | K-Means Clustering |
 
 **Documenting completion:** Take a screenshot of the completion message for each lesson and save them as `.png` files in your `week07/` folder alongside your Orange deliverables.
+
+**Optional — R Programming:**
+
+Complete DataCamp: Intermediate R — The apply family Chapter and Utilities Chapter.
+
+**Orange Data Mining Tutorials (preparation for Week 8):**
+
+Watch the following tutorials before the next class. These cover the word embedding methods we will use in Week 8:
+
+- [Word Embedding and Nearest Neighbors](https://www.youtube.com/watch?v=RIFwBbbbvbI) (Text Mining #01)
+- [Semantic Word Search](https://www.youtube.com/watch?v=6Luj-nPZjJA) (Text Mining #02)
+- [Document Embedding](https://www.youtube.com/watch?v=QQqaWZEdE58) (Text Mining #05)
 
 </div>
 </details>
