@@ -265,6 +265,65 @@ Watch the following four tutorials before next class. These cover the clustering
 </div>
 </details>
 
+<details>
+<summary>Week 7: Clustering</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Mar. 16
+**Due:** Mar. 23 (before class)
+
+**Orange Data Mining — Hierarchical Clustering:**
+
+Replicate the in-class hierarchical clustering demo using the NIKH clustering demo corpus (11 textbooks). Download it from the [Data & Scripts]({{ '/data/' | relative_url }}) page.
+
+1. Load the corpus in Orange using the **Corpus** widget
+2. Preprocess the text (Python Script → Preprocess Text → Bag of Words with TF-IDF)
+3. Compute **Distances** (Cosine)
+4. Run **Hierarchical Clustering** (Ward linkage)
+5. Select **two clusters** from the dendrogram
+6. Explore each cluster using descriptive tools of your choice (e.g., Word Cloud, Bar Plot, Corpus Viewer) — try to understand what makes these clusters different
+7. Write a short summary (a few sentences in a `.md` or `.txt` file) describing what you found: which books ended up in each cluster, and what vocabulary or themes distinguish them
+
+**Submitting your work:**
+
+1. Create a `week07/` folder inside `assignments/` in your repository
+2. Add the following to that folder:
+   - Your Orange workflow file (`.ows`)
+   - Visualization screenshots (`.png`) showing your two-cluster comparison
+   - A short analysis summary (`.md` or `.txt`) describing what you found
+3. Commit and push via GitHub Desktop
+4. Confirm your files appear on github.com in your repository
+
+**R Programming — Swirl Tutorials:**
+
+Complete two Swirl lessons from the **Exploratory Data Analysis** course. You will need to install this course first — it is separate from the R Programming course you have been using.
+
+**Installing the course:**
+1. Open RStudio
+2. Run the following in the console:
+
+```r
+library(swirl)
+install_course("Exploratory_Data_Analysis")
+swirl()
+```
+
+3. Select **Exploratory Data Analysis** from the course list
+
+For more details on installing Swirl courses, see the [Swirl student page](https://swirlstats.com/students.html).
+
+**Complete these two lessons:**
+
+| Lesson | Topic |
+|--------|-------|
+| 11 | Hierarchical Clustering |
+| 12 | K-Means Clustering |
+
+**Documenting completion:** Take a screenshot of the completion message for each lesson and save them as `.png` files in your `week07/` folder alongside your Orange deliverables.
+
+</div>
+</details>
+
 </div>
 
 ---

@@ -536,7 +536,7 @@ title: "Clustering Korean History Textbooks"
 </div>
 
 <p class="narrative">
-  Our demo corpus is an 11-book subset of the 67-book NIKH (National Institute of Korean History) textbook corpus. The books span three political eras: 3 colonial-era textbooks (1940), 4 authoritarian-era textbooks (1973&ndash;1987), and 4 democratic-era textbooks (1995&ndash;2002). Each has been tokenized with Kiwi (NNG/NNP nouns, stopwords removed, min 2 characters).
+  Our demo corpus is an 11-book subset of the 67-book NIKH (National Institute of Korean History) textbook corpus. The books span three political eras: 3 colonial-era textbooks (1940), 4 authoritarian-era textbooks (1973&ndash;1987), and 4 democratic-era textbooks (1995&ndash;2002). The CSV contains the raw <code>full_text</code> of each book &mdash; we preprocess it ourselves in Step 2.
 </p>
 
 <details class="code-ribbon">
@@ -547,14 +547,23 @@ title: "Clustering Korean History Textbooks"
       <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
 <span class="r-function">library</span>(tidyverse)
 <span class="r-function">library</span>(tidytext)
+<span class="r-function">library</span>(elbird)       <span class="r-comment"># Korean morphological analysis (wraps Kiwi)</span>
 
 <span class="r-comment"># ── Load the clustering demo corpus ───────────────────────────────</span>
 corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/nikh_textbooks/nikh_clustering_demo.csv"</span>)
+
+<span class="r-comment"># ── Load Korean stopwords ─────────────────────────────────────────</span>
+stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"data/stopwords_ko.txt"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">str_trim</span>() <span class="r-operator">|&gt;</span>
+  <span class="r-function">discard</span>(<span class="r-operator">~</span> .x <span class="r-operator">==</span> <span class="r-string">""</span>)
 
 <span class="r-comment"># Quick look at the data</span>
 corpus <span class="r-operator">|&gt;</span>
   <span class="r-function">select</span>(book_id, title, era, year) <span class="r-operator">|&gt;</span>
   <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">11</span>)</code></pre>
+    </div>
+    <div class="callout callout-info">
+      <strong>About elbird:</strong> Install it with <code>install.packages("elbird")</code>. It wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same Korean morphological analyzer used in our Orange preprocessing scripts. First run downloads the model automatically.
     </div>
   </div>
 </details>
@@ -578,21 +587,34 @@ corpus <span class="r-operator">|&gt;</span>
 </div>
 
 <p class="narrative">
-  The demo CSV includes a <code>processed_text</code> column with pre-tokenized nouns &mdash; the same Kiwi preprocessing pipeline from Weeks 3&ndash;5 (NNG/NNP nouns, stopwords removed, min 2 characters, no numbers). We split that column into one word per row and count how often each word appears in each book. No words are filtered out by document frequency &mdash; every word is kept, just like in the Week 5 demo.
+  We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same preprocessing pipeline from Weeks 3&ndash;5 and the same pipeline used in our Orange workflows. We then count how often each word appears in each book. No words are filtered out by document frequency &mdash; every word is kept, just like in the Week 5 demo.
 </p>
 
 <details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: tokenize and count words per book</span><span class="ribbon-tag">R</span></summary>
+  <summary><span class="ribbon-label">Show R code: tokenize with Kiwi, filter nouns, remove stopwords, count</span><span class="ribbon-tag">R</span></summary>
   <div class="code-ribbon-body">
     <div class="code-block">
       <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── Tokenize from processed_text ──────────────────────────────────</span>
-<span class="r-comment"># processed_text = space-separated nouns (Kiwi NNG/NNP),</span>
-<span class="r-comment"># stopwords already removed, min 2 chars, no numbers.</span>
-<span class="r-comment"># Same preprocessing as Weeks 3–5.</span>
+      <pre><code><span class="r-comment"># ── Helper: tokenize one text with Kiwi via elbird ────────────────</span>
+tokenize_kiwi <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {
+  result <span class="r-operator">&lt;-</span> <span class="r-function">tokenize</span>(text, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)
+  <span class="r-function">tibble</span>(form <span class="r-operator">=</span> result<span class="r-operator">$</span>form, tag <span class="r-operator">=</span> result<span class="r-operator">$</span>tag)
+}
+
+<span class="r-comment"># ── Tokenize and filter ───────────────────────────────────────────</span>
 tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span>
-  <span class="r-function">select</span>(book_id, era, processed_text) <span class="r-operator">|&gt;</span>
-  <span class="r-function">unnest_tokens</span>(word, processed_text)
+  <span class="r-function">select</span>(book_id, era, full_text) <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(
+    morphemes <span class="r-operator">=</span> <span class="r-function">map</span>(full_text, tokenize_kiwi)
+  ) <span class="r-operator">|&gt;</span>
+  <span class="r-function">unnest</span>(morphemes) <span class="r-operator">|&gt;</span>
+  <span class="r-function">filter</span>(
+    tag <span class="r-operator">%in%</span> <span class="r-function">c</span>(<span class="r-string">"NNG"</span>, <span class="r-string">"NNP"</span>),       <span class="r-comment"># keep nouns only</span>
+    <span class="r-operator">!</span>form <span class="r-operator">%in%</span> stopwords_ko,           <span class="r-comment"># remove stopwords</span>
+    <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>,           <span class="r-comment"># drop single characters</span>
+    <span class="r-operator">!</span><span class="r-function">str_detect</span>(form, <span class="r-string">"^[0-9]+$"</span>)   <span class="r-comment"># drop pure numbers</span>
+  ) <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(book_id, era, word <span class="r-operator">=</span> form)
 
 <span class="r-comment"># ── Count words per book (raw frequencies) ────────────────────────</span>
 <span class="r-comment"># No document-frequency filter: every word is kept.</span>
@@ -611,7 +633,7 @@ tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">slice_head</span>(n <span class="r-operator">=</span> <span class="r-number">10</span>)</code></pre>
     </div>
     <div class="callout callout-tip">
-      <strong>Why no document-frequency filtering?</strong> With only 11 books, removing words that appear in too many or too few documents would discard useful signal. TF-IDF weighting (next step) already down-weights words that appear everywhere &mdash; no need to remove them outright.
+      <strong>Note on <code>tokenize_kiwi()</code>:</strong> This wraps elbird's <code>tokenize()</code> function and returns a tidy tibble with <code>form</code> (the surface word) and <code>tag</code> (the POS tag). The <code>flatten = TRUE</code> argument returns all tokens in a single flat structure. This is the same helper from the Week 5 demo.
     </div>
   </div>
 </details>
