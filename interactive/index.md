@@ -196,6 +196,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/kmeans-speeches' | relative_url }}">
+      <div class="exercise-card-accent accent-violet"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 7</div>
+        <div class="exercise-card-title">K-Means Clustering: Presidential Speeches</div>
+        <p class="exercise-card-desc">K-means on 749 democratic-era speeches. Use silhouette scores to choose <em>k</em>, then discover whether clusters group by president or by topic &mdash; with a surprising result.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">R</span>
+        <span class="exercise-tag">Presidential Speeches</span>
+        <span class="exercise-tag">K-Means</span>
+        <span class="exercise-tag">Silhouette</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
