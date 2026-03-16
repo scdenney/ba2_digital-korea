@@ -115,6 +115,7 @@ title: Interactive
 .accent-teal { background: #0891b2; }
 .accent-amber { background: #b45309; }
 .accent-violet { background: #7c3aed; }
+.accent-slate { background: #475569; }
 
 @media (max-width: 600px) {
   .exercise-grid { grid-template-columns: 1fr; }
@@ -129,6 +130,22 @@ title: Interactive
 </div>
 
 <div class="exercise-grid">
+
+  <div class="exercise-card">
+    <a href="{{ '/interactive/tidyverse-primer' | relative_url }}">
+      <div class="exercise-card-accent accent-slate"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Pre-requisite</div>
+        <div class="exercise-card-title">Quick Start: Tidyverse &amp; the Pipe Operator</div>
+        <p class="exercise-card-desc">New to tidyverse? This short primer covers installation, the pipe operator (<code>|&gt;</code>), and how tidyverse code compares to the base R you learned in Swirl. Read this before the exercises below.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">R</span>
+        <span class="exercise-tag">tidyverse</span>
+        <span class="exercise-tag">Pipe operator</span>
+      </div>
+    </a>
+  </div>
 
   <div class="exercise-card">
     <a href="{{ '/interactive/preprocessing-pipeline' | relative_url }}">
