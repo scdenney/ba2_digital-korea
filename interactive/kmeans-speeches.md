@@ -467,6 +467,19 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
   function renderPresidentGrid() {
     var container = document.getElementById("presidentGrid");
 
+    // Add legend at top
+    var legend = document.createElement("div");
+    legend.className = "chart-legend";
+    legend.style.marginBottom = "1rem";
+    for (var i = 0; i < DATA.best_k; i++) {
+      var item = document.createElement("span");
+      item.className = "chart-legend-item";
+      item.innerHTML = '<span class="chart-legend-dot" style="background:' + CLUSTER_COLORS[i] + '"></span> ' +
+        (i + 1) + '. ' + (CLUSTER_LABELS[String(i)] || '');
+      legend.appendChild(item);
+    }
+    container.appendChild(legend);
+
     PRESIDENT_ORDER.forEach(function (pres) {
       var summary = DATA.president_summary.find(function (p) { return p.president === pres; });
       if (!summary) return;
