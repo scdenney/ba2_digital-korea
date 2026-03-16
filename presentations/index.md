@@ -17,7 +17,7 @@ Lecture slides and Orange Data Mining workflows are posted here after each sessi
 | 4 | Feb. 23 | From Words to Numbers: BoW & TF-IDF | [PDF](week04-bow-tfidf.pdf) | [PNG](odm_screenshots/week04.png) |
 | 5 | Mar. 02 | Practice & Deepen Lab | [PDF](week05-practice-deepen.pdf) | [PNG](odm_screenshots/week05.png) |
 | 6 | Mar. 09 | Midterm Review & Assessment | — | — |
-| 7 | Mar. 16 | Clustering | — | — |
+| 7 | Mar. 16 | Clustering | [PDF](week07-clustering.pdf) | — |
 | 8 | Mar. 30 | Classification I | — | — |
 | 9 | Apr. 13 | Classification II | — | — |
 | 10 | Apr. 20 | Topic Modeling | — | — |
