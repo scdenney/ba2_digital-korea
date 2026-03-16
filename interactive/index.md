@@ -162,6 +162,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/clustering-analysis' | relative_url }}">
+      <div class="exercise-card-accent accent-violet"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 7</div>
+        <div class="exercise-card-title">Clustering Korean History Textbooks</div>
+        <p class="exercise-card-desc">Hierarchical clustering on TF-IDF vectors from 11 NIKH textbooks. See a dendrogram, compare cluster assignments to era labels, and explore which words make each cluster distinctive.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">R</span>
+        <span class="exercise-tag">NIKH Textbooks</span>
+        <span class="exercise-tag">Clustering</span>
+        <span class="exercise-tag">TF-IDF</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
