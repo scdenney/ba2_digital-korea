@@ -122,8 +122,8 @@ def main() -> None:
     # Do NOT include processed_text — Orange's Corpus widget crashes
     # when a pre-tokenized column is present. Students preprocess
     # from full_text in their own workflow.
-    demo_out = demo[["book_id", "title", "era", "period", "level", "year",
-                      "full_text"]]
+    demo_out = demo[["book_id", "title", "era", "period", "nikh_period",
+                      "curriculum", "level", "year", "full_text"]]
     DEMO_CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
     demo_out.to_csv(DEMO_CSV_OUT, index=False)
     print(f"\nSaved demo CSV → {DEMO_CSV_OUT}")

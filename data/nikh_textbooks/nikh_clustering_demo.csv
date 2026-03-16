@@ -1,5 +1,5 @@
-book_id,title,era,period,level,year,full_text
-ta_p31r,심상소학국사보충아동용 - 1,Colonial,Colonial,Elementary,1940,"심상소학국사보충아동용 - 1
+book_id,title,era,period,nikh_period,curriculum,level,year,full_text
+ta_p31r,심상소학국사보충아동용 - 1,Colonial,Colonial,Japanese Colonial (1910–1945),p31 Series,Elementary,1940,"심상소학국사보충아동용 - 1
 
 일제강점기
 
@@ -667,7 +667,7 @@ ta_p31r,심상소학국사보충아동용 - 1,Colonial,Colonial,Elementary,1940,
 (後龜山) 천황 | 겐추(元中)  
 9년 | 공양왕 4년 | 정몽주가 암살되었다.  
 공양왕이 폐위되어 나라가 멸망했다. | 1392년"
-ta_p32r,심상소학국사보충아동용 - 2,Colonial,Colonial,Elementary,1940,"심상소학국사보충아동용 - 2
+ta_p32r,심상소학국사보충아동용 - 2,Colonial,Colonial,Japanese Colonial (1910–1945),p31 Series,Elementary,1940,"심상소학국사보충아동용 - 2
 
 일제강점기
 
@@ -1483,7 +1483,7 @@ ta_p32r,심상소학국사보충아동용 - 2,Colonial,Colonial,Elementary,1940,
 조선총독에 임명되었다. | 1916  
 2579 | 지금의 천황 | 다이쇼 8년 8월 12일 | 남작(男爵) 사이토 마코토(齋藤實)가 조선총독에  
 임명되었다. | 1919"
-ta_p41r,심상소학국사보충교재 교수참고서 - 1,Colonial,Colonial,Elementary,1940,"심상소학국사보충교재 교수참고서 - 1
+ta_p41r,심상소학국사보충교재 교수참고서 - 1,Colonial,Colonial,Japanese Colonial (1910–1945),p41 Series,Elementary,1940,"심상소학국사보충교재 교수참고서 - 1
 
 일제강점기
 
@@ -3504,7 +3504,7 @@ ta_p41r,심상소학국사보충교재 교수참고서 - 1,Colonial,Colonial,Ele
  백제의 세계(世系)
 
  고려의 세계(世系)"
-ta_m31,중학교 국사 3차,Authoritarian,Authoritarian,Middle School,1973,"중학교 국사 3차
+ta_m31,중학교 국사 3차,Authoritarian,Authoritarian,3rd National Curriculum (1973–1981),3rd Curriculum,Middle School,1973,"중학교 국사 3차
 
 3차 교육과정
 
@@ -9038,7 +9038,7 @@ ta_m31,중학교 국사 3차,Authoritarian,Authoritarian,Middle School,1973,"중
 발행인 국정 교과서 주식 회사  
 업무 대행 서울 특별시 종로구 효제동 117-1 대한 교과서 주식 회사  
 인쇄인 대한 교과서 주식 회사"
-ta_h41,고등학교 국사 4차(상),Authoritarian,Authoritarian,High School,1981,"고등학교 국사 4차(상)
+ta_h41,고등학교 국사 4차(상),Authoritarian,Authoritarian,4th National Curriculum (1981–1987),4th Curriculum,High School,1981,"고등학교 국사 4차(상)
 
 4차 교육과정  
   
@@ -12608,7 +12608,7 @@ ta_h41,고등학교 국사 4차(상),Authoritarian,Authoritarian,High School,198
 발행인 국정 교과서 주식 회사  
 업무대행 서울 특별시 종로구 효제동 117-1 대한 교과서 주식 회사  
 인쇄인 대한 교과서 주식 회사"
-ta_m41,중학교 국사 4차(상),Authoritarian,Authoritarian,Middle School,1981,"중학교 국사 4차(상)
+ta_m41,중학교 국사 4차(상),Authoritarian,Authoritarian,4th National Curriculum (1981–1987),4th Curriculum,Middle School,1981,"중학교 국사 4차(상)
 
 4차 교육과정
 
@@ -15855,7 +15855,7 @@ ta_m41,중학교 국사 4차(상),Authoritarian,Authoritarian,Middle School,1981
 발행인 국정 교과서 주식 회사  
 업무대행 서울 특별시 종로구 효제동 117-1 대한 교과서 주식 회사  
 인쇄인 대한 교과서 주식 회사"
-ta_m51,중학교 국사 5차(상),Authoritarian,Authoritarian,Middle School,1987,"중학교 국사 5차(상)
+ta_m51,중학교 국사 5차(상),Authoritarian,Authoritarian,5th National Curriculum (1987–1992),5th Curriculum,Middle School,1987,"중학교 국사 5차(상)
 
 5차 교육과정
 
@@ -19341,7 +19341,7 @@ ta_m51,중학교 국사 5차(상),Authoritarian,Authoritarian,Middle School,1987
 1종 도서 연구 개발 위원회  
 발행인 서울 특별시 서초구 서초동 1361-5 대한 교과서 주식 회사  
 인쇄인 대한 교과서 주식 회사"
-ta_h61,고등학교 국사 6차(상),Democratic,Democratic,High School,1995,"고등학교 국사 6차(상)
+ta_h61,고등학교 국사 6차(상),Democratic,Democratic,6th National Curriculum (1995–2001),6th Curriculum,High School,1995,"고등학교 국사 6차(상)
 
 6차 교육과정
 
@@ -24326,7 +24326,7 @@ B.C. 4세기 말 알렉산더 대왕의 동방 원정으로 3세기 동안 헬�
 발행인 서울 특별시 서초구 서초동 1361-5 대한 교과서 주식 회사  
 인쇄인 대한 교과서 주식 회사  
  개별 구입 안내 : ☎ (0342) 735-8105 업무과 (0342) 730-3920~3 업무과"
-ta_m62,중학교 국사 6차(하),Democratic,Democratic,Middle School,1995,"중학교 국사 6차(하)
+ta_m62,중학교 국사 6차(하),Democratic,Democratic,6th National Curriculum (1995–2001),6th Curriculum,Middle School,1995,"중학교 국사 6차(하)
 
 6차 교육과정  
   
@@ -28060,7 +28060,7 @@ ta_m62,중학교 국사 6차(하),Democratic,Democratic,Middle School,1995,"중�
 인쇄인 대한 교과서 주식 회사  
  개별 구입 안내 : ☎ (0342) 735-8105 업무과  
 (0342) 730-3920~3 업무과"
-ta_e71,초등학교 사회 6-1(7차),Democratic,Democratic,Elementary,2002,"초등학교 사회 6-1(7차)
+ta_e71,초등학교 사회 6-1(7차),Democratic,Democratic,7th National Curriculum (2002–),7th Curriculum,Elementary,2002,"초등학교 사회 6-1(7차)
 
 7차 교육과정  
   
@@ -30993,7 +30993,7 @@ ta_e71,초등학교 사회 6-1(7차),Democratic,Democratic,Elementary,2002,"초�
 저 작 권 자 교육 인적 자원부  
 편 찬 자 한국 교원 대학교 국정 도서 편찬 위원회  
 발행 및 인쇄인 대한 교과서 주식 회사 서울 특별시 서초구 잠원동 41-10"
-ta_h71,고등학교 국사 7차,Democratic,Democratic,High School,2002,"고등학교 국사 7차
+ta_h71,고등학교 국사 7차,Democratic,Democratic,7th National Curriculum (2002–),7th Curriculum,High School,2002,"고등학교 국사 7차
 
 7차 교육과정
 
