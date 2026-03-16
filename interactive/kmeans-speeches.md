@@ -231,8 +231,12 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
   </div>
 </div>
 
+<div class="callout callout-info">
+  <strong>How to read silhouette scores:</strong> As a general guideline: <strong>0.70&ndash;1.0</strong> = strong structure, <strong>0.50&ndash;0.70</strong> = reasonable, <strong>0.25&ndash;0.50</strong> = weak but potentially useful, <strong>below 0.25</strong> = little meaningful structure. Our scores here (~0.01&ndash;0.02) are low even by text standards &mdash; this is honest. It means the cluster boundaries are fuzzy: speeches share a lot of overlapping vocabulary regardless of topic. The clusters still show <em>interpretable</em> thematic patterns (see below), but the separation is soft. This is a realistic result and worth acknowledging.
+</div>
+
 <div class="callout callout-tip">
-  <strong>Low scores are normal for text.</strong> Silhouette scores for TF-IDF document clustering are typically in the 0.01&ndash;0.10 range &mdash; much lower than for clean numerical data. Text is high-dimensional and noisy. What matters is the <em>relative</em> comparison across k values, not the absolute number.
+  <strong>Low scores are common for text.</strong> TF-IDF document vectors are high-dimensional and sparse, which makes clean separation rare. What matters is (1) the <em>relative</em> comparison across k values and (2) whether the resulting clusters are <em>interpretable</em> when you look at the top words.
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -312,6 +316,17 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
 
   var PRESIDENT_ORDER = ["노태우", "김영삼", "김대중", "노무현", "이명박", "박근혜", "문재인"];
 
+  // Subjective labels based on top words in each cluster (0-indexed internally)
+  var CLUSTER_LABELS = {
+    "0": "Bilateral Diplomacy",
+    "1": "International Summits",
+    "2": "National Unity & Inter-Korean",
+    "3": "Commemorative & Cultural",
+    "4": "Security & Defense",
+    "5": "Education & Youth",
+    "6": "Economic Policy & Reform"
+  };
+
   fetch("{{ '/interactive/kmeans_data.json' | relative_url }}")
     .then(function (r) { return r.json(); })
     .then(function (json) {
@@ -374,9 +389,11 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
       var presDist = DATA.cluster_president_dist[String(c)];
 
       // Legend
+      var displayNum = c + 1;
+      var clusterLabel = CLUSTER_LABELS[String(c)] || "";
       var legItem = document.createElement("span");
       legItem.className = "chart-legend-item";
-      legItem.innerHTML = '<span class="chart-legend-dot" style="background:' + color + '"></span> Cluster ' + c;
+      legItem.innerHTML = '<span class="chart-legend-dot" style="background:' + color + '"></span> ' + displayNum + '. ' + clusterLabel;
       legend.appendChild(legItem);
 
       // Card
@@ -387,7 +404,7 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
       header.className = "cluster-card-header";
       header.style.background = color;
       var totalSpeeches = Object.values(presDist).reduce(function (a, b) { return a + b; }, 0);
-      header.textContent = "Cluster " + c + " (" + totalSpeeches + " speeches)";
+      header.textContent = "Cluster " + displayNum + ": " + clusterLabel + " (" + totalSpeeches + ")";
       card.appendChild(header);
 
       var body = document.createElement("div");
@@ -470,9 +487,10 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
         if (count === 0) continue;
         var pct = (count / summary.count) * 100;
         var seg = document.createElement("div");
-        seg.style.cssText = "height:100%; display:flex; align-items:center; justify-content:center;";
+        seg.style.cssText = "height:100%; display:flex; align-items:center; justify-content:center; cursor:default;";
         seg.style.width = pct + "%";
         seg.style.background = CLUSTER_COLORS[c % CLUSTER_COLORS.length];
+        seg.title = "Cluster " + (c + 1) + ": " + (CLUSTER_LABELS[String(c)] || "") + " (" + count + ")";
         if (pct > 8) {
           var txt = document.createElement("span");
           txt.style.cssText = "font-size:0.65rem; font-weight:700; color:#fff;";
