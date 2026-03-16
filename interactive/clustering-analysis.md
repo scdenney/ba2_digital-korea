@@ -526,7 +526,7 @@ title: "Clustering Korean History Textbooks"
 </div>
 
 <p class="narrative">
-  In Weeks 3&ndash;5 we learned to preprocess text and measure word frequencies. This week we ask a different question: can an algorithm group texts by <em>similarity</em> without knowing anything about their labels? We use <strong>hierarchical clustering</strong> on TF-IDF vectors from 11 Korean history textbooks spanning three political eras &mdash; Colonial, Authoritarian, and Democratic &mdash; and see whether the clusters the algorithm discovers correspond to the eras we know.
+  In Weeks 3&ndash;5 we learned to preprocess text and measure word frequencies. This week we ask a different question: can an algorithm group texts by <em>similarity</em> without knowing anything about their labels? We use <strong>hierarchical clustering</strong> on TF-IDF vectors from 11 Korean history textbooks spanning three political eras (Colonial, Authoritarian, and Democratic) and see whether the clusters the algorithm discovers correspond to the eras we know.
 </p>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -536,7 +536,7 @@ title: "Clustering Korean History Textbooks"
 </div>
 
 <p class="narrative">
-  Our demo corpus is an 11-book subset of the 67-book NIKH (National Institute of Korean History) textbook corpus. The books span three political eras: 3 colonial-era textbooks (1940), 4 authoritarian-era textbooks (1973&ndash;1987), and 4 democratic-era textbooks (1995&ndash;2002). The CSV contains the raw <code>full_text</code> of each book &mdash; we preprocess it ourselves in Step 2.
+  Our demo corpus is an 11-book subset of the 67-book NIKH (National Institute of Korean History) textbook corpus. The books span three political eras: 3 colonial-era textbooks (1940), 4 authoritarian-era textbooks (1973&ndash;1987), and 4 democratic-era textbooks (1995&ndash;2002). The CSV contains the raw <code>full_text</code> of each book. We preprocess it ourselves in Step 2.
 </p>
 
 <details class="code-ribbon">
@@ -587,7 +587,7 @@ corpus <span class="r-operator">|&gt;</span>
 </div>
 
 <p class="narrative">
-  We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same preprocessing pipeline from Weeks 3&ndash;5 and the same pipeline used in our Orange workflows. We then count how often each word appears in each book. No words are filtered out by document frequency &mdash; every word is kept, just like in the Week 5 demo.
+  We tokenize each book with Kiwi's morphological analyzer, keep only common nouns (<code>NNG</code>) and proper nouns (<code>NNP</code>), remove stopwords, and filter out single-character tokens. This is the same preprocessing pipeline from Weeks 3&ndash;5 and the same pipeline used in our Orange workflows. We then count how often each word appears in each book. No words are filtered out by document frequency. Every word is kept, just like in the Week 5 demo.
 </p>
 
 <details class="code-ribbon">
@@ -645,7 +645,7 @@ tokens <span class="r-operator">|&gt;</span>
 </div>
 
 <p class="narrative">
-  Now we weight those raw word counts using <strong>TF-IDF</strong> (Term Frequency&ndash;Inverse Document Frequency) &mdash; the same technique from Week 4. TF-IDF down-weights common words that appear in every book (like <span style="font-family:inherit">나라</span>) and highlights words that are distinctive to particular books. We then compute <strong>cosine distance</strong> between every pair of books &mdash; the same metric you select in Orange's Distances widget.
+  Now we weight those raw word counts using <strong>TF-IDF</strong> (Term Frequency&ndash;Inverse Document Frequency), the same technique from Week 4. TF-IDF down-weights common words that appear in every book (like <span style="font-family:inherit">나라</span>) and highlights words that are distinctive to particular books. We then compute <strong>cosine distance</strong> between every pair of books, the same metric you select in Orange's Distances widget.
 </p>
 
 <details class="code-ribbon">
@@ -688,7 +688,7 @@ d <span class="r-operator">&lt;-</span> <span class="r-function">cosine_dist</sp
 <span class="r-function">round</span>(<span class="r-function">as.matrix</span>(d)[<span class="r-number">1</span>:<span class="r-number">5</span>, <span class="r-number">1</span>:<span class="r-number">5</span>], <span class="r-number">3</span>)</code></pre>
     </div>
     <div class="callout callout-info">
-      <strong>Why cosine distance?</strong> Cosine distance measures the <em>angle</em> between two TF-IDF vectors, ignoring their magnitude. A short colonial textbook with 1,700 tokens and a long one with 9,000 tokens can still end up close together &mdash; what matters is the <em>mix</em> of words, not how many total words there are.
+      <strong>Why cosine distance?</strong> Cosine distance measures the <em>angle</em> between two TF-IDF vectors, ignoring their magnitude. A short colonial textbook with 1,700 tokens and a long one with 9,000 tokens can still end up close together. What matters is the <em>mix</em> of words, not how many total words there are.
     </div>
   </div>
 </details>
@@ -704,7 +704,7 @@ d <span class="r-operator">&lt;-</span> <span class="r-function">cosine_dist</sp
 </div>
 
 <p class="narrative">
-  Using the cosine distances from Step 3, Ward's method builds a hierarchy by repeatedly merging the two most similar groups, minimizing within-cluster variance at each step. The result is a <strong>dendrogram</strong> &mdash; a tree that shows which textbooks are most similar and when groups merge. The height of each merge indicates how different the merged groups are. The dashed red line marks the cut at <em>k</em>&nbsp;=&nbsp;3 clusters.
+  Using the cosine distances from Step 3, Ward's method builds a hierarchy by repeatedly merging the two most similar groups, minimizing within-cluster variance at each step. The result is a <strong>dendrogram</strong>: a tree that shows which textbooks are most similar and when groups merge. The height of each merge indicates how different the merged groups are. The dashed red line marks the cut at <em>k</em>&nbsp;=&nbsp;3 clusters.
 </p>
 
 <details class="code-ribbon">
@@ -746,7 +746,7 @@ corpus <span class="r-operator">|&gt;</span>
 </div>
 
 <div class="callout callout-info">
-  <strong>Reading the dendrogram:</strong> Textbooks that merge at low heights are very similar; merges at the top indicate large differences. The colonial-era texts (amber) form a tight, distinct cluster. The authoritarian and democratic texts merge with each other before joining the colonial branch &mdash; they share more vocabulary because they cover overlapping historical periods with a modern Korean lens.
+  <strong>Reading the dendrogram:</strong> Textbooks that merge at low heights are very similar; merges at the top indicate large differences. The colonial-era texts (amber) form a tight, distinct cluster. The authoritarian and democratic texts merge with each other before joining the colonial branch because they share more vocabulary, covering overlapping historical periods with a modern Korean lens.
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -756,13 +756,13 @@ corpus <span class="r-operator">|&gt;</span>
 </div>
 
 <p class="narrative">
-  The algorithm had <em>no access</em> to the era labels &mdash; it worked only from the TF-IDF word vectors. Yet it recovered groupings that largely correspond to the historical eras. Below, each card shows one cluster and the books it contains. The era labels confirm: <strong>the language of history textbooks reflects the political era in which they were written</strong>.
+  The algorithm had <em>no access</em> to the era labels. It worked only from the TF-IDF word vectors. Yet it recovered groupings that largely correspond to the historical eras. Below, each card shows one cluster and the books it contains. The era labels confirm: <strong>the language of history textbooks reflects the political era in which they were written</strong>.
 </p>
 
 <div class="cluster-grid" id="clusterGrid"></div>
 
 <div class="callout callout-tip">
-  <strong>The crossovers are interesting too.</strong> If a book is placed in a "wrong" cluster, it might mean the textbook's language is transitional &mdash; written in one era but using vocabulary more typical of another. This is exactly the kind of finding that makes clustering valuable: it surfaces patterns that simple labeling would miss.
+  <strong>The crossovers are interesting too.</strong> If a book is placed in a "wrong" cluster, it might mean the textbook's language is transitional, written in one era but using vocabulary more typical of another. This is exactly the kind of finding that makes clustering valuable: it surfaces patterns that simple labeling would miss.
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -820,7 +820,7 @@ cluster_tfidf <span class="r-operator">|&gt;</span>
 </p>
 
 <p class="narrative">
-  This is the power of combining clustering with word analysis: the algorithm groups texts by vocabulary similarity, and distinctive words explain <em>why</em> each group is different. The method confirms what domain experts know &mdash; Korean history textbooks are products of their political moment &mdash; but does so from the text alone, without relying on metadata.
+  This is the power of combining clustering with word analysis: the algorithm groups texts by vocabulary similarity, and distinctive words explain <em>why</em> each group is different. The method confirms what domain experts already know (Korean history textbooks are products of their political moment) but does so from the text alone, without relying on metadata.
 </p>
 
 </div><!-- /tutorial-page -->
