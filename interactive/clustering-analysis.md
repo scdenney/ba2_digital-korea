@@ -574,66 +574,115 @@ corpus <span class="r-operator">|&gt;</span>
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
   <span class="section-number">2</span>
-  <h2>TF-IDF Vectorization</h2>
+  <h2>Preprocessing</h2>
 </div>
 
 <p class="narrative">
-  Before clustering, we need to represent each textbook as a numerical vector. We use <strong>TF-IDF</strong> (Term Frequency&ndash;Inverse Document Frequency), which weights words that are frequent in a given document but rare across the corpus. This is the same technique from Week 4 &mdash; now we use the resulting vectors to measure <em>distance</em> between documents using <strong>cosine distance</strong>. Cosine distance compares the <em>direction</em> of two vectors rather than their magnitude, so it is not thrown off by differences in document length &mdash; the same metric you select in Orange's Distances widget.
+  The demo CSV includes a <code>processed_text</code> column with pre-tokenized nouns &mdash; the same Kiwi preprocessing pipeline from Weeks 3&ndash;5 (NNG/NNP nouns, stopwords removed, min 2 characters, no numbers). We split that column into one word per row and count how often each word appears in each book. No words are filtered out by document frequency &mdash; every word is kept, just like in the Week 5 demo.
 </p>
 
 <details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: create a TF-IDF document-term matrix</span><span class="ribbon-tag">R</span></summary>
+  <summary><span class="ribbon-label">Show R code: tokenize and count words per book</span><span class="ribbon-tag">R</span></summary>
   <div class="code-ribbon-body">
     <div class="code-block">
       <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── Tokenize from processed_text (pre-tokenized nouns) ────────────</span>
+      <pre><code><span class="r-comment"># ── Tokenize from processed_text ──────────────────────────────────</span>
+<span class="r-comment"># processed_text = space-separated nouns (Kiwi NNG/NNP),</span>
+<span class="r-comment"># stopwords already removed, min 2 chars, no numbers.</span>
+<span class="r-comment"># Same preprocessing as Weeks 3–5.</span>
 tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span>
   <span class="r-function">select</span>(book_id, era, processed_text) <span class="r-operator">|&gt;</span>
   <span class="r-function">unnest_tokens</span>(word, processed_text)
 
-<span class="r-comment"># ── Compute TF-IDF ────────────────────────────────────────────────</span>
-tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
-  <span class="r-function">count</span>(book_id, word) <span class="r-operator">|&gt;</span>
+<span class="r-comment"># ── Count words per book (raw frequencies) ────────────────────────</span>
+<span class="r-comment"># No document-frequency filter: every word is kept.</span>
+word_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(book_id, word)
+
+<span class="r-comment"># How many unique words per book?</span>
+word_counts <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(book_id, name <span class="r-operator">=</span> <span class="r-string">"unique_words"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, title, era), by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(book_id, title, era, unique_words)
+
+<span class="r-comment"># Top 10 most frequent words across all books</span>
+tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(word, sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">slice_head</span>(n <span class="r-operator">=</span> <span class="r-number">10</span>)</code></pre>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Why no document-frequency filtering?</strong> With only 11 books, removing words that appear in too many or too few documents would discard useful signal. TF-IDF weighting (next step) already down-weights words that appear everywhere &mdash; no need to remove them outright.
+    </div>
+  </div>
+</details>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">
+  <span class="section-number">3</span>
+  <h2>TF-IDF Vectorization &amp; Cosine Distance</h2>
+</div>
+
+<p class="narrative">
+  Now we weight those raw word counts using <strong>TF-IDF</strong> (Term Frequency&ndash;Inverse Document Frequency) &mdash; the same technique from Week 4. TF-IDF down-weights common words that appear in every book (like <span style="font-family:inherit">나라</span>) and highlights words that are distinctive to particular books. We then compute <strong>cosine distance</strong> between every pair of books &mdash; the same metric you select in Orange's Distances widget.
+</p>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: TF-IDF weighting and cosine distance matrix</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── TF-IDF weighting ──────────────────────────────────────────────</span>
+<span class="r-comment"># tf  = word count / total words in book</span>
+<span class="r-comment"># idf = ln(n_books / n_books_containing_word)</span>
+<span class="r-comment"># tf_idf = tf * idf</span>
+<span class="r-comment"># All words are kept — no minimum document-frequency cutoff.</span>
+tfidf <span class="r-operator">&lt;-</span> word_counts <span class="r-operator">|&gt;</span>
   <span class="r-function">bind_tf_idf</span>(word, book_id, n)
 
 <span class="r-comment"># ── Build document-term matrix ────────────────────────────────────</span>
+<span class="r-comment"># Rows = books, columns = words, values = TF-IDF weights</span>
 dtm <span class="r-operator">&lt;-</span> tfidf <span class="r-operator">|&gt;</span>
   <span class="r-function">select</span>(book_id, word, tf_idf) <span class="r-operator">|&gt;</span>
   <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> word, values_from <span class="r-operator">=</span> tf_idf, values_fill <span class="r-operator">=</span> <span class="r-number">0</span>)
 
-<span class="r-comment"># Matrix for clustering (rows = books, cols = words)</span>
+<span class="r-comment"># Convert to a matrix for clustering</span>
 mat <span class="r-operator">&lt;-</span> dtm <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(<span class="r-operator">-</span>book_id) <span class="r-operator">|&gt;</span> <span class="r-function">as.matrix</span>()
 <span class="r-function">rownames</span>(mat) <span class="r-operator">&lt;-</span> dtm<span class="r-operator">$</span>book_id
 
 <span class="r-comment"># ── Cosine distance ───────────────────────────────────────────────</span>
-<span class="r-comment"># cosine similarity = (a · b) / (||a|| ||b||), distance = 1 - similarity</span>
-<span class="r-comment"># This is the same metric as Orange's Distances widget → Cosine</span>
+<span class="r-comment"># Cosine measures the angle between two vectors, ignoring length.</span>
+<span class="r-comment"># cosine similarity = (a · b) / (||a|| * ||b||)</span>
+<span class="r-comment"># cosine distance   = 1 - cosine similarity</span>
+<span class="r-comment"># Same metric as Orange → Distances → Cosine.</span>
 cosine_dist <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(m) {
   sim <span class="r-operator">&lt;-</span> m <span class="r-operator">%*%</span> <span class="r-function">t</span>(m) <span class="r-operator">/</span>
     (<span class="r-function">sqrt</span>(<span class="r-function">rowSums</span>(m<span class="r-operator">^</span><span class="r-number">2</span>)) <span class="r-operator">%o%</span> <span class="r-function">sqrt</span>(<span class="r-function">rowSums</span>(m<span class="r-operator">^</span><span class="r-number">2</span>)))
   <span class="r-function">as.dist</span>(<span class="r-number">1</span> <span class="r-operator">-</span> sim)
 }
 
-d <span class="r-operator">&lt;-</span> <span class="r-function">cosine_dist</span>(mat)</code></pre>
+d <span class="r-operator">&lt;-</span> <span class="r-function">cosine_dist</span>(mat)
+
+<span class="r-comment"># Quick sanity check: which two books are most similar?</span>
+<span class="r-function">round</span>(<span class="r-function">as.matrix</span>(d)[<span class="r-number">1</span>:<span class="r-number">5</span>, <span class="r-number">1</span>:<span class="r-number">5</span>], <span class="r-number">3</span>)</code></pre>
     </div>
     <div class="callout callout-info">
-      <strong>Why cosine distance?</strong> Cosine distance measures the <em>angle</em> between two TF-IDF vectors, ignoring their magnitude. This means a short colonial textbook with 1,700 tokens and a long one with 9,000 tokens can still end up close together &mdash; what matters is which words are prominent, not how many total words there are.
+      <strong>Why cosine distance?</strong> Cosine distance measures the <em>angle</em> between two TF-IDF vectors, ignoring their magnitude. A short colonial textbook with 1,700 tokens and a long one with 9,000 tokens can still end up close together &mdash; what matters is the <em>mix</em> of words, not how many total words there are.
     </div>
   </div>
 </details>
 
 <div class="callout callout-tip">
-  <strong>From Week 4 to Week 7:</strong> In Week 4, TF-IDF helped us find distinctive words in a single document. Now we use the same vectors to measure how <em>similar</em> entire documents are to each other via cosine distance. Clustering groups documents whose TF-IDF vectors point in similar directions.
+  <strong>From Week 4 to Week 7:</strong> In Week 4, TF-IDF helped us find distinctive words in a single document. Now we use the same TF-IDF vectors to measure how <em>similar</em> entire documents are to each other via cosine distance. Clustering groups documents whose TF-IDF vectors point in similar directions.
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
-  <span class="section-number">3</span>
+  <span class="section-number">4</span>
   <h2>Dendrogram: Hierarchical Clustering</h2>
 </div>
 
 <p class="narrative">
-  Using the cosine distances from Step 2, Ward's method builds a hierarchy by repeatedly merging the two most similar groups, minimizing within-cluster variance at each step. The result is a <strong>dendrogram</strong> &mdash; a tree that shows which textbooks are most similar and when groups merge. The height of each merge indicates how different the merged groups are. The dashed red line marks the cut at <em>k</em>&nbsp;=&nbsp;3 clusters.
+  Using the cosine distances from Step 3, Ward's method builds a hierarchy by repeatedly merging the two most similar groups, minimizing within-cluster variance at each step. The result is a <strong>dendrogram</strong> &mdash; a tree that shows which textbooks are most similar and when groups merge. The height of each merge indicates how different the merged groups are. The dashed red line marks the cut at <em>k</em>&nbsp;=&nbsp;3 clusters.
 </p>
 
 <details class="code-ribbon">
@@ -680,7 +729,7 @@ corpus <span class="r-operator">|&gt;</span>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
-  <span class="section-number">4</span>
+  <span class="section-number">5</span>
   <h2>Cluster vs. Era: Do Clusters Match?</h2>
 </div>
 
@@ -696,7 +745,7 @@ corpus <span class="r-operator">|&gt;</span>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div class="section-heading">
-  <span class="section-number">5</span>
+  <span class="section-number">6</span>
   <h2>Distinctive Words by Cluster</h2>
 </div>
 
