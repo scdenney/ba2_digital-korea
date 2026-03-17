@@ -1203,16 +1203,25 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
   function init() {
     buildStepButtons();
     setupCanvas();
-    precomputeAllK();
     goToStep(0);
   }
 
   fetch("{{ '/interactive/kmeans_data.json' | relative_url }}")
-    .then(function (r) { return r.json(); })
-    .then(function (json) { DATA = json; init(); })
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(function (json) {
+      DATA = json;
+      try { init(); }
+      catch (e) {
+        detailPanel.innerHTML = '<p style="color:#ef4444;">Init error: ' + e.message + '</p>';
+        console.error("Init error:", e);
+      }
+    })
     .catch(function (err) {
-      detailPanel.innerHTML = '<p style="color:#ef4444;">Failed to load data. Try refreshing.</p>';
-      console.error(err);
+      detailPanel.innerHTML = '<p style="color:#ef4444;">Failed to load data: ' + err.message + '. Try refreshing.</p>';
+      console.error("Fetch error:", err);
     });
 })();
 </script>
