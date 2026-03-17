@@ -28,3 +28,6 @@ presentations/tex
 # Orange Data Mining files (directory and local symlink)
 odm_files
 setup-sync.sh
+
+# Presentation prep materials
+presentation_prep
