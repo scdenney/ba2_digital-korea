@@ -4,187 +4,289 @@ title: "K-Means Clustering: Presidential Speeches"
 ---
 
 <style>
-/* ── Page layout ─────────────────────────────────────────────────── */
-.tutorial-page { max-width: 100%; }
+/* ── Page layout ──────────────────────────────────────────────────── */
+.demo-app { max-width: 100%; }
 
-.tutorial-header {
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.tutorial-header h1 {
-  font-size: 1.6rem;
-  color: var(--leiden-blue);
-  margin: 0 0 0.5rem;
-}
-
-.tutorial-subtitle {
-  font-size: 1rem;
-  color: #6b7280;
-  margin: 0 0 0.75rem;
-}
+.demo-header { margin-bottom: 1.5rem; margin-top: 1rem; }
+.demo-header h1 { margin: 0 0 0.5rem; font-size: 1.6rem; color: var(--leiden-blue); }
+.demo-intro { color: #4a4a4a; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem; }
 
 .tutorial-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.82rem;
-  color: #9ca3af;
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  font-size: 0.82rem; color: #9ca3af;
 }
-
 .tutorial-meta span { display: inline-flex; align-items: center; gap: 0.3rem; }
 
-/* ── Section headings ────────────────────────────────────────────── */
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 2.5rem 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e2e8f0;
+/* ── Pipeline step buttons ────────────────────────────────────────── */
+.pipeline-steps { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+
+.step-btn {
+  padding: 0.45rem 0.9rem; border: 2px solid #dfe3ee; border-radius: 20px;
+  background: #fff; font-size: 0.85rem; cursor: pointer; color: #4a4a4a;
+  font-weight: 600; transition: all 0.2s; font-family: inherit;
+}
+.step-btn:hover { border-color: var(--leiden-blue); color: var(--leiden-blue); }
+.step-btn.active { background: var(--leiden-blue); color: #fff; border-color: var(--leiden-blue); }
+.step-btn.completed { border-color: #10b981; color: #10b981; }
+.step-btn.completed.active { background: var(--leiden-blue); color: #fff; border-color: var(--leiden-blue); }
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn {
+  display: inline-block; padding: 0.5rem 1rem; border: 1px solid #dfe3ee;
+  border-radius: 6px; background: #fff; font-size: 0.9rem; line-height: 1.2;
+  cursor: pointer; color: var(--leiden-blue); font-weight: 600;
+  font-family: inherit; transition: background 0.15s, border-color 0.15s;
+}
+.btn:hover { background: #f5f7fb; border-color: var(--leiden-blue); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.82rem; }
+.btn-primary { background: var(--leiden-blue); color: #fff; border-color: var(--leiden-blue); }
+.btn-primary:hover { background: #003366; }
+.btn-primary:disabled { background: #94a3b8; border-color: #94a3b8; }
+
+/* ── Scatter plot ─────────────────────────────────────────────────── */
+.scatter-wrap { margin: 0.5rem 0 1rem; }
+
+.scatter-container {
+  position: relative; border: 1px solid #e2e8f0; border-radius: 8px;
+  overflow: hidden; background: #fafbfc; max-width: 760px; margin: 0 auto;
 }
 
-.section-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--leiden-blue);
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 700;
-  flex-shrink: 0;
+#scatterCanvas { display: block; width: 100%; cursor: crosshair; }
+
+.scatter-tooltip {
+  display: none; position: absolute; background: rgba(15,23,42,0.92);
+  color: #f1f5f9; padding: 0.4rem 0.65rem; border-radius: 5px;
+  font-size: 0.75rem; line-height: 1.45; pointer-events: none;
+  z-index: 10; max-width: 280px; white-space: nowrap;
 }
 
-.section-heading h2 { font-size: 1.25rem; color: var(--leiden-blue); margin: 0; }
+/* ── Navigation ───────────────────────────────────────────────────── */
+.nav-row {
+  display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0;
+}
+.step-description {
+  font-size: 0.88rem; color: #6b7280; text-align: center; flex: 1;
+  padding: 0 1rem; line-height: 1.4;
+}
 
-/* ── Narrative ───────────────────────────────────────────────────── */
-.narrative { font-size: 0.95rem; line-height: 1.7; color: #374151; margin: 1rem 0; }
-.narrative strong { color: var(--leiden-blue); }
+/* ── Detail panel ─────────────────────────────────────────────────── */
+.detail-panel { margin: 1rem 0; min-height: 60px; }
+.step-info { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.step-info p { font-size: 0.92rem; line-height: 1.65; color: #374151; margin: 0.5rem 0; }
+.step-info strong { color: var(--leiden-blue); }
 
-.callout { padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0; font-size: 0.88rem; line-height: 1.6; }
+/* ── K selector / silhouette chart ────────────────────────────────── */
+.sil-chart-row {
+  display: flex; align-items: flex-end; gap: 0.6rem; justify-content: center;
+  height: 170px; padding: 0.5rem 0; margin: 0.75rem 0;
+}
+
+.sil-bar-group {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  cursor: pointer; transition: transform 0.15s;
+}
+.sil-bar-group:hover { transform: translateY(-2px); }
+
+.sil-bar {
+  width: 48px; border-radius: 4px 4px 0 0; transition: height 0.4s ease, background 0.2s;
+}
+.sil-bar-value { font-size: 0.68rem; font-weight: 600; color: #374151; }
+.sil-bar-label { font-size: 0.78rem; font-weight: 700; color: #64748b; transition: color 0.2s; }
+.sil-bar-group.selected .sil-bar-label { color: var(--leiden-blue); }
+.sil-best-tag { font-size: 0.62rem; font-weight: 700; color: #059669; text-transform: uppercase; }
+
+/* ── Animation controls ───────────────────────────────────────────── */
+.anim-controls { display: flex; align-items: center; gap: 0.5rem; margin: 0.75rem 0; flex-wrap: wrap; }
+.anim-status {
+  font-size: 0.85rem; color: #4b5563; padding: 0.5rem 0.75rem;
+  background: #f1f5f9; border-radius: 6px; margin: 0.5rem 0; min-height: 2rem;
+  line-height: 1.4;
+}
+
+/* ── Cluster legend (clickable) ───────────────────────────────────── */
+.cluster-legend-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+
+.cluster-legend-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.35rem 0.7rem; border-radius: 20px; border: 2px solid #e2e8f0;
+  background: #f8fafc; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: inherit; color: #374151;
+}
+.cluster-legend-btn:hover { border-color: currentColor; }
+.cluster-legend-btn.active { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.cluster-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Cluster detail card ──────────────────────────────────────────── */
+.cluster-detail {
+  border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
+  margin: 0.75rem 0; animation: fadeIn 0.3s ease;
+}
+.cluster-detail-header {
+  padding: 0.6rem 1rem; font-weight: 700; font-size: 0.85rem; color: #fff;
+}
+.cluster-detail-body { padding: 0.75rem 1rem; }
+.cluster-card-section { margin-bottom: 0.6rem; }
+.cluster-card-section-title {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: #9ca3af; margin-bottom: 0.25rem;
+}
+
+/* ── Word cloud ───────────────────────────────────────────────────── */
+.wc-word {
+  display: inline-block; cursor: default; font-weight: 600;
+  transition: opacity 0.15s;
+}
+.wc-word:hover { opacity: 0.7; }
+
+/* ── Mini bars ────────────────────────────────────────────────────── */
+.mini-bar-row { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.2rem; }
+.mini-bar-label {
+  width: 50px; font-size: 0.75rem; text-align: right; color: #374151;
+  flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mini-bar-track { flex: 1; height: 14px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
+.mini-bar-fill { height: 100%; border-radius: 3px; }
+.mini-bar-count { font-size: 0.68rem; color: #6b7280; width: 28px; text-align: right; flex-shrink: 0; }
+
+/* ── Color toggle ─────────────────────────────────────────────────── */
+.color-toggle {
+  display: inline-flex; border: 2px solid #e2e8f0; border-radius: 8px;
+  overflow: hidden; margin: 0.5rem 0;
+}
+.color-toggle button {
+  padding: 0.5rem 1.25rem; border: none; background: #fff;
+  font-size: 0.85rem; font-weight: 600; color: #64748b;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.color-toggle button.active { background: var(--leiden-blue); color: #fff; }
+.color-toggle button:hover:not(.active) { background: #f8fafc; }
+
+/* ── Color legend ─────────────────────────────────────────────────── */
+.color-legend {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.75rem 0;
+  padding: 0.6rem 0.75rem; background: #f9fafb; border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+.color-legend-item {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.78rem; color: #4a4a4a;
+}
+.color-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ── Callouts ─────────────────────────────────────────────────────── */
+.callout {
+  padding: 0.75rem 1rem; border-radius: 6px; margin: 0.75rem 0;
+  font-size: 0.85rem; line-height: 1.6;
+}
 .callout-info { background: #eff6ff; border-left: 3px solid #3b82f6; color: #1e40af; }
 .callout-tip { background: #f0fdf4; border-left: 3px solid #22c55e; color: #166534; }
 
-/* ── Output panels ───────────────────────────────────────────────── */
-.output-panel { border: 1px solid #e2e8f0; border-radius: 8px; margin: 1.25rem 0; overflow: hidden; }
-.output-panel-header { padding: 0.4rem 0.75rem; background: #fafafa; border-bottom: 1px solid #e2e8f0; font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-.output-panel-body { padding: 1.25rem; background: #fff; }
-
-/* ── Code ribbon ─────────────────────────────────────────────────── */
-.code-ribbon { margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-.code-ribbon summary { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: linear-gradient(to right, #1e293b, #334155); color: #e2e8f0; font-size: 0.82rem; font-weight: 600; cursor: pointer; user-select: none; list-style: none; transition: background 0.2s; }
+/* ── Code ribbons ─────────────────────────────────────────────────── */
+.code-ribbon { margin: 0.75rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.code-ribbon summary {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #1e293b, #334155); color: #e2e8f0;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer; user-select: none;
+  list-style: none; transition: background 0.2s;
+}
 .code-ribbon summary::-webkit-details-marker { display: none; }
 .code-ribbon summary::before { content: "\25B6"; font-size: 0.65rem; transition: transform 0.2s; flex-shrink: 0; }
 .code-ribbon[open] summary::before { transform: rotate(90deg); }
 .code-ribbon summary:hover { background: linear-gradient(to right, #0f172a, #1e293b); }
 .code-ribbon summary .ribbon-label { flex: 1; }
-.code-ribbon summary .ribbon-tag { padding: 0.12rem 0.45rem; border-radius: 4px; font-size: 0.68rem; font-weight: 700; background: rgba(255,255,255,0.12); color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; }
+.code-ribbon summary .ribbon-tag {
+  padding: 0.12rem 0.45rem; border-radius: 4px; font-size: 0.68rem; font-weight: 700;
+  background: rgba(255,255,255,0.12); color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em;
+}
 .code-ribbon .code-ribbon-body { border-top: 1px solid #334155; }
 .code-ribbon .code-block { margin: 0; border: none; border-radius: 0; }
 .code-ribbon .callout { margin: 0; border-radius: 0; border-left-width: 3px; }
 
-/* ── Code blocks ─────────────────────────────────────────────────── */
-.code-block { position: relative; margin: 1rem 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
-.code-block-header { display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0.75rem; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-.copy-btn { padding: 0.2rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; font-size: 0.72rem; color: #64748b; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+/* ── Code blocks ──────────────────────────────────────────────────── */
+.code-block { position: relative; margin: 0.75rem 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.4rem 0.75rem; background: #f1f5f9; border-bottom: 1px solid #e2e8f0;
+  font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.copy-btn {
+  padding: 0.2rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px;
+  background: #fff; font-size: 0.72rem; color: #64748b; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
 .copy-btn:hover { background: #f8fafc; border-color: var(--leiden-blue); color: var(--leiden-blue); }
 .copy-btn.copied { background: #ecfdf5; border-color: #6ee7b7; color: #059669; }
-.code-block pre { margin: 0; padding: 1rem; background: #1e293b; color: #e2e8f0; font-size: 0.82rem; line-height: 1.55; overflow-x: auto; font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace; }
+.code-block pre {
+  margin: 0; padding: 1rem; background: #1e293b; color: #e2e8f0;
+  font-size: 0.82rem; line-height: 1.55; overflow-x: auto;
+  font-family: "SFMono-Regular","Consolas","Liberation Mono",monospace;
+}
 .code-block pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
-.code-block .r-comment { color: #94a3b8; font-style: italic; }
-.code-block .r-string { color: #86efac; }
-.code-block .r-function { color: #93c5fd; }
-.code-block .r-keyword { color: #c4b5fd; }
-.code-block .r-number { color: #fde68a; }
-.code-block .r-operator { color: #f9a8d4; }
+.r-comment { color: #94a3b8; font-style: italic; }
+.r-string { color: #86efac; }
+.r-function { color: #93c5fd; }
+.r-keyword { color: #c4b5fd; }
+.r-number { color: #fde68a; }
+.r-operator { color: #f9a8d4; }
 
-/* ── Silhouette bar chart ────────────────────────────────────────── */
-.sil-chart { display: flex; align-items: flex-end; gap: 0.5rem; justify-content: center; height: 180px; padding: 0.5rem 0; }
-.sil-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
-.sil-bar { width: 48px; border-radius: 4px 4px 0 0; transition: height 0.6s ease; position: relative; }
-.sil-bar-label { font-size: 0.72rem; font-weight: 700; color: #64748b; }
-.sil-bar-value { font-size: 0.68rem; font-weight: 600; color: #374151; margin-top: 0.15rem; }
-.sil-bar.best { outline: 2px solid #059669; outline-offset: 1px; }
-.sil-best-tag { font-size: 0.65rem; font-weight: 700; color: #059669; text-transform: uppercase; }
-
-/* ── Cluster cards ───────────────────────────────────────────────── */
-.cluster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0; }
-.cluster-card { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-.cluster-card-header { padding: 0.6rem 1rem; font-weight: 700; font-size: 0.85rem; color: #fff; }
-.cluster-card-body { padding: 0.75rem 1rem; }
-.cluster-card-section { margin-bottom: 0.6rem; }
-.cluster-card-section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #9ca3af; margin-bottom: 0.25rem; }
-
-/* ── Word cloud ──────────────────────────────────────────────────── */
-.wc-word { display: inline-block; cursor: default; font-weight: 600; transition: opacity 0.15s; }
-.wc-word:hover { opacity: 0.7; }
-
-/* ── Mini bar ────────────────────────────────────────────────────── */
-.mini-bar-row { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.2rem; }
-.mini-bar-label { width: 50px; font-size: 0.75rem; text-align: right; color: #374151; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mini-bar-track { flex: 1; height: 14px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
-.mini-bar-fill { height: 100%; border-radius: 3px; }
-.mini-bar-count { font-size: 0.68rem; color: #6b7280; width: 28px; text-align: right; flex-shrink: 0; }
-
-/* ── Chart legend ────────────────────────────────────────────────── */
-.chart-legend { display: flex; justify-content: center; gap: 1.5rem; margin: 0.75rem 0 0.5rem; font-size: 0.8rem; flex-wrap: wrap; }
-.chart-legend-item { display: inline-flex; align-items: center; gap: 0.35rem; color: #4b5563; }
-.chart-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-/* ── Responsive ──────────────────────────────────────────────────── */
-@media (max-width: 768px) { .cluster-grid { grid-template-columns: 1fr; } }
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .demo-header h1 { font-size: 1.3rem; }
+  .pipeline-steps { gap: 0.3rem; }
+  .step-btn { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
+  .sil-chart-row { height: 140px; gap: 0.35rem; }
+  .sil-bar { width: 36px; }
+  .color-toggle button { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+}
 </style>
 
-<div class="tutorial-page">
-
-<div class="tutorial-header">
-  <h1>K-Means Clustering: Presidential Speeches</h1>
-  <p class="tutorial-subtitle">Letting silhouette scores choose <em>k</em>, then interpreting what the clusters found</p>
-  <div class="tutorial-meta">
-    <span>Week 7</span>
-    <span>R + tidyverse + tidytext</span>
-    <span>Democratic-Era Presidential Speeches (749 speeches, 7 presidents)</span>
+<div class="demo-app" id="app">
+  <div class="demo-header">
+    <h1>K-Means Clustering: Presidential Speeches</h1>
+    <p class="demo-intro">Step through a k-means clustering of 749 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <div class="tutorial-meta">
+      <span>Week 7</span>
+      <span>749 speeches, 7 presidents</span>
+      <span>Democratic era (1988&ndash;2022)</span>
+    </div>
   </div>
-</div>
 
-<p class="narrative">
-  In the hierarchical clustering demo we let the dendrogram reveal structure. K-means works differently: you must choose <em>k</em> (the number of clusters) in advance. But how? We let the <strong>silhouette score</strong> guide us &mdash; the same approach you use in Orange's K-Means widget. We run k-means for k=2 through k=8, compare scores, and then explore what the best clustering found.
-</p>
+  <div class="pipeline-steps" id="pipelineSteps"></div>
 
-<p class="narrative">
-  The corpus is the 749 democratic-era presidential speeches you have been using since Week 2 &mdash; speeches from 7 presidents (Roh Tae-woo through Moon Jae-in). The question: <strong>does k-means group speeches by president, or by something else?</strong>
-</p>
+  <div class="scatter-wrap">
+    <div class="scatter-container" id="scatterContainer">
+      <canvas id="scatterCanvas"></canvas>
+      <div id="tooltip" class="scatter-tooltip"></div>
+    </div>
+  </div>
 
-<!-- ════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">
-  <span class="section-number">1</span>
-  <h2>Choosing <em>k</em>: Silhouette Scores</h2>
-</div>
+  <div class="nav-row">
+    <button class="btn" id="prevBtn" disabled>Previous</button>
+    <span class="step-description" id="stepDesc"></span>
+    <button class="btn" id="nextBtn">Next</button>
+  </div>
 
-<p class="narrative">
-  Orange's K-Means widget does exactly this: it runs k-means for every value in a range (default 2&ndash;8), computes the <strong>average silhouette score</strong> for each, and highlights the best one. A higher silhouette score means documents fit their assigned cluster well and are far from neighboring clusters. Here are the results for our presidential speeches:
-</p>
+  <div id="detailPanel" class="detail-panel"><p style="color:#6b7280;font-size:0.9rem;">Loading speech data...</p></div>
 
-<details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: run k-means for k=2..8 and compare silhouette scores</span><span class="ribbon-tag">R</span></summary>
-  <div class="code-ribbon-body">
-    <div class="code-block">
-      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
+  <div style="margin-top:2rem;">
+    <details class="code-ribbon">
+      <summary><span class="ribbon-label">R code: k-means with silhouette comparison (k=2..8)</span><span class="ribbon-tag">R</span></summary>
+      <div class="code-ribbon-body">
+        <div class="code-block">
+          <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
 <span class="r-function">library</span>(tidyverse)
 <span class="r-function">library</span>(tidytext)
 <span class="r-function">library</span>(elbird)
-<span class="r-function">library</span>(cluster)     <span class="r-comment"># for silhouette()</span>
+<span class="r-function">library</span>(cluster)
 
 <span class="r-comment"># ── Load and preprocess ───────────────────────────────────────────</span>
 corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/president_speeches/president_speeches_democratic_era.csv"</span>)
 stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"data/stopwords_ko.txt"</span>) <span class="r-operator">|&gt;</span> <span class="r-function">str_trim</span>() <span class="r-operator">|&gt;</span> <span class="r-function">discard</span>(<span class="r-operator">~</span> .x <span class="r-operator">==</span> <span class="r-string">""</span>)
 
-<span class="r-comment"># Tokenize (same Kiwi pipeline as before)</span>
+<span class="r-comment"># Tokenize with Kiwi</span>
 tokenize_kiwi <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {
   result <span class="r-operator">&lt;-</span> <span class="r-function">tokenize</span>(text, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)
   <span class="r-function">tibble</span>(form <span class="r-operator">=</span> result<span class="r-operator">$</span>form, tag <span class="r-operator">=</span> result<span class="r-operator">$</span>tag)
@@ -213,64 +315,26 @@ sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibbl
     })
   )
 
-<span class="r-comment"># Which k is best?</span>
-sil_results <span class="r-operator">|&gt;</span> <span class="r-function">arrange</span>(<span class="r-function">desc</span>(sil))
 best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator">|&gt;</span> <span class="r-function">slice_max</span>(sil) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(k)</code></pre>
-    </div>
-    <div class="callout callout-info">
-      <strong>About <code>nstart = 10</code>:</strong> K-means results depend on random initial centroid placement. Setting <code>nstart = 10</code> runs the algorithm 10 times with different starting points and keeps the best result &mdash; the same approach Orange uses by default.
-    </div>
-  </div>
-</details>
+        </div>
+        <div class="callout callout-info">
+          <strong>About <code>nstart = 10</code>:</strong> K-means results depend on random initial centroid placement. Setting <code>nstart = 10</code> runs the algorithm 10 times with different starting points and keeps the best result &mdash; the same approach Orange uses by default.
+        </div>
+      </div>
+    </details>
 
-<div class="output-panel">
-  <div class="output-panel-header">Silhouette Scores by <em>k</em></div>
-  <div class="output-panel-body">
-    <div class="sil-chart" id="silChart"></div>
-    <p style="text-align:center; font-size:0.82rem; color:#6b7280; margin-top:0.5rem;">Higher silhouette = better-defined clusters. The green bar is the best <em>k</em>.</p>
-  </div>
-</div>
-
-<div class="callout callout-info">
-  <strong>How to read silhouette scores:</strong> As a general guideline: <strong>0.70&ndash;1.0</strong> = strong structure, <strong>0.50&ndash;0.70</strong> = reasonable, <strong>0.25&ndash;0.50</strong> = weak but potentially useful, <strong>below 0.25</strong> = little meaningful structure. Our scores here (~0.01&ndash;0.02) are low even by text standards &mdash; this is honest. It means the cluster boundaries are fuzzy: speeches share a lot of overlapping vocabulary regardless of topic. The clusters still show <em>interpretable</em> thematic patterns (see below), but the separation is soft. This is a realistic result and worth acknowledging.
-</div>
-
-<div class="callout callout-tip">
-  <strong>Low scores are common for text.</strong> TF-IDF document vectors are high-dimensional and sparse, which makes clean separation rare. What matters is (1) the <em>relative</em> comparison across k values and (2) whether the resulting clusters are <em>interpretable</em> when you look at the top words.
-</div>
-
-<!-- ════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">
-  <span class="section-number">2</span>
-  <h2>What Did K-Means Find?</h2>
-</div>
-
-<p class="narrative">
-  With 7 presidents in the corpus, you might expect k=7 to recover one cluster per president. But look at the cluster compositions below &mdash; <strong>every president appears in multiple clusters</strong>. K-means grouped speeches by <em>topic</em>, not by <em>speaker</em>. The algorithm found thematic structure: diplomacy, national addresses, commemorative events, education, economy.
-</p>
-
-<p class="narrative">
-  This is an important lesson: <strong>clustering finds the dominant source of variation in the data</strong>. In this corpus, the biggest vocabulary differences are between speech <em>types</em> (a diplomatic welcome vs. an economic policy address), not between presidents.
-</p>
-
-<details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: run k-means with best k and extract cluster words</span><span class="ribbon-tag">R</span></summary>
-  <div class="code-ribbon-body">
-    <div class="code-block">
-      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── Run k-means with the best k ───────────────────────────────────</span>
-<span class="r-function">set.seed</span>(<span class="r-number">42</span>)   <span class="r-comment"># for reproducibility</span>
+    <details class="code-ribbon">
+      <summary><span class="ribbon-label">R code: extract top words per cluster and president distribution</span><span class="ribbon-tag">R</span></summary>
+      <div class="code-ribbon-body">
+        <div class="code-block">
+          <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="r-comment"># ── Run k-means with the best k ───────────────────────────────────</span>
+<span class="r-function">set.seed</span>(<span class="r-number">42</span>)
 best_km <span class="r-operator">&lt;-</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> best_k, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)
 
-<span class="r-comment"># ── Attach cluster labels to each document ────────────────────────</span>
-doc_clusters <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(
-  doc_id  <span class="r-operator">=</span> dtm<span class="r-operator">$</span>doc_id,
-  cluster <span class="r-operator">=</span> <span class="r-function">as.character</span>(best_km<span class="r-operator">$</span>cluster)
-)
+doc_clusters <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(doc_id <span class="r-operator">=</span> dtm<span class="r-operator">$</span>doc_id, cluster <span class="r-operator">=</span> <span class="r-function">as.character</span>(best_km<span class="r-operator">$</span>cluster))
 
-<span class="r-comment"># ── Extract top TF-IDF words per cluster ──────────────────────────</span>
-<span class="r-comment"># Treat all speeches in a cluster as one pseudo-document,</span>
-<span class="r-comment"># then find the words with highest TF-IDF within that cluster.</span>
+<span class="r-comment"># ── Top TF-IDF words per cluster ──────────────────────────────────</span>
 cluster_tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">left_join</span>(doc_clusters, by <span class="r-operator">=</span> <span class="r-string">"doc_id"</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">count</span>(cluster, word) <span class="r-operator">|&gt;</span>
@@ -279,340 +343,876 @@ cluster_tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operat
   <span class="r-function">slice_max</span>(tf_idf, n <span class="r-operator">=</span> <span class="r-number">15</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">ungroup</span>()
 
-<span class="r-comment"># View top words for each cluster</span>
-cluster_tfidf <span class="r-operator">|&gt;</span>
-  <span class="r-function">select</span>(cluster, word, tf_idf) <span class="r-operator">|&gt;</span>
-  <span class="r-function">arrange</span>(cluster, <span class="r-function">desc</span>(tf_idf)) <span class="r-operator">|&gt;</span>
-  <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">30</span>)
-
-<span class="r-comment"># ── Plot: top words per cluster ───────────────────────────────────</span>
-cluster_tfidf <span class="r-operator">|&gt;</span>
-  <span class="r-function">mutate</span>(word <span class="r-operator">=</span> <span class="r-function">reorder_within</span>(word, tf_idf, cluster)) <span class="r-operator">|&gt;</span>
-  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(tf_idf, word, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
-  <span class="r-function">geom_col</span>(show.legend <span class="r-operator">=</span> <span class="r-keyword">FALSE</span>) <span class="r-operator">+</span>
-  <span class="r-function">facet_wrap</span>(<span class="r-operator">~</span> cluster, scales <span class="r-operator">=</span> <span class="r-string">"free"</span>) <span class="r-operator">+</span>
-  <span class="r-function">scale_y_reordered</span>() <span class="r-operator">+</span>
-  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-function">paste</span>(<span class="r-string">"Top words by cluster (k ="</span>, best_k, <span class="r-string">")"</span>),
-       x <span class="r-operator">=</span> <span class="r-string">"TF-IDF"</span>, y <span class="r-operator">=</span> <span class="r-keyword">NULL</span>) <span class="r-operator">+</span>
-  <span class="r-function">theme_minimal</span>()</code></pre>
-    </div>
-    <div class="callout callout-info">
-      <strong>Why TF-IDF again here?</strong> We already used TF-IDF to build the document vectors. Now we re-apply it at the cluster level: treating all speeches in a cluster as one big pseudo-document reveals which words are <em>distinctive to that cluster</em> compared to the other clusters. This is the same logic as the cluster word analysis in the NIKH textbook demo.
-    </div>
-  </div>
-</details>
-
-<div class="output-panel">
-  <div class="output-panel-header">Clusters: Top Words &amp; President Distribution</div>
-  <div class="output-panel-body">
-    <div id="clusterLegend" class="chart-legend"></div>
-    <div class="cluster-grid" id="clusterGrid"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">
-  <span class="section-number">3</span>
-  <h2>Presidents Across Clusters</h2>
-</div>
-
-<p class="narrative">
-  Another way to read the results: for each president, how are their speeches distributed across clusters? If k-means had found president-level clusters, each president would be concentrated in a single row. Instead, we see that most presidents' speeches spread across 4&ndash;6 clusters &mdash; because presidents give many <em>types</em> of speeches.
-</p>
-
-<details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: summarize president distribution across clusters</span><span class="ribbon-tag">R</span></summary>
-  <div class="code-ribbon-body">
-    <div class="code-block">
-      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── President distribution per cluster ────────────────────────────</span>
-<span class="r-comment"># For each president, count how many speeches landed in each cluster.</span>
+<span class="r-comment"># ── President distribution per cluster ────────────────────────────</span>
 pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span>
   <span class="r-function">left_join</span>(doc_clusters, by <span class="r-operator">=</span> <span class="r-string">"doc_id"</span>) <span class="r-operator">|&gt;</span>
-  <span class="r-function">count</span>(president, cluster)
-
-<span class="r-comment"># ── Tabular view ──────────────────────────────────────────────────</span>
-pres_order <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(<span class="r-string">"노태우"</span>, <span class="r-string">"김영삼"</span>, <span class="r-string">"김대중"</span>, <span class="r-string">"노무현"</span>, <span class="r-string">"이명박"</span>, <span class="r-string">"박근혜"</span>, <span class="r-string">"문재인"</span>)
-
-pres_cluster <span class="r-operator">|&gt;</span>
-  <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> cluster, values_from <span class="r-operator">=</span> n,
-              values_fill <span class="r-operator">=</span> <span class="r-number">0</span>, names_sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>
-  <span class="r-function">arrange</span>(<span class="r-function">match</span>(president, pres_order))
-
-<span class="r-comment"># ── Stacked bar chart: proportional view ──────────────────────────</span>
-pres_cluster <span class="r-operator">|&gt;</span>
-  <span class="r-function">mutate</span>(president <span class="r-operator">=</span> <span class="r-function">factor</span>(president, levels <span class="r-operator">=</span> pres_order)) <span class="r-operator">|&gt;</span>
-  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> president, y <span class="r-operator">=</span> n, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
-  <span class="r-function">geom_col</span>(position <span class="r-operator">=</span> <span class="r-string">"fill"</span>) <span class="r-operator">+</span>
-  <span class="r-function">scale_y_continuous</span>(labels <span class="r-operator">=</span> scales<span class="r-operator">::</span><span class="r-function">percent</span>) <span class="r-operator">+</span>
-  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"How each president's speeches are distributed across clusters"</span>,
-       x <span class="r-operator">=</span> <span class="r-keyword">NULL</span>, y <span class="r-operator">=</span> <span class="r-string">"Share of speeches"</span>, fill <span class="r-operator">=</span> <span class="r-string">"Cluster"</span>) <span class="r-operator">+</span>
-  <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>
-  <span class="r-function">theme</span>(axis.text.x <span class="r-operator">=</span> <span class="r-function">element_text</span>(angle <span class="r-operator">=</span> <span class="r-number">45</span>, hjust <span class="r-operator">=</span> <span class="r-number">1</span>))</code></pre>
-    </div>
-    <div class="callout callout-tip">
-      <strong>What to look for:</strong> If k-means had clustered by president, each row would be one solid colour. Instead, every president's bar is split across multiple clusters &mdash; confirming that topic, not speaker identity, drives the clustering.
-    </div>
+  <span class="r-function">count</span>(president, cluster)</code></pre>
+        </div>
+      </div>
+    </details>
   </div>
-</details>
-
-<div class="output-panel">
-  <div class="output-panel-header">Speech Distribution by President</div>
-  <div class="output-panel-body" id="presidentGrid"></div>
 </div>
-
-<div class="callout callout-info">
-  <strong>Comparing methods:</strong> Hierarchical clustering on the NIKH textbooks found <em>era-based</em> clusters (Colonial, Authoritarian, Democratic) because each textbook has one era label and its entire vocabulary reflects that era. K-means on presidential speeches found <em>topic-based</em> clusters because each president gives speeches on many different topics. The method is the same &mdash; the structure it finds depends on the data.
-</div>
-
-<!-- ════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">
-  <span class="section-number">4</span>
-  <h2>Key Takeaways</h2>
-</div>
-
-<p class="narrative">
-  Three lessons from this exercise:
-</p>
-
-<p class="narrative">
-  <strong>1. Silhouette scores guide, but you interpret.</strong> The silhouette score told us k=<span id="bestKInline"></span> produces the tightest clusters. But a different k might be more useful for your research question &mdash; maybe k=3 (progressive/conservative/neutral) is what you actually want to test.
-</p>
-
-<p class="narrative">
-  <strong>2. Clustering finds the strongest signal.</strong> The biggest vocabulary differences in this corpus are between speech <em>types</em>, not between presidents. A diplomatic welcome speech uses different words than an economic policy address, regardless of who is speaking.
-</p>
-
-<p class="narrative">
-  <strong>3. K-means and hierarchical clustering complement each other.</strong> Hierarchical clustering shows the full tree of relationships. K-means gives you a clean partition. Use both and compare.
-</p>
-
-</div><!-- /tutorial-page -->
 
 <script>
 (function () {
   "use strict";
 
-  var DATA = null;
-  var CLUSTER_COLORS = [
-    "#2563eb", "#dc2626", "#059669", "#d97706",
-    "#7c3aed", "#0891b2", "#be185d", "#4f46e5"
+  // ── CONSTANTS ─────────────────────────────────────────────────────
+  var STEPS = [
+    { id: "corpus",  label: "1. The Corpus",       desc: "749 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
+    { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
+    { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
+    { id: "insight", label: "5. The Insight",        desc: "Toggle coloring. Notice: presidents spread across all clusters. Topic drives the clustering." }
   ];
 
-  var PRESIDENT_ORDER = ["노태우", "김영삼", "김대중", "노무현", "이명박", "박근혜", "문재인"];
+  var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
-  // Subjective labels based on top words in each cluster (0-indexed internally)
-  var CLUSTER_LABELS = {
-    "0": "Bilateral Diplomacy",
-    "1": "International Summits",
-    "2": "National Unity & Inter-Korean",
-    "3": "Commemorative & Cultural",
-    "4": "Security & Defense",
-    "5": "Education & Youth",
-    "6": "Economic Policy & Reform"
-  };
+  var CLUSTER_LABELS = [
+    "Bilateral Diplomacy", "International Summits", "National Unity & Inter-Korean",
+    "Commemorative & Cultural", "Security & Defense", "Education & Youth",
+    "Economic Policy & Reform"
+  ];
 
-  fetch("{{ '/interactive/kmeans_data.json' | relative_url }}")
-    .then(function (r) { return r.json(); })
-    .then(function (json) {
-      DATA = json;
-      document.getElementById("bestKInline").textContent = DATA.best_k;
-      renderSilhouetteChart();
-      renderClusterGrid();
-      renderPresidentGrid();
+  var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
+
+  var PRESIDENT_COLORS = {};
+  var PRES_PAL = ["#a855f7","#f97316","#14b8a6","#f43f5e","#6366f1","#eab308","#22c55e"];
+  PRESIDENT_ORDER.forEach(function (p, i) { PRESIDENT_COLORS[p] = PRES_PAL[i]; });
+
+  var DOT_R = 3.5;
+  var PAD = 28;
+
+  // ── STATE ─────────────────────────────────────────────────────────
+  var DATA = null;
+  var currentStep = 0;
+  var canvasW = 0, canvasH = 0;
+
+  // Drawing state
+  var colorState = "gray";        // gray | kmeans | cluster | president
+  var currentAssignments = null;   // per-speech cluster index
+  var showCentroids = false;
+  var currentCentroids = null;     // [[x,y], ...]
+  var highlightCluster = null;     // null or cluster index
+  var selectedK = 7;
+  var hoveredIdx = -1;
+
+  // Animation state
+  var animFrames = [];
+  var animFrameIdx = -1;
+  var isAutoPlaying = false;
+  var animTimers = [];
+
+  // K-means cache
+  var kmeansCache = {};
+
+  // Seeded PRNG for reproducible k-selection
+  var _seed = 42;
+  function seededRandom() {
+    _seed |= 0; _seed = _seed + 0x6D2B79F5 | 0;
+    var t = Math.imul(_seed ^ _seed >>> 15, 1 | _seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+
+  // ── DOM REFS ──────────────────────────────────────────────────────
+  var canvas = document.getElementById("scatterCanvas");
+  var ctx = canvas.getContext("2d");
+  var tooltipEl = document.getElementById("tooltip");
+  var stepsEl = document.getElementById("pipelineSteps");
+  var prevBtn = document.getElementById("prevBtn");
+  var nextBtn = document.getElementById("nextBtn");
+  var stepDesc = document.getElementById("stepDesc");
+  var detailPanel = document.getElementById("detailPanel");
+
+  // ── CANVAS SETUP ──────────────────────────────────────────────────
+  function setupCanvas() {
+    var container = document.getElementById("scatterContainer");
+    var w = container.clientWidth;
+    var h = Math.round(Math.min(w * 0.6, 460));
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    canvasW = w;
+    canvasH = h;
+  }
+
+  function tx(dataX) { return PAD + dataX * (canvasW - 2 * PAD); }
+  function ty(dataY) { return PAD + (1 - dataY) * (canvasH - 2 * PAD); }
+
+  // ── DRAWING ───────────────────────────────────────────────────────
+  function draw() {
+    ctx.clearRect(0, 0, canvasW, canvasH);
+    if (!DATA) return;
+
+    var speeches = DATA.speeches;
+    var n = speeches.length;
+
+    // Draw dots
+    for (var i = 0; i < n; i++) {
+      var s = speeches[i];
+      var x = tx(s.x), y = ty(s.y);
+      var r = (i === hoveredIdx) ? DOT_R + 2 : DOT_R;
+      var color, alpha;
+
+      if (colorState === "gray") {
+        color = "#94a3b8"; alpha = 0.5;
+      } else if (colorState === "kmeans") {
+        var c = currentAssignments ? currentAssignments[i] : 0;
+        color = PALETTE[c % PALETTE.length]; alpha = 0.65;
+      } else if (colorState === "cluster") {
+        color = PALETTE[s.cluster % PALETTE.length];
+        alpha = (highlightCluster === null || highlightCluster === s.cluster) ? 0.7 : 0.07;
+      } else if (colorState === "president") {
+        color = PRESIDENT_COLORS[s.president] || "#94a3b8"; alpha = 0.7;
+      } else {
+        color = "#94a3b8"; alpha = 0.5;
+      }
+
+      if (i === hoveredIdx) alpha = 1;
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+
+    // Draw centroids
+    if (showCentroids && currentCentroids) {
+      for (var j = 0; j < currentCentroids.length; j++) {
+        drawCentroid(tx(currentCentroids[j][0]), ty(currentCentroids[j][1]),
+                     PALETTE[j % PALETTE.length]);
+      }
+    }
+
+    // Hovered dot ring
+    if (hoveredIdx >= 0) {
+      var hs = speeches[hoveredIdx];
+      ctx.beginPath();
+      ctx.arc(tx(hs.x), ty(hs.y), DOT_R + 5, 0, Math.PI * 2);
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Watermark
+    ctx.globalAlpha = 0.35;
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "10px -apple-system, sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText("2D projection of TF-IDF vectors", canvasW - PAD, canvasH - 8);
+    ctx.globalAlpha = 1;
+    ctx.textAlign = "start";
+  }
+
+  function drawCentroid(cx, cy, color) {
+    var r = 7;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - r); ctx.lineTo(cx + r, cy);
+    ctx.lineTo(cx, cy + r); ctx.lineTo(cx - r, cy);
+    ctx.closePath();
+    ctx.fillStyle = color; ctx.fill();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.strokeStyle = "rgba(0,0,0,0.2)"; ctx.lineWidth = 0.5; ctx.stroke();
+  }
+
+  // ── K-MEANS ALGORITHM ─────────────────────────────────────────────
+  function runKMeans(points, k, rng) {
+    var n = points.length;
+    rng = rng || seededRandom;
+
+    // k-means++ init
+    var centroids = [points[Math.floor(rng() * n)].slice()];
+    for (var c = 1; c < k; c++) {
+      var dists = [];
+      for (var i = 0; i < n; i++) {
+        var minD = Infinity;
+        for (var j = 0; j < centroids.length; j++) {
+          var dx = points[i][0] - centroids[j][0], dy = points[i][1] - centroids[j][1];
+          var d = dx * dx + dy * dy;
+          if (d < minD) minD = d;
+        }
+        dists.push(minD);
+      }
+      var total = 0;
+      for (var i = 0; i < n; i++) total += dists[i];
+      var r = rng() * total, cum = 0;
+      for (var i = 0; i < n; i++) {
+        cum += dists[i];
+        if (cum >= r) { centroids.push(points[i].slice()); break; }
+      }
+    }
+
+    // Iterate
+    var assignments = new Array(n);
+    for (var iter = 0; iter < 40; iter++) {
+      var changed = false;
+      for (var i = 0; i < n; i++) {
+        var minD = Infinity, best = 0;
+        for (var j = 0; j < k; j++) {
+          var dx = points[i][0] - centroids[j][0], dy = points[i][1] - centroids[j][1];
+          var d = dx * dx + dy * dy;
+          if (d < minD) { minD = d; best = j; }
+        }
+        if (assignments[i] !== best) { assignments[i] = best; changed = true; }
+      }
+      if (!changed) break;
+
+      for (var j = 0; j < k; j++) {
+        var sx = 0, sy = 0, cnt = 0;
+        for (var i = 0; i < n; i++) {
+          if (assignments[i] === j) { sx += points[i][0]; sy += points[i][1]; cnt++; }
+        }
+        if (cnt > 0) centroids[j] = [sx / cnt, sy / cnt];
+      }
+    }
+    return { assignments: assignments, centroids: centroids };
+  }
+
+  function getKResult(k) {
+    if (k === DATA.best_k) {
+      return {
+        assignments: DATA.speeches.map(function (s) { return s.cluster; }),
+        centroids: DATA.centroids_2d.map(function (c) { return c.slice(); })
+      };
+    }
+    if (!kmeansCache[k]) {
+      var pts = DATA.speeches.map(function (s) { return [s.x, s.y]; });
+      var best = null;
+      for (var run = 0; run < 5; run++) {
+        var res = runKMeans(pts, k);
+        var inertia = 0;
+        for (var i = 0; i < pts.length; i++) {
+          var c = res.centroids[res.assignments[i]];
+          inertia += (pts[i][0] - c[0]) * (pts[i][0] - c[0]) + (pts[i][1] - c[1]) * (pts[i][1] - c[1]);
+        }
+        if (!best || inertia < best.inertia) best = { result: res, inertia: inertia };
+      }
+      kmeansCache[k] = best.result;
+    }
+    return kmeansCache[k];
+  }
+
+  // ── ANIMATION (Step 3) ────────────────────────────────────────────
+  function buildAnimFrames() {
+    var pts = DATA.speeches.map(function (s) { return [s.x, s.y]; });
+    var n = pts.length, k = DATA.best_k;
+
+    // Random initial centroids (use Math.random for variety)
+    var indices = [];
+    while (indices.length < k) {
+      var idx = Math.floor(Math.random() * n);
+      if (indices.indexOf(idx) === -1) indices.push(idx);
+    }
+    var centroids = indices.map(function (i) { return pts[i].slice(); });
+
+    var frames = [];
+    frames.push({ type: "init", centroids: centroids.map(function (c) { return c.slice(); }), assignments: null, label: "Placed " + k + " random centroids" });
+
+    for (var iter = 0; iter < 5; iter++) {
+      // Assign
+      var assignments = [];
+      for (var i = 0; i < n; i++) {
+        var minD = Infinity, best = 0;
+        for (var j = 0; j < k; j++) {
+          var dx = pts[i][0] - centroids[j][0], dy = pts[i][1] - centroids[j][1];
+          if (dx * dx + dy * dy < minD) { minD = dx * dx + dy * dy; best = j; }
+        }
+        assignments.push(best);
+      }
+      frames.push({ type: "assign", centroids: centroids.map(function (c) { return c.slice(); }), assignments: assignments.slice(), label: "Iteration " + (iter + 1) + ": assigned to nearest centroid" });
+
+      // Update
+      var newC = [];
+      for (var j = 0; j < k; j++) {
+        var sx = 0, sy = 0, cnt = 0;
+        for (var i = 0; i < n; i++) {
+          if (assignments[i] === j) { sx += pts[i][0]; sy += pts[i][1]; cnt++; }
+        }
+        newC.push(cnt > 0 ? [sx / cnt, sy / cnt] : centroids[j].slice());
+      }
+      centroids = newC;
+      frames.push({ type: "update", centroids: centroids.map(function (c) { return c.slice(); }), assignments: assignments.slice(), label: "Iteration " + (iter + 1) + ": moved centroids to cluster centers" });
+    }
+
+    // Final: snap to actual
+    frames.push({
+      type: "final",
+      centroids: DATA.centroids_2d.map(function (c) { return c.slice(); }),
+      assignments: DATA.speeches.map(function (s) { return s.cluster; }),
+      label: "Converged! Final k=" + k + " clustering"
     });
 
-  // ── Silhouette bar chart ────────────────────────────────────────
-  function renderSilhouetteChart() {
-    var container = document.getElementById("silChart");
+    return frames;
+  }
+
+  function scheduleNext(ms) {
+    animTimers.push(setTimeout(function () { if (isAutoPlaying) playNextFrame(); }, ms));
+  }
+
+  function clearAnimTimers() {
+    animTimers.forEach(function (t) { clearTimeout(t); });
+    animTimers = [];
+  }
+
+  function playNextFrame() {
+    if (!isAutoPlaying) return;
+    animFrameIdx++;
+    if (animFrameIdx >= animFrames.length) { isAutoPlaying = false; updateAnimUI(); return; }
+
+    var frame = animFrames[animFrameIdx];
+    var prev = animFrameIdx > 0 ? animFrames[animFrameIdx - 1] : null;
+
+    if (frame.type === "init") {
+      showCentroids = true;
+      currentCentroids = frame.centroids.map(function (c) { return c.slice(); });
+      currentAssignments = null;
+      colorState = "gray";
+      draw();
+      updateAnimUI();
+      if (isAutoPlaying) scheduleNext(1000);
+    } else if (frame.type === "assign") {
+      currentAssignments = frame.assignments;
+      colorState = "kmeans";
+      draw();
+      updateAnimUI();
+      if (isAutoPlaying) scheduleNext(900);
+    } else if (frame.type === "update") {
+      var from = prev ? prev.centroids : frame.centroids;
+      var to = frame.centroids;
+      animateCentroids(from, to, 600, function () {
+        updateAnimUI();
+        if (isAutoPlaying) scheduleNext(400);
+      });
+    } else if (frame.type === "final") {
+      var from2 = currentCentroids ? currentCentroids.map(function (c) { return c.slice(); }) : frame.centroids;
+      currentAssignments = frame.assignments;
+      colorState = "kmeans";
+      animateCentroids(from2, frame.centroids, 700, function () {
+        isAutoPlaying = false;
+        updateAnimUI();
+      });
+    }
+  }
+
+  function animateCentroids(from, to, duration, callback) {
+    var start = performance.now();
+    function tick(now) {
+      var t = Math.min(1, (now - start) / duration);
+      t = t * t * (3 - 2 * t); // smoothstep
+      if (!currentCentroids) currentCentroids = from.map(function (c) { return c.slice(); });
+      for (var i = 0; i < from.length; i++) {
+        currentCentroids[i] = [
+          from[i][0] + (to[i][0] - from[i][0]) * t,
+          from[i][1] + (to[i][1] - from[i][1]) * t
+        ];
+      }
+      draw();
+      if (t < 1) requestAnimationFrame(tick);
+      else callback();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function startAutoPlay() {
+    if (isAutoPlaying) return;
+    animFrames = buildAnimFrames();
+    animFrameIdx = -1;
+    isAutoPlaying = true;
+    playNextFrame();
+  }
+
+  function stepForward() {
+    if (isAutoPlaying) return;
+    if (animFrameIdx < 0 || animFrames.length === 0) animFrames = buildAnimFrames();
+    if (animFrameIdx >= animFrames.length - 1) return;
+    // For step-by-step, skip centroid animation and snap
+    animFrameIdx++;
+    var frame = animFrames[animFrameIdx];
+    showCentroids = true;
+    currentCentroids = frame.centroids.map(function (c) { return c.slice(); });
+    if (frame.assignments) { currentAssignments = frame.assignments; colorState = "kmeans"; }
+    else { currentAssignments = null; colorState = "gray"; }
+    draw();
+    updateAnimUI();
+  }
+
+  function resetAnim() {
+    isAutoPlaying = false;
+    clearAnimTimers();
+    animFrames = [];
+    animFrameIdx = -1;
+    showCentroids = false;
+    currentCentroids = null;
+    currentAssignments = null;
+    colorState = "gray";
+    draw();
+    updateAnimUI();
+  }
+
+  function updateAnimUI() {
+    var statusEl = document.getElementById("animStatus");
+    var runBtn = document.getElementById("animRunBtn");
+    var stepBtn = document.getElementById("animStepBtn");
+    if (!statusEl) return;
+
+    if (animFrameIdx >= 0 && animFrameIdx < animFrames.length) {
+      statusEl.textContent = animFrames[animFrameIdx].label;
+    } else {
+      statusEl.textContent = "Click Run to watch the full animation, or Step to advance one phase at a time.";
+    }
+    if (runBtn) runBtn.disabled = isAutoPlaying;
+    if (stepBtn) stepBtn.disabled = isAutoPlaying;
+  }
+
+  // ── PRECOMPUTE ────────────────────────────────────────────────────
+  function precomputeAllK() {
+    var pts = DATA.speeches.map(function (s) { return [s.x, s.y]; });
+    for (var k = 2; k <= 8; k++) {
+      if (k === DATA.best_k) {
+        kmeansCache[k] = {
+          assignments: DATA.speeches.map(function (s) { return s.cluster; }),
+          centroids: DATA.centroids_2d.map(function (c) { return c.slice(); })
+        };
+      } else {
+        var best = null;
+        for (var run = 0; run < 5; run++) {
+          var res = runKMeans(pts, k);
+          var inertia = 0;
+          for (var i = 0; i < pts.length; i++) {
+            var c = res.centroids[res.assignments[i]];
+            inertia += (pts[i][0] - c[0]) * (pts[i][0] - c[0]) + (pts[i][1] - c[1]) * (pts[i][1] - c[1]);
+          }
+          if (!best || inertia < best.inertia) best = { result: res, inertia: inertia };
+        }
+        kmeansCache[k] = best.result;
+      }
+    }
+  }
+
+  // ── STEP MANAGEMENT ───────────────────────────────────────────────
+  function goToStep(n) {
+    if (n < 0 || n >= STEPS.length) return;
+    isAutoPlaying = false;
+    clearAnimTimers();
+    currentStep = n;
+    highlightCluster = null;
+    hoveredIdx = -1;
+    tooltipEl.style.display = "none";
+
+    switch (STEPS[n].id) {
+      case "corpus":
+        colorState = "gray"; showCentroids = false;
+        currentCentroids = null; currentAssignments = null;
+        break;
+      case "choosek":
+        selectedK = DATA.best_k;
+        var res = getKResult(selectedK);
+        currentAssignments = res.assignments;
+        currentCentroids = res.centroids;
+        colorState = "kmeans"; showCentroids = true;
+        break;
+      case "animate":
+        colorState = "gray"; showCentroids = false;
+        currentCentroids = null; currentAssignments = null;
+        animFrames = []; animFrameIdx = -1; isAutoPlaying = false;
+        break;
+      case "explore":
+        colorState = "cluster"; showCentroids = false;
+        currentAssignments = null; currentCentroids = null;
+        break;
+      case "insight":
+        colorState = "cluster"; showCentroids = false;
+        currentAssignments = null; currentCentroids = null;
+        break;
+    }
+
+    draw();
+    renderDetail();
+    updateStepBtns();
+    updateNav();
+  }
+
+  function renderDetail() {
+    var id = STEPS[currentStep].id;
+    if (id === "corpus") renderCorpus();
+    else if (id === "choosek") renderChooseK();
+    else if (id === "animate") renderAnimate();
+    else if (id === "explore") renderExplore();
+    else if (id === "insight") renderInsight();
+  }
+
+  function updateStepBtns() {
+    var btns = stepsEl.querySelectorAll(".step-btn");
+    btns.forEach(function (btn, i) {
+      btn.classList.remove("active", "completed");
+      if (i === currentStep) btn.classList.add("active");
+      else if (i < currentStep) btn.classList.add("completed");
+    });
+  }
+
+  function updateNav() {
+    prevBtn.disabled = (currentStep === 0);
+    nextBtn.disabled = (currentStep === STEPS.length - 1);
+    stepDesc.textContent = STEPS[currentStep].desc;
+  }
+
+  // ── STEP 1: CORPUS ────────────────────────────────────────────────
+  function renderCorpus() {
+    var counts = {};
+    DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
+
+    var html = '<div class="step-info">';
+    html += '<p>Each dot represents one of <strong>749 presidential speeches</strong> from the democratic era. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
+    PRESIDENT_ORDER.forEach(function (p) {
+      if (counts[p]) {
+        html += '<span style="background:#f1f5f9;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.82rem;color:#374151;">';
+        html += '<strong>' + esc(p) + '</strong> ' + counts[p];
+        html += '</span>';
+      }
+    });
+    html += '</div></div>';
+    detailPanel.innerHTML = html;
+  }
+
+  // ── STEP 2: CHOOSE K ──────────────────────────────────────────────
+  function renderChooseK() {
     var items = DATA.silhouette_comparison;
     var maxSil = Math.max.apply(null, items.map(function (d) { return d.silhouette; }));
 
+    var html = '<div class="step-info">';
+    html += '<p>K-means requires you to choose <em>k</em> (the number of clusters) in advance. The <strong>silhouette score</strong> compares options. Click each bar to see its clustering.</p>';
+
+    // Silhouette chart
+    html += '<div class="sil-chart-row">';
     items.forEach(function (d) {
-      var wrap = document.createElement("div");
-      wrap.className = "sil-bar-wrap";
-
       var isBest = d.k === DATA.best_k;
-      var pct = (d.silhouette / maxSil) * 140;
+      var isSel = d.k === selectedK;
+      var pct = (d.silhouette / maxSil) * 130;
+      var color = isSel ? PALETTE[0] : (isBest ? "#059669" : "#cbd5e1");
 
-      var bar = document.createElement("div");
-      bar.className = "sil-bar" + (isBest ? " best" : "");
-      bar.style.height = pct + "px";
-      bar.style.background = isBest ? "#059669" : "#94a3b8";
-
-      var value = document.createElement("div");
-      value.className = "sil-bar-value";
-      value.textContent = d.silhouette.toFixed(4);
-
-      var label = document.createElement("div");
-      label.className = "sil-bar-label";
-      label.textContent = "k=" + d.k;
-
-      wrap.appendChild(value);
-      wrap.appendChild(bar);
-      wrap.appendChild(label);
-      if (isBest) {
-        var tag = document.createElement("div");
-        tag.className = "sil-best-tag";
-        tag.textContent = "best";
-        wrap.appendChild(tag);
-      }
-
-      container.appendChild(wrap);
+      html += '<div class="sil-bar-group' + (isSel ? ' selected' : '') + '" data-k="' + d.k + '">';
+      html += '<div class="sil-bar-value">' + d.silhouette.toFixed(4) + '</div>';
+      html += '<div class="sil-bar" style="height:' + pct + 'px;background:' + color + ';';
+      if (isSel) html += 'outline:2px solid ' + PALETTE[0] + ';outline-offset:2px;';
+      html += '"></div>';
+      html += '<div class="sil-bar-label">k=' + d.k + '</div>';
+      if (isBest) html += '<div class="sil-best-tag">best</div>';
+      html += '</div>';
     });
+    html += '</div>';
+
+    html += '<div class="callout callout-info" style="margin-top:0.5rem;"><strong>Low scores are common for text.</strong> These silhouette scores (~0.01&ndash;0.02) reflect the high-dimensional, sparse nature of TF-IDF vectors. Cluster boundaries are fuzzy, but what matters is the <em>relative</em> comparison across k values and whether the resulting clusters are interpretable.</div>';
+    html += '</div>';
+
+    detailPanel.innerHTML = html;
   }
 
-  // ── Cluster cards ───────────────────────────────────────────────
-  function renderClusterGrid() {
-    var grid = document.getElementById("clusterGrid");
-    var legend = document.getElementById("clusterLegend");
-    var nClusters = DATA.best_k;
-
-    for (var c = 0; c < nClusters; c++) {
-      var color = CLUSTER_COLORS[c % CLUSTER_COLORS.length];
-      var words = DATA.cluster_words[String(c)];
-      var presDist = DATA.cluster_president_dist[String(c)];
-
-      // Legend
-      var displayNum = c + 1;
-      var clusterLabel = CLUSTER_LABELS[String(c)] || "";
-      var legItem = document.createElement("span");
-      legItem.className = "chart-legend-item";
-      legItem.innerHTML = '<span class="chart-legend-dot" style="background:' + color + '"></span> ' + displayNum + '. ' + clusterLabel;
-      legend.appendChild(legItem);
-
-      // Card
-      var card = document.createElement("div");
-      card.className = "cluster-card";
-
-      var header = document.createElement("div");
-      header.className = "cluster-card-header";
-      header.style.background = color;
-      var totalSpeeches = Object.values(presDist).reduce(function (a, b) { return a + b; }, 0);
-      header.textContent = "Cluster " + displayNum + ": " + clusterLabel + " (" + totalSpeeches + ")";
-      card.appendChild(header);
-
-      var body = document.createElement("div");
-      body.className = "cluster-card-body";
-
-      // Top words section
-      var wordsSection = document.createElement("div");
-      wordsSection.className = "cluster-card-section";
-      var wordsTitle = document.createElement("div");
-      wordsTitle.className = "cluster-card-section-title";
-      wordsTitle.textContent = "Top Words";
-      wordsSection.appendChild(wordsTitle);
-
-      var wordContainer = document.createElement("div");
-      wordContainer.style.lineHeight = "1.4";
-      var maxTfidf = words[0].tfidf;
-      words.slice(0, 15).forEach(function (w) {
-        var span = document.createElement("span");
-        span.className = "wc-word";
-        var ratio = w.tfidf / maxTfidf;
-        span.style.fontSize = (0.7 + ratio * 1.0) + "rem";
-        span.style.color = color;
-        span.style.opacity = 0.5 + ratio * 0.5;
-        span.textContent = w.word;
-        span.title = w.word + ": " + w.tfidf.toFixed(4);
-        wordContainer.appendChild(span);
-        wordContainer.appendChild(document.createTextNode(" "));
-      });
-      wordsSection.appendChild(wordContainer);
-      body.appendChild(wordsSection);
-
-      // President distribution section
-      var presSection = document.createElement("div");
-      presSection.className = "cluster-card-section";
-      var presTitle = document.createElement("div");
-      presTitle.className = "cluster-card-section-title";
-      presTitle.textContent = "Presidents";
-      presSection.appendChild(presTitle);
-
-      var sorted = PRESIDENT_ORDER.filter(function (p) { return presDist[p]; });
-      sorted.forEach(function (p) {
-        var count = presDist[p];
-        var pct = (count / totalSpeeches) * 100;
-        var row = document.createElement("div");
-        row.className = "mini-bar-row";
-        row.innerHTML =
-          '<div class="mini-bar-label">' + p + '</div>' +
-          '<div class="mini-bar-track"><div class="mini-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
-          '<div class="mini-bar-count">' + count + '</div>';
-        presSection.appendChild(row);
-      });
-      body.appendChild(presSection);
-
-      card.appendChild(body);
-      grid.appendChild(card);
-    }
+  function selectK(k) {
+    selectedK = k;
+    var res = getKResult(k);
+    currentAssignments = res.assignments;
+    currentCentroids = res.centroids;
+    colorState = "kmeans";
+    showCentroids = true;
+    draw();
+    renderChooseK();
   }
 
-  // ── President distribution grid ─────────────────────────────────
-  function renderPresidentGrid() {
-    var container = document.getElementById("presidentGrid");
+  // ── STEP 3: ANIMATE ───────────────────────────────────────────────
+  function renderAnimate() {
+    var html = '<div class="step-info">';
+    html += '<p>The k-means algorithm: <strong>(1)</strong> place <em>k</em> centroids at random, <strong>(2)</strong> assign each speech to its nearest centroid, <strong>(3)</strong> move centroids to the center of their cluster, <strong>(4)</strong> repeat until stable.</p>';
+    html += '<div class="anim-controls">';
+    html += '<button class="btn btn-primary btn-sm" id="animRunBtn">Run</button>';
+    html += '<button class="btn btn-sm" id="animStepBtn">Step</button>';
+    html += '<button class="btn btn-sm" id="animResetBtn">Reset</button>';
+    html += '</div>';
+    html += '<div class="anim-status" id="animStatus">Click Run to watch the full animation, or Step to advance one phase at a time.</div>';
+    html += '<div class="callout callout-tip" style="margin-top:0.5rem;">The diamond markers are centroids. Click <strong>Reset + Run</strong> again to see a different random start. K-means may converge to slightly different results each time.</div>';
+    html += '</div>';
 
-    // Add legend at top
-    var legend = document.createElement("div");
-    legend.className = "chart-legend";
-    legend.style.marginBottom = "1rem";
-    for (var i = 0; i < DATA.best_k; i++) {
-      var item = document.createElement("span");
-      item.className = "chart-legend-item";
-      item.innerHTML = '<span class="chart-legend-dot" style="background:' + CLUSTER_COLORS[i] + '"></span> ' +
-        (i + 1) + '. ' + (CLUSTER_LABELS[String(i)] || '');
-      legend.appendChild(item);
+    detailPanel.innerHTML = html;
+    updateAnimUI();
+  }
+
+  // ── STEP 4: EXPLORE ───────────────────────────────────────────────
+  function renderExplore() {
+    var html = '<div class="step-info">';
+
+    // Cluster legend
+    html += '<div class="cluster-legend-row">';
+    for (var c = 0; c < DATA.best_k; c++) {
+      var active = highlightCluster === c ? ' active' : '';
+      html += '<button class="cluster-legend-btn' + active + '" data-cluster="' + c + '" style="color:' + PALETTE[c] + ';border-color:' + (highlightCluster === c ? PALETTE[c] : '#e2e8f0') + ';">';
+      html += '<span class="cluster-legend-dot" style="background:' + PALETTE[c] + ';"></span>';
+      html += (c + 1) + '. ' + CLUSTER_LABELS[c];
+      html += '</button>';
     }
-    container.appendChild(legend);
+    html += '</div>';
 
-    PRESIDENT_ORDER.forEach(function (pres) {
-      var summary = DATA.president_summary.find(function (p) { return p.president === pres; });
-      if (!summary) return;
+    // Detail card for selected cluster
+    if (highlightCluster !== null) {
+      html += buildClusterCard(highlightCluster);
+    } else {
+      html += '<p style="color:#6b7280;font-style:italic;font-size:0.88rem;">Click a cluster above (or click a dot on the scatter plot) to see its details.</p>';
+    }
 
-      var row = document.createElement("div");
-      row.style.marginBottom = "0.75rem";
+    html += '</div>';
+    detailPanel.innerHTML = html;
+  }
 
-      var label = document.createElement("div");
-      label.style.cssText = "font-weight:700; font-size:0.88rem; color:#374151; margin-bottom:0.3rem;";
-      label.textContent = pres + " (" + summary.count + " speeches)";
-      row.appendChild(label);
+  function buildClusterCard(c) {
+    var color = PALETTE[c % PALETTE.length];
+    var words = DATA.cluster_words[String(c)];
+    var presDist = DATA.cluster_president_dist[String(c)];
+    var total = 0;
+    PRESIDENT_ORDER.forEach(function (p) { total += (presDist[p] || 0); });
 
-      var barRow = document.createElement("div");
-      barRow.style.cssText = "display:flex; height:22px; border-radius:4px; overflow:hidden;";
+    var html = '<div class="cluster-detail">';
+    html += '<div class="cluster-detail-header" style="background:' + color + ';">Cluster ' + (c + 1) + ': ' + CLUSTER_LABELS[c] + ' (' + total + ' speeches)</div>';
+    html += '<div class="cluster-detail-body">';
 
+    // Top words
+    html += '<div class="cluster-card-section">';
+    html += '<div class="cluster-card-section-title">Top Words (by TF-IDF)</div>';
+    html += '<div style="line-height:1.5;">';
+    var maxTf = words[0].tfidf;
+    words.slice(0, 15).forEach(function (w) {
+      var ratio = w.tfidf / maxTf;
+      html += '<span class="wc-word" style="font-size:' + (0.7 + ratio * 1.0) + 'rem;color:' + color + ';opacity:' + (0.5 + ratio * 0.5) + ';" title="' + esc(w.word) + ': ' + w.tfidf.toFixed(4) + '">' + esc(w.word) + '</span> ';
+    });
+    html += '</div></div>';
+
+    // President distribution
+    html += '<div class="cluster-card-section">';
+    html += '<div class="cluster-card-section-title">President Distribution</div>';
+    PRESIDENT_ORDER.forEach(function (p) {
+      var count = presDist[p] || 0;
+      if (count === 0) return;
+      var pct = (count / total) * 100;
+      html += '<div class="mini-bar-row">';
+      html += '<div class="mini-bar-label">' + esc(p) + '</div>';
+      html += '<div class="mini-bar-track"><div class="mini-bar-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>';
+      html += '<div class="mini-bar-count">' + count + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    html += '</div></div>';
+    return html;
+  }
+
+  function toggleClusterHighlight(c) {
+    highlightCluster = (highlightCluster === c) ? null : c;
+    draw();
+    renderExplore();
+  }
+
+  // ── STEP 5: INSIGHT ───────────────────────────────────────────────
+  function renderInsight() {
+    var mode = colorState === "president" ? "president" : "cluster";
+    var html = '<div class="step-info">';
+
+    // Toggle
+    html += '<div class="color-toggle">';
+    html += '<button data-colormode="cluster"' + (mode === "cluster" ? ' class="active"' : '') + '>By Cluster</button>';
+    html += '<button data-colormode="president"' + (mode === "president" ? ' class="active"' : '') + '>By President</button>';
+    html += '</div>';
+
+    // Legend
+    html += '<div class="color-legend">';
+    if (mode === "cluster") {
       for (var c = 0; c < DATA.best_k; c++) {
-        var count = summary.cluster_dist[String(c)] || 0;
-        if (count === 0) continue;
-        var pct = (count / summary.count) * 100;
-        var seg = document.createElement("div");
-        seg.style.cssText = "height:100%; display:flex; align-items:center; justify-content:center; cursor:default;";
-        seg.style.width = pct + "%";
-        seg.style.background = CLUSTER_COLORS[c % CLUSTER_COLORS.length];
-        seg.title = "Cluster " + (c + 1) + ": " + (CLUSTER_LABELS[String(c)] || "") + " (" + count + ")";
-        if (pct > 8) {
-          var txt = document.createElement("span");
-          txt.style.cssText = "font-size:0.65rem; font-weight:700; color:#fff;";
-          txt.textContent = count;
-          seg.appendChild(txt);
-        }
-        barRow.appendChild(seg);
+        html += '<span class="color-legend-item"><span class="color-legend-dot" style="background:' + PALETTE[c] + ';"></span>' + (c + 1) + '. ' + CLUSTER_LABELS[c] + '</span>';
       }
+    } else {
+      PRESIDENT_ORDER.forEach(function (p) {
+        html += '<span class="color-legend-item"><span class="color-legend-dot" style="background:' + PRESIDENT_COLORS[p] + ';"></span>' + esc(p) + '</span>';
+      });
+    }
+    html += '</div>';
 
-      row.appendChild(barRow);
-      container.appendChild(row);
-    });
+    if (mode === "cluster") {
+      html += '<p><strong>By cluster:</strong> dots are colored by the thematic cluster k-means assigned them to. The spatial grouping is clear because each cluster has its own topic vocabulary.</p>';
+    } else {
+      html += '<p><strong>By president:</strong> now each dot shows <em>who</em> gave that speech. Notice how every spatial cluster contains dots of many colors. <strong>K-means grouped speeches by topic, not by speaker.</strong> Presidents give many types of speeches, so their dots scatter across all clusters.</p>';
+    }
+
+    html += '<div class="callout callout-info"><strong>Key takeaway:</strong> clustering finds the dominant source of variation. In this corpus, the biggest vocabulary differences are between speech <em>types</em> (diplomatic welcome vs. economic policy), not between presidents. Hierarchical clustering on textbooks found <em>era-based</em> structure because each textbook reflects one era. The method is the same; what it finds depends on the data.</div>';
+    html += '</div>';
+
+    detailPanel.innerHTML = html;
   }
 
-  // ── Copy button ─────────────────────────────────────────────────
+  function setColorMode(mode) {
+    colorState = mode;
+    draw();
+    renderInsight();
+  }
+
+  // ── HOVER / TOOLTIP ───────────────────────────────────────────────
+  function handleHover(mx, my) {
+    if (!DATA) return;
+    var nearest = -1, nearestD = Infinity;
+    for (var i = 0; i < DATA.speeches.length; i++) {
+      var s = DATA.speeches[i];
+      var dx = mx - tx(s.x), dy = my - ty(s.y);
+      var d = dx * dx + dy * dy;
+      if (d < nearestD) { nearestD = d; nearest = i; }
+    }
+
+    if (nearestD < 225 && nearest >= 0) {
+      hoveredIdx = nearest;
+      var s = DATA.speeches[nearest];
+      var px = tx(s.x), py = ty(s.y);
+      var left = px + 14, top = py - 10;
+      if (left + 220 > canvasW) left = px - 220;
+      if (top < 0) top = py + 20;
+      tooltipEl.style.display = "block";
+      tooltipEl.style.left = left + "px";
+      tooltipEl.style.top = top + "px";
+      tooltipEl.innerHTML = "<strong>" + esc(s.title) + "</strong><br>" +
+        esc(s.president) + " &middot; " + CLUSTER_LABELS[s.cluster];
+    } else {
+      hoveredIdx = -1;
+      tooltipEl.style.display = "none";
+    }
+    draw();
+  }
+
+  // ── EVENT DELEGATION ──────────────────────────────────────────────
+  detailPanel.addEventListener("click", function (e) {
+    // K-value selection
+    var kEl = e.target.closest("[data-k]");
+    if (kEl && STEPS[currentStep].id === "choosek") {
+      selectK(parseInt(kEl.dataset.k));
+      return;
+    }
+    // Cluster selection
+    var clEl = e.target.closest("[data-cluster]");
+    if (clEl && STEPS[currentStep].id === "explore") {
+      toggleClusterHighlight(parseInt(clEl.dataset.cluster));
+      return;
+    }
+    // Color mode toggle
+    var togEl = e.target.closest("[data-colormode]");
+    if (togEl && STEPS[currentStep].id === "insight") {
+      setColorMode(togEl.dataset.colormode);
+      return;
+    }
+    // Animation controls
+    if (e.target.id === "animRunBtn") startAutoPlay();
+    if (e.target.id === "animStepBtn") stepForward();
+    if (e.target.id === "animResetBtn") resetAnim();
+  });
+
+  canvas.addEventListener("mousemove", function (e) {
+    var r = canvas.getBoundingClientRect();
+    handleHover(e.clientX - r.left, e.clientY - r.top);
+  });
+
+  canvas.addEventListener("mouseleave", function () {
+    hoveredIdx = -1;
+    tooltipEl.style.display = "none";
+    draw();
+  });
+
+  canvas.addEventListener("click", function () {
+    if (STEPS[currentStep].id === "explore" && hoveredIdx >= 0) {
+      toggleClusterHighlight(DATA.speeches[hoveredIdx].cluster);
+    }
+  });
+
+  // Touch support
+  canvas.addEventListener("touchstart", function (e) {
+    e.preventDefault();
+    var t = e.touches[0], r = canvas.getBoundingClientRect();
+    handleHover(t.clientX - r.left, t.clientY - r.top);
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", function (e) {
+    e.preventDefault();
+    var t = e.touches[0], r = canvas.getBoundingClientRect();
+    handleHover(t.clientX - r.left, t.clientY - r.top);
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", function () {
+    if (STEPS[currentStep].id === "explore" && hoveredIdx >= 0) {
+      toggleClusterHighlight(DATA.speeches[hoveredIdx].cluster);
+    }
+    hoveredIdx = -1;
+    tooltipEl.style.display = "none";
+    draw();
+  });
+
+  prevBtn.addEventListener("click", function () { goToStep(currentStep - 1); });
+  nextBtn.addEventListener("click", function () { goToStep(currentStep + 1); });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
+    if (e.key === "ArrowRight" || e.key === "l") goToStep(currentStep + 1);
+    if (e.key === "ArrowLeft" || e.key === "h") goToStep(currentStep - 1);
+    if (e.key === " " && STEPS[currentStep].id === "animate") { e.preventDefault(); startAutoPlay(); }
+    if (e.key === "r" && STEPS[currentStep].id === "animate") resetAnim();
+  });
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { setupCanvas(); draw(); }, 100);
+  });
+
+  // ── HELPERS ───────────────────────────────────────────────────────
+  function esc(s) {
+    var d = document.createElement("div");
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+
   window.copyCode = function (btn) {
     var pre = btn.closest(".code-block").querySelector("pre code");
-    var text = pre.textContent;
-    navigator.clipboard.writeText(text).then(function () {
+    navigator.clipboard.writeText(pre.textContent).then(function () {
       btn.textContent = "Copied!";
       btn.classList.add("copied");
       setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 2000);
     });
   };
+
+  // ── BUILD STEP BUTTONS ────────────────────────────────────────────
+  function buildStepButtons() {
+    stepsEl.innerHTML = "";
+    STEPS.forEach(function (s, i) {
+      var btn = document.createElement("button");
+      btn.className = "step-btn";
+      btn.textContent = s.label;
+      btn.addEventListener("click", function () { goToStep(i); });
+      stepsEl.appendChild(btn);
+    });
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────────
+  function init() {
+    buildStepButtons();
+    setupCanvas();
+    precomputeAllK();
+    goToStep(0);
+  }
+
+  fetch("{{ '/interactive/kmeans_data.json' | relative_url }}")
+    .then(function (r) { return r.json(); })
+    .then(function (json) { DATA = json; init(); })
+    .catch(function (err) {
+      detailPanel.innerHTML = '<p style="color:#ef4444;">Failed to load data. Try refreshing.</p>';
+      console.error(err);
+    });
 })();
 </script>
