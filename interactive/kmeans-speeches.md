@@ -253,6 +253,55 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
   This is an important lesson: <strong>clustering finds the dominant source of variation in the data</strong>. In this corpus, the biggest vocabulary differences are between speech <em>types</em> (a diplomatic welcome vs. an economic policy address), not between presidents.
 </p>
 
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: run k-means with best k and extract cluster words</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Run k-means with the best k ───────────────────────────────────</span>
+<span class="r-function">set.seed</span>(<span class="r-number">42</span>)   <span class="r-comment"># for reproducibility</span>
+best_km <span class="r-operator">&lt;-</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> best_k, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)
+
+<span class="r-comment"># ── Attach cluster labels to each document ────────────────────────</span>
+doc_clusters <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(
+  doc_id  <span class="r-operator">=</span> dtm<span class="r-operator">$</span>doc_id,
+  cluster <span class="r-operator">=</span> <span class="r-function">as.character</span>(best_km<span class="r-operator">$</span>cluster)
+)
+
+<span class="r-comment"># ── Extract top TF-IDF words per cluster ──────────────────────────</span>
+<span class="r-comment"># Treat all speeches in a cluster as one pseudo-document,</span>
+<span class="r-comment"># then find the words with highest TF-IDF within that cluster.</span>
+cluster_tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(doc_clusters, by <span class="r-operator">=</span> <span class="r-string">"doc_id"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(cluster, word) <span class="r-operator">|&gt;</span>
+  <span class="r-function">bind_tf_idf</span>(word, cluster, n) <span class="r-operator">|&gt;</span>
+  <span class="r-function">group_by</span>(cluster) <span class="r-operator">|&gt;</span>
+  <span class="r-function">slice_max</span>(tf_idf, n <span class="r-operator">=</span> <span class="r-number">15</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ungroup</span>()
+
+<span class="r-comment"># View top words for each cluster</span>
+cluster_tfidf <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(cluster, word, tf_idf) <span class="r-operator">|&gt;</span>
+  <span class="r-function">arrange</span>(cluster, <span class="r-function">desc</span>(tf_idf)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">30</span>)
+
+<span class="r-comment"># ── Plot: top words per cluster ───────────────────────────────────</span>
+cluster_tfidf <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(word <span class="r-operator">=</span> <span class="r-function">reorder_within</span>(word, tf_idf, cluster)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(tf_idf, word, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
+  <span class="r-function">geom_col</span>(show.legend <span class="r-operator">=</span> <span class="r-keyword">FALSE</span>) <span class="r-operator">+</span>
+  <span class="r-function">facet_wrap</span>(<span class="r-operator">~</span> cluster, scales <span class="r-operator">=</span> <span class="r-string">"free"</span>) <span class="r-operator">+</span>
+  <span class="r-function">scale_y_reordered</span>() <span class="r-operator">+</span>
+  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-function">paste</span>(<span class="r-string">"Top words by cluster (k ="</span>, best_k, <span class="r-string">")"</span>),
+       x <span class="r-operator">=</span> <span class="r-string">"TF-IDF"</span>, y <span class="r-operator">=</span> <span class="r-keyword">NULL</span>) <span class="r-operator">+</span>
+  <span class="r-function">theme_minimal</span>()</code></pre>
+    </div>
+    <div class="callout callout-info">
+      <strong>Why TF-IDF again here?</strong> We already used TF-IDF to build the document vectors. Now we re-apply it at the cluster level: treating all speeches in a cluster as one big pseudo-document reveals which words are <em>distinctive to that cluster</em> compared to the other clusters. This is the same logic as the cluster word analysis in the NIKH textbook demo.
+    </div>
+  </div>
+</details>
+
 <div class="output-panel">
   <div class="output-panel-header">Clusters: Top Words &amp; President Distribution</div>
   <div class="output-panel-body">
@@ -270,6 +319,43 @@ best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator
 <p class="narrative">
   Another way to read the results: for each president, how are their speeches distributed across clusters? If k-means had found president-level clusters, each president would be concentrated in a single row. Instead, we see that most presidents' speeches spread across 4&ndash;6 clusters &mdash; because presidents give many <em>types</em> of speeches.
 </p>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: summarize president distribution across clusters</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── President distribution per cluster ────────────────────────────</span>
+<span class="r-comment"># For each president, count how many speeches landed in each cluster.</span>
+pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(doc_clusters, by <span class="r-operator">=</span> <span class="r-string">"doc_id"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(president, cluster)
+
+<span class="r-comment"># ── Tabular view ──────────────────────────────────────────────────</span>
+pres_order <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(<span class="r-string">"노태우"</span>, <span class="r-string">"김영삼"</span>, <span class="r-string">"김대중"</span>, <span class="r-string">"노무현"</span>, <span class="r-string">"이명박"</span>, <span class="r-string">"박근혜"</span>, <span class="r-string">"문재인"</span>)
+
+pres_cluster <span class="r-operator">|&gt;</span>
+  <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> cluster, values_from <span class="r-operator">=</span> n,
+              values_fill <span class="r-operator">=</span> <span class="r-number">0</span>, names_sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">arrange</span>(<span class="r-function">match</span>(president, pres_order))
+
+<span class="r-comment"># ── Stacked bar chart: proportional view ──────────────────────────</span>
+pres_cluster <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(president <span class="r-operator">=</span> <span class="r-function">factor</span>(president, levels <span class="r-operator">=</span> pres_order)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> president, y <span class="r-operator">=</span> n, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
+  <span class="r-function">geom_col</span>(position <span class="r-operator">=</span> <span class="r-string">"fill"</span>) <span class="r-operator">+</span>
+  <span class="r-function">scale_y_continuous</span>(labels <span class="r-operator">=</span> scales<span class="r-operator">::</span><span class="r-function">percent</span>) <span class="r-operator">+</span>
+  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"How each president's speeches are distributed across clusters"</span>,
+       x <span class="r-operator">=</span> <span class="r-keyword">NULL</span>, y <span class="r-operator">=</span> <span class="r-string">"Share of speeches"</span>, fill <span class="r-operator">=</span> <span class="r-string">"Cluster"</span>) <span class="r-operator">+</span>
+  <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>
+  <span class="r-function">theme</span>(axis.text.x <span class="r-operator">=</span> <span class="r-function">element_text</span>(angle <span class="r-operator">=</span> <span class="r-number">45</span>, hjust <span class="r-operator">=</span> <span class="r-number">1</span>))</code></pre>
+    </div>
+    <div class="callout callout-tip">
+      <strong>What to look for:</strong> If k-means had clustered by president, each row would be one solid colour. Instead, every president's bar is split across multiple clusters &mdash; confirming that topic, not speaker identity, drives the clustering.
+    </div>
+  </div>
+</details>
 
 <div class="output-panel">
   <div class="output-panel-header">Speech Distribution by President</div>
