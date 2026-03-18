@@ -8,15 +8,14 @@ extracts per-cluster top words for the best k.
 
 Corpus-design choices (standard in computational text analysis):
 
-  1. Genre restriction — Keep only speech types whose content is primarily
-     policy-oriented (기념사, 성명/담화문, 국회연설, 신년사, 취임사).
-     Ceremonial genres (환영사, 축사, 만찬사) and the catch-all category
-     (기타) use formulaic diplomatic language that obscures thematic
-     differences.  The 회의 (meeting) category is excluded because it
+  1. Genre restriction — Keep speech types with substantive content
+     (기념사, 성명/담화문, 국회연설, 신년사, 취임사, 기타, 환영사).
+     Only the most formulaic ceremonial genres (축사, 만찬사) are
+     excluded.  The 회의 (meeting) category is excluded because it
      exists only for one president (문재인), making cross-president
      comparison impossible for that genre.
 
-  2. Minimum document length — Speeches shorter than 100 noun tokens
+  2. Minimum document length — Speeches shorter than 75 noun tokens
      after preprocessing lack sufficient vocabulary for TF-IDF to
      distinguish them reliably and introduce noise into the distance
      matrix.
@@ -55,12 +54,12 @@ NOUN_TAGS = {"NNG", "NNP"}
 
 # ── Corpus-design parameters ──────────────────────────────────────────
 # Speech types whose content is substantive and policy-oriented.
-KEEP_KINDS = {"기념사", "성명/담화문", "국회연설", "신년사", "취임사"}
+KEEP_KINDS = {"기념사", "성명/담화문", "국회연설", "신년사", "취임사", "기타", "환영사"}
 
 # Minimum noun-token count after preprocessing.  Speeches below this
 # threshold do not contain enough vocabulary for meaningful TF-IDF
 # differentiation.
-MIN_TOKENS = 100
+MIN_TOKENS = 75
 
 # Maximum speeches per president.  Ensures no single speaker's lexicon
 # dominates the TF-IDF feature space.
@@ -101,11 +100,10 @@ def main() -> None:
     print(f"  {len(df)} speeches, {df['president'].nunique()} presidents")
 
     # ── 1. Genre restriction ──────────────────────────────────────────
-    # Keep only substantive, policy-oriented speech types.  Ceremonial
-    # genres (환영사, 축사, 만찬사), the catch-all (기타), and
-    # president-specific categories (회의 = Moon only) are excluded
-    # because they introduce formulaic language that blurs thematic
-    # boundaries between clusters.
+    # Keep speech types with substantive content.  Only the most
+    # formulaic ceremonial genres (축사, 만찬사) are excluded, along
+    # with 회의 (meeting transcripts = Moon only), which would make
+    # cross-president comparison impossible for that genre.
     before = len(df)
     df = df[df["kind"].isin(KEEP_KINDS)].copy()
     print(f"\n1. Genre filter: {before} → {len(df)} speeches")
