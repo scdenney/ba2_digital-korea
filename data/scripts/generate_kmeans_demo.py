@@ -1,9 +1,30 @@
 """
 Generate JSON data for the k-means clustering interactive demo.
 
-Reads 749 democratic-era presidential speeches, tokenizes with kiwipiepy,
-computes TF-IDF vectors, runs k-means for k=2..8, computes silhouette
-scores, and extracts per-cluster top words for the best k.
+Reads democratic-era presidential speeches, applies corpus-design filters
+(genre restriction, minimum document length, speaker balance), tokenizes
+with kiwipiepy, computes TF-IDF vectors, runs k-means for k=2..6, and
+extracts per-cluster top words for the best k.
+
+Corpus-design choices (standard in computational text analysis):
+
+  1. Genre restriction — Keep only speech types whose content is primarily
+     policy-oriented (기념사, 성명/담화문, 국회연설, 신년사, 취임사).
+     Ceremonial genres (환영사, 축사, 만찬사) and the catch-all category
+     (기타) use formulaic diplomatic language that obscures thematic
+     differences.  The 회의 (meeting) category is excluded because it
+     exists only for one president (문재인), making cross-president
+     comparison impossible for that genre.
+
+  2. Minimum document length — Speeches shorter than 100 noun tokens
+     after preprocessing lack sufficient vocabulary for TF-IDF to
+     distinguish them reliably and introduce noise into the distance
+     matrix.
+
+  3. Speaker balance — To prevent any single president's vocabulary from
+     dominating the feature space, speeches are capped at MAX_PER_PRES
+     per president (random sample, seeded for reproducibility).  This is
+     analogous to balanced corpus design in corpus linguistics.
 
 Usage:
     python generate_kmeans_demo.py
@@ -19,6 +40,7 @@ import numpy as np
 import pandas as pd
 from kiwipiepy import Kiwi
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import silhouette_score, silhouette_samples
 
@@ -30,6 +52,21 @@ STOPWORDS    = SCRIPT_DIR.parent / "stopwords_ko.txt"
 JSON_OUT     = REPO_DIR / "interactive" / "kmeans_data.json"
 
 NOUN_TAGS = {"NNG", "NNP"}
+
+# ── Corpus-design parameters ──────────────────────────────────────────
+# Speech types whose content is substantive and policy-oriented.
+KEEP_KINDS = {"기념사", "성명/담화문", "국회연설", "신년사", "취임사"}
+
+# Minimum noun-token count after preprocessing.  Speeches below this
+# threshold do not contain enough vocabulary for meaningful TF-IDF
+# differentiation.
+MIN_TOKENS = 100
+
+# Maximum speeches per president.  Ensures no single speaker's lexicon
+# dominates the TF-IDF feature space.
+MAX_PER_PRES = 70
+
+RANDOM_SEED = 42
 
 
 def load_stopwords() -> set[str]:
@@ -63,6 +100,17 @@ def main() -> None:
     df = pd.read_csv(SPEECHES_CSV)
     print(f"  {len(df)} speeches, {df['president'].nunique()} presidents")
 
+    # ── 1. Genre restriction ──────────────────────────────────────────
+    # Keep only substantive, policy-oriented speech types.  Ceremonial
+    # genres (환영사, 축사, 만찬사), the catch-all (기타), and
+    # president-specific categories (회의 = Moon only) are excluded
+    # because they introduce formulaic language that blurs thematic
+    # boundaries between clusters.
+    before = len(df)
+    df = df[df["kind"].isin(KEEP_KINDS)].copy()
+    print(f"\n1. Genre filter: {before} → {len(df)} speeches")
+    print(f"   Kept kinds: {sorted(df['kind'].unique())}")
+
     # ── Tokenize ──────────────────────────────────────────────────────
     print("\nTokenizing with kiwipiepy ...")
     stopwords = load_stopwords()
@@ -70,22 +118,49 @@ def main() -> None:
     df["processed"] = df["speech_text"].apply(
         lambda t: tokenize_text(kiwi, str(t), stopwords)
     )
-    print(f"  Done. Mean tokens/speech: {df['processed'].str.split().str.len().mean():.0f}")
+    df["n_tokens"] = df["processed"].str.split().str.len()
+    print(f"  Done. Mean tokens/speech: {df['n_tokens'].mean():.0f}")
+
+    # ── 2. Minimum document length ────────────────────────────────────
+    # Remove speeches that are too short for TF-IDF to distinguish
+    # reliably.  Very short documents produce sparse, noisy vectors
+    # that degrade cluster quality.
+    before = len(df)
+    df = df[df["n_tokens"] >= MIN_TOKENS].copy()
+    print(f"\n2. Min-length filter (>= {MIN_TOKENS} tokens): {before} → {len(df)} speeches")
+
+    # ── 3. Speaker balance ────────────────────────────────────────────
+    # Cap each president at MAX_PER_PRES speeches so that no single
+    # speaker's vocabulary dominates the TF-IDF feature space.  This is
+    # standard balanced-corpus design in corpus linguistics.
+    before = len(df)
+    sampled = []
+    for pres, grp in df.groupby("president"):
+        sampled.append(grp.sample(n=min(len(grp), MAX_PER_PRES), random_state=RANDOM_SEED))
+    df = pd.concat(sampled, ignore_index=True)
+    print(f"\n3. Speaker balance (max {MAX_PER_PRES}/pres): {before} → {len(df)} speeches")
+    print("   Per-president counts:")
+    for pres, cnt in df["president"].value_counts().sort_values().items():
+        print(f"     {pres}: {cnt}")
 
     # ── TF-IDF ────────────────────────────────────────────────────────
     print("\nComputing TF-IDF ...")
-    vectorizer = TfidfVectorizer(max_features=10000)
+    # min_df=5: ignore words that appear in fewer than 5 speeches
+    #   (too rare to be informative across clusters).
+    # max_df=0.6: ignore words that appear in >60% of speeches
+    #   (too common to differentiate clusters — effectively stopwords).
+    vectorizer = TfidfVectorizer(max_features=10000, min_df=5, max_df=0.6)
     tfidf = vectorizer.fit_transform(df["processed"])
     feature_names = vectorizer.get_feature_names_out()
     print(f"  Matrix: {tfidf.shape[0]} docs × {tfidf.shape[1]} features")
 
-    # ── K-means for k=2..8, with silhouette scores ───────────────────
-    print("\nRunning k-means for k=2..8 ...")
-    k_range = list(range(2, 9))
+    # ── K-means for k=2..6, with silhouette scores ───────────────────
+    print("\nRunning k-means for k=2..6 ...")
+    k_range = list(range(2, 7))
     results = {}
 
     for k in k_range:
-        km = KMeans(n_clusters=k, n_init=10, random_state=42)
+        km = KMeans(n_clusters=k, n_init=10, random_state=RANDOM_SEED)
         labels = km.fit_predict(tfidf)
         sil_avg = silhouette_score(tfidf, labels)
         results[k] = {"labels": labels, "model": km, "silhouette": sil_avg}
@@ -113,6 +188,24 @@ def main() -> None:
         top5 = [w["word"] for w in words[:5]]
         print(f"  Cluster {c}: {top5}")
 
+    # ── 2D projection via PCA (for scatter plot) ─────────────────────
+    pca = PCA(n_components=2, random_state=RANDOM_SEED)
+    coords_2d = pca.fit_transform(tfidf.toarray())
+    # Normalize to [0, 1] for the canvas
+    for dim in range(2):
+        lo, hi = coords_2d[:, dim].min(), coords_2d[:, dim].max()
+        coords_2d[:, dim] = (coords_2d[:, dim] - lo) / (hi - lo)
+    df["x"] = coords_2d[:, 0]
+    df["y"] = coords_2d[:, 1]
+
+    # Centroid positions in 2D
+    centroids_2d = []
+    for c in range(best_k):
+        mask = best_labels == c
+        cx = float(coords_2d[mask, 0].mean())
+        cy = float(coords_2d[mask, 1].mean())
+        centroids_2d.append([round(cx, 4), round(cy, 4)])
+
     # ── Per-cluster silhouette samples for the best k ─────────────────
     sil_samples = silhouette_samples(tfidf, best_labels)
 
@@ -137,7 +230,7 @@ def main() -> None:
         for k in k_range
     ]
 
-    # Per-speech data for best k (sample for size — include all)
+    # Per-speech data for best k (include all)
     speeches_json = []
     for i, (_, row) in enumerate(df.iterrows()):
         speeches_json.append({
@@ -146,7 +239,9 @@ def main() -> None:
             "kind": row["kind"],
             "cluster": int(row["cluster"]),
             "silhouette": round(float(sil_samples[i]), 3),
-            "tokens": len(str(row["processed"]).split()),
+            "tokens": int(row["n_tokens"]),
+            "x": round(float(row["x"]), 4),
+            "y": round(float(row["y"]), 4),
         })
 
     # President summary
@@ -165,6 +260,7 @@ def main() -> None:
         "cluster_words": cluster_words,
         "cluster_president_dist": cluster_president_dist,
         "cluster_kind_dist": cluster_kind_dist,
+        "centroids_2d": centroids_2d,
         "speeches": speeches_json,
         "president_summary": president_summary,
     }
@@ -173,6 +269,7 @@ def main() -> None:
     with open(JSON_OUT, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     print(f"\nSaved JSON → {JSON_OUT}")
+    print(f"Final corpus: {len(df)} speeches, {df['president'].nunique()} presidents, best k={best_k}")
     print("Done!")
 
 
