@@ -245,10 +245,10 @@ title: "K-Means Clustering: Presidential Speeches"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>K-Means Clustering: Presidential Speeches</h1>
-    <p class="demo-intro">Step through a k-means clustering of 622 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <p class="demo-intro">Step through a k-means clustering of 648 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
     <div class="tutorial-meta">
       <span>Week 7</span>
-      <span>622 speeches, 7 presidents</span>
+      <span>648 speeches, 7 presidents</span>
       <span>Democratic era (1988&ndash;2022)</span>
     </div>
   </div>
@@ -289,12 +289,11 @@ stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step B. Filter by genre</strong><br>Not all speech types are equally useful for topic clustering. We exclude the most formulaic ceremonial genres (<span style="font-family:inherit">축사</span>, <span style="font-family:inherit">만찬사</span>) and meeting transcripts (<span style="font-family:inherit">회의</span>), which exist only for one president.</p>
+    <p style="margin-top:1rem;"><strong>Step B. Filter by genre</strong><br>We keep all speech types except <span style="font-family:inherit">회의</span> (meeting transcripts). Those 49 transcripts exist only for one president (문재인), so including them would introduce a genre confound: the algorithm could cluster them together simply because they are meetings, not because of their topic content.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code>keep_kinds <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(<span class="r-string">"기념사"</span>, <span class="r-string">"성명/담화문"</span>, <span class="r-string">"국회연설"</span>, <span class="r-string">"신년사"</span>, <span class="r-string">"취임사"</span>, <span class="r-string">"기타"</span>, <span class="r-string">"환영사"</span>)
-corpus <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(kind <span class="r-operator">%in%</span> keep_kinds)</code></pre>
+        <pre><code>corpus <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(kind <span class="r-operator">!=</span> <span class="r-string">"회의"</span>)</code></pre>
       </div></div>
     </details>
 
@@ -425,7 +424,7 @@ pres_cluster <span class="r-operator">|&gt;</span>
 
   // ── CONSTANTS ─────────────────────────────────────────────────────
   var STEPS = [
-    { id: "corpus",  label: "1. The Corpus",       desc: "622 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "corpus",  label: "1. The Corpus",       desc: "648 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
@@ -436,9 +435,9 @@ pres_cluster <span class="r-operator">|&gt;</span>
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Police & Emergency Services", "National Identity & Unification",
-    "Bilateral Diplomacy", "Economy, Industry & Technology",
-    "Foreign Relations & Inter-Korean", "Women, Family & Social Policy"
+    "Broadcasting & Media", "State Visits & Diplomacy",
+    "Foreign Relations & Inter-Korean", "Security & Veterans",
+    "Economy, Industry & Technology", "National Identity & Unification"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
@@ -941,7 +940,7 @@ pres_cluster <span class="r-operator">|&gt;</span>
     DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
 
     var html = '<div class="step-info">';
-    html += '<p>Each dot represents one of <strong>622 presidential speeches</strong> from the democratic era. The corpus excludes only the most formulaic genres (축사, 만찬사) and meeting transcripts (회의, Moon only), keeps speeches with at least 75 noun tokens, and balances across presidents. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<p>Each dot represents one of <strong>648 presidential speeches</strong> from the democratic era. The only exclusion is 회의 (meeting transcripts), which exist for only one president and would introduce a genre confound. Speeches with fewer than 75 noun tokens are also removed. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {

@@ -8,12 +8,11 @@ extracts per-cluster top words for the best k.
 
 Corpus-design choices (standard in computational text analysis):
 
-  1. Genre restriction — Keep speech types with substantive content
-     (기념사, 성명/담화문, 국회연설, 신년사, 취임사, 기타, 환영사).
-     Only the most formulaic ceremonial genres (축사, 만찬사) are
-     excluded.  The 회의 (meeting) category is excluded because it
-     exists only for one president (문재인), making cross-president
-     comparison impossible for that genre.
+  1. Genre restriction — All speech types are kept except 회의
+     (meeting transcripts), which exists only for one president
+     (문재인).  Including it would introduce a genre confound:
+     the algorithm could cluster those 49 speeches together simply
+     because they are meetings, not because of their topic content.
 
   2. Minimum document length — Speeches shorter than 75 noun tokens
      after preprocessing lack sufficient vocabulary for TF-IDF to
@@ -53,7 +52,7 @@ NOUN_TAGS = {"NNG", "NNP"}
 
 # ── Corpus-design parameters ──────────────────────────────────────────
 # Speech types whose content is substantive and policy-oriented.
-KEEP_KINDS = {"기념사", "성명/담화문", "국회연설", "신년사", "취임사", "기타", "환영사"}
+EXCLUDE_KINDS = {"회의"}  # 회의 = meeting transcripts, all from one president (문재인)
 
 # Minimum noun-token count after preprocessing.  Speeches below this
 # threshold do not contain enough vocabulary for meaningful TF-IDF
@@ -95,12 +94,11 @@ def main() -> None:
     print(f"  {len(df)} speeches, {df['president'].nunique()} presidents")
 
     # ── 1. Genre restriction ──────────────────────────────────────────
-    # Keep speech types with substantive content.  Only the most
-    # formulaic ceremonial genres (축사, 만찬사) are excluded, along
-    # with 회의 (meeting transcripts = Moon only), which would make
-    # cross-president comparison impossible for that genre.
+    # All speech types are kept except 회의 (meeting transcripts),
+    # which exists only for one president (문재인).  Including it
+    # would introduce a genre confound.
     before = len(df)
-    df = df[df["kind"].isin(KEEP_KINDS)].copy()
+    df = df[~df["kind"].isin(EXCLUDE_KINDS)].copy()
     print(f"\n1. Genre filter: {before} → {len(df)} speeches")
     print(f"   Kept kinds: {sorted(df['kind'].unique())}")
 
