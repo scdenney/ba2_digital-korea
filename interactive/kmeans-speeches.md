@@ -245,10 +245,10 @@ title: "K-Means Clustering: Presidential Speeches"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>K-Means Clustering: Presidential Speeches</h1>
-    <p class="demo-intro">Step through a k-means clustering of 700 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <p class="demo-intro">Step through a k-means clustering of 749 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
     <div class="tutorial-meta">
       <span>Week 7</span>
-      <span>700 speeches, 7 presidents</span>
+      <span>749 speeches, 7 presidents</span>
       <span>Democratic era (1988&ndash;2022)</span>
     </div>
   </div>
@@ -289,15 +289,7 @@ stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step B. Filter by genre</strong><br>We keep all speech types except <span style="font-family:inherit">회의</span> (meeting transcripts). Those 49 transcripts exist only for one president (문재인), so including them would introduce a genre confound: the algorithm could cluster them together simply because they are meetings, not because of their topic content.</p>
-    <details class="code-ribbon">
-      <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
-      <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code>corpus <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(kind <span class="r-operator">!=</span> <span class="r-string">"회의"</span>)</code></pre>
-      </div></div>
-    </details>
-
-    <p style="margin-top:1rem;"><strong>Step C. Tokenize and filter</strong><br>We tokenize each speech with Kiwi, keep only nouns (<code>NNG</code>, <code>NNP</code>), and remove stopwords and single-character tokens. This is the same preprocessing pipeline from earlier weeks and the same one used in our Orange workflows.</p>
+    <p style="margin-top:1rem;"><strong>Step B. Tokenize and filter</strong><br>We tokenize each speech with Kiwi, keep only nouns (<code>NNG</code>, <code>NNP</code>), and remove stopwords and single-character tokens. This is the same preprocessing pipeline from earlier weeks and the same one used in our Orange workflows.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -318,7 +310,7 @@ tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step D. Build TF-IDF matrix</strong><br>We weight word counts with TF-IDF (same technique from Week 4), but first we filter the vocabulary: words must appear in at least 5 speeches (not too rare) and no more than 60% of speeches (not too common &mdash; effectively stopwords). This keeps the feature space focused on words that actually differentiate speeches.</p>
+    <p style="margin-top:1rem;"><strong>Step C. Build TF-IDF matrix</strong><br>We weight word counts with TF-IDF (same technique from Week 4), but first we filter the vocabulary: words must appear in at least 5 speeches (not too rare) and no more than 60% of speeches (not too common &mdash; effectively stopwords). This keeps the feature space focused on words that actually differentiate speeches.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -340,7 +332,7 @@ mat <span class="r-operator">&lt;-</span> dtm <span class="r-operator">|&gt;</sp
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step E. Choose k with silhouette scores</strong><br>We run k-means on the TF-IDF matrix for k = 2 through 8 and compute the average silhouette score for each. The silhouette measures how well each speech fits its assigned cluster vs. the next-best cluster. Higher is better. We pick the k with the highest score. This is the same as selecting k in Orange's k-Means widget.</p>
+    <p style="margin-top:1rem;"><strong>Step D. Choose k with silhouette scores</strong><br>We run k-means on the TF-IDF matrix for k = 2 through 8 and compute the average silhouette score for each. The silhouette measures how well each speech fits its assigned cluster vs. the next-best cluster. Higher is better. We pick the k with the highest score. This is the same as selecting k in Orange's k-Means widget.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -358,7 +350,7 @@ best_k  <span class="r-comment"># print it</span></code></pre>
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step F. Run k-means and inspect clusters</strong><br>Now we run k-means one final time with the best k. To understand what each cluster is "about," we re-apply TF-IDF at the cluster level &mdash; treating all speeches in a cluster as one big document &mdash; and extract the top distinctive words.</p>
+    <p style="margin-top:1rem;"><strong>Step E. Run k-means and inspect clusters</strong><br>Now we run k-means one final time with the best k. To understand what each cluster is "about," we re-apply TF-IDF at the cluster level &mdash; treating all speeches in a cluster as one big document &mdash; and extract the top distinctive words.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -388,7 +380,7 @@ cluster_tfidf <span class="r-operator">|&gt;</span>
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step G. President distribution across clusters</strong><br>Finally, we check whether clusters track presidents or topics. If each president's speeches scatter across multiple clusters, it confirms that topic &mdash; not speaker identity &mdash; drives the grouping.</p>
+    <p style="margin-top:1rem;"><strong>Step F. President distribution across clusters</strong><br>Finally, we check whether clusters track presidents or topics. If each president's speeches scatter across multiple clusters, it confirms that topic &mdash; not speaker identity &mdash; drives the grouping.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -419,7 +411,7 @@ pres_cluster <span class="r-operator">|&gt;</span>
 
   // ── CONSTANTS ─────────────────────────────────────────────────────
   var STEPS = [
-    { id: "corpus",  label: "1. The Corpus",       desc: "700 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "corpus",  label: "1. The Corpus",       desc: "749 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
@@ -430,10 +422,10 @@ pres_cluster <span class="r-operator">|&gt;</span>
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Security & Veterans", "State Visits & Diplomacy",
-    "Culture, Society & Events", "Economy, Industry & Women",
-    "Democracy & Human Rights", "Police & Public Safety",
-    "Bilateral Relations & Peace", "Science & Technology"
+    "Foreign Policy & Inter-Korean", "Security & Veterans",
+    "Economy, Industry & Culture", "Police & Public Safety",
+    "State Visits & Diplomacy", "Women, Sports & Events",
+    "Bilateral Relations", "National Identity & Unification"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
@@ -936,7 +928,9 @@ pres_cluster <span class="r-operator">|&gt;</span>
     DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
 
     var html = '<div class="step-info">';
-    html += '<p>Each dot represents one of <strong>700 presidential speeches</strong> from the democratic era. The only exclusion is 회의 (meeting transcripts), which exist for only one president and would introduce a genre confound. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<p>Each dot is one of <strong>749 presidential speeches</strong> from 7 democratic-era presidents (1988\u2013present). All speech types are included.</p>';
+    html += '<p>The X and Y axes are a 2D projection (PCA) of each speech\u2019s TF-IDF vector. Speeches that use similar vocabulary appear close together; speeches with very different word profiles are far apart. The axes themselves don\u2019t have a concrete label \u2014 they just capture the two directions of greatest vocabulary variation across the corpus.</p>';
+    html += '<p>Right now every dot is gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups in this vocabulary space.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {

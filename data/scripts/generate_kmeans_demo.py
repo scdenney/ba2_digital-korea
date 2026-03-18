@@ -1,22 +1,9 @@
 """
 Generate JSON data for the k-means clustering interactive demo.
 
-Reads democratic-era presidential speeches, excludes 회의 (meeting
-transcripts, one president only), tokenizes with kiwipiepy,
-computes TF-IDF vectors, runs k-means for k=2..8 (same pipeline as
-Orange: TF-IDF straight to k-means), and extracts per-cluster top words.
-
-Corpus-design choices (standard in computational text analysis):
-
-  1. Genre restriction — All speech types are kept except 회의
-     (meeting transcripts), which exists only for one president
-     (문재인).  Including it would introduce a genre confound:
-     the algorithm could cluster those 49 speeches together simply
-     because they are meetings, not because of their topic content.
-
-  Speaker imbalance is intentionally preserved.  If topic (not speaker)
-  truly drives the clustering, the result should hold even when some
-  presidents contribute far more speeches than others.
+Reads all 749 democratic-era presidential speeches, tokenizes with
+kiwipiepy, computes TF-IDF vectors, and runs k-means for k=2..8.
+Same pipeline as Orange: TF-IDF straight to k-means, no filtering.
 
 Usage:
     python generate_kmeans_demo.py
@@ -44,15 +31,6 @@ STOPWORDS    = SCRIPT_DIR.parent / "stopwords_ko.txt"
 JSON_OUT     = REPO_DIR / "interactive" / "kmeans_data.json"
 
 NOUN_TAGS = {"NNG", "NNP"}
-
-# ── Corpus-design parameters ──────────────────────────────────────────
-# Speech types whose content is substantive and policy-oriented.
-EXCLUDE_KINDS = {"회의"}  # 회의 = meeting transcripts, all from one president (문재인)
-
-# Minimum noun-token count after preprocessing.  Speeches below this
-# threshold do not contain enough vocabulary for meaningful TF-IDF
-# differentiation.
-# No minimum token threshold — all speeches kept after genre filter.
 
 RANDOM_SEED = 42
 
@@ -88,15 +66,6 @@ def main() -> None:
     df = pd.read_csv(SPEECHES_CSV)
     print(f"  {len(df)} speeches, {df['president'].nunique()} presidents")
 
-    # ── 1. Genre restriction ──────────────────────────────────────────
-    # All speech types are kept except 회의 (meeting transcripts),
-    # which exists only for one president (문재인).  Including it
-    # would introduce a genre confound.
-    before = len(df)
-    df = df[~df["kind"].isin(EXCLUDE_KINDS)].copy()
-    print(f"\n1. Genre filter: {before} → {len(df)} speeches")
-    print(f"   Kept kinds: {sorted(df['kind'].unique())}")
-
     # ── Tokenize ──────────────────────────────────────────────────────
     print("\nTokenizing with kiwipiepy ...")
     stopwords = load_stopwords()
@@ -107,11 +76,7 @@ def main() -> None:
     df["n_tokens"] = df["processed"].str.split().str.len()
     print(f"  Done. Mean tokens/speech: {df['n_tokens'].mean():.0f}")
 
-    # ── Speaker counts (no balancing) ────────────────────────────────
-    # We intentionally keep the natural speaker imbalance.  If topic
-    # (not speaker) truly drives the clustering, the result should hold
-    # even when some presidents have far more speeches than others.
-    print("\n   Per-president counts (unbalanced):")
+    print("\n   Per-president counts:")
     for pres, cnt in df["president"].value_counts().sort_values().items():
         print(f"     {pres}: {cnt}")
 
