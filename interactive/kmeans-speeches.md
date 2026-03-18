@@ -270,13 +270,13 @@ title: "K-Means Clustering: Presidential Speeches"
 
   <div id="detailPanel" class="detail-panel"><p style="color:#6b7280;font-size:0.9rem;">Loading speech data...</p></div>
 
-  <div style="margin-top:2rem;">
-    <details class="code-ribbon">
-      <summary><span class="ribbon-label">R code: corpus design, preprocessing, and k-means with silhouette comparison</span><span class="ribbon-tag">R</span></summary>
-      <div class="code-ribbon-body">
-        <div class="code-block">
-          <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
+  <div id="detailPanel2" class="detail-panel"></div>
+
+  <!-- Hidden R code blocks — pulled into the detail panel by Step 6 -->
+  <div id="rCodeContent" style="display:none;">
+    <div class="code-block">
+      <div class="code-block-header"><span>R — Part 1: Corpus design, preprocessing &amp; k-means</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
 <span class="r-function">library</span>(tidyverse)
 <span class="r-function">library</span>(tidytext)
 <span class="r-function">library</span>(elbird)
@@ -308,7 +308,7 @@ tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&g
   <span class="r-function">select</span>(doc_id, president, kind, word <span class="r-operator">=</span> form)
 
 <span class="r-comment"># ── 2. Minimum document length ────────────────────────────────────</span>
-<span class="r-comment"># Speeches with fewer than 100 noun tokens after preprocessing</span>
+<span class="r-comment"># Speeches with fewer than 75 noun tokens after preprocessing</span>
 <span class="r-comment"># do not contain enough vocabulary for TF-IDF to distinguish</span>
 <span class="r-comment"># them reliably.  Short documents produce sparse, noisy vectors.</span>
 token_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(doc_id, name <span class="r-operator">=</span> <span class="r-string">"n_tokens"</span>)
@@ -322,14 +322,12 @@ tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&g
 tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(president)
 
 <span class="r-comment"># ── TF-IDF with document-frequency thresholds ─────────────────────</span>
-<span class="r-comment"># Count how many documents each word appears in</span>
 n_docs <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id) <span class="r-operator">|&gt;</span> <span class="r-function">nrow</span>()
 word_doc_freq <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">distinct</span>(doc_id, word) <span class="r-operator">|&gt;</span>
   <span class="r-function">count</span>(word, name <span class="r-operator">=</span> <span class="r-string">"doc_freq"</span>)
 
-<span class="r-comment"># Keep words that appear in at least 5 documents (not too rare)</span>
-<span class="r-comment"># and no more than 60% of documents (not too common).</span>
+<span class="r-comment"># Keep words in at least 5 documents and no more than 60%.</span>
 keep_words <span class="r-operator">&lt;-</span> word_doc_freq <span class="r-operator">|&gt;</span>
   <span class="r-function">filter</span>(doc_freq <span class="r-operator">&gt;=</span> <span class="r-number">5</span>, doc_freq <span class="r-operator">&lt;=</span> <span class="r-number">0.6</span> <span class="r-operator">*</span> n_docs) <span class="r-operator">|&gt;</span>
   <span class="r-function">pull</span>(word)
@@ -352,19 +350,11 @@ sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibbl
   )
 
 best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator">|&gt;</span> <span class="r-function">slice_max</span>(sil) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(k)</code></pre>
-        </div>
-        <div class="callout callout-info">
-          <strong>About the corpus design:</strong> Before clustering, we apply two standard corpus-design steps: (1) <strong>genre restriction</strong> to exclude the most formulaic ceremonial genres (축사, 만찬사) and meeting transcripts that exist for only one president; (2) <strong>minimum document length</strong> (75 tokens), because short speeches produce sparse TF-IDF vectors that add noise. Speaker imbalance is <em>intentionally preserved</em> &mdash; if topic truly drives the clustering, the result should hold even when some presidents contribute far more speeches than others.
-        </div>
-      </div>
-    </details>
+    </div>
 
-    <details class="code-ribbon">
-      <summary><span class="ribbon-label">R code: extract top words per cluster and president distribution</span><span class="ribbon-tag">R</span></summary>
-      <div class="code-ribbon-body">
-        <div class="code-block">
-          <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-          <pre><code><span class="r-comment"># ── Run k-means with the best k ───────────────────────────────────</span>
+    <div class="code-block" style="margin-top:1rem;">
+      <div class="code-block-header"><span>R — Part 2: Cluster analysis &amp; president distribution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Run k-means with the best k ───────────────────────────────────</span>
 <span class="r-function">set.seed</span>(<span class="r-number">42</span>)
 best_km <span class="r-operator">&lt;-</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> best_k, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)
 
@@ -383,10 +373,30 @@ cluster_tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operat
 pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
   <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span>
   <span class="r-function">left_join</span>(doc_clusters, by <span class="r-operator">=</span> <span class="r-string">"doc_id"</span>) <span class="r-operator">|&gt;</span>
-  <span class="r-function">count</span>(president, cluster)</code></pre>
-        </div>
-      </div>
-    </details>
+  <span class="r-function">count</span>(president, cluster)
+
+<span class="r-comment"># ── Plot: top words per cluster ───────────────────────────────────</span>
+cluster_tfidf <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(word <span class="r-operator">=</span> <span class="r-function">reorder_within</span>(word, tf_idf, cluster)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(tf_idf, word, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
+  <span class="r-function">geom_col</span>(show.legend <span class="r-operator">=</span> <span class="r-keyword">FALSE</span>) <span class="r-operator">+</span>
+  <span class="r-function">facet_wrap</span>(<span class="r-operator">~</span> cluster, scales <span class="r-operator">=</span> <span class="r-string">"free"</span>) <span class="r-operator">+</span>
+  <span class="r-function">scale_y_reordered</span>() <span class="r-operator">+</span>
+  <span class="r-function">labs</span>(x <span class="r-operator">=</span> <span class="r-string">"TF-IDF"</span>, y <span class="r-operator">=</span> <span class="r-keyword">NULL</span>) <span class="r-operator">+</span>
+  <span class="r-function">theme_minimal</span>()
+
+<span class="r-comment"># ── Plot: president distribution across clusters ─────────────────</span>
+pres_order <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(<span class="r-string">"노태우"</span>, <span class="r-string">"김영삼"</span>, <span class="r-string">"김대중"</span>, <span class="r-string">"노무현"</span>, <span class="r-string">"이명박"</span>, <span class="r-string">"박근혜"</span>, <span class="r-string">"문재인"</span>)
+
+pres_cluster <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(president <span class="r-operator">=</span> <span class="r-function">factor</span>(president, levels <span class="r-operator">=</span> pres_order)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> president, y <span class="r-operator">=</span> n, fill <span class="r-operator">=</span> cluster)) <span class="r-operator">+</span>
+  <span class="r-function">geom_col</span>(position <span class="r-operator">=</span> <span class="r-string">"fill"</span>) <span class="r-operator">+</span>
+  <span class="r-function">scale_y_continuous</span>(labels <span class="r-operator">=</span> scales<span class="r-operator">::</span><span class="r-function">percent</span>) <span class="r-operator">+</span>
+  <span class="r-function">labs</span>(x <span class="r-operator">=</span> <span class="r-keyword">NULL</span>, y <span class="r-operator">=</span> <span class="r-string">"Share of speeches"</span>, fill <span class="r-operator">=</span> <span class="r-string">"Cluster"</span>) <span class="r-operator">+</span>
+  <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>
+  <span class="r-function">theme</span>(axis.text.x <span class="r-operator">=</span> <span class="r-function">element_text</span>(angle <span class="r-operator">=</span> <span class="r-number">45</span>, hjust <span class="r-operator">=</span> <span class="r-number">1</span>))</code></pre>
+    </div>
   </div>
 </div>
 
@@ -400,7 +410,8 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
-    { id: "insight", label: "5. The Insight",        desc: "Toggle coloring. Notice: presidents spread across all clusters. Topic drives the clustering." }
+    { id: "insight", label: "5. The Insight",        desc: "Toggle coloring. Notice: presidents spread across all clusters. Topic drives the clustering." },
+    { id: "code",    label: "6. Replicate in R",    desc: "The full R code to reproduce this analysis yourself. More advanced \u2014 here if you want it." }
   ];
 
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
@@ -868,6 +879,10 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
         colorState = "cluster"; showCentroids = false;
         currentAssignments = null; currentCentroids = null;
         break;
+      case "code":
+        colorState = "cluster"; showCentroids = false;
+        currentAssignments = null; currentCentroids = null;
+        break;
     }
 
     draw();
@@ -883,6 +898,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     else if (id === "animate") renderAnimate();
     else if (id === "explore") renderExplore();
     else if (id === "insight") renderInsight();
+    else if (id === "code") renderCode();
   }
 
   function updateStepBtns() {
@@ -1085,6 +1101,16 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     html += '<div class="callout callout-info"><strong>Key takeaway:</strong> clustering finds the dominant source of variation. In this corpus, the biggest vocabulary differences are between speech <em>types</em> (diplomatic welcome vs. economic policy), not between presidents. Hierarchical clustering on textbooks found <em>era-based</em> structure because each textbook reflects one era. The method is the same; what it finds depends on the data.</div>';
     html += '</div>';
 
+    detailPanel.innerHTML = html;
+  }
+
+  function renderCode() {
+    var codeHTML = document.getElementById("rCodeContent").innerHTML;
+    var html = '<div class="step-info">';
+    html += '<p style="margin-bottom:0.75rem;">This section is <strong>more advanced</strong> and completely optional. It is here for students who want to replicate this analysis in R or adapt it for their own projects. The code below reproduces every step of the interactive demo above.</p>';
+    html += '<div class="callout callout-info" style="margin-bottom:1rem;"><strong>What you need:</strong> R with the <code>tidyverse</code>, <code>tidytext</code>, <code>elbird</code>, and <code>cluster</code> packages. The <code>elbird</code> package wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same Korean morphological analyzer used in our Orange workflows. Install it with <code>install.packages("elbird")</code>.</div>';
+    html += codeHTML;
+    html += '</div>';
     detailPanel.innerHTML = html;
   }
 
