@@ -20,10 +20,9 @@ Corpus-design choices (standard in computational text analysis):
      distinguish them reliably and introduce noise into the distance
      matrix.
 
-  3. Speaker balance — To prevent any single president's vocabulary from
-     dominating the feature space, speeches are capped at MAX_PER_PRES
-     per president (random sample, seeded for reproducibility).  This is
-     analogous to balanced corpus design in corpus linguistics.
+  Speaker imbalance is intentionally preserved.  If topic (not speaker)
+  truly drives the clustering, the result should hold even when some
+  presidents contribute far more speeches than others.
 
 Usage:
     python generate_kmeans_demo.py
@@ -60,10 +59,6 @@ KEEP_KINDS = {"기념사", "성명/담화문", "국회연설", "신년사", "취
 # threshold do not contain enough vocabulary for meaningful TF-IDF
 # differentiation.
 MIN_TOKENS = 75
-
-# Maximum speeches per president.  Ensures no single speaker's lexicon
-# dominates the TF-IDF feature space.
-MAX_PER_PRES = 70
 
 RANDOM_SEED = 42
 
@@ -127,17 +122,11 @@ def main() -> None:
     df = df[df["n_tokens"] >= MIN_TOKENS].copy()
     print(f"\n2. Min-length filter (>= {MIN_TOKENS} tokens): {before} → {len(df)} speeches")
 
-    # ── 3. Speaker balance ────────────────────────────────────────────
-    # Cap each president at MAX_PER_PRES speeches so that no single
-    # speaker's vocabulary dominates the TF-IDF feature space.  This is
-    # standard balanced-corpus design in corpus linguistics.
-    before = len(df)
-    sampled = []
-    for pres, grp in df.groupby("president"):
-        sampled.append(grp.sample(n=min(len(grp), MAX_PER_PRES), random_state=RANDOM_SEED))
-    df = pd.concat(sampled, ignore_index=True)
-    print(f"\n3. Speaker balance (max {MAX_PER_PRES}/pres): {before} → {len(df)} speeches")
-    print("   Per-president counts:")
+    # ── Speaker counts (no balancing) ────────────────────────────────
+    # We intentionally keep the natural speaker imbalance.  If topic
+    # (not speaker) truly drives the clustering, the result should hold
+    # even when some presidents have far more speeches than others.
+    print("\n   Per-president counts (unbalanced):")
     for pres, cnt in df["president"].value_counts().sort_values().items():
         print(f"     {pres}: {cnt}")
 
