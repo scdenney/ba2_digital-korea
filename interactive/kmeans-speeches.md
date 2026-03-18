@@ -929,8 +929,8 @@ pres_cluster <span class="r-operator">|&gt;</span>
 
     var html = '<div class="step-info">';
     html += '<p>Each dot is one of <strong>749 presidential speeches</strong> from 7 democratic-era presidents (1988\u2013present). All speech types are included.</p>';
-    html += '<p>The X and Y axes are a 2D projection (PCA) of each speech\u2019s TF-IDF vector. Speeches that use similar vocabulary appear close together; speeches with very different word profiles are far apart. The axes themselves don\u2019t have a concrete label \u2014 they just capture the two directions of greatest vocabulary variation across the corpus.</p>';
-    html += '<p>Right now every dot is gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups in this vocabulary space.</p>';
+    html += '<p>Each speech was converted into a TF-IDF vector \u2014 a numerical summary of which words it uses and how distinctive those words are. To plot these on a 2D screen, the computer found the two dimensions that best capture the overall differences in vocabulary across all 749 speeches. Speeches that use similar words appear close together; speeches with very different vocabulary are far apart. The axes don\u2019t have a simple label like "economy" or "diplomacy" \u2014 they represent combinations of many word patterns at once.</p>';
+    html += '<p>Right now every dot is gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {
