@@ -245,10 +245,10 @@ title: "K-Means Clustering: Presidential Speeches"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>K-Means Clustering: Presidential Speeches</h1>
-    <p class="demo-intro">Step through a k-means clustering of 473 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <p class="demo-intro">Step through a k-means clustering of 622 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
     <div class="tutorial-meta">
       <span>Week 7</span>
-      <span>473 speeches, 7 presidents</span>
+      <span>622 speeches, 7 presidents</span>
       <span>Democratic era (1988&ndash;2022)</span>
     </div>
   </div>
@@ -315,17 +315,11 @@ token_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operato
 keep_docs <span class="r-operator">&lt;-</span> token_counts <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(n_tokens <span class="r-operator">&gt;=</span> <span class="r-number">75</span>) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(doc_id)
 tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(doc_id <span class="r-operator">%in%</span> keep_docs)
 
-<span class="r-comment"># ── 3. Speaker balance ────────────────────────────────────────────</span>
-<span class="r-comment"># Cap at 70 speeches per president so no single speaker's lexicon</span>
-<span class="r-comment"># dominates the TF-IDF feature space.  Standard practice in</span>
-<span class="r-comment"># balanced corpus design (corpus linguistics).</span>
-doc_meta <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id, president)
-<span class="r-function">set.seed</span>(<span class="r-number">42</span>)
-keep_balanced <span class="r-operator">&lt;-</span> doc_meta <span class="r-operator">|&gt;</span>
-  <span class="r-function">group_by</span>(president) <span class="r-operator">|&gt;</span>
-  <span class="r-function">slice_sample</span>(n <span class="r-operator">=</span> <span class="r-number">70</span>) <span class="r-operator">|&gt;</span>   <span class="r-comment"># silently keeps all if &lt; 70</span>
-  <span class="r-function">pull</span>(doc_id)
-tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(doc_id <span class="r-operator">%in%</span> keep_balanced)
+<span class="r-comment"># ── No speaker balancing ──────────────────────────────────────────</span>
+<span class="r-comment"># We intentionally keep the natural speaker imbalance.  If topic</span>
+<span class="r-comment"># (not speaker) truly drives the clustering, the result should</span>
+<span class="r-comment"># hold even when some presidents have far more speeches.</span>
+tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(president)
 
 <span class="r-comment"># ── TF-IDF with document-frequency thresholds ─────────────────────</span>
 <span class="r-comment"># Count how many documents each word appears in</span>
@@ -360,7 +354,7 @@ sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibbl
 best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator">|&gt;</span> <span class="r-function">slice_max</span>(sil) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(k)</code></pre>
         </div>
         <div class="callout callout-info">
-          <strong>About the corpus design:</strong> Before clustering, we apply three standard corpus-design steps: (1) <strong>genre restriction</strong> to exclude the most formulaic ceremonial genres (축사, 만찬사) and meeting transcripts that exist for only one president; (2) <strong>minimum document length</strong> (75 tokens), because short speeches produce sparse TF-IDF vectors that add noise; (3) <strong>speaker balance</strong>, capping each president at 70 speeches so no one speaker's vocabulary dominates the feature space. These are standard practices in corpus linguistics and computational text analysis.
+          <strong>About the corpus design:</strong> Before clustering, we apply two standard corpus-design steps: (1) <strong>genre restriction</strong> to exclude the most formulaic ceremonial genres (축사, 만찬사) and meeting transcripts that exist for only one president; (2) <strong>minimum document length</strong> (75 tokens), because short speeches produce sparse TF-IDF vectors that add noise. Speaker imbalance is <em>intentionally preserved</em> &mdash; if topic truly drives the clustering, the result should hold even when some presidents contribute far more speeches than others.
         </div>
       </div>
     </details>
@@ -402,7 +396,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
 
   // ── CONSTANTS ─────────────────────────────────────────────────────
   var STEPS = [
-    { id: "corpus",  label: "1. The Corpus",       desc: "473 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "corpus",  label: "1. The Corpus",       desc: "622 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
@@ -412,9 +406,9 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Police & Public Safety", "Peace, Unification & Diaspora",
-    "Bilateral Diplomacy", "Science, Industry & Regional",
-    "Economy & Reform"
+    "Police & Emergency Services", "National Identity & Unification",
+    "Bilateral Diplomacy", "Economy, Industry & Technology",
+    "Foreign Relations & Inter-Korean", "Women, Family & Social Policy"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
@@ -437,7 +431,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
   var showCentroids = false;
   var currentCentroids = null;     // [[x,y], ...]
   var highlightCluster = null;     // null or cluster index
-  var selectedK = 5;
+  var selectedK = 6;
   var hoveredIdx = -1;
 
   // Animation state
@@ -912,7 +906,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
 
     var html = '<div class="step-info">';
-    html += '<p>Each dot represents one of <strong>473 presidential speeches</strong> from the democratic era. The corpus excludes only the most formulaic genres (축사, 만찬사) and meeting transcripts (회의, Moon only), keeps speeches with at least 75 noun tokens, and balances across presidents. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<p>Each dot represents one of <strong>622 presidential speeches</strong> from the democratic era. The corpus excludes only the most formulaic genres (축사, 만찬사) and meeting transcripts (회의, Moon only), keeps speeches with at least 75 noun tokens, and balances across presidents. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {
