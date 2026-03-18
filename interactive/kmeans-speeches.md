@@ -345,15 +345,31 @@ mat <span class="r-operator">&lt;-</span> dtm <span class="r-operator">|&gt;</sp
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step E. Choose k with silhouette scores</strong><br>We run k-means for k = 2 through 6 and compute the average silhouette score for each. The silhouette measures how well each speech fits its assigned cluster vs. the next-best cluster. Higher is better. We pick the k with the highest score.</p>
+    <p style="margin-top:1rem;"><strong>Step E. Reduce dimensions (LSA)</strong><br>The TF-IDF matrix has thousands of columns (one per word) and is very sparse. K-means uses Euclidean distance, which works poorly in such high-dimensional spaces. We use <strong>Truncated SVD</strong> (also called Latent Semantic Analysis) to compress the vocabulary down to 100 dense "topic" dimensions, then normalize each vector to unit length so the algorithm focuses on topic <em>direction</em>, not document length.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code>sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(k <span class="r-operator">=</span> <span class="r-number">2</span>:<span class="r-number">6</span>) <span class="r-operator">|&gt;</span>
+        <pre><code><span class="r-comment"># install.packages("irlba") if needed</span>
+<span class="r-function">library</span>(irlba)
+
+<span class="r-comment"># Truncated SVD: compress to 100 topic dimensions</span>
+svd_result <span class="r-operator">&lt;-</span> <span class="r-function">irlba</span>(mat, nv <span class="r-operator">=</span> <span class="r-number">100</span>)
+mat_reduced <span class="r-operator">&lt;-</span> svd_result<span class="r-operator">$</span>u <span class="r-operator">%*%</span> <span class="r-function">diag</span>(svd_result<span class="r-operator">$</span>d[<span class="r-number">1</span>:<span class="r-number">100</span>])
+
+<span class="r-comment"># L2-normalize each row to unit length</span>
+mat_reduced <span class="r-operator">&lt;-</span> mat_reduced <span class="r-operator">/</span> <span class="r-function">sqrt</span>(<span class="r-function">rowSums</span>(mat_reduced<span class="r-operator">^</span><span class="r-number">2</span>))</code></pre>
+      </div></div>
+    </details>
+
+    <p style="margin-top:1rem;"><strong>Step F. Choose k with silhouette scores</strong><br>We run k-means for k = 3 through 8 on the reduced matrix and compute the average silhouette score for each. The silhouette measures how well each speech fits its assigned cluster vs. the next-best cluster. Higher is better. We pick the k with the highest score.</p>
+    <details class="code-ribbon">
+      <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
+      <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code>sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(k <span class="r-operator">=</span> <span class="r-number">3</span>:<span class="r-number">8</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">mutate</span>(
-    km <span class="r-operator">=</span> <span class="r-function">map</span>(k, <span class="r-operator">~</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> .x, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)),
+    km <span class="r-operator">=</span> <span class="r-function">map</span>(k, <span class="r-operator">~</span> <span class="r-function">kmeans</span>(mat_reduced, centers <span class="r-operator">=</span> .x, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)),
     sil <span class="r-operator">=</span> <span class="r-function">map_dbl</span>(km, <span class="r-keyword">function</span>(m) {
-      s <span class="r-operator">&lt;-</span> <span class="r-function">silhouette</span>(m<span class="r-operator">$</span>cluster, <span class="r-function">dist</span>(mat))
+      s <span class="r-operator">&lt;-</span> <span class="r-function">silhouette</span>(m<span class="r-operator">$</span>cluster, <span class="r-function">dist</span>(mat_reduced))
       <span class="r-function">mean</span>(s[, <span class="r-number">3</span>])
     })
   )
@@ -363,12 +379,12 @@ best_k  <span class="r-comment"># print it</span></code></pre>
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step F. Run k-means and inspect clusters</strong><br>Now we run k-means one final time with the best k. To understand what each cluster is "about," we re-apply TF-IDF at the cluster level &mdash; treating all speeches in a cluster as one big document &mdash; and extract the top distinctive words.</p>
+    <p style="margin-top:1rem;"><strong>Step G. Run k-means and inspect clusters</strong><br>Now we run k-means one final time with the best k on the reduced matrix. To understand what each cluster is "about," we go back to the original tokens and re-apply TF-IDF at the cluster level &mdash; treating all speeches in a cluster as one big document &mdash; and extract the top distinctive words.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
         <pre><code><span class="r-function">set.seed</span>(<span class="r-number">42</span>)
-best_km <span class="r-operator">&lt;-</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> best_k, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)
+best_km <span class="r-operator">&lt;-</span> <span class="r-function">kmeans</span>(mat_reduced, centers <span class="r-operator">=</span> best_k, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)
 
 doc_clusters <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(doc_id <span class="r-operator">=</span> dtm<span class="r-operator">$</span>doc_id, cluster <span class="r-operator">=</span> <span class="r-function">as.character</span>(best_km<span class="r-operator">$</span>cluster))
 
@@ -393,7 +409,7 @@ cluster_tfidf <span class="r-operator">|&gt;</span>
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step G. President distribution across clusters</strong><br>Finally, we check whether clusters track presidents or topics. If each president's speeches scatter across multiple clusters, it confirms that topic &mdash; not speaker identity &mdash; drives the grouping.</p>
+    <p style="margin-top:1rem;"><strong>Step H. President distribution across clusters</strong><br>Finally, we check whether clusters track presidents or topics. If each president's speeches scatter across multiple clusters, it confirms that topic &mdash; not speaker identity &mdash; drives the grouping.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -435,9 +451,9 @@ pres_cluster <span class="r-operator">|&gt;</span>
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Broadcasting & Media", "State Visits & Diplomacy",
-    "Foreign Relations & Inter-Korean", "Security & Veterans",
-    "Economy, Industry & Technology", "National Identity & Unification"
+    "Culture, Events & Regional", "Security & Veterans",
+    "Unification & National Identity", "Economy & Industry",
+    "State Visits & Diplomacy", "Police & Public Safety"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];

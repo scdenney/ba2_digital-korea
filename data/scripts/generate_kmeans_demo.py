@@ -37,9 +37,10 @@ import numpy as np
 import pandas as pd
 from kiwipiepy import Kiwi
 from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import silhouette_score, silhouette_samples
+from sklearn.preprocessing import normalize
 
 # ── Paths ─────────────────────────────────────────────────────────────
 SCRIPT_DIR   = Path(__file__).resolve().parent
@@ -139,15 +140,30 @@ def main() -> None:
     feature_names = vectorizer.get_feature_names_out()
     print(f"  Matrix: {tfidf.shape[0]} docs × {tfidf.shape[1]} features")
 
+    # ── Dimensionality reduction (Truncated SVD / LSA) ──────────────
+    # Raw TF-IDF vectors are very high-dimensional and sparse.  K-means
+    # works on Euclidean distance, which degrades in high dimensions.
+    # Truncated SVD (Latent Semantic Analysis) compresses the vocabulary
+    # space into ~50 dense topic dimensions, giving k-means a much
+    # cleaner signal to work with.  This is standard practice in text
+    # clustering.
+    N_COMPONENTS = 100
+    print(f"\nReducing to {N_COMPONENTS} dimensions via Truncated SVD (LSA) ...")
+    svd = TruncatedSVD(n_components=N_COMPONENTS, random_state=RANDOM_SEED)
+    tfidf_reduced = svd.fit_transform(tfidf)
+    print(f"  Explained variance: {svd.explained_variance_ratio_.sum():.1%}")
+    # L2-normalize so k-means uses direction (topic), not magnitude
+    tfidf_reduced = normalize(tfidf_reduced)
+
     # ── K-means for k=2..6, with silhouette scores ───────────────────
-    print("\nRunning k-means for k=2..6 ...")
-    k_range = list(range(2, 7))
+    print("\nRunning k-means for k=3..8 ...")
+    k_range = list(range(3, 9))
     results = {}
 
     for k in k_range:
         km = KMeans(n_clusters=k, n_init=10, random_state=RANDOM_SEED)
-        labels = km.fit_predict(tfidf)
-        sil_avg = silhouette_score(tfidf, labels)
+        labels = km.fit_predict(tfidf_reduced)
+        sil_avg = silhouette_score(tfidf_reduced, labels)
         results[k] = {"labels": labels, "model": km, "silhouette": sil_avg}
         print(f"  k={k}: silhouette={sil_avg:.4f}")
 
@@ -175,7 +191,7 @@ def main() -> None:
 
     # ── 2D projection via PCA (for scatter plot) ─────────────────────
     pca = PCA(n_components=2, random_state=RANDOM_SEED)
-    coords_2d = pca.fit_transform(tfidf.toarray())
+    coords_2d = pca.fit_transform(tfidf_reduced)
     # Normalize to [0, 1] for the canvas
     for dim in range(2):
         lo, hi = coords_2d[:, dim].min(), coords_2d[:, dim].max()
