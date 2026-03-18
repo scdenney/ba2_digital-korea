@@ -245,10 +245,10 @@ title: "K-Means Clustering: Presidential Speeches"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>K-Means Clustering: Presidential Speeches</h1>
-    <p class="demo-intro">Step through a k-means clustering of 749 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <p class="demo-intro">Step through a k-means clustering of 363 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
     <div class="tutorial-meta">
       <span>Week 7</span>
-      <span>749 speeches, 7 presidents</span>
+      <span>363 speeches, 7 presidents</span>
       <span>Democratic era (1988&ndash;2022)</span>
     </div>
   </div>
@@ -272,7 +272,7 @@ title: "K-Means Clustering: Presidential Speeches"
 
   <div style="margin-top:2rem;">
     <details class="code-ribbon">
-      <summary><span class="ribbon-label">R code: k-means with silhouette comparison (k=2..8)</span><span class="ribbon-tag">R</span></summary>
+      <summary><span class="ribbon-label">R code: corpus design, preprocessing, and k-means with silhouette comparison</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body">
         <div class="code-block">
           <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -282,11 +282,21 @@ title: "K-Means Clustering: Presidential Speeches"
 <span class="r-function">library</span>(elbird)
 <span class="r-function">library</span>(cluster)
 
-<span class="r-comment"># ── Load and preprocess ───────────────────────────────────────────</span>
+<span class="r-comment"># ── Load the full corpus ──────────────────────────────────────────</span>
 corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/president_speeches/president_speeches_democratic_era.csv"</span>)
 stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"data/stopwords_ko.txt"</span>) <span class="r-operator">|&gt;</span> <span class="r-function">str_trim</span>() <span class="r-operator">|&gt;</span> <span class="r-function">discard</span>(<span class="r-operator">~</span> .x <span class="r-operator">==</span> <span class="r-string">""</span>)
 
-<span class="r-comment"># Tokenize with Kiwi</span>
+<span class="r-comment"># ── 1. Genre restriction ──────────────────────────────────────────</span>
+<span class="r-comment"># Keep only substantive, policy-oriented speech types.</span>
+<span class="r-comment"># Ceremonial genres (환영사, 축사, 만찬사) use generic diplomatic</span>
+<span class="r-comment"># language that blurs thematic differences between speeches.</span>
+<span class="r-comment"># The catch-all category (기타) is too heterogeneous.  Meeting</span>
+<span class="r-comment"># transcripts (회의) exist only for one president (문재인),</span>
+<span class="r-comment"># making cross-president comparison impossible for that genre.</span>
+keep_kinds <span class="r-operator">&lt;-</span> <span class="r-function">c</span>(<span class="r-string">"기념사"</span>, <span class="r-string">"성명/담화문"</span>, <span class="r-string">"국회연설"</span>, <span class="r-string">"신년사"</span>, <span class="r-string">"취임사"</span>)
+corpus <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(kind <span class="r-operator">%in%</span> keep_kinds)
+
+<span class="r-comment"># ── Tokenize with Kiwi ────────────────────────────────────────────</span>
 tokenize_kiwi <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {
   result <span class="r-operator">&lt;-</span> <span class="r-function">tokenize</span>(text, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)
   <span class="r-function">tibble</span>(form <span class="r-operator">=</span> result<span class="r-operator">$</span>form, tag <span class="r-operator">=</span> result<span class="r-operator">$</span>tag)
@@ -299,14 +309,48 @@ tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&g
          <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>, <span class="r-operator">!</span><span class="r-function">str_detect</span>(form, <span class="r-string">"^[0-9]+$"</span>)) <span class="r-operator">|&gt;</span>
   <span class="r-function">select</span>(doc_id, president, kind, word <span class="r-operator">=</span> form)
 
-<span class="r-comment"># TF-IDF matrix</span>
-tfidf <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(doc_id, word) <span class="r-operator">|&gt;</span> <span class="r-function">bind_tf_idf</span>(word, doc_id, n)
+<span class="r-comment"># ── 2. Minimum document length ────────────────────────────────────</span>
+<span class="r-comment"># Speeches with fewer than 100 noun tokens after preprocessing</span>
+<span class="r-comment"># do not contain enough vocabulary for TF-IDF to distinguish</span>
+<span class="r-comment"># them reliably.  Short documents produce sparse, noisy vectors.</span>
+token_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(doc_id, name <span class="r-operator">=</span> <span class="r-string">"n_tokens"</span>)
+keep_docs <span class="r-operator">&lt;-</span> token_counts <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(n_tokens <span class="r-operator">&gt;=</span> <span class="r-number">100</span>) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(doc_id)
+tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(doc_id <span class="r-operator">%in%</span> keep_docs)
+
+<span class="r-comment"># ── 3. Speaker balance ────────────────────────────────────────────</span>
+<span class="r-comment"># Cap at 70 speeches per president so no single speaker's lexicon</span>
+<span class="r-comment"># dominates the TF-IDF feature space.  Standard practice in</span>
+<span class="r-comment"># balanced corpus design (corpus linguistics).</span>
+doc_meta <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id, president)
+<span class="r-function">set.seed</span>(<span class="r-number">42</span>)
+keep_balanced <span class="r-operator">&lt;-</span> doc_meta <span class="r-operator">|&gt;</span>
+  <span class="r-function">group_by</span>(president) <span class="r-operator">|&gt;</span>
+  <span class="r-function">slice_sample</span>(n <span class="r-operator">=</span> <span class="r-number">70</span>) <span class="r-operator">|&gt;</span>   <span class="r-comment"># silently keeps all if &lt; 70</span>
+  <span class="r-function">pull</span>(doc_id)
+tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(doc_id <span class="r-operator">%in%</span> keep_balanced)
+
+<span class="r-comment"># ── TF-IDF with document-frequency thresholds ─────────────────────</span>
+<span class="r-comment"># Count how many documents each word appears in</span>
+n_docs <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id) <span class="r-operator">|&gt;</span> <span class="r-function">nrow</span>()
+word_doc_freq <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">distinct</span>(doc_id, word) <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(word, name <span class="r-operator">=</span> <span class="r-string">"doc_freq"</span>)
+
+<span class="r-comment"># Keep words that appear in at least 5 documents (not too rare)</span>
+<span class="r-comment"># and no more than 60% of documents (not too common).</span>
+keep_words <span class="r-operator">&lt;-</span> word_doc_freq <span class="r-operator">|&gt;</span>
+  <span class="r-function">filter</span>(doc_freq <span class="r-operator">&gt;=</span> <span class="r-number">5</span>, doc_freq <span class="r-operator">&lt;=</span> <span class="r-number">0.6</span> <span class="r-operator">*</span> n_docs) <span class="r-operator">|&gt;</span>
+  <span class="r-function">pull</span>(word)
+
+tokens_filtered <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(word <span class="r-operator">%in%</span> keep_words)
+
+tfidf <span class="r-operator">&lt;-</span> tokens_filtered <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(doc_id, word) <span class="r-operator">|&gt;</span> <span class="r-function">bind_tf_idf</span>(word, doc_id, n)
 dtm <span class="r-operator">&lt;-</span> tfidf <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(doc_id, word, tf_idf) <span class="r-operator">|&gt;</span>
   <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> word, values_from <span class="r-operator">=</span> tf_idf, values_fill <span class="r-operator">=</span> <span class="r-number">0</span>)
 mat <span class="r-operator">&lt;-</span> dtm <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(<span class="r-operator">-</span>doc_id) <span class="r-operator">|&gt;</span> <span class="r-function">as.matrix</span>()
 
-<span class="r-comment"># ── K-means for k=2..8 with silhouette scores ─────────────────────</span>
-sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(k <span class="r-operator">=</span> <span class="r-number">2</span>:<span class="r-number">8</span>) <span class="r-operator">|&gt;</span>
+<span class="r-comment"># ── K-means for k=2..6 with silhouette scores ─────────────────────</span>
+sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibble</span>(k <span class="r-operator">=</span> <span class="r-number">2</span>:<span class="r-number">6</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">mutate</span>(
     km <span class="r-operator">=</span> <span class="r-function">map</span>(k, <span class="r-operator">~</span> <span class="r-function">kmeans</span>(mat, centers <span class="r-operator">=</span> .x, nstart <span class="r-operator">=</span> <span class="r-number">10</span>)),
     sil <span class="r-operator">=</span> <span class="r-function">map_dbl</span>(km, <span class="r-keyword">function</span>(m) {
@@ -318,7 +362,7 @@ sil_results <span class="r-operator">&lt;-</span> <span class="r-function">tibbl
 best_k <span class="r-operator">&lt;-</span> sil_results <span class="r-operator">|&gt;</span> <span class="r-function">slice_max</span>(sil) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(k)</code></pre>
         </div>
         <div class="callout callout-info">
-          <strong>About <code>nstart = 10</code>:</strong> K-means results depend on random initial centroid placement. Setting <code>nstart = 10</code> runs the algorithm 10 times with different starting points and keeps the best result &mdash; the same approach Orange uses by default.
+          <strong>About the corpus design:</strong> Before clustering, we apply three standard corpus-design steps: (1) <strong>genre restriction</strong> to keep only policy-oriented speech types, since ceremonial genres contain formulaic language that obscures thematic differences; (2) <strong>minimum document length</strong>, because short speeches produce sparse TF-IDF vectors that add noise; (3) <strong>speaker balance</strong>, capping each president at 70 speeches so no one speaker's vocabulary dominates the feature space. These are standard practices in corpus linguistics and computational text analysis.
         </div>
       </div>
     </details>
@@ -360,7 +404,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
 
   // ── CONSTANTS ─────────────────────────────────────────────────────
   var STEPS = [
-    { id: "corpus",  label: "1. The Corpus",       desc: "749 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "corpus",  label: "1. The Corpus",       desc: "363 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
@@ -370,9 +414,8 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Bilateral Diplomacy", "International Summits", "National Unity & Inter-Korean",
-    "Commemorative & Cultural", "Security & Defense", "Education & Youth",
-    "Economic Policy & Reform"
+    "Security & Veterans", "Unification & Democracy", "Science, Technology & Culture",
+    "Police & Public Safety", "Bilateral Diplomacy", "Economy & Trade"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
@@ -395,7 +438,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
   var showCentroids = false;
   var currentCentroids = null;     // [[x,y], ...]
   var highlightCluster = null;     // null or cluster index
-  var selectedK = 7;
+  var selectedK = 6;
   var hoveredIdx = -1;
 
   // Animation state
@@ -870,7 +913,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
 
     var html = '<div class="step-info">';
-    html += '<p>Each dot represents one of <strong>749 presidential speeches</strong> from the democratic era. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<p>Each dot represents one of <strong>363 presidential speeches</strong> from the democratic era. The corpus includes only substantive speech types (commemorative addresses, policy statements, National Assembly speeches, New Year addresses, and inaugurals) with at least 100 noun tokens, balanced across presidents. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {
