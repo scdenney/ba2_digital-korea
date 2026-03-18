@@ -931,7 +931,8 @@ pres_cluster <span class="r-operator">|&gt;</span>
     html += '<p>Each dot is one of <strong>749 presidential speeches</strong> from 7 democratic-era presidents (1988\u2013present). All speech types are included.</p>';
     html += '<p>Each speech was converted into a TF-IDF vector \u2014 a numerical summary of which words it uses and how distinctive those words are. To plot these on a 2D screen, the computer found the two dimensions that best capture the overall differences in vocabulary across all 749 speeches. Speeches that use similar words appear close together; speeches with very different vocabulary are far apart. The axes don\u2019t have a simple label like "economy" or "diplomacy" \u2014 they represent combinations of many word patterns at once.</p>';
     html += '<p>Right now every dot is gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
-    html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
+    html += '<p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.3rem;">Number of speeches per president (note the imbalance \u2014 some presidents have over twice as many speeches as others):</p>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {
         html += '<span style="background:#f1f5f9;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.82rem;color:#374151;">';
