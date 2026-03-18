@@ -1,8 +1,8 @@
 """
 Generate JSON data for the k-means clustering interactive demo.
 
-Reads democratic-era presidential speeches, applies corpus-design filters
-(genre restriction, minimum document length), tokenizes with kiwipiepy,
+Reads democratic-era presidential speeches, excludes 회의 (meeting
+transcripts, one president only), tokenizes with kiwipiepy,
 computes TF-IDF vectors, runs k-means for k=2..8 (same pipeline as
 Orange: TF-IDF straight to k-means), and extracts per-cluster top words.
 
@@ -13,11 +13,6 @@ Corpus-design choices (standard in computational text analysis):
      (문재인).  Including it would introduce a genre confound:
      the algorithm could cluster those 49 speeches together simply
      because they are meetings, not because of their topic content.
-
-  2. Minimum document length — Speeches shorter than 75 noun tokens
-     after preprocessing lack sufficient vocabulary for TF-IDF to
-     distinguish them reliably and introduce noise into the distance
-     matrix.
 
   Speaker imbalance is intentionally preserved.  If topic (not speaker)
   truly drives the clustering, the result should hold even when some
@@ -57,7 +52,7 @@ EXCLUDE_KINDS = {"회의"}  # 회의 = meeting transcripts, all from one preside
 # Minimum noun-token count after preprocessing.  Speeches below this
 # threshold do not contain enough vocabulary for meaningful TF-IDF
 # differentiation.
-MIN_TOKENS = 75
+# No minimum token threshold — all speeches kept after genre filter.
 
 RANDOM_SEED = 42
 
@@ -111,14 +106,6 @@ def main() -> None:
     )
     df["n_tokens"] = df["processed"].str.split().str.len()
     print(f"  Done. Mean tokens/speech: {df['n_tokens'].mean():.0f}")
-
-    # ── 2. Minimum document length ────────────────────────────────────
-    # Remove speeches that are too short for TF-IDF to distinguish
-    # reliably.  Very short documents produce sparse, noisy vectors
-    # that degrade cluster quality.
-    before = len(df)
-    df = df[df["n_tokens"] >= MIN_TOKENS].copy()
-    print(f"\n2. Min-length filter (>= {MIN_TOKENS} tokens): {before} → {len(df)} speeches")
 
     # ── Speaker counts (no balancing) ────────────────────────────────
     # We intentionally keep the natural speaker imbalance.  If topic

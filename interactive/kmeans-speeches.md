@@ -245,10 +245,10 @@ title: "K-Means Clustering: Presidential Speeches"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>K-Means Clustering: Presidential Speeches</h1>
-    <p class="demo-intro">Step through a k-means clustering of 648 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
+    <p class="demo-intro">Step through a k-means clustering of 700 presidential speeches. Each step shows how the algorithm finds structure in the data and what that structure means.</p>
     <div class="tutorial-meta">
       <span>Week 7</span>
-      <span>648 speeches, 7 presidents</span>
+      <span>700 speeches, 7 presidents</span>
       <span>Democratic era (1988&ndash;2022)</span>
     </div>
   </div>
@@ -297,7 +297,7 @@ stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read
       </div></div>
     </details>
 
-    <p style="margin-top:1rem;"><strong>Step C. Tokenize and filter</strong><br>We tokenize each speech with Kiwi, keep only nouns (<code>NNG</code>, <code>NNP</code>), remove stopwords and single-character tokens. Then we drop speeches with fewer than 75 noun tokens &mdash; short documents produce sparse vectors that add noise to the clustering.</p>
+    <p style="margin-top:1rem;"><strong>Step C. Tokenize and filter</strong><br>We tokenize each speech with Kiwi, keep only nouns (<code>NNG</code>, <code>NNP</code>), and remove stopwords and single-character tokens. This is the same preprocessing pipeline from earlier weeks and the same one used in our Orange workflows.</p>
     <details class="code-ribbon">
       <summary><span class="ribbon-label">Show code</span><span class="ribbon-tag">R</span></summary>
       <div class="code-ribbon-body"><div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -313,12 +313,7 @@ tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&g
          <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>, <span class="r-operator">!</span><span class="r-function">str_detect</span>(form, <span class="r-string">"^[0-9]+$"</span>)) <span class="r-operator">|&gt;</span>
   <span class="r-function">select</span>(doc_id, president, kind, word <span class="r-operator">=</span> form)
 
-<span class="r-comment"># Drop short speeches</span>
-token_counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(doc_id, name <span class="r-operator">=</span> <span class="r-string">"n_tokens"</span>)
-keep_docs <span class="r-operator">&lt;-</span> token_counts <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(n_tokens <span class="r-operator">&gt;=</span> <span class="r-number">75</span>) <span class="r-operator">|&gt;</span> <span class="r-function">pull</span>(doc_id)
-tokens <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(doc_id <span class="r-operator">%in%</span> keep_docs)
-
-<span class="r-comment"># Check per-president counts (intentionally unbalanced)</span>
+<span class="r-comment"># Check per-president counts</span>
 tokens <span class="r-operator">|&gt;</span> <span class="r-function">distinct</span>(doc_id, president) <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(president)</code></pre>
       </div></div>
     </details>
@@ -424,7 +419,7 @@ pres_cluster <span class="r-operator">|&gt;</span>
 
   // ── CONSTANTS ─────────────────────────────────────────────────────
   var STEPS = [
-    { id: "corpus",  label: "1. The Corpus",       desc: "648 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
+    { id: "corpus",  label: "1. The Corpus",       desc: "700 speeches from 7 presidents. Each dot is one speech. Hover to see its title." },
     { id: "choosek", label: "2. Choose k",          desc: "Click a k value to preview that clustering. Higher silhouette = better separation." },
     { id: "animate", label: "3. K-Means in Action", desc: "Watch k-means iterate: assign to nearest centroid, then update centroids. Click Run or Step." },
     { id: "explore", label: "4. Explore Clusters",  desc: "Click a cluster to see its top words and president composition." },
@@ -435,10 +430,10 @@ pres_cluster <span class="r-operator">|&gt;</span>
   var PALETTE = ["#3b82f6","#ef4444","#10b981","#f59e0b","#8b5cf6","#06b6d4","#ec4899","#84cc16"];
 
   var CLUSTER_LABELS = [
-    "Women's Movement & Rural Dev", "Foreign Relations & Unification",
-    "State Visits & Diplomacy", "Police & Public Safety",
-    "Economy, Industry & Technology", "Security & Veterans",
-    "Culture, Diaspora & Events", "Democracy & Human Rights"
+    "Security & Veterans", "State Visits & Diplomacy",
+    "Culture, Society & Events", "Economy, Industry & Women",
+    "Democracy & Human Rights", "Police & Public Safety",
+    "Bilateral Relations & Peace", "Science & Technology"
   ];
 
   var PRESIDENT_ORDER = ["\ub178\ud0dc\uc6b0","\uae40\uc601\uc0bc","\uae40\ub300\uc911","\ub178\ubb34\ud604","\uc774\uba85\ubc15","\ubc15\uadfc\ud61c","\ubb38\uc7ac\uc778"];
@@ -941,7 +936,7 @@ pres_cluster <span class="r-operator">|&gt;</span>
     DATA.speeches.forEach(function (s) { counts[s.president] = (counts[s.president] || 0) + 1; });
 
     var html = '<div class="step-info">';
-    html += '<p>Each dot represents one of <strong>648 presidential speeches</strong> from the democratic era. The only exclusion is 회의 (meeting transcripts), which exist for only one president and would introduce a genre confound. Speeches with fewer than 75 noun tokens are also removed. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
+    html += '<p>Each dot represents one of <strong>700 presidential speeches</strong> from the democratic era. The only exclusion is 회의 (meeting transcripts), which exist for only one president and would introduce a genre confound. Right now they are all gray because we have not clustered them yet. The goal: see if k-means can find meaningful groups.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">';
     PRESIDENT_ORDER.forEach(function (p) {
       if (counts[p]) {
