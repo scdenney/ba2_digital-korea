@@ -1033,8 +1033,7 @@ pres_cluster <span class="r-operator">&lt;-</span> tokens <span class="r-operato
     html += '<div class="cluster-card-section-title">President Distribution</div>';
     PRESIDENT_ORDER.forEach(function (p) {
       var count = presDist[p] || 0;
-      if (count === 0) return;
-      var pct = (count / total) * 100;
+      var pct = total > 0 ? (count / total) * 100 : 0;
       html += '<div class="mini-bar-row">';
       html += '<div class="mini-bar-label">' + esc(p) + '</div>';
       html += '<div class="mini-bar-track"><div class="mini-bar-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>';
