@@ -1,17 +1,10 @@
 # macOS
 .DS_Store
 
-# Student data
-emails.md
-attendance.csv
-classlist.pdf
-student_tracking.csv
-
-# Announcements / drafts
-*_announcement.txt
+# Private/sensitive instructor files
+private/
 
 # Assessment guides and instructor materials
-*_assessment_guide.md
 assignments/week06-answer-guide.*
 assignments/week06-midterm.qsf
 
