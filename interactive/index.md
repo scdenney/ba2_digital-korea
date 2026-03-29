@@ -213,6 +213,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/embeddings-explorer' | relative_url }}">
+      <div class="exercise-card-accent accent-amber"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 8</div>
+        <div class="exercise-card-title">Word Embeddings: Presidential Speeches</div>
+        <p class="exercise-card-desc">Explore how KLUE BERT embeddings represent 749 presidential speeches as vectors. Walk through a 7-step pipeline from raw text to t-SNE visualization, discover topic clusters, search for similar words, and test vector analogies.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">Presidential Speeches</span>
+        <span class="exercise-tag">BERT</span>
+        <span class="exercise-tag">Embeddings</span>
+        <span class="exercise-tag">t-SNE</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
