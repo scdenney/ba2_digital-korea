@@ -372,6 +372,12 @@ Complete DataCamp: Introduction to the Tidyverse — Data Visualization Chapter 
 
 Complete DataCamp: Introduction to Text Analysis in R — Sentiment Analysis Chapter and Intermediate R — Utilities Chapter.
 
+**Orange Data Mining Tutorials (preparation for Week 9):**
+
+Watch the following tutorial before the next class. This covers the sentiment analysis methods we will use in Week 9:
+
+- [Sentiment Analysis](https://www.youtube.com/watch?v=CK_F1JktzHk&list=PLmNPvQr9Tf-Yirm1aN3kHGnhMofrLmEy7&index=10) (Text Mining #10)
+
 </div>
 </details>
 
