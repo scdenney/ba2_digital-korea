@@ -367,7 +367,7 @@ Replicate the in-class word embeddings demo using the presidential speeches corp
 1. Create a `week08/` folder inside `assignments/` in your repository
 2. Add the following to that folder:
    - Your Orange workflow file (`.ows`)
-   - A visualization (`.png`) — TBD as per instructions from Mr. Arne van der Pol
+   - A visualization (`.png`) — TBD as per instructions from Mr. Aron van de Pol
    - Your write-up (`analysis.md`)
 3. In GitHub Desktop: write a short commit message (e.g., "Add week 8 embeddings")
 4. Click **Commit to main**, then **Push origin**
