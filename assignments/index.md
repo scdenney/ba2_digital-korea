@@ -351,6 +351,28 @@ Watch the following tutorials before the next class. These cover the word embedd
 **Assigned:** Mar. 30
 **Due:** Apr. 06
 
+**Orange Data Mining — Word Embeddings:**
+
+Replicate the in-class word embeddings demo using the presidential speeches corpus.
+
+1. Load the corpus in Orange using the **Corpus** widget
+2. Preprocess the text (Python Script → Preprocess Text → Bag of Words with TF-IDF)
+3. Add a **Document Embedding** widget to generate embeddings
+4. Explore the results using visualization widgets of your choice
+
+**Write-up:** Create a short Markdown file (`analysis.md`) describing what you see in the embeddings output — which speeches or presidents appear similar, any groupings or patterns you notice, and what that might tell us about the content.
+
+**Submitting your work:**
+
+1. Create a `week08/` folder inside `assignments/` in your repository
+2. Add the following to that folder:
+   - Your Orange workflow file (`.ows`)
+   - A visualization (`.png`) — TBD as per instructions from Mr. Arne van der Pol
+   - Your write-up (`analysis.md`)
+3. In GitHub Desktop: write a short commit message (e.g., "Add week 8 embeddings")
+4. Click **Commit to main**, then **Push origin**
+5. Confirm your files appear on github.com in your repository
+
 **Required — R Programming:**
 
 Complete DataCamp: Introduction to the Tidyverse — Data Visualization Chapter and Data Wrangling Chapter.
