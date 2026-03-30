@@ -18,7 +18,7 @@ Lecture slides and Orange Data Mining workflows are posted here after each sessi
 | 5 | Mar. 02 | Practice & Deepen Lab | [PDF](week05-practice-deepen.pdf) | [PNG](odm_screenshots/week05.png) |
 | 6 | Mar. 09 | Midterm Review & Assessment | — | — |
 | 7 | Mar. 16 | Clustering | [PDF](week07-clustering.pdf) | [PNG](odm_screenshots/week07.png) |
-| 8 | Mar. 30 | Word Embeddings | — | [Interactive]({{ '/interactive/embeddings-explorer' | relative_url }}) |
+| 8 | Mar. 30 | Word Embeddings | — | — |
 | 9 | Apr. 13 | Classification II | — | — |
 | 10 | Apr. 20 | Topic Modeling | — | — |
 | 11 | May 11 | Final Review & Assessment | — | — |
