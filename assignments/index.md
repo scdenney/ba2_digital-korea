@@ -359,7 +359,7 @@ Replicate the in-class word embeddings demo using the presidential speeches corp
 
 Add the following to a `week08/` folder in your repository:
 - Your Orange workflow file (`.ows`)
-- A visualization (`.png`) — TBD as per instructions from Mr. Aron van de Pol
+- Visualization screenshots (`.png`) of your choice — whatever helps illustrate the patterns you describe in your write-up
 - A short write-up (`analysis.md`) describing what you see
 
 Commit and push your changes, then confirm your files appear on github.com.
