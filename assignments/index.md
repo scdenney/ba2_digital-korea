@@ -344,6 +344,24 @@ Watch the following tutorials before the next class. These cover the word embedd
 </div>
 </details>
 
+<details>
+<summary>Week 8: Word Embeddings</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Mar. 30
+**Due:** Apr. 06
+
+**Required — R Programming:**
+
+Complete DataCamp: Introduction to the Tidyverse — Data Visualization Chapter and Data Wrangling Chapter.
+
+**Optional — R Programming:**
+
+Complete DataCamp: Introduction to Text Analysis in R — Sentiment Analysis Chapter and Intermediate R — Utilities Chapter.
+
+</div>
+</details>
+
 </div>
 
 ---
