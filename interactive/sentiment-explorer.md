@@ -305,8 +305,7 @@ window.copyCode = function (btn) {
   function truncate(s, n) { return s.length > n ? s.slice(0, n) + "\u2026" : s; }
 
   // ── Step 1: Corpus scatter ───────────────────────────────────────
-  function showCorpus() {
-    setupCanvas();
+  function drawCorpus() {
     var tl = DATA.timeline, minS = -6, maxS = 10;
 
     ctx.clearRect(0, 0, canvasW, canvasH);
@@ -349,6 +348,11 @@ window.copyCode = function (btn) {
     ctx.translate(12, canvasH / 2); ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center"; ctx.fillText("Sentiment Score", 0, 0);
     ctx.restore();
+  }
+
+  function showCorpus() {
+    setupCanvas();
+    drawCorpus();
 
     // Legend
     var html = '<div class="step-info">';
@@ -384,24 +388,34 @@ window.copyCode = function (btn) {
     }
     if (best !== hoveredIdx) {
       hoveredIdx = best;
-      if (currentStep === 0) showCorpus();
-      else if (currentStep === 4) showTimeline();
+      if (currentStep === 0) drawCorpus();
+      else if (currentStep === 4) drawTimeline();
     }
     if (best >= 0) {
       var t = tl[best];
-      tooltipEl.style.display = "block";
-      var tx = Math.min(dateToX(t.d) + 12, canvasW - 250);
-      tooltipEl.style.left = tx + "px";
-      tooltipEl.style.top = (scoreToY(t.s, minS, maxS) - 10) + "px";
       tooltipEl.innerHTML = "<strong>" + t.d + "</strong> &bull; Score: " + t.s + " (+" + t.pc + " / -" + t.nc + ")<br>" + truncate(t.t, 100);
+      tooltipEl.style.display = "block";
+      // Bounds-checked positioning
+      var dotX = dateToX(t.d);
+      var dotY = scoreToY(t.s, minS, maxS);
+      var tipW = tooltipEl.offsetWidth;
+      var tipH = tooltipEl.offsetHeight;
+      var tx = dotX + 12;
+      if (tx + tipW > canvasW) tx = dotX - tipW - 12;
+      if (tx < 0) tx = 4;
+      var ty = dotY - 10;
+      if (ty + tipH > canvasH) ty = canvasH - tipH - 4;
+      if (ty < 0) ty = 4;
+      tooltipEl.style.left = tx + "px";
+      tooltipEl.style.top = ty + "px";
     } else {
       tooltipEl.style.display = "none";
     }
   });
   canvas.addEventListener("mouseleave", function () {
     hoveredIdx = -1; tooltipEl.style.display = "none";
-    if (currentStep === 0) showCorpus();
-    if (currentStep === 4) showTimeline();
+    if (currentStep === 0) drawCorpus();
+    if (currentStep === 4) drawTimeline();
   });
 
   // ── Step 2: Dictionary Scoring walkthrough ───────────────────────
@@ -573,8 +587,7 @@ window.copyCode = function (btn) {
   }
 
   // ── Step 5: Timeline with trend ──────────────────────────────────
-  function showTimeline() {
-    setupCanvas();
+  function drawTimeline() {
     var tl = DATA.timeline, minS = -6, maxS = 10;
 
     ctx.clearRect(0, 0, canvasW, canvasH);
@@ -655,6 +668,11 @@ window.copyCode = function (btn) {
     ctx.translate(12, canvasH / 2); ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center"; ctx.fillText("Sentiment Score", 0, 0);
     ctx.restore();
+  }
+
+  function showTimeline() {
+    setupCanvas();
+    drawTimeline();
 
     var html = '<div class="step-info">';
     html += '<p>The <strong>dark trend line</strong> shows a 60-tweet moving average. Hover individual dots to read tweets. Dashed lines mark key events.</p>';
