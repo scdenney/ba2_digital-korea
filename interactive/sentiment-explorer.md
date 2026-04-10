@@ -538,35 +538,52 @@ window.copyCode = function (btn) {
       { key: "presidency", label: "Presidency", color: PERIOD_COLORS.r }
     ];
 
-    var globalMin = -5, globalMax = 9;
-    function valToX(v) { return 120 + ((v - globalMin) / (globalMax - globalMin)) * (canvasW - 200); }
+    // Compute range from actual data
+    var globalMin = Infinity, globalMax = -Infinity;
+    periods.forEach(function (p) {
+      var s = DATA.period_stats[p.key];
+      if (s.min < globalMin) globalMin = s.min;
+      if (s.max > globalMax) globalMax = s.max;
+    });
+    // Round outward to nearest even number for cleaner scale
+    globalMin = Math.floor(globalMin / 2) * 2;
+    globalMax = Math.ceil(globalMax / 2) * 2;
+    var range = globalMax - globalMin;
+
+    // Percentage positioning — independent of canvas width
+    function pct(v) { return ((v - globalMin) / range) * 100; }
 
     var html = '<div class="step-info">';
     html += '<p>Comparing sentiment across Moon Jae-in\'s three political periods. The <strong>box</strong> shows the middle 50% of scores (Q1 to Q3), the <strong>line</strong> marks the median, and <strong>whiskers</strong> extend to min/max.</p>';
+
+    // Zero line reference
+    var zeroPct = pct(0);
 
     periods.forEach(function (p) {
       var s = DATA.period_stats[p.key];
       html += '<div class="box-row">';
       html += '<span class="box-label" style="color:' + p.color + '">' + p.label + '</span>';
       html += '<div class="box-track">';
+      // Zero reference line
+      html += '<div style="position:absolute;top:0;bottom:0;left:' + zeroPct + '%;width:1px;background:#cbd5e1;"></div>';
       // Whisker
-      var wLeft = valToX(s.min) - 120, wRight = valToX(s.max) - 120;
-      html += '<div class="box-whisker" style="left:' + (wLeft/(canvasW-200)*100) + '%;width:' + ((wRight-wLeft)/(canvasW-200)*100) + '%;"></div>';
+      var wL = pct(s.min), wR = pct(s.max);
+      html += '<div class="box-whisker" style="left:' + wL + '%;width:' + (wR - wL) + '%;"></div>';
       // Box (Q1-Q3)
-      var bLeft = valToX(s.q1) - 120, bRight = valToX(s.q3) - 120;
-      html += '<div class="box-rect" style="left:' + (bLeft/(canvasW-200)*100) + '%;width:' + ((bRight-bLeft)/(canvasW-200)*100) + '%;background:' + p.color + '22;border-color:' + p.color + ';"></div>';
+      var bL = pct(s.q1), bR = pct(s.q3);
+      var bW = Math.max(bR - bL, 1.2); // minimum visible width
+      html += '<div class="box-rect" style="left:' + bL + '%;width:' + bW + '%;background:' + p.color + '22;border-color:' + p.color + ';"></div>';
       // Median
-      var mLeft = valToX(s.median) - 120;
-      html += '<div class="box-median" style="left:' + (mLeft/(canvasW-200)*100) + '%;"></div>';
+      html += '<div class="box-median" style="left:' + pct(s.median) + '%;"></div>';
       html += '</div>';
       html += '<span class="box-stat">med ' + s.median + ', \u03BC ' + s.mean + ', n=' + s.n + '</span>';
       html += '</div>';
     });
 
     // Scale
-    html += '<div class="box-row"><span class="box-label" style="color:#9ca3af;font-size:0.75rem;">Score</span><div class="box-track" style="border:none;background:none;display:flex;justify-content:space-between;padding:0 2px;">';
+    html += '<div class="box-row"><span class="box-label" style="color:#9ca3af;font-size:0.75rem;">Score</span><div class="box-track" style="border:none;background:none;position:relative;">';
     for (var v = globalMin; v <= globalMax; v += 2) {
-      html += '<span style="font-size:0.7rem;color:#9ca3af;">' + (v > 0 ? "+" : "") + v + '</span>';
+      html += '<span style="position:absolute;left:' + pct(v) + '%;transform:translateX(-50%);font-size:0.7rem;color:#9ca3af;top:4px;">' + (v > 0 ? "+" : "") + v + '</span>';
     }
     html += '</div><span class="box-stat"></span></div>';
 
