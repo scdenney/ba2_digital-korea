@@ -21,6 +21,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 | 2–5+ | Presidential Speeches (Small) | 100 randomly selected speeches from the last three presidents (Lee Myung-bak, Park Geun-hye, Moon Jae-in). Use this if Orange runs slowly or crashes with the full file. | [CSV](president_speeches/president_speeches_small.csv) (~500 KB) |
 | 5+ | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 67-book NIKH corpus (1895–2016). Includes `processed_text` column (pre-tokenized nouns, ready for analysis). See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | [CSV](nikh_textbooks/nikh_textbooks_demo.csv) (~1.8 MB) |
 | 7 | NIKH Clustering Demo | 11 Korean history textbooks (3 Colonial, 4 Authoritarian, 4 Democratic) for the Week 7 clustering exercise. Contains `full_text` for preprocessing in Orange or R. | [CSV](nikh_textbooks/nikh_clustering_demo.csv) (~3.1 MB) |
+| 9+ | Moon Jae-in Tweets | 3,148 tweets from @moonriver365 (2012–2020), with date, engagement metrics, and period labels (pre-presidency, transition, presidency). See [documentation](moon_twitter/README.md). | [CSV](moon_twitter/moon_twitter.csv) (~350 KB) |
 | 4+ | Korean Stopwords | 678 Korean stopwords (punctuation, numbers, and high-frequency grammatical words). Load in the Preprocess Text widget under Filtering → Stopwords → From File. | [TXT](stopwords_ko.txt) |
 
 ## Scripts

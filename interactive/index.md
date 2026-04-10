@@ -230,6 +230,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/sentiment-explorer' | relative_url }}">
+      <div class="exercise-card-accent accent-amber"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 9</div>
+        <div class="exercise-card-title">Sentiment Analysis: Moon Jae-in's Tweets</div>
+        <p class="exercise-card-desc">Explore how dictionary-based sentiment analysis scores 3,148 tweets from @moonriver365. Step through word-by-word scoring, compare distributions across political periods, track sentiment over time, and discover where the method breaks down.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">Moon Jae-in Tweets</span>
+        <span class="exercise-tag">Sentiment</span>
+        <span class="exercise-tag">Dictionary</span>
+        <span class="exercise-tag">Time Series</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
