@@ -278,6 +278,11 @@ window.copyCode = function (btn) {
     hoveredIdx = -1;
     tooltipEl.style.display = "none";
 
+    // Only show the canvas on steps that use it (corpus scatter + timeline)
+    var chartContainer = document.getElementById("chartContainer");
+    var usesCanvas = (i === 0 || i === 4);
+    chartContainer.style.display = usesCanvas ? "block" : "none";
+
     var renderers = [showCorpus, showScoring, showDistribution, showPeriod, showTimeline, showExplore];
     renderers[i]();
   }
@@ -421,11 +426,6 @@ window.copyCode = function (btn) {
   // ── Step 2: Dictionary Scoring walkthrough ───────────────────────
   var currentExample = 0;
   function showScoring() {
-    setupCanvas(60);
-    ctx.clearRect(0, 0, canvasW, canvasH);
-    ctx.fillStyle = "#e2e8f0"; ctx.font = "14px system-ui"; ctx.textAlign = "center";
-    ctx.fillText("Select an example tweet below to see word-by-word scoring", canvasW / 2, 35);
-
     var examples = DATA.example_tweets;
     if (!examples || examples.length === 0) {
       detailPanel.innerHTML = '<p style="color:#6b7280;">No example tweets available.</p>';
@@ -481,9 +481,6 @@ window.copyCode = function (btn) {
   // ── Step 3: Score Distribution ───────────────────────────────────
   var distPeriod = "all";
   function showDistribution() {
-    setupCanvas(60);
-    ctx.clearRect(0, 0, canvasW, canvasH);
-
     var hist = distPeriod === "all" ? DATA.histogram : DATA.period_histograms[{p:"pre_presidency",t:"transition",r:"presidency"}[distPeriod]];
     var keys = Object.keys(hist).map(Number).sort(function (a, b) { return a - b; });
     var maxCount = Math.max.apply(null, keys.map(function (k) { return hist[String(k)]; }));
@@ -535,9 +532,6 @@ window.copyCode = function (btn) {
 
   // ── Step 4: By Period (box plot) ─────────────────────────────────
   function showPeriod() {
-    setupCanvas(60);
-    ctx.clearRect(0, 0, canvasW, canvasH);
-
     var periods = [
       { key: "pre_presidency", label: "Pre-presidency", color: PERIOD_COLORS.p },
       { key: "transition", label: "Transition", color: PERIOD_COLORS.t },
@@ -686,9 +680,6 @@ window.copyCode = function (btn) {
   // ── Step 6: Explore tweets ───────────────────────────────────────
   var exploreSort = "most_positive";
   function showExplore() {
-    setupCanvas(60);
-    ctx.clearRect(0, 0, canvasW, canvasH);
-
     // Top words display
     var html = '<div class="step-info">';
     html += '<p>Browse tweets by sentiment score. The most common dictionary matches across the corpus:</p>';
