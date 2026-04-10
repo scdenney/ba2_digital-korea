@@ -565,7 +565,7 @@ window.copyCode = function (btn) {
       var mLeft = valToX(s.median) - 120;
       html += '<div class="box-median" style="left:' + (mLeft/(canvasW-200)*100) + '%;"></div>';
       html += '</div>';
-      html += '<span class="box-stat">mean ' + s.mean + ', n=' + s.n + '</span>';
+      html += '<span class="box-stat">med ' + s.median + ', \u03BC ' + s.mean + ', n=' + s.n + '</span>';
       html += '</div>';
     });
 
@@ -576,7 +576,7 @@ window.copyCode = function (btn) {
     }
     html += '</div><span class="box-stat"></span></div>';
 
-    html += '<div class="callout callout-tip"><strong>Key finding:</strong> Presidency tweets have a notably higher mean sentiment (+1.16) than pre-presidency (+0.22). This reflects the shift from opposition criticism to presidential communication, which tends to emphasize hope, achievement, and national pride.</div>';
+    html += '<div class="callout callout-tip"><strong>Key finding:</strong> Presidency tweets have a higher median sentiment (' + DATA.period_stats.presidency.median + ') than pre-presidency (' + DATA.period_stats.pre_presidency.median + '). The means tell the same story (\u03BC=' + DATA.period_stats.presidency.mean + ' vs \u03BC=' + DATA.period_stats.pre_presidency.mean + '). This reflects the shift from opposition criticism to presidential communication.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: box plot by period</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
     html += '<pre><code><span class="r-comment"># Box plot comparing periods</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(period3 <span class="r-operator">=</span> <span class="r-function">factor</span>(period3,\n    levels <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"pre_presidency"</span>, <span class="r-string">"transition"</span>, <span class="r-string">"presidency"</span>))) <span class="r-operator">|&gt;</span>\n  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> period3, y <span class="r-operator">=</span> score, fill <span class="r-operator">=</span> period3)) <span class="r-operator">+</span>\n  <span class="r-function">geom_boxplot</span>(alpha <span class="r-operator">=</span> <span class="r-number">0.7</span>, outlier.alpha <span class="r-operator">=</span> <span class="r-number">0.3</span>) <span class="r-operator">+</span>\n  <span class="r-function">scale_fill_manual</span>(values <span class="r-operator">=</span> <span class="r-function">c</span>(\n    pre_presidency <span class="r-operator">=</span> <span class="r-string">"#6366f1"</span>,\n    transition <span class="r-operator">=</span> <span class="r-string">"#f59e0b"</span>,\n    presidency <span class="r-operator">=</span> <span class="r-string">"#10b981"</span>)) <span class="r-operator">+</span>\n  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"Sentiment by Political Period"</span>,\n       x <span class="r-operator">=</span> <span class="r-string">""</span>, y <span class="r-operator">=</span> <span class="r-string">"Sentiment Score"</span>) <span class="r-operator">+</span>\n  <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>\n  <span class="r-function">theme</span>(legend.position <span class="r-operator">=</span> <span class="r-string">"none"</span>)\n\n<span class="r-comment"># Summary statistics</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">group_by</span>(period3) <span class="r-operator">|&gt;</span>\n  <span class="r-function">summarise</span>(n <span class="r-operator">=</span> <span class="r-function">n</span>(), mean <span class="r-operator">=</span> <span class="r-function">mean</span>(score),\n            median <span class="r-operator">=</span> <span class="r-function">median</span>(score), sd <span class="r-operator">=</span> <span class="r-function">sd</span>(score))</code></pre></div>';
@@ -642,26 +642,24 @@ window.copyCode = function (btn) {
     }
 
     // Event markers
+    // Event markers with staggered label positions to avoid overlap
     var events = [
-      { d: "2012-12-19", label: "2012 Election", color: "#6366f1" },
-      { d: "2016-12-09", label: "Impeachment", color: "#f59e0b" },
-      { d: "2017-05-09", label: "Inaugurated", color: "#10b981" },
-      { d: "2018-04-27", label: "Inter-Korean\nSummit", color: "#10b981" },
-      { d: "2019-07-04", label: "Japan trade\ndispute", color: "#ef4444" },
-      { d: "2020-01-20", label: "COVID-19", color: "#ef4444" }
+      { d: "2012-12-19", label: "2012 Election", color: "#6366f1", yOff: 0 },
+      { d: "2016-12-09", label: "Impeachment", color: "#f59e0b", yOff: 14 },
+      { d: "2017-05-09", label: "Inaugurated", color: "#10b981", yOff: 0 },
+      { d: "2018-04-27", label: "Summits", color: "#10b981", yOff: 14 },
+      { d: "2019-07-04", label: "Japan dispute", color: "#ef4444", yOff: 0 },
+      { d: "2020-01-20", label: "COVID-19", color: "#ef4444", yOff: 14 }
     ];
     events.forEach(function (ev) {
       var x = dateToX(ev.d);
-      ctx.strokeStyle = ev.color; ctx.lineWidth = 1.5; ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = ev.color; ctx.lineWidth = 1.5; ctx.globalAlpha = 0.4;
       ctx.setLineDash([3, 3]);
-      ctx.beginPath(); ctx.moveTo(x, PADT); ctx.lineTo(x, canvasH - PADB); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, PADT + 20); ctx.lineTo(x, canvasH - PADB); ctx.stroke();
       ctx.setLineDash([]);
       ctx.globalAlpha = 1;
       ctx.fillStyle = ev.color; ctx.font = "bold 10px system-ui"; ctx.textAlign = "center";
-      var lines = ev.label.split("\n");
-      lines.forEach(function (line, li) {
-        ctx.fillText(line, x, PADT - 4 + (li - lines.length + 1) * 12);
-      });
+      ctx.fillText(ev.label, x, PADT + 10 + ev.yOff);
     });
 
     ctx.save(); ctx.fillStyle = "#6b7280"; ctx.font = "12px system-ui";
@@ -725,18 +723,27 @@ window.copyCode = function (btn) {
     var tweets = DATA[exploreSort] || [];
     html += '<div class="tweet-list">';
     tweets.forEach(function (tw) {
-      var scoreClass = tw.score > 0 ? "score-pos" : tw.score < 0 ? "score-neg" : "score-neu";
+      // Support both compact keys (d,s,p,f,t,pm,nm) and full keys (date,score,period,...)
+      var score = tw.s !== undefined ? tw.s : tw.score;
+      var text = tw.t !== undefined ? tw.t : tw.text;
+      var date = tw.d !== undefined ? tw.d : tw.date;
+      var period = tw.p !== undefined ? tw.p : (tw.period ? tw.period[0] : "p");
+      var favs = tw.f !== undefined ? tw.f : tw.favorites;
+      var pm = tw.pm !== undefined ? tw.pm : tw.pos_matches || [];
+      var nm = tw.nm !== undefined ? tw.nm : tw.neg_matches || [];
+
+      var scoreClass = score > 0 ? "score-pos" : score < 0 ? "score-neg" : "score-neu";
       html += '<div class="tweet-item">';
-      html += '<span class="tweet-score ' + scoreClass + '">' + (tw.score > 0 ? "+" : "") + tw.score + '</span>';
-      html += '<span>' + tw.text + '</span>';
-      html += '<div class="tweet-meta">' + tw.date + ' &bull; ' + PERIOD_NAMES[tw.period[0]] + ' &bull; ' + tw.favorites.toLocaleString() + ' likes';
-      if (tw.pos_matches.length > 0) {
+      html += '<span class="tweet-score ' + scoreClass + '">' + (score > 0 ? "+" : "") + score + '</span>';
+      html += '<span>' + text + '</span>';
+      html += '<div class="tweet-meta">' + date + ' &bull; ' + (PERIOD_NAMES[period] || period) + ' &bull; ' + (favs || 0).toLocaleString() + ' likes';
+      if (pm.length > 0) {
         html += ' &bull; ';
-        tw.pos_matches.forEach(function (w) { html += '<span class="match-word match-pos">' + w + '</span>'; });
+        pm.forEach(function (w) { html += '<span class="match-word match-pos">' + w + '</span>'; });
       }
-      if (tw.neg_matches.length > 0) {
+      if (nm.length > 0) {
         html += ' ';
-        tw.neg_matches.forEach(function (w) { html += '<span class="match-word match-neg">' + w + '</span>'; });
+        nm.forEach(function (w) { html += '<span class="match-word match-neg">' + w + '</span>'; });
       }
       html += '</div></div>';
     });
