@@ -24,6 +24,18 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 | 9+ | Moon Jae-in Tweets | 3,148 tweets from @moonriver365 (2012–2020), with date, engagement metrics, and period labels (pre-presidency, transition, presidency). See [documentation](moon_twitter/README.md). | [CSV](moon_twitter/moon_twitter.csv) (~350 KB) |
 | 4+ | Korean Stopwords | 678 Korean stopwords (punctuation, numbers, and high-frequency grammatical words). Load in the Preprocess Text widget under Filtering → Stopwords → From File. | [TXT](stopwords_ko.txt) |
 
+## Sentiment Dictionaries
+
+Korean sentiment word lists for dictionary-based sentiment analysis (Week 9+). Use these with the **Score Documents** widget in Orange or with `str_detect()` in R.
+
+| Dictionary | Entries | Scale | Description | Download |
+|------------|---------|-------|-------------|----------|
+| KNU Sentiment Lexicon | 14,854 | −2 to +2 | The standard Korean sentiment dictionary from Kunsan National University. Includes intensity scores: +2 (very positive), +1 (positive), 0 (neutral), −1 (negative), −2 (very negative). Built from the Standard Korean Dictionary with human validation. | [TXT](sentiment_dic/SentiWord_Dict.txt) (~302 KB) |
+| Course Positive Words | ~4,800 | binary | Korean positive sentiment words, phrases, and emoticons. | [TXT](sentiment_dic/positive.txt) (~84 KB) |
+| Course Negative Words | ~9,800 | binary | Korean negative sentiment words, phrases, and emoticons. | [TXT](sentiment_dic/negative.txt) (~176 KB) |
+
+**KNU format:** Tab-separated, two columns — `word⟨tab⟩score`. No header row. Load directly in R with `read_tsv("SentiWord_Dict.txt", col_names = c("word", "score"))`.
+
 ## Scripts
 
 | Week | Script | Description | Download |
