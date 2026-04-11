@@ -14,9 +14,13 @@ Python scripts for Orange Data Mining Python Script widgets, plus R scripts for 
 
 ### For Week 9 (sentiment analysis)
 
+**You don't need a script for the main Week 9 workflow.** Orange's Sentiment Analysis widget handles Korean automatically when you pick Method = *Multilingual* and Language = *Korean*.
+
+The scripts below are **optional** — useful if you want to experiment with morphological tokenization (Kiwi) or use the KNU intensity dictionary via Custom Dictionary:
+
 | File | Purpose |
 |------|---------|
-| [`sentiment_preprocessing_mac-users.py`](sentiment_preprocessing_mac-users.py) | Kiwi tokenization keeping NNG/NNP/VA/VV stems (length ≥ 2). Designed to pair with the stem-indexed KNU dictionaries in [`../sentiment_dic/`](../sentiment_dic/). Auto-installs `kiwipiepy`. |
+| [`sentiment_preprocessing_mac-users.py`](sentiment_preprocessing_mac-users.py) | Kiwi tokenization keeping NNG/NNP/VA/VV stems (length ≥ 2). Pair with the stem-indexed KNU dictionaries in [`../sentiment_dic/`](../sentiment_dic/). Auto-installs `kiwipiepy`. |
 | [`sentiment_preprocessing_windows-users.py`](sentiment_preprocessing_windows-users.py) | Same as above, Windows version. |
 
 ### R scripts
@@ -36,11 +40,12 @@ Python scripts for Orange Data Mining Python Script widgets, plus R scripts for 
 
 ## Instructor-only files
 
-The following files are generator scripts used to prepare course datasets. Students can ignore them.
+The following files are generator/reproducibility scripts used to prepare course datasets and the interactive exercises. Students can ignore them.
 
 - `generate_clustering_demo.py` — builds the NIKH clustering demo dataset
 - `generate_kmeans_demo.py` — builds the k-means speeches demo
 - `generate_nikh_demo.py` — builds the NIKH textbooks demo
 - `generate_preprocessing_demo.py` — builds the preprocessing example data
+- `generate_sentiment_demo.py` — rebuilds `interactive/sentiment_data.json` for the Week 9 interactive (matches Orange's Multilingual Korean scoring exactly)
 - `sentence_splitter.py` — utility used by the dataset generators
 - `wordcloud.png` — generated example image
