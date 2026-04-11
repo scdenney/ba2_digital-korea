@@ -40,9 +40,11 @@ Korean sentiment word lists for dictionary-based sentiment analysis (Week 9+). U
 
 | Week | Script | Description | Download |
 |------|--------|-------------|----------|
-| 3+ | Korean Preprocessing (Mac) | POS-based tokenization for Orange Data Mining. Auto-installs kiwipiepy. | [Python](scripts/custom_preprocessing_mac-users.py) |
+| 3+ | Korean Preprocessing (Mac) | POS-based tokenization for Orange Data Mining. Auto-installs kiwipiepy. Defaults to nouns only — suitable for BoW, clustering, topic modeling. | [Python](scripts/custom_preprocessing_mac-users.py) |
 | 3+ | Korean Preprocessing (Windows) | Same as above but requires kiwipiepy pre-installed. | [Python](scripts/custom_preprocessing_windows-users.py) |
 | 4+ | Korean Preprocessing — Annotated (Mac) | Fully annotated version of the Mac preprocessing script. Read this to understand what each step does and why. | [Python](scripts/korean_preprocessing_annotated-mac-ver.py) |
+| 9+ | Sentiment Preprocessing (Mac) | Sentiment-specific variant: keeps NNG, NNP, VA, VV. Outputs verbs/adjectives in citation form (e.g., `행복하다`, `극복하다`) so tokens match KNU / positive.txt / negative.txt entries. Auto-installs kiwipiepy. | [Python](scripts/sentiment_preprocessing_mac-users.py) |
+| 9+ | Sentiment Preprocessing (Windows) | Same as above but requires kiwipiepy pre-installed. | [Python](scripts/sentiment_preprocessing_windows-users.py) |
 
 ---
 
