@@ -25,7 +25,13 @@ kiwi = Kiwi()
 # ===== CONFIGURATION =====
 TEXT_COLUMN = 'text'  # <<< CHANGE to match your corpus column name
 
-SENTIMENT_POS = {'NNG', 'NNP', 'VA', 'VV'}
+NOUN_TAGS = {'NNG', 'NNP'}
+
+
+def is_verb_or_adj(tag):
+    """Match VA, VV, and their irregular variants (VA-I, VV-I, VV-R, etc.)."""
+    return tag == 'VA' or tag == 'VV' or tag.startswith('VA-') or tag.startswith('VV-')
+
 
 # ===== PREPROCESSING =====
 def preprocess(text):
@@ -34,10 +40,16 @@ def preprocess(text):
     text = re.sub(r'https?://\S+', '', str(text))
     text = re.sub(r'@\w+', '', text)
     text = re.sub(r'^RT\s*:?', '', text)
-    tokens = kiwi.tokenize(text)
-    stems = [t.form for t in tokens
-             if t.tag in SENTIMENT_POS and len(t.form) >= 2]
-    return ' '.join(stems)
+    out = []
+    for t in kiwi.tokenize(text):
+        if len(t.form) < 2:
+            continue
+        if t.tag in NOUN_TAGS:
+            out.append(t.form)
+        elif is_verb_or_adj(t.tag):
+            # Citation form = stem + 다 (matches KNU dictionary entries)
+            out.append(t.form + '다')
+    return ' '.join(out)
 
 # ===== PROCESS DATA =====
 try:

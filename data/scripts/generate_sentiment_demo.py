@@ -49,13 +49,19 @@ OUT_JSON = os.path.join(REPO_ROOT, "interactive", "sentiment_data.json")
 # --------------------------------------------------------------------------
 # Constants
 # --------------------------------------------------------------------------
-# Korean content-word POS tags. Nouns, proper nouns, verbs, adjectives.
-# These are the parts of speech that carry sentiment.
-SENTIMENT_POS = {"NNG", "NNP", "VA", "VV"}
+# Nouns kept as-is; verbs and adjectives (incl. irregular -I/-R variants)
+# are converted to their citation form (stem + 다) so they match KNU
+# dictionary entries like 기쁘다, 고맙다, 행복하다.
+NOUN_TAGS = {"NNG", "NNP"}
 
 # Minimum token length (skip single-syllable morphemes — standard practice
 # in Korean NLP, reduces noise from common grammatical fragments).
 MIN_LEN = 2
+
+
+def is_verb_or_adj(tag):
+    """Match VA, VV, and their irregular variants (VA-I, VV-I, VV-R, etc.)."""
+    return tag == "VA" or tag == "VV" or tag.startswith("VA-") or tag.startswith("VV-")
 
 PERIOD_MAP = {"pre_presidency": "p", "transition": "t", "presidency": "r"}
 
@@ -93,11 +99,21 @@ def clean_text(text):
 
 
 def tokenize(text, kiwi):
-    """Kiwi → keep content-word morphemes of length >= 2."""
+    """
+    Kiwi tokenize → keep content words (length >= 2).
+    Nouns kept as-is; verbs/adjectives converted to citation form (+ 다).
+    """
     if not text:
         return []
-    result = kiwi.tokenize(text)
-    return [t.form for t in result if t.tag in SENTIMENT_POS and len(t.form) >= MIN_LEN]
+    out = []
+    for t in kiwi.tokenize(text):
+        if len(t.form) < MIN_LEN:
+            continue
+        if t.tag in NOUN_TAGS:
+            out.append(t.form)
+        elif is_verb_or_adj(t.tag):
+            out.append(t.form + "다")
+    return out
 
 
 # --------------------------------------------------------------------------
