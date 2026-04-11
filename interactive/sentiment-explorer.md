@@ -324,6 +324,10 @@ window.copyCode = function (btn) {
 
     var html = '<div class="step-info">';
     html += '<p>The <strong>@moonriver365</strong> corpus has ' + DATA.total_tweets + ' tweets from 2012 to 2020, sorted into three political periods. Before we score anything, here\'s what the corpus looks like year by year.</p>';
+    html += '<div class="callout callout-info"><strong>The three periods are Dr. Denney\'s editorial groupings</strong>, not an official classification. Another researcher could cut the timeline differently.<br><br>';
+    html += '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:' + PERIOD_COLORS.p + ';vertical-align:middle;margin-right:4px;"></span><strong>Pre-presidency</strong> (2012-01 → 2016-11, 1,973 tweets) — Moon as opposition leader: 2012 campaign, Democratic Party chairmanship, legislative politics.<br>';
+    html += '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:' + PERIOD_COLORS.t + ';vertical-align:middle;margin-right:4px;"></span><strong>Transition</strong> (2016-12 → 2017-05, 393 tweets) — Park Geun-hye impeachment crisis through Moon\'s early presidential campaign and inauguration (May 10, 2017).<br>';
+    html += '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:' + PERIOD_COLORS.r + ';vertical-align:middle;margin-right:4px;"></span><strong>Presidency</strong> (2017-05 → 2020-06, 782 tweets) — Moon in office: inter-Korean summits (2018), Japan trade dispute (2019), COVID-19 (2020).</div>';
 
     // Legend
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin:0.5rem 0;padding:0.5rem 0.75rem;background:#f9fafb;border-radius:6px;border:1px solid #e5e7eb;">';
