@@ -8,8 +8,8 @@ This folder contains Korean sentiment dictionaries for Week 9 (Sentiment Analysi
 
 | File | Entries | Description |
 |------|---------|-------------|
-| [`positive.txt`](positive.txt) | 4,868 | Positive Korean words (one per line). Load into Sentiment Analysis as the positive list. |
-| [`negative.txt`](negative.txt) | 9,824 | Negative Korean words (one per line). Load into Sentiment Analysis as the negative list. |
+| [`positive.txt`](positive.txt) | 4,868 unique words | Positive Korean words (one per line). Load into Sentiment Analysis as the positive list. |
+| [`negative.txt`](negative.txt) | 9,824 unique words | Negative Korean words (one per line). Load into Sentiment Analysis as the negative list. The raw file has 9,827 lines — KNU's own `neg_pol_word.txt` includes 3 duplicate entries (`버릇없이`, `비리를`, `울컥하다`) that we have not removed. Orange's Custom Dictionary loads them as a set, so scoring is unaffected. |
 
 **Format**: plain text, one word per line, no header. Contains a mix of single words (`감사`, `희망`, `위기`), inflected forms (`행복하다`, `가난하다`), and some multi-word phrases. When combined with Kiwi morphological preprocessing on the tweet side, most single-word entries match cleanly.
 
