@@ -200,24 +200,28 @@ def main():
         mean = sum(scores) / len(scores) if scores else 0.0
         print(f"  {name}: n={len(scores)}, mean={mean:.2f}")
 
-    # period_stats
+    # period_stats: n is the full corpus count per period (matching slide tallies).
+    # Statistics (mean, median, quartiles, percentages) are computed over the
+    # scored subset — tweets with non-empty cleaned text — which is usually the
+    # same count but may drop a handful of empty-text rows per period.
     period_stats = {}
     for pk, pc in [("pre_presidency", "p"), ("transition", "t"), ("presidency", "r")]:
+        corpus_n = sum(1 for e in timeline if e["p"] == pc)
         scores = sorted([e["s"] for e in timeline if e["p"] == pc and e["t"]])
-        n = len(scores)
-        if n == 0:
+        n_scored = len(scores)
+        if n_scored == 0:
             continue
         period_stats[pk] = {
-            "n": n,
-            "mean": round(sum(scores) / n, 2),
-            "median": scores[n // 2],
+            "n": corpus_n,
+            "mean": round(sum(scores) / n_scored, 2),
+            "median": scores[n_scored // 2],
             "min": min(scores),
             "max": max(scores),
-            "q1": scores[n // 4],
-            "q3": scores[3 * n // 4],
-            "pos_pct": round(100 * sum(1 for s in scores if s > 0) / n, 1),
-            "neg_pct": round(100 * sum(1 for s in scores if s < 0) / n, 1),
-            "neu_pct": round(100 * sum(1 for s in scores if s == 0) / n, 1),
+            "q1": scores[n_scored // 4],
+            "q3": scores[3 * n_scored // 4],
+            "pos_pct": round(100 * sum(1 for s in scores if s > 0) / n_scored, 1),
+            "neg_pct": round(100 * sum(1 for s in scores if s < 0) / n_scored, 1),
+            "neu_pct": round(100 * sum(1 for s in scores if s == 0) / n_scored, 1),
         }
 
     # Histogram (bin scores to integers for display)
@@ -281,7 +285,7 @@ def main():
         print(f"  {e['label']}: score={e['score']:.2f}, +{e['pos_count']}/-{e['neg_count']}, tokens={e['n_tokens']}")
 
     data = {
-        "total_tweets": sum(1 for e in timeline if e["t"]),
+        "total_tweets": len(timeline),  # full corpus size (matches slides/CSV row count)
         "dict_sizes": {
             "positive": len(pos_set),
             "negative": len(neg_set),

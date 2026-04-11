@@ -457,7 +457,8 @@ window.copyCode = function (btn) {
     var scoreColor = ex.score > 0 ? 'var(--pos-green)' : ex.score < 0 ? 'var(--neg-red)' : 'var(--neu-gray)';
     var sign = ex.score > 0 ? '+' : '';
     var html = '<div class="scoring-card">';
-    html += '<div class="scoring-tweet"><div class="meta">' + ex.date + ' &bull; ' + PERIOD_NAMES[ex.period[0]] + ' &bull; ' + ex.favorites.toLocaleString() + ' likes</div>' + ex.text + '</div>';
+    var perMap = {pre_presidency: 'p', transition: 't', presidency: 'r'};
+    html += '<div class="scoring-tweet"><div class="meta">' + ex.date + ' &bull; ' + PERIOD_NAMES[perMap[ex.period] || 'p'] + ' &bull; ' + ex.favorites.toLocaleString() + ' likes</div>' + ex.text + '</div>';
 
     // Matched words shown as colored chips
     html += '<div style="padding:0.75rem 1rem;">';
