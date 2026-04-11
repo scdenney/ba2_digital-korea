@@ -489,8 +489,20 @@ window.copyCode = function (btn) {
   var distPeriod = "all";
   function showDistribution() {
     var hist = distPeriod === "all" ? DATA.histogram : DATA.period_histograms[{p:"pre_presidency",t:"transition",r:"presidency"}[distPeriod]];
-    var keys = Object.keys(hist).map(Number).sort(function (a, b) { return a - b; });
-    var maxCount = Math.max.apply(null, keys.map(function (k) { return hist[String(k)]; }));
+    // Use the ALL-tweets histogram to determine the display range so the
+    // x-axis is consistent when toggling periods. Drop leading/trailing
+    // empty bins and clip sparse tails beyond |15|.
+    var allHist = DATA.histogram;
+    var allKeys = Object.keys(allHist).map(Number).sort(function (a, b) { return a - b; });
+    // Find first and last non-zero bins in the full range
+    var firstNonZero = allKeys.find(function (k) { return allHist[String(k)] > 0; });
+    var lastNonZero = allKeys.slice().reverse().find(function (k) { return allHist[String(k)] > 0; });
+    // Clip the displayed range to keep the histogram readable
+    var displayMin = Math.max(firstNonZero, -15);
+    var displayMax = Math.min(lastNonZero, 20);
+    var keys = [];
+    for (var k = displayMin; k <= displayMax; k++) keys.push(k);
+    var maxCount = Math.max.apply(null, keys.map(function (k) { return hist[String(k)] || 0; }));
 
     var html = '<div class="step-info">';
     html += '<p>Distribution of sentiment scores across all tweets. Many tweets have no dictionary matches and score zero; the rest lean positive. Toggle periods to see how presidential communication differs from pre-presidency.</p>';
@@ -505,7 +517,7 @@ window.copyCode = function (btn) {
     // Histogram bars
     html += '<div style="max-width:600px;">';
     keys.forEach(function (s) {
-      var count = hist[String(s)];
+      var count = hist[String(s)] || 0;
       var pct = maxCount > 0 ? (count / maxCount * 100) : 0;
       var color = s > 0 ? "var(--pos-green)" : s < 0 ? "var(--neg-red)" : "#94a3b8";
       if (distPeriod !== "all") color = PERIOD_COLORS[distPeriod];
@@ -515,11 +527,25 @@ window.copyCode = function (btn) {
     });
     html += '</div>';
 
-    var stats = distPeriod === "all" ? {
-      pos_pct: Math.round(100 * 1356 / DATA.total_tweets),
-      neu_pct: Math.round(100 * 1195 / DATA.total_tweets),
-      neg_pct: Math.round(100 * 597 / DATA.total_tweets)
-    } : DATA.period_stats[{p:"pre_presidency",t:"transition",r:"presidency"}[distPeriod]];
+    // Compute overall pct on the fly (so it always matches the data)
+    var stats;
+    if (distPeriod === "all") {
+      var allPos = 0, allNeu = 0, allNeg = 0;
+      DATA.timeline.forEach(function (e) {
+        if (!e.t) return;
+        if (e.s > 0) allPos++;
+        else if (e.s < 0) allNeg++;
+        else allNeu++;
+      });
+      var total = allPos + allNeu + allNeg;
+      stats = {
+        pos_pct: Math.round(100 * allPos / total),
+        neu_pct: Math.round(100 * allNeu / total),
+        neg_pct: Math.round(100 * allNeg / total)
+      };
+    } else {
+      stats = DATA.period_stats[{p:"pre_presidency",t:"transition",r:"presidency"}[distPeriod]];
+    }
     html += '<div class="callout callout-tip">' + stats.pos_pct + '% positive, ' + stats.neu_pct + '% neutral, ' + stats.neg_pct + '% negative. Political communication skews positive &mdash; leaders frame messages around hope and progress.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: plot score distribution</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
