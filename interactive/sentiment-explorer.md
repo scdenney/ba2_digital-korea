@@ -579,10 +579,12 @@ window.copyCode = function (btn) {
     var globalMin = -20, globalMax = 20;
     var range = globalMax - globalMin;
 
-    // Percentage positioning — independent of canvas width
+    // Inset the plot area so the ±20 tick labels aren't flush with the edges.
+    var INSET = 5; // percent
     function pct(v) {
       var clipped = Math.max(globalMin, Math.min(globalMax, v));
-      return ((clipped - globalMin) / range) * 100;
+      var frac = (clipped - globalMin) / range;
+      return INSET + frac * (100 - 2 * INSET);
     }
 
     var html = '<div class="step-info">';
@@ -666,14 +668,14 @@ window.copyCode = function (btn) {
     }
     ctx.globalAlpha = 1;
 
-    // Time-based rolling mean: 90-day centered window, weekly steps.
-    // Only draw segments where the window has at least 15 tweets, so
-    // sparse periods (e.g. 2014-15, when Moon barely tweeted) don't get
-    // a misleading smoothed line.
+    // Time-based rolling mean: 120-day centered window, weekly steps.
+    // Windows with fewer than 10 tweets are dropped (so one stray gratitude
+    // tweet during a silent month doesn't spike the line), but the remaining
+    // points are connected continuously — the line spans start to end.
     var sorted = tl.filter(function (t) { return t.t; }).slice().sort(function (a, b) { return a.d < b.d ? -1 : 1; });
     var dayMs = 86400000;
-    var halfWin = 45 * dayMs;
-    var minTweetsInWindow = 15;
+    var halfWin = 60 * dayMs;
+    var minTweetsInWindow = 10;
     var times = sorted.map(function (t) { return new Date(t.d).getTime(); });
     var minT = times[0], maxT = times[times.length - 1];
     var step = 7 * dayMs;
@@ -683,25 +685,20 @@ window.copyCode = function (btn) {
       var from = c - halfWin, to = c + halfWin;
       while (hi < times.length && times[hi] <= to) { sum += sorted[hi].s; n++; hi++; }
       while (lo < hi && times[lo] < from) { sum -= sorted[lo].s; n--; lo++; }
-      trend.push({
-        t: c,
-        avg: n >= minTweetsInWindow ? sum / n : null,
-        n: n
-      });
+      if (n >= minTweetsInWindow) {
+        trend.push({ t: c, avg: sum / n });
+      }
     }
     if (trend.length > 1) {
       ctx.strokeStyle = "#001158"; ctx.lineWidth = 2.5; ctx.globalAlpha = 0.85;
-      var penDown = false;
-      for (var i = 0; i < trend.length; i++) {
-        var pt = trend[i];
-        if (pt.avg === null) { penDown = false; continue; }
-        var iso = new Date(pt.t).toISOString().slice(0, 10);
-        var x = dateToX(iso);
-        var y = scoreToY(pt.avg, minS, maxS);
-        if (!penDown) { ctx.beginPath(); ctx.moveTo(x, y); penDown = true; }
-        else { ctx.lineTo(x, y); }
+      ctx.beginPath();
+      var iso0 = new Date(trend[0].t).toISOString().slice(0, 10);
+      ctx.moveTo(dateToX(iso0), scoreToY(trend[0].avg, minS, maxS));
+      for (var i = 1; i < trend.length; i++) {
+        var iso = new Date(trend[i].t).toISOString().slice(0, 10);
+        ctx.lineTo(dateToX(iso), scoreToY(trend[i].avg, minS, maxS));
       }
-      if (penDown) ctx.stroke();
+      ctx.stroke();
       ctx.globalAlpha = 1;
     }
 
@@ -737,8 +734,8 @@ window.copyCode = function (btn) {
     drawTimeline();
 
     var html = '<div class="step-info">';
-    html += '<p>The <strong>dark trend line</strong> is a 90-day rolling average, drawn only where the window contains at least 15 tweets. Sparse stretches (Moon barely tweeted in 2013–2015) show as gaps so the line never smooths over missing data. Hover individual dots to read tweets. Dashed lines mark key events.</p>';
-    html += '<div class="callout callout-info">The visible rise around inauguration (May 2017) reflects the shift to presidential communication. The dip in mid-2019 aligns with the Japan trade dispute. Notice how the line disappears during low-volume stretches — there isn\'t enough data to trust a smoothed estimate there.</div>';
+    html += '<p>The <strong>dark trend line</strong> is a 120-day rolling average that runs from 2012 to 2020. Hover individual dots to read tweets. Dashed lines mark key events.</p>';
+    html += '<div class="callout callout-info">The visible rise around inauguration (May 2017) reflects the shift to presidential communication. The dip in mid-2019 aligns with the Japan trade dispute. Note: Moon barely tweeted in 2013–2015, so the line in that stretch is an average of much thinner data — the jitter there reflects the thin sample, not a real mood swing.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: sentiment over time with trend line</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
     html += '<pre><code><span class="r-comment"># Sentiment over time with LOESS trend</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(tweet_date <span class="r-operator">=</span> <span class="r-function">as.Date</span>(tweet_date)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> tweet_date, y <span class="r-operator">=</span> score,\n             color <span class="r-operator">=</span> period3)) <span class="r-operator">+</span>\n  <span class="r-function">geom_point</span>(alpha <span class="r-operator">=</span> <span class="r-number">0.15</span>, size <span class="r-operator">=</span> <span class="r-number">1</span>) <span class="r-operator">+</span>\n  <span class="r-function">geom_smooth</span>(<span class="r-function">aes</span>(group <span class="r-operator">=</span> <span class="r-number">1</span>), method <span class="r-operator">=</span> <span class="r-string">"loess"</span>,\n             span <span class="r-operator">=</span> <span class="r-number">0.15</span>, color <span class="r-operator">=</span> <span class="r-string">"#001158"</span>,\n             se <span class="r-operator">=</span> <span class="r-keyword">FALSE</span>, linewidth <span class="r-operator">=</span> <span class="r-number">1</span>) <span class="r-operator">+</span>\n  <span class="r-function">scale_color_manual</span>(values <span class="r-operator">=</span> <span class="r-function">c</span>(\n    pre_presidency <span class="r-operator">=</span> <span class="r-string">"#6366f1"</span>,\n    transition <span class="r-operator">=</span> <span class="r-string">"#f59e0b"</span>,\n    presidency <span class="r-operator">=</span> <span class="r-string">"#10b981"</span>)) <span class="r-operator">+</span>\n  <span class="r-comment"># Mark key events</span>\n  <span class="r-function">geom_vline</span>(xintercept <span class="r-operator">=</span> <span class="r-function">as.Date</span>(<span class="r-string">"2017-05-09"</span>),\n             linetype <span class="r-operator">=</span> <span class="r-string">"dashed"</span>, alpha <span class="r-operator">=</span> <span class="r-number">0.5</span>) <span class="r-operator">+</span>\n  <span class="r-function">geom_vline</span>(xintercept <span class="r-operator">=</span> <span class="r-function">as.Date</span>(<span class="r-string">"2019-07-04"</span>),\n             linetype <span class="r-operator">=</span> <span class="r-string">"dashed"</span>, alpha <span class="r-operator">=</span> <span class="r-number">0.5</span>) <span class="r-operator">+</span>\n  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"Sentiment Over Time"</span>,\n       x <span class="r-operator">=</span> <span class="r-string">""</span>, y <span class="r-operator">=</span> <span class="r-string">"Score"</span>) <span class="r-operator">+</span>\n  <span class="r-function">theme_minimal</span>()</code></pre></div>';
