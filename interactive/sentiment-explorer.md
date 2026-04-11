@@ -221,12 +221,12 @@ window.copyCode = function (btn) {
   "use strict";
 
   var STEPS = [
-    { id: "corpus",   label: "1. The Corpus",       desc: "3,148 tweets from @moonriver365. Each dot is one tweet plotted by date and sentiment score." },
-    { id: "scoring",  label: "2. Dictionary Scoring", desc: "How one tweet becomes a sentiment score: look up each word in the positive/negative dictionaries." },
-    { id: "dist",     label: "3. Score Distribution", desc: "Most tweets are mildly positive or neutral. Toggle periods to compare." },
-    { id: "period",   label: "4. By Period",         desc: "Presidency tweets are notably more positive than pre-presidency tweets." },
+    { id: "corpus",   label: "1. The Corpus",       desc: "3,148 tweets from @moonriver365 (2012–2020), grouped into three political periods." },
+    { id: "scoring",  label: "2. Dictionary Scoring", desc: "How one tweet becomes a sentiment score: look up each word in the positive and negative lists." },
+    { id: "dist",     label: "3. Score Distribution", desc: "Most tweets score zero (no dictionary matches). The rest lean positive." },
+    { id: "period",   label: "4. By Period",         desc: "Compare the three political periods side by side." },
     { id: "timeline", label: "5. Over Time",         desc: "Sentiment trends across 8 years. Events leave visible marks." },
-    { id: "explore",  label: "6. Explore Tweets",    desc: "Browse the most positive, most negative, and most-liked tweets." }
+    { id: "explore",  label: "6. Explore Tweets",    desc: "Top matched words, plus the most positive and most negative tweets." }
   ];
 
   var PERIOD_COLORS = { p: "#6366f1", t: "#f59e0b", r: "#10b981" };
@@ -278,9 +278,9 @@ window.copyCode = function (btn) {
     hoveredIdx = -1;
     tooltipEl.style.display = "none";
 
-    // Only show the canvas on steps that use it (corpus scatter + timeline)
+    // Only show the canvas on steps that use it (timeline is the only one now)
     var chartContainer = document.getElementById("chartContainer");
-    var usesCanvas = (i === 0 || i === 4);
+    var usesCanvas = (i === 4);
     chartContainer.style.display = usesCanvas ? "block" : "none";
 
     var renderers = [showCorpus, showScoring, showDistribution, showPeriod, showTimeline, showExplore];
@@ -309,77 +309,65 @@ window.copyCode = function (btn) {
 
   function truncate(s, n) { return s.length > n ? s.slice(0, n) + "\u2026" : s; }
 
-  // ── Step 1: Corpus scatter ───────────────────────────────────────
-  function drawCorpus() {
-    var tl = DATA.timeline, minS = -30, maxS = 35;
-
-    ctx.clearRect(0, 0, canvasW, canvasH);
-
-    // Axes
-    ctx.strokeStyle = "#e2e8f0"; ctx.lineWidth = 1;
-    for (var s = -25; s <= 30; s += 5) {
-      var y = scoreToY(s, minS, maxS);
-      ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(canvasW - PADR, y); ctx.stroke();
-      ctx.fillStyle = "#9ca3af"; ctx.font = "11px system-ui"; ctx.textAlign = "right";
-      ctx.fillText(s, PAD - 6, y + 4);
-    }
-    // Zero line
-    ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]);
-    var y0 = scoreToY(0, minS, maxS);
-    ctx.beginPath(); ctx.moveTo(PAD, y0); ctx.lineTo(canvasW - PADR, y0); ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Year labels
-    ctx.fillStyle = "#9ca3af"; ctx.font = "11px system-ui"; ctx.textAlign = "center";
-    for (var yr = 2012; yr <= 2020; yr++) {
-      var x = dateToX(yr + "-07-01");
-      ctx.fillText(yr, x, canvasH - 8);
-    }
-
-    // Dots
-    for (var i = 0; i < tl.length; i++) {
-      var t = tl[i];
-      if (!t.t) continue;
-      var x = dateToX(t.d);
-      var y = scoreToY(t.s, minS, maxS);
-      ctx.globalAlpha = i === hoveredIdx ? 1 : 0.45;
-      ctx.fillStyle = PERIOD_COLORS[t.p];
-      ctx.beginPath(); ctx.arc(x, y, i === hoveredIdx ? 5 : 3, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-
-    // Y-axis label
-    ctx.save(); ctx.fillStyle = "#6b7280"; ctx.font = "12px system-ui";
-    ctx.translate(12, canvasH / 2); ctx.rotate(-Math.PI / 2);
-    ctx.textAlign = "center"; ctx.fillText("Sentiment Score", 0, 0);
-    ctx.restore();
-  }
-
+  // ── Step 1: Corpus overview (tweets per year by period) ─────────
   function showCorpus() {
-    setupCanvas();
-    drawCorpus();
+    // Build counts per year, split by period
+    var byYear = {};
+    for (var yr = 2012; yr <= 2020; yr++) byYear[yr] = { p: 0, t: 0, r: 0, total: 0 };
+    DATA.timeline.forEach(function (e) {
+      if (!e.t || !byYear[e.y]) return;
+      byYear[e.y][e.p]++;
+      byYear[e.y].total++;
+    });
+    var maxYear = 0;
+    for (var yr = 2012; yr <= 2020; yr++) maxYear = Math.max(maxYear, byYear[yr].total);
+
+    var html = '<div class="step-info">';
+    html += '<p>The <strong>@moonriver365</strong> corpus has ' + DATA.total_tweets + ' tweets from 2012 to 2020, sorted into three political periods. Before we score anything, here\'s what the corpus looks like year by year.</p>';
 
     // Legend
-    var html = '<div class="step-info">';
-    html += '<p>Each dot is one tweet. <strong>Color</strong> shows the political period. <strong>Vertical position</strong> shows the dictionary sentiment score (positive words minus negative words). Hover over dots to read tweets.</p>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin:0.5rem 0;padding:0.5rem 0.75rem;background:#f9fafb;border-radius:6px;border:1px solid #e5e7eb;">';
     PERIOD_KEYS.forEach(function (k) {
-      html += '<span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.8rem;color:#374151;"><span style="width:10px;height:10px;border-radius:50%;background:' + PERIOD_COLORS[k] + ';"></span>' + PERIOD_NAMES[k] + ' (' + DATA.period_stats[{p:"pre_presidency",t:"transition",r:"presidency"}[k]].n + ')</span>';
+      html += '<span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.8rem;color:#374151;"><span style="width:10px;height:10px;border-radius:2px;background:' + PERIOD_COLORS[k] + ';"></span>' + PERIOD_NAMES[k] + ' (' + DATA.period_stats[{p:"pre_presidency",t:"transition",r:"presidency"}[k]].n + ')</span>';
     });
     html += '</div>';
-    html += '<div class="callout callout-info">Notice how the presidency dots (green) tend to sit higher. Moon\'s official presidential tweets use more positive language than his earlier opposition-era tweets.</div>';
-    html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: load and clean the corpus</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
+
+    // Stacked bar chart, one row per year
+    html += '<div style="max-width:640px;margin:0.5rem 0 1rem;">';
+    for (var yr = 2012; yr <= 2020; yr++) {
+      var y = byYear[yr];
+      var totalPct = (y.total / maxYear) * 100;
+      html += '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.3rem;">';
+      html += '<span style="width:42px;font-size:0.78rem;color:#374151;font-weight:600;text-align:right;">' + yr + '</span>';
+      html += '<div style="flex:1;height:20px;background:#f1f5f9;border-radius:3px;overflow:hidden;position:relative;">';
+      if (y.total > 0) {
+        var pPct = (y.p / maxYear) * 100;
+        var tPct = (y.t / maxYear) * 100;
+        var rPct = (y.r / maxYear) * 100;
+        html += '<div style="position:absolute;left:0;top:0;bottom:0;width:' + pPct + '%;background:' + PERIOD_COLORS.p + ';opacity:0.85;"></div>';
+        html += '<div style="position:absolute;left:' + pPct + '%;top:0;bottom:0;width:' + tPct + '%;background:' + PERIOD_COLORS.t + ';opacity:0.85;"></div>';
+        html += '<div style="position:absolute;left:' + (pPct + tPct) + '%;top:0;bottom:0;width:' + rPct + '%;background:' + PERIOD_COLORS.r + ';opacity:0.85;"></div>';
+      }
+      html += '</div>';
+      html += '<span style="width:52px;font-size:0.75rem;color:#6b7280;">' + y.total + '</span>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="callout callout-info">Moon was most active on Twitter during his 2012 presidential campaign. After taking office in May 2017, his tweeting dropped sharply — the official Cheong Wa Dae account took over most communication. Next: how do we turn these tweets into sentiment scores?</div>';
+
+    html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: load and count the corpus</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
-    html += '<pre><code><span class="r-function">library</span>(tidyverse)\n<span class="r-function">library</span>(tidytext)\n\n<span class="r-comment"># Load the tweet corpus</span>\ntweets <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"moon_twitter.csv"</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(<span class="r-operator">!</span><span class="r-function">is.na</span>(text)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(\n    tweet_id <span class="r-operator">=</span> <span class="r-function">row_number</span>(),\n    text <span class="r-operator">=</span> text <span class="r-operator">|&gt;</span>\n      <span class="r-function">str_remove_all</span>(<span class="r-string">"https?://\\\\S+"</span>) <span class="r-operator">|&gt;</span>  <span class="r-comment"># URLs</span>\n      <span class="r-function">str_remove_all</span>(<span class="r-string">"@\\\\w+"</span>) <span class="r-operator">|&gt;</span>             <span class="r-comment"># @mentions</span>\n      <span class="r-function">str_trim</span>()\n  )\n\n<span class="r-function">glimpse</span>(tweets)\ntweets <span class="r-operator">|&gt;</span> <span class="r-function">count</span>(period3)</code></pre></div>';
-    html += '<div class="callout callout-tip">This is the R-equivalent of Orange\'s <strong>Corpus</strong> widget loading the CSV. We add a <code>tweet_id</code> for joining later and clean URLs/mentions.</div>';
+    html += '<pre><code><span class="r-function">library</span>(tidyverse)\n<span class="r-function">library</span>(tidytext)\n\n<span class="r-comment"># Load the tweet corpus</span>\ntweets <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"moon_twitter.csv"</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(<span class="r-operator">!</span><span class="r-function">is.na</span>(text)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(\n    tweet_id <span class="r-operator">=</span> <span class="r-function">row_number</span>(),\n    text <span class="r-operator">=</span> text <span class="r-operator">|&gt;</span>\n      <span class="r-function">str_remove_all</span>(<span class="r-string">"https?://\\\\S+"</span>) <span class="r-operator">|&gt;</span>  <span class="r-comment"># URLs</span>\n      <span class="r-function">str_remove_all</span>(<span class="r-string">"@\\\\w+"</span>) <span class="r-operator">|&gt;</span>             <span class="r-comment"># @mentions</span>\n      <span class="r-function">str_trim</span>()\n  )\n\n<span class="r-comment"># Tweets per year, split by period</span>\ntweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">count</span>(tweet_year, period3) <span class="r-operator">|&gt;</span>\n  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> tweet_year, y <span class="r-operator">=</span> n, fill <span class="r-operator">=</span> period3)) <span class="r-operator">+</span>\n  <span class="r-function">geom_col</span>() <span class="r-operator">+</span>\n  <span class="r-function">scale_fill_manual</span>(values <span class="r-operator">=</span> <span class="r-function">c</span>(\n    pre_presidency <span class="r-operator">=</span> <span class="r-string">"#6366f1"</span>,\n    transition <span class="r-operator">=</span> <span class="r-string">"#f59e0b"</span>,\n    presidency <span class="r-operator">=</span> <span class="r-string">"#10b981"</span>)) <span class="r-operator">+</span>\n  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"Moon Jae-in tweets per year"</span>,\n       x <span class="r-operator">=</span> <span class="r-string">""</span>, y <span class="r-operator">=</span> <span class="r-string">"Tweets"</span>) <span class="r-operator">+</span>\n  <span class="r-function">theme_minimal</span>()</code></pre></div>';
+    html += '<div class="callout callout-tip">This is the R-equivalent of Orange\'s <strong>Corpus</strong> widget loading the CSV. We add a <code>tweet_id</code> for joining later and clean URLs/mentions, then count tweets per year colored by period.</div>';
     html += '</div></details>';
     html += '</div>';
     detailPanel.innerHTML = html;
   }
 
-  // Tooltip for scatter
+  // Tooltip for timeline scatter (Step 5 only)
   canvas.addEventListener("mousemove", function (e) {
-    if (!DATA || (currentStep !== 0 && currentStep !== 4)) return;
+    if (!DATA || currentStep !== 4) return;
     var rect = canvas.getBoundingClientRect();
     var mx = e.clientX - rect.left, my = e.clientY - rect.top;
     var tl = DATA.timeline, minS = -30, maxS = 35;
@@ -393,8 +381,7 @@ window.copyCode = function (btn) {
     }
     if (best !== hoveredIdx) {
       hoveredIdx = best;
-      if (currentStep === 0) drawCorpus();
-      else if (currentStep === 4) drawTimeline();
+      if (currentStep === 4) drawTimeline();
     }
     if (best >= 0) {
       var t = tl[best];
@@ -421,7 +408,6 @@ window.copyCode = function (btn) {
   });
   canvas.addEventListener("mouseleave", function () {
     hoveredIdx = -1; tooltipEl.style.display = "none";
-    if (currentStep === 0) drawCorpus();
     if (currentStep === 4) drawTimeline();
   });
 
@@ -435,18 +421,17 @@ window.copyCode = function (btn) {
     }
 
     var html = '<div class="step-info">';
-    html += '<p>Dictionary-based sentiment works by looking up each word in positive and negative word lists, then summing the scores. Select a tweet to see the process:</p>';
+    html += '<p>Pick a tweet. For each one, we show the words that matched the KNU positive or negative list, then compute the score.</p>';
     html += '<div class="example-selector" id="exampleSelector">';
     examples.forEach(function (ex, i) {
       html += '<button class="example-btn' + (i === currentExample ? ' active' : '') + '" data-idx="' + i + '">' + ex.label + '</button>';
     });
     html += '</div>';
     html += '<div id="scoringDetail"></div>';
-    html += '<div class="callout callout-info"><strong>How this interactive scores tweets:</strong> tokenize with <strong>Kiwi</strong> (Korean morphological analyzer) → keep content words (nouns, verbs, adjectives) → look up in KNU\'s <code>positive.txt</code> / <code>negative.txt</code> → compute <code>100 × (positives − negatives) / total tokens</code>. This is Orange\'s Custom Dictionary formula — <strong>your Orange numbers will match</strong>. The R code below uses idiomatic tidytext with a simpler <code>positive − negative</code> count; the exact numbers differ but the tweet rankings and period comparisons come out the same.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: tidytext-style sentiment scoring with KNU</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
     html += '<pre><code><span class="r-function">library</span>(tidyverse)\n<span class="r-function">library</span>(tidytext)\n<span class="r-function">library</span>(elbird)  <span class="r-comment"># Kiwi wrapper for R (Korean morphological analyzer)</span>\n\n<span class="r-comment"># 1. Build the KNU sentiment lexicon as a tibble</span>\nknu <span class="r-operator">&lt;-</span> <span class="r-function">bind_rows</span>(\n  <span class="r-function">tibble</span>(word <span class="r-operator">=</span> <span class="r-function">read_lines</span>(<span class="r-string">"positive.txt"</span>), sentiment <span class="r-operator">=</span> <span class="r-string">"positive"</span>),\n  <span class="r-function">tibble</span>(word <span class="r-operator">=</span> <span class="r-function">read_lines</span>(<span class="r-string">"negative.txt"</span>), sentiment <span class="r-operator">=</span> <span class="r-string">"negative"</span>)\n) <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(word <span class="r-operator">=</span> <span class="r-function">str_trim</span>(word)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(word <span class="r-operator">!=</span> <span class="r-string">""</span>)\n\n<span class="r-comment"># 2. Kiwi tokenize tweets, keep content words</span>\ntokens <span class="r-operator">&lt;-</span> tweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(toks <span class="r-operator">=</span> <span class="r-function">map</span>(text, <span class="r-operator">~</span><span class="r-function">tokenize</span>(.x, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>))) <span class="r-operator">|&gt;</span>\n  <span class="r-function">unnest</span>(toks) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(\n    tag <span class="r-operator">%in%</span> <span class="r-function">c</span>(<span class="r-string">"NNG"</span>, <span class="r-string">"NNP"</span>, <span class="r-string">"VA"</span>, <span class="r-string">"VV"</span>),\n    <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>\n  ) <span class="r-operator">|&gt;</span>\n  <span class="r-function">select</span>(tweet_id, period3, tweet_date, word <span class="r-operator">=</span> form)\n\n<span class="r-comment"># 3. tidytext-style sentiment: inner_join + count + pivot</span>\nsentiment_scores <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>\n  <span class="r-function">inner_join</span>(knu, by <span class="r-operator">=</span> <span class="r-string">"word"</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">count</span>(tweet_id, period3, tweet_date, sentiment) <span class="r-operator">|&gt;</span>\n  <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> sentiment, values_from <span class="r-operator">=</span> n,\n              values_fill <span class="r-operator">=</span> <span class="r-number">0</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(score <span class="r-operator">=</span> positive <span class="r-operator">-</span> negative)\n\n<span class="r-function">head</span>(sentiment_scores)</code></pre></div>';
-    html += '<div class="callout callout-tip"><strong>In Orange</strong> you load <code>positive.txt</code> and <code>negative.txt</code> into the Sentiment Analysis widget\'s Custom Dictionary option. <strong>In R</strong> you join the lexicon to tokens with <code>inner_join()</code> and count sentiment categories — classic tidytext. The exact numbers differ (R uses <code>pos − neg</code>; Orange length-normalizes), but both rank tweets the same way.</div>';
+    html += '<div class="callout callout-tip"><strong>In Orange</strong> (what you\'ll build): load <code>positive.txt</code> and <code>negative.txt</code> into Sentiment Analysis → Custom Dictionary. <strong>In R</strong>: the code above uses tidytext\'s <code>inner_join</code> pattern with a simpler <code>positive − negative</code> count. Exact numbers differ but rankings agree.</div>';
     html += '</div></details>';
     html += '</div>';
     detailPanel.innerHTML = html;
@@ -469,20 +454,32 @@ window.copyCode = function (btn) {
     var sign = ex.score > 0 ? '+' : '';
     var html = '<div class="scoring-card">';
     html += '<div class="scoring-tweet"><div class="meta">' + ex.date + ' &bull; ' + PERIOD_NAMES[ex.period[0]] + ' &bull; ' + ex.favorites.toLocaleString() + ' likes</div>' + ex.text + '</div>';
-    html += '<table class="scoring-table"><thead><tr><th>Matched word</th><th>In dictionary</th></tr></thead><tbody>';
 
+    // Matched words shown as colored chips
+    html += '<div style="padding:0.75rem 1rem;">';
     if (ex.pos_matches.length === 0 && ex.neg_matches.length === 0) {
-      html += '<tr><td colspan="2" style="text-align:center;color:#9ca3af;font-style:italic;">No dictionary matches in this tweet</td></tr>';
+      html += '<p style="color:#9ca3af;font-style:italic;margin:0;">No dictionary matches in this tweet</p>';
+    } else {
+      if (ex.pos_matches.length > 0) {
+        html += '<div style="margin-bottom:0.4rem;"><span style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;margin-right:0.5rem;">Positive (' + ex.pos_count + ')</span>';
+        ex.pos_matches.forEach(function (w) {
+          html += '<span style="display:inline-block;padding:0.2rem 0.55rem;margin:0.15rem 0.2rem 0.15rem 0;background:#dcfce7;color:var(--pos-green);border-radius:12px;font-size:0.85rem;font-weight:600;">' + w + '</span>';
+        });
+        html += '</div>';
+      }
+      if (ex.neg_matches.length > 0) {
+        html += '<div><span style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;margin-right:0.5rem;">Negative (' + ex.neg_count + ')</span>';
+        ex.neg_matches.forEach(function (w) {
+          html += '<span style="display:inline-block;padding:0.2rem 0.55rem;margin:0.15rem 0.2rem 0.15rem 0;background:#fee2e2;color:var(--neg-red);border-radius:12px;font-size:0.85rem;font-weight:600;">' + w + '</span>';
+        });
+        html += '</div>';
+      }
     }
-    ex.pos_matches.forEach(function (w) {
-      html += '<tr><td>' + w + '</td><td class="pos">positive</td></tr>';
-    });
-    ex.neg_matches.forEach(function (w) {
-      html += '<tr><td>' + w + '</td><td class="neg">negative</td></tr>';
-    });
-    html += '</tbody></table>';
-    html += '<div style="padding:0.65rem 1rem;background:#f1f5f9;border-top:1px solid #e2e8f0;font-size:0.82rem;line-height:1.5;color:#374151;">';
-    html += '<strong>Orange\'s formula:</strong> 100 &times; (' + ex.pos_count + ' &minus; ' + ex.neg_count + ') / ' + ex.n_tokens + ' tokens = <strong style="color:' + scoreColor + '">' + sign + ex.score.toFixed(2) + '</strong>';
+    html += '</div>';
+
+    // Formula line
+    html += '<div style="padding:0.65rem 1rem;background:#f1f5f9;border-top:1px solid #e2e8f0;font-size:0.85rem;line-height:1.5;color:#374151;">';
+    html += '100 &times; (' + ex.pos_count + ' &minus; ' + ex.neg_count + ') / ' + ex.n_tokens + ' tokens = <strong style="color:' + scoreColor + ';font-size:1rem;">' + sign + ex.score.toFixed(2) + '</strong>';
     html += '</div></div>';
     document.getElementById("scoringDetail").innerHTML = html;
   }
@@ -573,25 +570,20 @@ window.copyCode = function (btn) {
       { key: "presidency", label: "Presidency", color: PERIOD_COLORS.r }
     ];
 
-    // Compute range from actual data
-    var globalMin = Infinity, globalMax = -Infinity;
-    periods.forEach(function (p) {
-      var s = DATA.period_stats[p.key];
-      if (s.min < globalMin) globalMin = s.min;
-      if (s.max > globalMax) globalMax = s.max;
-    });
-    // Round outward to nearest even number for cleaner scale
-    globalMin = Math.floor(globalMin / 2) * 2;
-    globalMax = Math.ceil(globalMax / 2) * 2;
+    // Fixed display range matching the histogram (step 3).
+    // Most tweets fall within ±20; outliers beyond are clipped.
+    var globalMin = -20, globalMax = 20;
     var range = globalMax - globalMin;
 
     // Percentage positioning — independent of canvas width
-    function pct(v) { return ((v - globalMin) / range) * 100; }
+    function pct(v) {
+      var clipped = Math.max(globalMin, Math.min(globalMax, v));
+      return ((clipped - globalMin) / range) * 100;
+    }
 
     var html = '<div class="step-info">';
-    html += '<p>Comparing sentiment across Moon Jae-in\'s three political periods. The <strong>box</strong> shows the middle 50% of scores (Q1 to Q3), the <strong>line</strong> marks the median, and <strong>whiskers</strong> extend to min/max.</p>';
+    html += '<p>Comparing sentiment across Moon Jae-in\'s three political periods. The <strong>box</strong> shows the middle 50% of scores, the <strong>line</strong> inside the box is the median, the <strong>diamond</strong> marks the mean, and <strong>whiskers</strong> show the score range.</p>';
 
-    // Zero line reference
     var zeroPct = pct(0);
 
     periods.forEach(function (p) {
@@ -601,28 +593,31 @@ window.copyCode = function (btn) {
       html += '<div class="box-track">';
       // Zero reference line
       html += '<div style="position:absolute;top:0;bottom:0;left:' + zeroPct + '%;width:1px;background:#cbd5e1;"></div>';
-      // Whisker
+      // Whisker (clipped to display range)
       var wL = pct(s.min), wR = pct(s.max);
       html += '<div class="box-whisker" style="left:' + wL + '%;width:' + (wR - wL) + '%;"></div>';
-      // Box (Q1-Q3)
+      // Box (Q1-Q3). When Q1 = Q3 (collapsed), show a small visible bar.
       var bL = pct(s.q1), bR = pct(s.q3);
-      var bW = Math.max(bR - bL, 1.2); // minimum visible width
-      html += '<div class="box-rect" style="left:' + bL + '%;width:' + bW + '%;background:' + p.color + '22;border-color:' + p.color + ';"></div>';
-      // Median
+      var bW = Math.max(bR - bL, 1.8);
+      html += '<div class="box-rect" style="left:' + bL + '%;width:' + bW + '%;background:' + p.color + '33;border-color:' + p.color + ';"></div>';
+      // Median line
       html += '<div class="box-median" style="left:' + pct(s.median) + '%;"></div>';
+      // Mean marker (diamond) — shows the actual difference when medians are all 0
+      var meanPos = pct(s.mean);
+      html += '<div style="position:absolute;top:50%;left:' + meanPos + '%;transform:translate(-50%,-50%) rotate(45deg);width:10px;height:10px;background:' + p.color + ';border:1.5px solid #fff;box-shadow:0 0 0 1px ' + p.color + ';"></div>';
       html += '</div>';
-      html += '<span class="box-stat">med ' + s.median + ', \u03BC ' + s.mean + ', n=' + s.n + '</span>';
+      html += '<span class="box-stat">\u03BC ' + s.mean + ', med ' + s.median + ', n=' + s.n + '</span>';
       html += '</div>';
     });
 
-    // Scale
-    html += '<div class="box-row"><span class="box-label" style="color:#9ca3af;font-size:0.75rem;">Score</span><div class="box-track" style="border:none;background:none;position:relative;">';
-    for (var v = globalMin; v <= globalMax; v += 2) {
-      html += '<span style="position:absolute;left:' + pct(v) + '%;transform:translateX(-50%);font-size:0.7rem;color:#9ca3af;top:4px;">' + (v > 0 ? "+" : "") + v + '</span>';
+    // Scale (every 10 points so labels don't overlap)
+    html += '<div class="box-row"><span class="box-label" style="color:#9ca3af;font-size:0.75rem;">Score</span><div class="box-track" style="border:none;background:none;position:relative;height:20px;">';
+    for (var v = globalMin; v <= globalMax; v += 10) {
+      html += '<span style="position:absolute;left:' + pct(v) + '%;transform:translateX(-50%);font-size:0.72rem;color:#9ca3af;top:4px;">' + (v > 0 ? "+" : "") + v + '</span>';
     }
     html += '</div><span class="box-stat"></span></div>';
 
-    html += '<div class="callout callout-tip"><strong>Key finding:</strong> Presidency tweets have a higher median sentiment (' + DATA.period_stats.presidency.median + ') than pre-presidency (' + DATA.period_stats.pre_presidency.median + '). The means tell the same story (\u03BC=' + DATA.period_stats.presidency.mean + ' vs \u03BC=' + DATA.period_stats.pre_presidency.mean + '). This reflects the shift from opposition criticism to presidential communication.</div>';
+    html += '<div class="callout callout-tip"><strong>Key finding:</strong> Presidency tweets are about <strong>3\u00d7 more positive on average</strong> than pre-presidency tweets (\u03bc=' + DATA.period_stats.presidency.mean + ' vs ' + DATA.period_stats.pre_presidency.mean + '). Most tweets in every period score around zero (no dictionary matches) \u2014 the difference lives in the long tails, which is why the mean shifts but the median stays near zero.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: box plot by period</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
     html += '<pre><code><span class="r-comment"># Box plot comparing periods</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(period3 <span class="r-operator">=</span> <span class="r-function">factor</span>(period3,\n    levels <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"pre_presidency"</span>, <span class="r-string">"transition"</span>, <span class="r-string">"presidency"</span>))) <span class="r-operator">|&gt;</span>\n  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> period3, y <span class="r-operator">=</span> score, fill <span class="r-operator">=</span> period3)) <span class="r-operator">+</span>\n  <span class="r-function">geom_boxplot</span>(alpha <span class="r-operator">=</span> <span class="r-number">0.7</span>, outlier.alpha <span class="r-operator">=</span> <span class="r-number">0.3</span>) <span class="r-operator">+</span>\n  <span class="r-function">scale_fill_manual</span>(values <span class="r-operator">=</span> <span class="r-function">c</span>(\n    pre_presidency <span class="r-operator">=</span> <span class="r-string">"#6366f1"</span>,\n    transition <span class="r-operator">=</span> <span class="r-string">"#f59e0b"</span>,\n    presidency <span class="r-operator">=</span> <span class="r-string">"#10b981"</span>)) <span class="r-operator">+</span>\n  <span class="r-function">labs</span>(title <span class="r-operator">=</span> <span class="r-string">"Sentiment by Political Period"</span>,\n       x <span class="r-operator">=</span> <span class="r-string">""</span>, y <span class="r-operator">=</span> <span class="r-string">"Sentiment Score"</span>) <span class="r-operator">+</span>\n  <span class="r-function">theme_minimal</span>() <span class="r-operator">+</span>\n  <span class="r-function">theme</span>(legend.position <span class="r-operator">=</span> <span class="r-string">"none"</span>)\n\n<span class="r-comment"># Summary statistics</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">group_by</span>(period3) <span class="r-operator">|&gt;</span>\n  <span class="r-function">summarise</span>(n <span class="r-operator">=</span> <span class="r-function">n</span>(), mean <span class="r-operator">=</span> <span class="r-function">mean</span>(score),\n            median <span class="r-operator">=</span> <span class="r-function">median</span>(score), sd <span class="r-operator">=</span> <span class="r-function">sd</span>(score))</code></pre></div>';
@@ -749,7 +744,7 @@ window.copyCode = function (btn) {
     });
     html += '</div></div>';
 
-    html += '<div class="callout callout-info"><strong>Top matches are genuine sentiment words:</strong> <strong>\uAC10\uC0AC</strong> (gratitude), <strong>\uD76C\uB9DD</strong> (hope), <strong>\uBC1C\uC804</strong> (development), <strong>\uCD95\uD558</strong> (celebration) on the positive side; <strong>\uC704\uAE30</strong> (crisis), <strong>\uAC71\uC815</strong> (worry), <strong>\uACE0\uD1B5</strong> (suffering), <strong>\uB208\uBB3C</strong> (tears) on the negative side. Homograph ambiguity is a known limitation: <strong>\uC9C0\uC9C0</strong> (support / lose) appears in both real tweets and the dictionary in ways that can score it either direction.</div>';
+    html += '<div class="callout callout-info">The top matches are genuine sentiment words \u2014 <strong>\uAC10\uC0AC</strong> (gratitude), <strong>\uD76C\uB9DD</strong> (hope), <strong>\uBC1C\uC804</strong> (development) on the positive side; <strong>\uC704\uAE30</strong> (crisis), <strong>\uAC71\uC815</strong> (worry), <strong>\uACE0\uD1B5</strong> (suffering) on the negative side. A known limitation: <strong>\uC9C0\uC9C0</strong> (support / lose) is ambiguous in Korean.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: explore top words and extreme tweets</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
     html += '<pre><code><span class="r-comment"># Top matched sentiment words, by polarity</span>\ntokens <span class="r-operator">|&gt;</span>\n  <span class="r-function">inner_join</span>(knu, by <span class="r-operator">=</span> <span class="r-string">"word"</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">count</span>(sentiment, word, sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">group_by</span>(sentiment) <span class="r-operator">|&gt;</span>\n  <span class="r-function">slice_max</span>(n, n <span class="r-operator">=</span> <span class="r-number">10</span>)\n\n<span class="r-comment"># Most positive and most negative tweets</span>\nextreme_tweets <span class="r-operator">&lt;-</span> sentiment_scores <span class="r-operator">|&gt;</span>\n  <span class="r-function">inner_join</span>(tweets <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(tweet_id, text),\n             by <span class="r-operator">=</span> <span class="r-string">"tweet_id"</span>)\n\nextreme_tweets <span class="r-operator">|&gt;</span> <span class="r-function">slice_max</span>(score, n <span class="r-operator">=</span> <span class="r-number">5</span>)\nextreme_tweets <span class="r-operator">|&gt;</span> <span class="r-function">slice_min</span>(score, n <span class="r-operator">=</span> <span class="r-number">5</span>)\n\n<span class="r-comment"># Box plot: sentiment by period</span>\nsentiment_scores <span class="r-operator">|&gt;</span>\n  <span class="r-function">ggplot</span>(<span class="r-function">aes</span>(x <span class="r-operator">=</span> period3, y <span class="r-operator">=</span> score, fill <span class="r-operator">=</span> period3)) <span class="r-operator">+</span>\n  <span class="r-function">geom_boxplot</span>(alpha <span class="r-operator">=</span> <span class="r-number">0.7</span>) <span class="r-operator">+</span>\n  <span class="r-function">theme_minimal</span>()</code></pre></div>';
