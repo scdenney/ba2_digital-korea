@@ -1,23 +1,16 @@
 """
 Korean Sentiment Preprocessing for Orange Data Mining (Windows)
 
-Same as the Mac version but without auto-install. Before using this in
-Orange, install kiwipiepy from a terminal:
+Same as custom_preprocessing_windows-users.py but with POS tags set for
+sentiment analysis: keeps nouns, verbs, and adjectives (NNG, NNP, VA, VV).
 
+Assumes kiwipiepy is already installed. If not, open a terminal and run:
     pip install kiwipiepy
-
-Tokenizes Korean tweets with Kiwi and keeps content-word morphemes
-(NNG, NNP, VA, VV) of length >= 2. Use in the Week 9 Orange workflow:
-
-  File → Corpus → Python Script (this file)
-                → Corpus (re-map text feature to processed_text)
-                → Sentiment Analysis (Custom Dictionary: positive.txt + negative.txt)
-                → Box Plot
 """
 
 import re
 import pandas as pd
-from Orange.data import Domain, StringVariable
+from Orange.data import Table, Domain, StringVariable
 from kiwipiepy import Kiwi
 
 kiwi = Kiwi()
@@ -25,51 +18,76 @@ kiwi = Kiwi()
 # ===== CONFIGURATION =====
 TEXT_COLUMN = 'text'  # <<< CHANGE to match your corpus column name
 
-NOUN_TAGS = {'NNG', 'NNP'}
+# POS tags to keep — nouns, verbs, and adjectives carry sentiment
+POS_TAGS = [
+    'NNG',  # Common noun (일반명사)
+    'NNP',  # Proper noun (고유명사)
+    'VV',   # Verb (동사)
+    'VA',   # Adjective (형용사)
+    #'MAG', # Adverb (부사) — uncomment if you want intensifiers
+]
 
+REMOVE_NUMBERS = True
+MIN_TOKEN_LENGTH = 2
+MIN_DOC_FREQ = 0.0
+MAX_DOC_FREQ = 1.0
 
-def is_verb_or_adj(tag):
-    """Match VA, VV, and their irregular variants (VA-I, VV-I, VV-R, etc.)."""
-    return tag == 'VA' or tag == 'VV' or tag.startswith('VA-') or tag.startswith('VV-')
-
+STOPWORDS = {
+    '있다', '없다', '되다', '하다', '그', '저', '이', '것', '등', '및',
+    '수', '때', '년', '월', '일', '더', '또', '즉', '통해', '위해'
+}
 
 # ===== PREPROCESSING =====
-def preprocess(text):
+def clean_text(text):
     if pd.isna(text):
         return ""
-    text = re.sub(r'https?://\S+', '', str(text))
+    text = str(text)
+    text = re.sub(r'http[s]?://\S+', '', text)
+    text = re.sub(r'\S+@\S+', '', text)
     text = re.sub(r'@\w+', '', text)
-    text = re.sub(r'^RT\s*:?', '', text)
-    out = []
-    for t in kiwi.tokenize(text):
-        if len(t.form) < 2:
+    text = re.sub(r'[^\w\s\u3131-\u3163\uac00-\ud7a3\u1100-\u11ff]', ' ', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+def preprocess(text):
+    text = clean_text(text)
+    if not text:
+        return ""
+
+    tokens = kiwi.tokenize(text)
+    morphemes = [token.form for token in tokens if token.tag in POS_TAGS]
+
+    filtered = []
+    for w in morphemes:
+        if w in STOPWORDS:
             continue
-        if t.tag in NOUN_TAGS:
-            out.append(t.form)
-        elif is_verb_or_adj(t.tag):
-            # Citation form = stem + 다 (matches KNU dictionary entries)
-            out.append(t.form + '다')
-    return ' '.join(out)
+        if len(w) < MIN_TOKEN_LENGTH:
+            continue
+        if REMOVE_NUMBERS and w.isdigit():
+            continue
+        filtered.append(w)
+
+    return ' '.join(filtered)
 
 # ===== PROCESS DATA =====
 try:
     text_data = in_data.documents
 except AttributeError:
-    idx = in_data.domain.index(TEXT_COLUMN)
-    text_data = [str(row[idx]) for row in in_data]
+    text_column_index = in_data.domain.index(TEXT_COLUMN)
+    text_data = [str(row[text_column_index]) for row in in_data]
 
-processed = [preprocess(t) for t in text_data]
+processed = [preprocess(text) for text in text_data]
 
 # ===== OUTPUT =====
 new_var = StringVariable('processed_text')
 new_domain = Domain(
     in_data.domain.attributes,
     in_data.domain.class_vars,
-    in_data.domain.metas + (new_var,),
+    in_data.domain.metas + (new_var,)
 )
+
 out_data = in_data.transform(new_domain)
 with out_data.unlocked():
     out_data.get_column(new_var)[:] = processed
 
-print(f"Processed {len(processed)} documents")
-print(f"Sample: {next((p for p in processed if p), '')[:150]}")
+print(f"✓ Processed {len(processed)} documents")

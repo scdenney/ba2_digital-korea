@@ -49,19 +49,16 @@ OUT_JSON = os.path.join(REPO_ROOT, "interactive", "sentiment_data.json")
 # --------------------------------------------------------------------------
 # Constants
 # --------------------------------------------------------------------------
-# Nouns kept as-is; verbs and adjectives (incl. irregular -I/-R variants)
-# are converted to their citation form (stem + 다) so they match KNU
-# dictionary entries like 기쁘다, 고맙다, 행복하다.
-NOUN_TAGS = {"NNG", "NNP"}
+# POS tags to keep — must match sentiment_preprocessing_mac-users.py
+POS_TAGS = {"NNG", "NNP", "VV", "VA"}
 
-# Minimum token length (skip single-syllable morphemes — standard practice
-# in Korean NLP, reduces noise from common grammatical fragments).
+# Minimum token length
 MIN_LEN = 2
 
-
-def is_verb_or_adj(tag):
-    """Match VA, VV, and their irregular variants (VA-I, VV-I, VV-R, etc.)."""
-    return tag == "VA" or tag == "VV" or tag.startswith("VA-") or tag.startswith("VV-")
+STOPWORDS = {
+    '있다', '없다', '되다', '하다', '그', '저', '이', '것', '등', '및',
+    '수', '때', '년', '월', '일', '더', '또', '즉', '통해', '위해'
+}
 
 PERIOD_MAP = {"pre_presidency": "p", "transition": "t", "presidency": "r"}
 
@@ -90,30 +87,28 @@ def load_lexicon(path):
 # Preprocessing — matches sentiment_preprocessing_mac-users.py exactly
 # --------------------------------------------------------------------------
 def clean_text(text):
+    """Matches custom_preprocessing_mac-users.py's clean_text exactly."""
     if not text:
         return ""
-    text = re.sub(r"https?://\S+", "", text)
+    text = re.sub(r"http[s]?://\S+", "", text)
+    text = re.sub(r"\S+@\S+", "", text)
     text = re.sub(r"@\w+", "", text)
-    text = re.sub(r"^RT\s*:?", "", text)
-    return text.strip()
+    text = re.sub(r"[^\w\s\u3131-\u3163\uac00-\ud7a3\u1100-\u11ff]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
 
 def tokenize(text, kiwi):
-    """
-    Kiwi tokenize → keep content words (length >= 2).
-    Nouns kept as-is; verbs/adjectives converted to citation form (+ 다).
-    """
+    """Kiwi tokenize → keep content words matching POS_TAGS, length >= 2."""
     if not text:
         return []
-    out = []
-    for t in kiwi.tokenize(text):
-        if len(t.form) < MIN_LEN:
-            continue
-        if t.tag in NOUN_TAGS:
-            out.append(t.form)
-        elif is_verb_or_adj(t.tag):
-            out.append(t.form + "다")
-    return out
+    morphemes = [t.form for t in kiwi.tokenize(text) if t.tag in POS_TAGS]
+    return [
+        w for w in morphemes
+        if w not in STOPWORDS
+        and len(w) >= MIN_LEN
+        and not w.isdigit()
+    ]
 
 
 # --------------------------------------------------------------------------
