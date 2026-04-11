@@ -183,10 +183,10 @@ title: "Sentiment Analysis: Moon Jae-in's Tweets"
 <div class="demo-app" id="app">
   <div class="demo-header">
     <h1>Sentiment Analysis: Moon Jae-in's Tweets</h1>
-    <p class="demo-intro">Explore how dictionary-based sentiment analysis scores 3,148 tweets from President Moon Jae-in's Twitter account (@moonriver365, 2012&ndash;2020). See how positive and negative word counts produce document-level sentiment scores &mdash; and where the method breaks down.</p>
+    <p class="demo-intro">Explore how Orange's Multilingual Sentiment method scores 3,148 tweets from President Moon Jae-in's Twitter account (@moonriver365, 2012&ndash;2020). The same dictionary, the same formula, the same numbers you'll see when you run this in Orange yourself &mdash; plus a look at where the method breaks down.</p>
     <div class="tutorial-meta">
       <span>Week 9</span>
-      <span>Dictionary-based sentiment</span>
+      <span>Orange Multilingual Sentiment (Korean)</span>
       <span>3,148 tweets, 3 periods</span>
     </div>
   </div>
@@ -311,13 +311,13 @@ window.copyCode = function (btn) {
 
   // ── Step 1: Corpus scatter ───────────────────────────────────────
   function drawCorpus() {
-    var tl = DATA.timeline, minS = -6, maxS = 10;
+    var tl = DATA.timeline, minS = -22, maxS = 25;
 
     ctx.clearRect(0, 0, canvasW, canvasH);
 
     // Axes
     ctx.strokeStyle = "#e2e8f0"; ctx.lineWidth = 1;
-    for (var s = -4; s <= 8; s += 2) {
+    for (var s = -20; s <= 20; s += 5) {
       var y = scoreToY(s, minS, maxS);
       ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(canvasW - PADR, y); ctx.stroke();
       ctx.fillStyle = "#9ca3af"; ctx.font = "11px system-ui"; ctx.textAlign = "right";
@@ -382,7 +382,7 @@ window.copyCode = function (btn) {
     if (!DATA || (currentStep !== 0 && currentStep !== 4)) return;
     var rect = canvas.getBoundingClientRect();
     var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    var tl = DATA.timeline, minS = -6, maxS = 10;
+    var tl = DATA.timeline, minS = -22, maxS = 25;
     var best = -1, bestDist = 100;
     for (var i = 0; i < tl.length; i++) {
       if (!tl[i].t) continue;
@@ -398,7 +398,7 @@ window.copyCode = function (btn) {
     }
     if (best >= 0) {
       var t = tl[best];
-      tooltipEl.innerHTML = "<strong>" + t.d + "</strong> &bull; Score: " + t.s + " (+" + t.pc + " / -" + t.nc + ")<br>" + truncate(t.t, 100);
+      tooltipEl.innerHTML = "<strong>" + t.d + "</strong> &bull; Score: " + t.s.toFixed(1) + " (+" + t.pc + " / -" + t.nc + ")<br>" + truncate(t.t, 100);
       tooltipEl.style.display = "block";
       // Bounds-checked positioning
       var dotX = dateToX(t.d);
@@ -440,11 +440,11 @@ window.copyCode = function (btn) {
     });
     html += '</div>';
     html += '<div id="scoringDetail"></div>';
-    html += '<div class="callout callout-info"><strong>How this interactive scores tweets:</strong> Kiwi tokenization $\\rightarrow$ keep NNG/NNP/VA/VV stems (length $\\geq$ 2) $\\rightarrow$ look up in stem-indexed KNU. <strong>Same preprocessing you\'ll run in Orange.</strong></div>';
-    html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: Kiwi stems + KNU weighted scoring</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
+    html += '<div class="callout callout-info"><strong>How this interactive scores tweets:</strong> the exact same method Orange uses for Korean. Tokenize on whitespace and punctuation → look up each token in Chen &amp; Skiena\'s (2014) Korean lexicon → compute <code>100 × (positives − negatives) / total tokens</code>. <strong>Your Orange Box Plot will match this distribution exactly.</strong></div>';
+    html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: replicate Orange\'s scoring</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
-    html += '<pre><code><span class="r-function">library</span>(tidyverse)\n<span class="r-function">library</span>(elbird)  <span class="r-comment"># Kiwi wrapper for R</span>\n\n<span class="r-comment"># Load stem-indexed KNU (stem + score, -2 to +2)</span>\nknu <span class="r-operator">&lt;-</span> <span class="r-function">read_tsv</span>(<span class="r-string">"SentiWord_Dict_stems.txt"</span>,\n  col_names <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"stem"</span>, <span class="r-string">"score"</span>))\n\n<span class="r-comment"># Kiwi tokenize, keep content stems (length >= 2)</span>\nstems <span class="r-operator">&lt;-</span> tweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(tok <span class="r-operator">=</span> <span class="r-function">map</span>(text, <span class="r-operator">~</span><span class="r-function">tokenize</span>(.x, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>))) <span class="r-operator">|&gt;</span>\n  <span class="r-function">unnest</span>(tok) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(tag <span class="r-operator">%in%</span> <span class="r-function">c</span>(<span class="r-string">"NNG"</span>, <span class="r-string">"NNP"</span>, <span class="r-string">"VA"</span>, <span class="r-string">"VV"</span>),\n         <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>)\n\n<span class="r-comment"># Join with KNU and sum scores per tweet</span>\nscored <span class="r-operator">&lt;-</span> stems <span class="r-operator">|&gt;</span>\n  <span class="r-function">left_join</span>(knu, by <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"form"</span> <span class="r-operator">=</span> <span class="r-string">"stem"</span>)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">group_by</span>(tweet_date, period3) <span class="r-operator">|&gt;</span>\n  <span class="r-function">summarise</span>(\n    knu_score <span class="r-operator">=</span> <span class="r-function">sum</span>(score, na.rm <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>),\n    n_pos <span class="r-operator">=</span> <span class="r-function">sum</span>(score <span class="r-operator">&gt;</span> <span class="r-number">0</span>, na.rm <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>),\n    n_neg <span class="r-operator">=</span> <span class="r-function">sum</span>(score <span class="r-operator">&lt;</span> <span class="r-number">0</span>, na.rm <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>),\n    .groups <span class="r-operator">=</span> <span class="r-string">"drop"</span>)</code></pre></div>';
-    html += '<div class="callout callout-tip"><strong>In Orange:</strong> Python Script runs Kiwi, outputs stems as <code>processed_text</code>. Sentiment Analysis widget loads positive_stems.txt and negative_stems.txt as custom dictionary, scores each tweet.</div>';
+    html += '<pre><code><span class="r-function">library</span>(tidyverse)\n\n<span class="r-comment"># Load Chen &amp; Skiena Korean lexicon (same one Orange uses)</span>\npos <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"positive_words_ko.txt"</span>) <span class="r-operator">|&gt;</span> <span class="r-function">str_trim</span>()\nneg <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"negative_words_ko.txt"</span>) <span class="r-operator">|&gt;</span> <span class="r-function">str_trim</span>()\n\n<span class="r-comment"># Tokenize like Orange: whitespace + punctuation</span>\n<span class="r-comment"># (this is NLTK\'s WordPunctTokenizer regex)</span>\ntokenize_wp <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {\n  <span class="r-function">str_extract_all</span>(text, <span class="r-string">"\\\\w+|[^\\\\w\\\\s]+"</span>)[[<span class="r-number">1</span>]]\n}\n\n<span class="r-comment"># Orange\'s scoring formula:</span>\n<span class="r-comment">#   100 * (|pos \u2229 tokens| - |neg \u2229 tokens|) / max(len(tokens), 1)</span>\nscore_tweet <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text, pos, neg) {\n  toks <span class="r-operator">&lt;-</span> <span class="r-function">tokenize_wp</span>(text)\n  tok_set <span class="r-operator">&lt;-</span> <span class="r-function">unique</span>(toks)\n  n_pos <span class="r-operator">&lt;-</span> <span class="r-function">sum</span>(tok_set <span class="r-operator">%in%</span> pos)\n  n_neg <span class="r-operator">&lt;-</span> <span class="r-function">sum</span>(tok_set <span class="r-operator">%in%</span> neg)\n  <span class="r-number">100</span> <span class="r-operator">*</span> (n_pos <span class="r-operator">-</span> n_neg) <span class="r-operator">/</span> <span class="r-function">max</span>(<span class="r-function">length</span>(toks), <span class="r-number">1</span>)\n}\n\nscored <span class="r-operator">&lt;-</span> tweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(<span class="r-operator">!</span><span class="r-function">is.na</span>(text)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(sentiment <span class="r-operator">=</span> <span class="r-function">map_dbl</span>(text, score_tweet, pos, neg))</code></pre></div>';
+    html += '<div class="callout callout-tip"><strong>In Orange:</strong> Sentiment Analysis widget with Method = <em>Multilingual</em> and Language = <em>Korean</em> runs this exact formula against the same Chen &amp; Skiena lexicon. No Python script, no custom dictionary setup.</div>';
     html += '</div></details>';
     html += '</div>';
     detailPanel.innerHTML = html;
@@ -463,18 +463,25 @@ window.copyCode = function (btn) {
   function renderScoringDetail() {
     var ex = DATA.example_tweets[currentExample];
     if (!ex) return;
+    var scoreColor = ex.score > 0 ? 'var(--pos-green)' : ex.score < 0 ? 'var(--neg-red)' : 'var(--neu-gray)';
+    var sign = ex.score > 0 ? '+' : '';
     var html = '<div class="scoring-card">';
     html += '<div class="scoring-tweet"><div class="meta">' + ex.date + ' &bull; ' + PERIOD_NAMES[ex.period[0]] + ' &bull; ' + ex.favorites.toLocaleString() + ' likes</div>' + ex.text + '</div>';
-    html += '<table class="scoring-table"><thead><tr><th>Word</th><th>Dictionary</th><th>Score</th></tr></thead><tbody>';
+    html += '<table class="scoring-table"><thead><tr><th>Matched word</th><th>In dictionary</th></tr></thead><tbody>';
 
+    if (ex.pos_matches.length === 0 && ex.neg_matches.length === 0) {
+      html += '<tr><td colspan="2" style="text-align:center;color:#9ca3af;font-style:italic;">No dictionary matches in this tweet</td></tr>';
+    }
     ex.pos_matches.forEach(function (w) {
-      html += '<tr><td>' + w + '</td><td class="pos">positive</td><td class="pos">+1</td></tr>';
+      html += '<tr><td>' + w + '</td><td class="pos">positive</td></tr>';
     });
     ex.neg_matches.forEach(function (w) {
-      html += '<tr><td>' + w + '</td><td class="neg">negative</td><td class="neg">&minus;1</td></tr>';
+      html += '<tr><td>' + w + '</td><td class="neg">negative</td></tr>';
     });
-    html += '<tr class="total-row"><td><strong>Total</strong></td><td>+' + ex.pos_count + ' / &minus;' + ex.neg_count + '</td><td><strong style="color:' + (ex.score > 0 ? 'var(--pos-green)' : ex.score < 0 ? 'var(--neg-red)' : 'var(--neu-gray)') + '">' + (ex.score > 0 ? '+' : '') + ex.score + '</strong></td></tr>';
-    html += '</tbody></table></div>';
+    html += '</tbody></table>';
+    html += '<div style="padding:0.65rem 1rem;background:#f1f5f9;border-top:1px solid #e2e8f0;font-size:0.82rem;line-height:1.5;color:#374151;">';
+    html += '<strong>Orange\'s formula:</strong> 100 &times; (' + ex.pos_count + ' &minus; ' + ex.neg_count + ') / ' + ex.n_tokens + ' tokens = <strong style="color:' + scoreColor + '">' + sign + ex.score.toFixed(2) + '</strong>';
+    html += '</div></div>';
     document.getElementById("scoringDetail").innerHTML = html;
   }
 
@@ -486,7 +493,7 @@ window.copyCode = function (btn) {
     var maxCount = Math.max.apply(null, keys.map(function (k) { return hist[String(k)]; }));
 
     var html = '<div class="step-info">';
-    html += '<p>Distribution of sentiment scores across all tweets. Most cluster around <strong>0 to +2</strong>. Toggle to see how the distribution shifts by period.</p>';
+    html += '<p>Distribution of Orange-formula sentiment scores across all tweets. The median is <strong>0</strong> (many tweets have no dictionary matches), with a slight positive tilt. Toggle to see how the distribution shifts by period.</p>';
     html += '<div class="period-toggle" id="distToggle">';
     html += '<button class="period-btn' + (distPeriod === "all" ? " active" : "") + '" data-p="all" style="' + (distPeriod === "all" ? "background:var(--leiden-blue);color:#fff;border-color:var(--leiden-blue)" : "") + '">All tweets</button>';
     PERIOD_KEYS.forEach(function (k) {
@@ -599,13 +606,13 @@ window.copyCode = function (btn) {
 
   // ── Step 5: Timeline with trend ──────────────────────────────────
   function drawTimeline() {
-    var tl = DATA.timeline, minS = -6, maxS = 10;
+    var tl = DATA.timeline, minS = -22, maxS = 25;
 
     ctx.clearRect(0, 0, canvasW, canvasH);
 
     // Grid
     ctx.strokeStyle = "#e2e8f0"; ctx.lineWidth = 1;
-    for (var s = -4; s <= 8; s += 2) {
+    for (var s = -20; s <= 20; s += 5) {
       var y = scoreToY(s, minS, maxS);
       ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(canvasW - PADR, y); ctx.stroke();
       ctx.fillStyle = "#9ca3af"; ctx.font = "11px system-ui"; ctx.textAlign = "right";
@@ -714,10 +721,10 @@ window.copyCode = function (btn) {
     });
     html += '</div></div>';
 
-    html += '<div class="callout callout-info">Top matches reflect Kiwi-tokenized lemmas: verbs/adjectives in citation form (<strong>\uC88B\uB2E4</strong> good, <strong>\uD06C\uB2E4</strong> big, <strong>\uC544\uD504\uB2E4</strong> painful) and nouns (<strong>\uD76C\uB9DD</strong> hope, <strong>\uAC10\uC0AC</strong> thanks, <strong>\uC704\uAE30</strong> crisis). Homograph ambiguity remains: <strong>\uC9C0\uC9C0</strong> (lose/support) still scores as the dictionary entry.</div>';
+    html += '<div class="callout callout-warn"><strong>Notice the noise:</strong> the top matches include meaningful sentiment words (<strong>\uAC10\uC0AC\uD569\uB2C8\uB2E4</strong> "thank you", <strong>\uC88B\uC740</strong> "good", <strong>\uB530\uB73B\uD55C</strong> "warm") but also grammatical function words like <strong>\uD55C</strong> (one / modifier), <strong>\uC758</strong> (possessive), and <strong>\uB2E4\uB978</strong> (different). Chen &amp; Skiena\'s lexicon was built automatically by translating English sentiment word lists across languages — it catches real sentiment but also labels some neutral words. This is what "black-box" really means: the dictionary decides, and you read the results critically.</div>';
     html += '<details class="code-ribbon"><summary><span class="ribbon-label">Show R code: explore top words and extreme tweets</span><span class="ribbon-tag">R</span></summary><div class="code-ribbon-body">';
     html += '<div class="code-block"><div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>';
-    html += '<pre><code><span class="r-comment"># Top matched stems (after Kiwi + KNU join)</span>\nstems <span class="r-operator">|&gt;</span>\n  <span class="r-function">left_join</span>(knu, by <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"form"</span> <span class="r-operator">=</span> <span class="r-string">"stem"</span>)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">filter</span>(<span class="r-operator">!</span><span class="r-function">is.na</span>(score), score <span class="r-operator">!=</span> <span class="r-number">0</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">count</span>(form, score, sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">20</span>)\n\n<span class="r-comment"># Most positive tweets (by KNU weighted score)</span>\ntweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">left_join</span>(scored, by <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"tweet_date"</span>, <span class="r-string">"period3"</span>)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">arrange</span>(<span class="r-function">desc</span>(knu_score)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">select</span>(tweet_date, period3, knu_score, text) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">5</span>)\n\n<span class="r-comment"># Most negative tweets</span>\ntweets <span class="r-operator">|&gt;</span>\n  <span class="r-function">left_join</span>(scored, by <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"tweet_date"</span>, <span class="r-string">"period3"</span>)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">arrange</span>(knu_score) <span class="r-operator">|&gt;</span>\n  <span class="r-function">select</span>(tweet_date, period3, knu_score, text) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">5</span>)</code></pre></div>';
+    html += '<pre><code><span class="r-comment"># Top matched positive words (Chen &amp; Skiena dictionary)</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">mutate</span>(hits <span class="r-operator">=</span> <span class="r-function">map</span>(text, <span class="r-operator">~</span><span class="r-function">intersect</span>(<span class="r-function">tokenize_wp</span>(.x), pos))) <span class="r-operator">|&gt;</span>\n  <span class="r-function">unnest</span>(hits) <span class="r-operator">|&gt;</span>\n  <span class="r-function">count</span>(hits, sort <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">15</span>)\n\n<span class="r-comment"># Most positive tweets</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">arrange</span>(<span class="r-function">desc</span>(sentiment)) <span class="r-operator">|&gt;</span>\n  <span class="r-function">select</span>(tweet_date, period3, sentiment, text) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">5</span>)\n\n<span class="r-comment"># Most negative tweets</span>\nscored <span class="r-operator">|&gt;</span>\n  <span class="r-function">arrange</span>(sentiment) <span class="r-operator">|&gt;</span>\n  <span class="r-function">select</span>(tweet_date, period3, sentiment, text) <span class="r-operator">|&gt;</span>\n  <span class="r-function">head</span>(<span class="r-number">5</span>)</code></pre></div>';
     html += '<div class="callout callout-tip"><strong>In Orange:</strong> connect scored data to <strong>Corpus Viewer</strong> and sort by the score column. Click any tweet to read the full text.</div>';
     html += '</div></details>';
 

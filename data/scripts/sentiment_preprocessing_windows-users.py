@@ -1,13 +1,15 @@
 """
 Korean Sentiment Preprocessing for Orange Data Mining (Windows)
 
-Same as the Mac version but without auto-install. If kiwipiepy is not
-installed, open a terminal and run:
-    pip install kiwipiepy
+OPTIONAL SCRIPT — you don't need this for the main Week 9 workflow.
+Orange's Sentiment Analysis widget handles Korean automatically when you
+choose Method = "Multilingual Sentiment" and Language = "Korean".
 
-Tokenizes tweets with Kiwi and extracts content-word stems (nouns, verbs,
-adjectives) for sentiment scoring. Output matches the stem-indexed
-dictionaries on the course Data page.
+Use this script only if you want Kiwi stem-level tokenization combined
+with a custom dictionary like KNU. See the Mac version for full details.
+
+Requires kiwipiepy to be pre-installed. If import fails, open a terminal
+and run:  pip install kiwipiepy
 """
 
 import re

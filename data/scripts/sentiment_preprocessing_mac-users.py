@@ -1,15 +1,20 @@
 """
 Korean Sentiment Preprocessing for Orange Data Mining (Mac)
 
-Tokenizes tweets with Kiwi and extracts content-word stems (nouns, verbs,
-adjectives) for sentiment scoring. The output tokens match the stem-indexed
-dictionaries on the course Data page:
-  - positive_stems.txt
-  - negative_stems.txt
-  - SentiWord_Dict_stems.txt (full KNU with -2 to +2 scores, for R use)
+OPTIONAL SCRIPT — you don't need this for the main Week 9 workflow.
+Orange's Sentiment Analysis widget handles Korean automatically when you
+choose Method = "Multilingual Sentiment" and Language = "Korean".
 
-Use this with Orange's Sentiment Analysis widget:
-  File → Corpus → Python Script → Corpus (re-map) → Sentiment Analysis → Box Plot
+Use this script only if you want to:
+  1. Tokenize with Kiwi morphological analyzer (instead of Orange's default
+     whitespace tokenizer) to get stem-level tokens, AND
+  2. Score against a stem-indexed dictionary like KNU (found in
+     data/sentiment_dic/positive_stems.txt and negative_stems.txt) loaded
+     via Orange's Custom Dictionary option.
+
+Pipeline (advanced workflow):
+  File → Corpus → Python Script → Corpus (re-map) → Sentiment Analysis
+  (Custom dict) → Box Plot
 """
 
 import subprocess

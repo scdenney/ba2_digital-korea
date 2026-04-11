@@ -1,43 +1,81 @@
 # Korean Sentiment Dictionaries
 
-This folder contains Korean sentiment dictionaries for Week 9 (Sentiment Analysis). All dictionaries descend from the **KNU Korean Sentiment Lexicon** (Kunsan National University) — a standard reference dictionary built from the Standard Korean Dictionary (표준국어대사전) and validated by human annotators.
+This folder contains Korean sentiment dictionaries for Week 9 (Sentiment Analysis).
 
-## Which file should I use?
+## What we use in Week 9
 
-**For Week 9 in Orange Data Mining → Use these:**
-
-| File | Entries | Description |
-|------|---------|-------------|
-| [`positive_stems.txt`](positive_stems.txt) | ~700 | Positive stems (KNU scores +1 and +2). Load into the **Sentiment Analysis** widget as the positive word list. |
-| [`negative_stems.txt`](negative_stems.txt) | ~1,400 | Negative stems (KNU scores −1 and −2). Load into the **Sentiment Analysis** widget as the negative word list. |
-
-**For Week 9 in R → Use this:**
+**Chen & Skiena (2014) Korean sentiment lexicon** — this is what Orange's **Sentiment Analysis** widget uses internally when you pick Method = *Multilingual* and Language = *Korean*. It's built into Orange; you don't need to load anything manually. The files are shipped here so you can inspect them, use them in R, or back them up.
 
 | File | Entries | Description |
 |------|---------|-------------|
-| [`SentiWord_Dict_stems.txt`](SentiWord_Dict_stems.txt) | ~2,100 | Full stem-indexed KNU with intensity scores (−2 to +2). Tab-separated: `stem⟨tab⟩score`. Load with `read_tsv()` and `left_join()` to your tokenized text. |
+| [`positive_words_ko.txt`](positive_words_ko.txt) | 883 | Positive Korean words (one per line) |
+| [`negative_words_ko.txt`](negative_words_ko.txt) | 1,235 | Negative Korean words (one per line) |
 
-## Why "stems"?
+**Format**: plain text, one word per line. No header. Binary polarity (each word is either positive or negative, no intensity).
 
-Korean is agglutinative — one verb or adjective has dozens of inflected forms (e.g., `행복하다`, `행복합니다`, `행복했다`, `행복해`). You can't match all those forms against a dictionary entry unless both sides share a common *stem*.
+**How Orange uses them**: tokenize each tweet on whitespace and punctuation, take the unique tokens, count how many appear in the positive list (`n_pos`) and how many in the negative list (`n_neg`), output `100 × (n_pos − n_neg) / total_tokens`. This is also what the Week 9 interactive exercise does, so the numbers match.
 
-Our preprocessing script ([`sentiment_preprocessing_mac-users.py`](../scripts/sentiment_preprocessing_mac-users.py)) tokenizes tweets with **Kiwi** and outputs content-word stems. The dictionary files in this folder were built by running every KNU entry through the same Kiwi pipeline and keeping the primary content stem.
+**Provenance**: Chen, Y. and Skiena, S. (2014). *Building Sentiment Lexicons for All Major Languages*. Proceedings of ACL 2014. Built via knowledge-graph propagation from seed English sentiment words across 44 languages. The Korean lexicon is what Orange downloads at runtime from `http://file.biolab.si/files/sentiment/`.
 
-The result: both sides of the lookup use the same form, so matching "just works."
+**Limitations worth knowing**: the lexicon was built automatically, not hand-curated. It contains:
+- Some genuine sentiment words (`감사합니다`, `좋은`, `따뜻한`, `어려운`)
+- Some grammatical function words mislabeled (`한`, `의`, `다른`)
+- Occasional non-Korean entries (Chinese characters, English words)
 
-## What about the other files?
+This is what "automatic broad-coverage lexicon" means in practice. For research work you'd clean it up or replace it with a hand-curated alternative (see below).
 
-These are **source files** — you normally don't need them:
+---
 
-| File | What it is |
-|------|------------|
-| `SentiWord_Dict.txt` | The original KNU dictionary (word + score). Unstemmed — contains mixed inflected and citation forms. Included for reference and R users who want to apply their own stemming. |
-| `positive.txt`, `negative.txt` | The original KNU polarity lists, unstemmed. Included for reference. |
-| `pos_pol_word.txt`, `neg_pol_word.txt`, `SentiWord_info.json`, `ReadMe.txt` | Original files from the KNU distribution. Included for provenance. |
+## Alternative dictionaries (included for reference)
 
-**Unless you have a reason to use them, stick with the `*_stems.txt` files.**
+These are not used in Week 9's main workflow, but they're included so you can compare approaches or use them if you continue working with Korean sentiment.
 
-## Source and citation
+### KNU Korean Sentiment Lexicon (Park et al. 2018)
 
-- **Original dictionary:** Park, S., Kim, E., Na, J., Yoon, H., & Lee, C. (2018). KNU Korean Sentiment Lexicon. Kunsan National University. [GitHub](https://github.com/park1200656/KnuSentiLex)
-- **Stem versions** (files in this folder named `*_stems.txt`): built locally for this course by tokenizing KNU entries with [Kiwi](https://github.com/bab2min/Kiwi) via `kiwipiepy`.
+Hand-assisted dictionary with **intensity scoring** (−2 to +2). Built from the Standard Korean Dictionary (표준국어대사전) with Bi-LSTM classification and human validation.
+
+| File | Entries | Description |
+|------|---------|-------------|
+| [`SentiWord_Dict.txt`](SentiWord_Dict.txt) | 14,854 | Full KNU, tab-separated `word⟨tab⟩score` with scores −2 to +2 |
+| [`positive.txt`](positive.txt) | 4,868 | KNU entries with positive scores |
+| [`negative.txt`](negative.txt) | 9,824 | KNU entries with negative scores |
+| `pos_pol_word.txt`, `neg_pol_word.txt`, `ReadMe.txt` | — | Original KNU files from the upstream repository |
+
+Stem-indexed variants (built by running KNU entries through Kiwi morphological analyzer):
+
+| File | Entries | Description |
+|------|---------|-------------|
+| [`SentiWord_Dict_stems.txt`](SentiWord_Dict_stems.txt) | ~2,100 | KNU stems with −2 to +2 scores |
+| [`positive_stems.txt`](positive_stems.txt) | ~700 | KNU positive stems |
+| [`negative_stems.txt`](negative_stems.txt) | ~1,400 | KNU negative stems |
+
+**When to use KNU**: you want intensity scoring (distinguish "worried" from "devastated"), you're doing research rather than intro teaching, or you want a more hand-curated dictionary than Chen & Skiena.
+
+**How to use KNU in Orange**: drop a **Sentiment Analysis** widget, set Method = *Custom Dictionary*, upload `positive_stems.txt` and `negative_stems.txt`. You'll also want to preprocess tweets with Kiwi first (see `data/scripts/sentiment_preprocessing_mac-users.py`) so tokens match the stem format.
+
+**How to use KNU in R**: `read_tsv("SentiWord_Dict_stems.txt", col_names = c("stem", "score"))`, then tokenize your text and join.
+
+**Citation**: Park, S. et al. (2018). KNU Korean Sentiment Lexicon. [github.com/park1200656/KnuSentiLex](https://github.com/park1200656/KnuSentiLex)
+
+### Other dictionaries worth knowing
+
+- **KOSAC** (Jang et al. 2013) — ~11,275 sentiment expressions with 5-class polarity and intensity, manually annotated on Korean news. Research standard. [word.snu.ac.kr/kosac](http://word.snu.ac.kr/kosac/)
+- **NRC Emotion Lexicon** — ~14,000 English words across 8 emotions plus positive/negative polarity. Machine-translated to 100+ languages including Korean. [saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm)
+- **KSenticNet** — 5,465 Korean words with continuous sentic values. Neural/concept-level. [github.com/zzaebok/ksenticnet](https://github.com/zzaebok/ksenticnet)
+
+## File organization
+
+```
+sentiment_dic/
+├── README.md                      ← this file
+├── positive_words_ko.txt          ← Chen & Skiena 2014 (what Week 9 uses)
+├── negative_words_ko.txt          ← Chen & Skiena 2014 (what Week 9 uses)
+│
+├── SentiWord_Dict.txt             ← KNU full dictionary (reference)
+├── SentiWord_Dict_stems.txt       ← KNU stems (reference)
+├── positive.txt / negative.txt    ← KNU polarity lists (reference)
+├── positive_stems.txt / negative_stems.txt  ← KNU stems by polarity (reference)
+├── pos_pol_word.txt / neg_pol_word.txt      ← Original KNU source files
+├── ReadMe.txt                     ← Original KNU readme
+└── SentiWord_info.json            ← Original KNU metadata
+```
