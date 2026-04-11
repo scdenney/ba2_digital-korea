@@ -44,6 +44,6 @@ The following files are generator/reproducibility scripts used to prepare course
 - `generate_kmeans_demo.py` — builds the k-means speeches demo
 - `generate_nikh_demo.py` — builds the NIKH textbooks demo
 - `generate_preprocessing_demo.py` — builds the preprocessing example data
-- `generate_sentiment_demo.py` — rebuilds `interactive/sentiment_data.json` for the Week 9 interactive (matches Orange's Multilingual Korean scoring exactly)
+- `generate_sentiment_demo.py` — rebuilds `interactive/sentiment_data.json` for the Week 9 interactive using the same pipeline students run in Orange (Kiwi NNG/NNP/VV/VA + KNU `positive.txt`/`negative.txt` via Custom Dictionary)
 - `sentence_splitter.py` — utility used by the dataset generators
 - `wordcloud.png` — generated example image
