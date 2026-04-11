@@ -1,20 +1,23 @@
 """
 Korean Sentiment Preprocessing for Orange Data Mining (Mac)
 
-OPTIONAL SCRIPT — you don't need this for the main Week 9 workflow.
-Orange's Sentiment Analysis widget handles Korean automatically when you
-choose Method = "Multilingual Sentiment" and Language = "Korean".
+Tokenizes Korean tweets with Kiwi (a standard morphological analyzer)
+and keeps content-word morphemes — nouns (NNG/NNP), verbs (VV), and
+adjectives (VA) — that are at least 2 characters long.
 
-Use this script only if you want to:
-  1. Tokenize with Kiwi morphological analyzer (instead of Orange's default
-     whitespace tokenizer) to get stem-level tokens, AND
-  2. Score against a stem-indexed dictionary like KNU (found in
-     data/sentiment_dic/positive_stems.txt and negative_stems.txt) loaded
-     via Orange's Custom Dictionary option.
+Use this in the Week 9 Orange workflow:
 
-Pipeline (advanced workflow):
-  File → Corpus → Python Script → Corpus (re-map) → Sentiment Analysis
-  (Custom dict) → Box Plot
+  File → Corpus → Python Script (this file)
+                → Corpus (re-map text feature to processed_text)
+                → Sentiment Analysis (Method = Custom Dictionary,
+                                      load positive.txt + negative.txt
+                                      from data/sentiment_dic/)
+                → Box Plot (subgroup: period3)
+
+Why Kiwi? Korean is agglutinative — 행복합니다 is one "word" by whitespace
+tokenization but contains the stem 행복 plus inflectional suffixes. Kiwi
+splits these apart so Orange can match individual tokens against the KNU
+sentiment dictionary.
 """
 
 import subprocess

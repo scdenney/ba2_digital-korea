@@ -35,16 +35,17 @@ See the **[Interactive Exercises](../interactive/)** page for the embeddings exp
 
 ### Week 9 — Sentiment analysis
 
-**Required** (this is all you need):
+**Required** (download all four for the Orange workflow):
 - **Dataset** — [Moon Jae-in Tweets (3,148 tweets, 2012–2020)](moon_twitter/moon_twitter.csv) · [README](moon_twitter/README.md)
+- **Preprocessing script** — [Kiwi tokenization (Mac)](scripts/sentiment_preprocessing_mac-users.py) · [Windows](scripts/sentiment_preprocessing_windows-users.py)
+- **Sentiment dictionaries (KNU)** — [positive.txt](sentiment_dic/positive.txt) · [negative.txt](sentiment_dic/negative.txt)
+- **README** — [About the sentiment dictionaries](sentiment_dic/README.md)
 
-No Python script, no custom dictionary. Orange's **Sentiment Analysis** widget handles Korean out of the box when you set Method = *Multilingual* and Language = *Korean*.
+**Orange workflow**: File → Corpus → Python Script (paste the preprocessing script) → Corpus (re-map to `processed_text`) → Sentiment Analysis (Method: *Custom Dictionary*, load `positive.txt` + `negative.txt`) → Box Plot.
 
-**Reference** (optional, for inspection or advanced use):
-- **Dictionary used by Orange** — [positive_words_ko.txt](sentiment_dic/positive_words_ko.txt) · [negative_words_ko.txt](sentiment_dic/negative_words_ko.txt) — Chen & Skiena (2014) Korean sentiment lexicon
-- **Alternative dictionary** — [KNU Korean Sentiment Lexicon](sentiment_dic/SentiWord_Dict.txt) — 14,854 entries with −2 to +2 intensity scores. Research standard. Load via Orange's Custom Dictionary option or in R.
-- **README** — [Which sentiment file to use, and why](sentiment_dic/README.md)
-- **Preprocessing script** (optional, for Kiwi morphological tokenization) — [Mac](scripts/sentiment_preprocessing_mac-users.py) · [Windows](scripts/sentiment_preprocessing_windows-users.py)
+**Advanced/reference** (not required):
+- [Full KNU dictionary with intensity scores](sentiment_dic/SentiWord_Dict.txt) — use in R with `read_tsv()` for weighted analysis
+- [Chen & Skiena (2014) Korean lexicon](sentiment_dic/positive_words_ko.txt) — what Orange's built-in Multilingual method uses if you pick that option instead
 
 ---
 

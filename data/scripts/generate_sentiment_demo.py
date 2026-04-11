@@ -1,22 +1,30 @@
 """
 Generate sentiment_data.json for the Week 9 interactive exercise.
 
-This is a ONE-TIME reproducibility script used by instructors. Students do
-not run it. It regenerates `interactive/sentiment_data.json` by:
+This is a reproducibility script for instructors. Students do not run it.
+It regenerates `interactive/sentiment_data.json` using the same pipeline
+students will run in Orange Data Mining:
 
-  1. Reading `data/moon_twitter/moon_twitter.csv`
-  2. Tokenizing each tweet with a regex that matches NLTK's WordPunctTokenizer
-     (which is what Orange's Corpus widget uses by default on Korean text)
-  3. Looking up tokens in Chen & Skiena's (2014) Korean sentiment lexicon
-     (`positive_words_ko.txt`, `negative_words_ko.txt`) — the same dictionary
-     Orange's built-in Multilingual Sentiment method uses
-  4. Computing Orange's exact scoring formula:
-        score = 100 * (|pos ∩ tokens| - |neg ∩ tokens|) / max(len(tokens), 1)
-  5. Emitting `interactive/sentiment_data.json`
+  1. Read `data/moon_twitter/moon_twitter.csv`
+  2. Clean URLs, @mentions, RT markers from each tweet
+  3. Tokenize with Kiwi (kiwipiepy) — the standard Korean morphological
+     analyzer. Keep content-word POS tags: NNG, NNP, VA, VV. Drop tokens
+     shorter than 2 characters.
+  4. Load `data/sentiment_dic/positive.txt` and `negative.txt` — KNU's
+     positive and negative word lists, as published.
+  5. For each tweet, compute Orange's Custom Dictionary score:
+        100 * (|pos ∩ tokens_set| - |neg ∩ tokens_set|) / max(len(tokens), 1)
+     This is the same formula Orange's Sentiment Analysis widget uses
+     when you pick Method = "Custom Dictionary".
+  6. Emit `interactive/sentiment_data.json`.
 
 The interactive's displayed scores will exactly match what a student sees
-in Orange's Sentiment Analysis widget when Method = Multilingual and
-Language = Korean.
+in Orange when they run:
+
+    File → Corpus → Python Script (sentiment_preprocessing_*.py)
+      → Corpus (re-map to processed_text)
+      → Sentiment Analysis (Custom Dictionary, positive.txt + negative.txt)
+      → Box Plot
 
 Usage (from repo root):
     python3 data/scripts/generate_sentiment_demo.py
@@ -27,27 +35,32 @@ import re
 import os
 from collections import Counter
 
+from kiwipiepy import Kiwi
+
 # --------------------------------------------------------------------------
 # Paths
 # --------------------------------------------------------------------------
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 TWEETS_CSV = os.path.join(REPO_ROOT, "data", "moon_twitter", "moon_twitter.csv")
-POS_FILE = os.path.join(REPO_ROOT, "data", "sentiment_dic", "positive_words_ko.txt")
-NEG_FILE = os.path.join(REPO_ROOT, "data", "sentiment_dic", "negative_words_ko.txt")
+POS_FILE = os.path.join(REPO_ROOT, "data", "sentiment_dic", "positive.txt")
+NEG_FILE = os.path.join(REPO_ROOT, "data", "sentiment_dic", "negative.txt")
 OUT_JSON = os.path.join(REPO_ROOT, "interactive", "sentiment_data.json")
 
 # --------------------------------------------------------------------------
 # Constants
 # --------------------------------------------------------------------------
-# NLTK's WordPunctTokenizer regex. Splits on word characters (\w+) or
-# runs of non-word-non-whitespace characters ([^\w\s]+). This is what
-# Orange's Corpus widget uses by default.
-WORD_PUNCT_RE = re.compile(r"\w+|[^\w\s]+", re.UNICODE)
+# Korean content-word POS tags. Nouns, proper nouns, verbs, adjectives.
+# These are the parts of speech that carry sentiment.
+SENTIMENT_POS = {"NNG", "NNP", "VA", "VV"}
+
+# Minimum token length (skip single-syllable morphemes — standard practice
+# in Korean NLP, reduces noise from common grammatical fragments).
+MIN_LEN = 2
 
 PERIOD_MAP = {"pre_presidency": "p", "transition": "t", "presidency": "r"}
 
-# Six pedagogically interesting tweets to highlight in Step 2 of the
-# interactive (scoring walkthrough). Labels are editorial.
+# Pedagogically interesting tweets highlighted in the interactive's
+# Step 2 (scoring walkthrough). Labels are editorial.
 EXAMPLE_TARGETS = [
     ("2018-01-24", "Birthday: Purely Positive", "축하"),
     ("2019-07-08", "Japan Crisis: Mixed", "어려움의 해결에"),
@@ -62,29 +75,40 @@ EXAMPLE_TARGETS = [
 # Loading
 # --------------------------------------------------------------------------
 def load_lexicon(path):
-    """One word per line, strip whitespace, drop empties."""
+    """One word per line, strip whitespace, drop empty lines."""
     with open(path, encoding="utf-8") as f:
         return {line.strip() for line in f if line.strip()}
 
 
-def tokenize(text):
-    """Match Orange's default Corpus tokenization (NLTK WordPunctTokenizer)."""
+# --------------------------------------------------------------------------
+# Preprocessing — matches sentiment_preprocessing_mac-users.py exactly
+# --------------------------------------------------------------------------
+def clean_text(text):
+    if not text:
+        return ""
+    text = re.sub(r"https?://\S+", "", text)
+    text = re.sub(r"@\w+", "", text)
+    text = re.sub(r"^RT\s*:?", "", text)
+    return text.strip()
+
+
+def tokenize(text, kiwi):
+    """Kiwi → keep content-word morphemes of length >= 2."""
     if not text:
         return []
-    return WORD_PUNCT_RE.findall(text)
+    result = kiwi.tokenize(text)
+    return [t.form for t in result if t.tag in SENTIMENT_POS and len(t.form) >= MIN_LEN]
 
 
 # --------------------------------------------------------------------------
-# Scoring (exactly matches Orange's compute_from_dict)
+# Scoring — matches Orange's compute_from_dict exactly
 # --------------------------------------------------------------------------
 def score_tweet(tokens, pos_set, neg_set):
     """
     Orange's formula:
-        100 * (|pos ∩ tokens| - |neg ∩ tokens|) / max(len(tokens), 1)
+        score = 100 * (|pos ∩ tokens_set| - |neg ∩ tokens_set|) / max(len(tokens), 1)
 
-    Returns:
-        (score, pos_matches, neg_matches, n_pos, n_neg)
-    where n_pos/n_neg are set-intersection counts (unique, not frequency).
+    Returns: (score, sorted_pos_matches, sorted_neg_matches, n_pos, n_neg).
     """
     doc_set = set(tokens)
     pos_matches = sorted(pos_set & doc_set)
@@ -99,11 +123,14 @@ def score_tweet(tokens, pos_set, neg_set):
 # Main
 # --------------------------------------------------------------------------
 def main():
-    print("Loading Chen & Skiena Korean lexicon...")
+    print("Loading KNU positive/negative word lists...")
     pos_set = load_lexicon(POS_FILE)
     neg_set = load_lexicon(NEG_FILE)
-    print(f"  positive: {len(pos_set)} entries")
-    print(f"  negative: {len(neg_set)} entries")
+    print(f"  positive.txt: {len(pos_set)} entries")
+    print(f"  negative.txt: {len(neg_set)} entries")
+
+    print("Initializing Kiwi...")
+    kiwi = Kiwi()
 
     print("Loading tweets...")
     rows = []
@@ -112,27 +139,25 @@ def main():
             rows.append(row)
     print(f"  tweets: {len(rows)}")
 
-    # Score every tweet
+    print("Processing...")
     all_pos_counter = Counter()
     all_neg_counter = Counter()
     timeline = []
-    full_results = []  # with full text for example tweets
 
-    for row in rows:
+    for i, row in enumerate(rows):
         text = row.get("text", "") or ""
         period_char = PERIOD_MAP.get(row["period3"], "p")
 
         if not text.strip():
-            entry = {
+            timeline.append({
                 "d": row["tweet_date"], "y": int(row["tweet_year"]),
                 "p": period_char, "s": 0.0, "f": int(row["favorites"] or 0),
                 "pc": 0, "nc": 0, "t": "", "pm": [], "nm": [],
-            }
-            timeline.append(entry)
-            full_results.append({**entry, "full_text": ""})
+            })
             continue
 
-        tokens = tokenize(text)
+        cleaned = clean_text(text)
+        tokens = tokenize(cleaned, kiwi)
         score, pm, nm, n_pos, n_neg = score_tweet(tokens, pos_set, neg_set)
 
         for w in pm:
@@ -140,7 +165,7 @@ def main():
         for w in nm:
             all_neg_counter[w] += 1
 
-        entry = {
+        timeline.append({
             "d": row["tweet_date"],
             "y": int(row["tweet_year"]),
             "p": period_char,
@@ -151,20 +176,19 @@ def main():
             "t": text[:120],
             "pm": pm[:8],
             "nm": nm[:8],
-        }
-        timeline.append(entry)
-        full_results.append({**entry, "full_text": text,
-                             "retweets": int(row["retweets"] or 0),
-                             "period3": row["period3"]})
+        })
 
-    # Stats by period
+        if (i + 1) % 500 == 0:
+            print(f"  {i + 1}/{len(rows)}")
+
+    # Stats
     print("\nScores by period:")
     for pc, name in [("p", "pre_presidency"), ("t", "transition"), ("r", "presidency")]:
         scores = [e["s"] for e in timeline if e["p"] == pc and e["t"]]
         mean = sum(scores) / len(scores) if scores else 0.0
         print(f"  {name}: n={len(scores)}, mean={mean:.2f}")
 
-    # Build period_stats
+    # period_stats
     period_stats = {}
     for pk, pc in [("pre_presidency", "p"), ("transition", "t"), ("presidency", "r")]:
         scores = sorted([e["s"] for e in timeline if e["p"] == pc and e["t"]])
@@ -184,8 +208,7 @@ def main():
             "neu_pct": round(100 * sum(1 for s in scores if s == 0) / n, 1),
         }
 
-    # Histogram (bin scores into integer buckets for display)
-    # Scores are floats like 7.14 or -12.5 — bin to integers for the histogram
+    # Histogram (bin scores to integers for display)
     bins = Counter()
     for e in timeline:
         if not e["t"]:
@@ -195,7 +218,6 @@ def main():
     print(f"\nScore range: {hmin} to {hmax}")
     histogram = {str(s): bins.get(s, 0) for s in range(hmin, hmax + 1)}
 
-    # Period histograms
     period_histograms = {}
     for pk, pc in [("pre_presidency", "p"), ("transition", "t"), ("presidency", "r")]:
         pbins = Counter()
@@ -204,7 +226,7 @@ def main():
                 pbins[int(round(e["s"]))] += 1
         period_histograms[pk] = {str(s): pbins.get(s, 0) for s in range(hmin, hmax + 1)}
 
-    # Top words
+    # Top matched words
     top_positive = [{"word": w, "count": c} for w, c in all_pos_counter.most_common(20)]
     top_negative = [{"word": w, "count": c} for w, c in all_neg_counter.most_common(20)]
     print(f"\nTop 10 positive: {[w['word'] for w in top_positive[:10]]}")
@@ -216,14 +238,15 @@ def main():
     most_negative = sorted(non_empty, key=lambda e: (e["s"], -e["f"]))[:5]
     most_engaged = sorted(non_empty, key=lambda e: -e["f"])[:5]
 
-    # Example tweets (hand-picked, with full text)
+    # Example tweets (full text)
     examples = []
     for row in rows:
         text = row.get("text", "") or ""
         for target_date, label, needle in EXAMPLE_TARGETS:
             if row["tweet_date"] == target_date and needle in text \
                     and not any(e["label"] == label for e in examples):
-                tokens = tokenize(text)
+                cleaned = clean_text(text)
+                tokens = tokenize(cleaned, kiwi)
                 score, pm, nm, n_pos, n_neg = score_tweet(tokens, pos_set, neg_set)
                 examples.append({
                     "label": label,
@@ -243,9 +266,8 @@ def main():
     examples.sort(key=lambda e: -e["score"])
     print(f"\nExample tweets ({len(examples)}):")
     for e in examples:
-        print(f"  {e['label']}: score={e['score']:.2f}, +{e['pos_count']}/-{e['neg_count']}")
+        print(f"  {e['label']}: score={e['score']:.2f}, +{e['pos_count']}/-{e['neg_count']}, tokens={e['n_tokens']}")
 
-    # Build final JSON
     data = {
         "total_tweets": sum(1 for e in timeline if e["t"]),
         "dict_sizes": {
@@ -253,9 +275,9 @@ def main():
             "negative": len(neg_set),
         },
         "preprocessing": {
-            "tokenizer": "wordpunct (NLTK / Orange default)",
-            "dictionary": "Chen & Skiena 2014 (Korean)",
-            "score_method": "100 * (pos_set - neg_set) / max(len(tokens), 1)",
+            "tokenizer": "kiwi (kiwipiepy) NNG/NNP/VA/VV, len>=2",
+            "dictionary": "KNU positive.txt / negative.txt (as published)",
+            "score_method": "Orange Custom Dictionary: 100 * (pos - neg) / max(len(tokens), 1)",
         },
         "period_labels": {
             "p": "Pre-presidency",
