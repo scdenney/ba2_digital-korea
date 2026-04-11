@@ -173,7 +173,8 @@ def main():
             "f": int(row["favorites"] or 0),
             "pc": n_pos,
             "nc": n_neg,
-            "t": text[:120],
+            "nt": len(tokens),  # total content tokens (for tooltip)
+            "t": cleaned[:120],  # CLEANED text for display (no URLs/mentions)
             "pm": pm[:8],
             "nm": nm[:8],
         })
@@ -238,7 +239,7 @@ def main():
     most_negative = sorted(non_empty, key=lambda e: (e["s"], -e["f"]))[:5]
     most_engaged = sorted(non_empty, key=lambda e: -e["f"])[:5]
 
-    # Example tweets (full text)
+    # Example tweets (cleaned text for display)
     examples = []
     for row in rows:
         text = row.get("text", "") or ""
@@ -252,7 +253,7 @@ def main():
                     "label": label,
                     "date": row["tweet_date"],
                     "period": row["period3"],
-                    "text": text,
+                    "text": cleaned,  # cleaned of URLs/mentions
                     "favorites": int(row["favorites"] or 0),
                     "retweets": int(row["retweets"] or 0),
                     "pos_matches": pm[:10],
