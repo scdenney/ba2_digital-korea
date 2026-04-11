@@ -14,14 +14,12 @@ Python scripts for Orange Data Mining Python Script widgets, plus R scripts for 
 
 ### For Week 9 (sentiment analysis)
 
-**You don't need a script for the main Week 9 workflow.** Orange's Sentiment Analysis widget handles Korean automatically when you pick Method = *Multilingual* and Language = *Korean*.
-
-The scripts below are **optional** — useful if you want to experiment with morphological tokenization (Kiwi) or use the KNU intensity dictionary via Custom Dictionary:
-
 | File | Purpose |
 |------|---------|
-| [`sentiment_preprocessing_mac-users.py`](sentiment_preprocessing_mac-users.py) | Kiwi tokenization keeping NNG/NNP/VA/VV stems (length ≥ 2). Pair with the stem-indexed KNU dictionaries in [`../sentiment_dic/`](../sentiment_dic/). Auto-installs `kiwipiepy`. |
-| [`sentiment_preprocessing_windows-users.py`](sentiment_preprocessing_windows-users.py) | Same as above, Windows version. |
+| [`sentiment_preprocessing_mac-users.py`](sentiment_preprocessing_mac-users.py) | Kiwi tokenization keeping content words (NNG, NNP, VA, VV) of length ≥ 2. Paste into Orange's **Python Script** widget between Corpus and Sentiment Analysis to preprocess Korean tweets. Auto-installs `kiwipiepy`. |
+| [`sentiment_preprocessing_windows-users.py`](sentiment_preprocessing_windows-users.py) | Same as above, Windows version (assumes `kiwipiepy` is already installed). |
+
+These pair with `positive.txt` and `negative.txt` from [`../sentiment_dic/`](../sentiment_dic/) loaded into the Sentiment Analysis widget's Custom Dictionary option.
 
 ### R scripts
 
