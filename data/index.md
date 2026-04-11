@@ -35,11 +35,10 @@ See the **[Interactive Exercises](../interactive/)** page for the embeddings exp
 
 ### Week 9 — Sentiment analysis
 
-**Required** (download all four for the Orange workflow):
+**Required for the Orange workflow:**
 - **Dataset** — [Moon Jae-in Tweets (3,148 tweets, 2012–2020)](moon_twitter/moon_twitter.csv) · [README](moon_twitter/README.md)
 - **Preprocessing script** — [Kiwi tokenization (Mac)](scripts/sentiment_preprocessing_mac-users.py) · [Windows](scripts/sentiment_preprocessing_windows-users.py)
-- **Sentiment dictionaries (KNU)** — [positive.txt](sentiment_dic/positive.txt) · [negative.txt](sentiment_dic/negative.txt)
-- **README** — [About the sentiment dictionaries](sentiment_dic/README.md)
+- **Sentiment dictionaries (KNU)** — [positive.txt](sentiment_dic/positive.txt) · [negative.txt](sentiment_dic/negative.txt) · [about these files](sentiment_dic/README.md)
 
 **Orange workflow**: File → Corpus → Python Script (paste the preprocessing script) → Corpus (re-map to `processed_text`) → Sentiment Analysis (Method: *Custom Dictionary*, load `positive.txt` + `negative.txt`) → Box Plot.
 
