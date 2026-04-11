@@ -39,9 +39,16 @@ kiwi = Kiwi()
 # ===== CONFIGURATION =====
 TEXT_COLUMN = 'text'  # <<< CHANGE to match your corpus column name
 
-# Content-word POS tags: nouns, proper nouns, verbs, adjectives.
-# These carry the sentiment. Particles, endings, pronouns are filtered out.
-SENTIMENT_POS = {'NNG', 'NNP', 'VA', 'VV'}
+# Nouns we keep as-is; verbs and adjectives (including irregular -I/-R
+# variants) are converted to their citation form by adding 다, so they
+# match KNU dictionary entries like 기쁘다, 고맙다, 행복하다.
+NOUN_TAGS = {'NNG', 'NNP'}
+
+
+def is_verb_or_adj(tag):
+    """Match VA, VV, and their irregular variants (VA-I, VV-I, VV-R, etc.)."""
+    return tag == 'VA' or tag == 'VV' or tag.startswith('VA-') or tag.startswith('VV-')
+
 
 # ===== PREPROCESSING =====
 def preprocess(text):
@@ -51,11 +58,17 @@ def preprocess(text):
     text = re.sub(r'https?://\S+', '', str(text))
     text = re.sub(r'@\w+', '', text)
     text = re.sub(r'^RT\s*:?', '', text)
-    # Tokenize and keep content-word stems (length >= 2)
-    tokens = kiwi.tokenize(text)
-    stems = [t.form for t in tokens
-             if t.tag in SENTIMENT_POS and len(t.form) >= 2]
-    return ' '.join(stems)
+    # Tokenize with Kiwi; keep content words (length >= 2)
+    out = []
+    for t in kiwi.tokenize(text):
+        if len(t.form) < 2:
+            continue
+        if t.tag in NOUN_TAGS:
+            out.append(t.form)
+        elif is_verb_or_adj(t.tag):
+            # Citation form = stem + 다 (matches KNU dictionary entries)
+            out.append(t.form + '다')
+    return ' '.join(out)
 
 # ===== PROCESS DATA =====
 try:
