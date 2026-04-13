@@ -381,6 +381,70 @@ Watch the following tutorial before the next class. This covers the sentiment an
 </div>
 </details>
 
+<details>
+<summary>Week 9: Sentiment Analysis</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Apr. 13
+**Due:** Apr. 20 (before class)
+
+**Required — R Programming:**
+
+Complete the following two chapters from DataCamp: *Introduction to the Tidyverse*:
+- Types of visualizations
+- Grouping and summarizing
+
+**Orange Data Mining — Sentiment Analysis:**
+
+Replicate the in-class sentiment analysis demo using Moon Jae-in's Twitter corpus and the KNU Korean sentiment dictionaries. All files are on the [Data & Scripts]({{ '/data/' | relative_url }}) page.
+
+Build the following workflow:
+
+1. **Corpus** widget: load `moon_twitter.csv`
+2. **Python Script** widget: paste the sentiment preprocessing script for your OS — this runs Kiwi and keeps NNG, NNP, VV, and VA tags
+3. **Corpus** widget (second): re-map the text field to `processed_text`
+4. **Sentiment Analysis** widget: set Method to *Custom Dictionary*, load `positive.txt` as the positive word list and `negative.txt` as the negative word list
+5. **Box Plot** widget: plot sentiment score by the `period3` column
+
+**Extension — add a retweet or favorites filter:**
+
+Extend your workflow by adding a **Select Rows** widget between the first Corpus and the Python Script. Use it to filter the corpus to high-engagement tweets, then run the same sentiment pipeline on that subset.
+
+Recommended thresholds (pick one):
+
+| Column | Condition | What you get |
+|--------|-----------|--------------|
+| `retweets` | > 1000 | ~1,370 tweets, top ~43% by retweet count |
+| `favorites` | > 1000 | ~1,160 tweets, top ~37% by favorites |
+
+Connect a second Box Plot to this filtered branch so you can compare sentiment in the high-engagement subset against the full corpus.
+
+**Write-up:** Create `analysis.md` in your `week09/` folder. In a few paragraphs, describe what the Box Plot by period shows, then address the engagement question: do Moon's most-shared or most-liked tweets tend to be more positive or negative than the average? Does the pattern hold across all three periods?
+
+**Submitting your work:**
+
+Add the following to a `week09/` folder in your repository:
+- Your Orange workflow file (`.ows`)
+- Two Box Plot screenshots (`.png`): one for the full corpus, one for the filtered subset
+- Your write-up (`analysis.md`)
+
+Commit and push, then confirm your files appear on github.com.
+
+**Optional — R Programming:**
+
+Complete the following two chapters from DataCamp: *Introduction to Text Analysis in R*:
+- Sentiment Analysis
+- Topic Modeling
+
+**Orange Data Mining Tutorials (preparation for Week 10):**
+
+Watch the following tutorial before the next class. It walks through topic modeling on tweets in Orange, which is what we will build on in Week 10:
+
+- [Twitter Widget and Topic Modeling](https://www.youtube.com/watch?v=HDkI6G4slzQ) (Text Mining)
+
+</div>
+</details>
+
 </div>
 
 ---
