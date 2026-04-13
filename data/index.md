@@ -5,65 +5,64 @@ title: Data & Scripts
 
 # Data & Scripts
 
-Every dataset, dictionary, and script you need for this course lives on this page, grouped by the week you'll first use it. Check back each week — new resources are added as the term progresses.
+This page collects the datasets, scripts, and dictionaries used throughout the course. Resources are added each week — check back for updates.
 
-Datasets on this page are sampled subsets of larger corpora maintained in the [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora) repository. For the full corpora and detailed documentation, see that repository.
+Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora) repository. For full corpora and documentation, see that repository.
 
-**Organizing your own files:** create subfolders inside your `/data` directory by corpus — e.g., `/data/president_speeches/`, `/data/moon_twitter/`. Your scripts go in `/data/scripts/`. This keeps things tidy as the semester accumulates files.
-
----
-
-## By week
-
-### Weeks 1–2 — Intro & foundations
-No files yet.
-
-### Week 3 — Preprocessing basics
-- **Script** — [Korean Preprocessing (Mac)](scripts/custom_preprocessing_mac-users.py) · [Windows](scripts/custom_preprocessing_windows-users.py)
-- **Annotated** — [Line-by-line walkthrough](scripts/korean_preprocessing_annotated-mac-ver.py)
-- **Stopwords** — [Korean stopwords (TXT)](stopwords_ko.txt) — 678 common Korean stopwords
-
-### Weeks 4–5 — BoW, TF-IDF, word clouds
-- **Dataset** — [Presidential Speeches (full, 4.4 MB)](president_speeches/president_speeches_democratic_era.csv) · [small version, 500 KB](president_speeches/president_speeches_small.csv) · [README](president_speeches/README.md)
-- **Dataset** — [NIKH Textbooks Demo (Week 5)](nikh_textbooks/nikh_textbooks_demo.csv) · [README](nikh_textbooks/README.md)
-
-### Week 7 — Clustering
-- **Dataset** — [NIKH Clustering Demo](nikh_textbooks/nikh_clustering_demo.csv) · [README](nikh_textbooks/README.md)
-
-### Week 8 — Word embeddings
-See the **[Interactive Exercises](../interactive/)** page for the embeddings explorer.
-
-### Week 9 — Sentiment analysis
-
-**Required for the Orange workflow:**
-- **Dataset** — [Moon Jae-in Tweets (3,148 tweets, 2012–2020)](moon_twitter/moon_twitter.csv) · [README](moon_twitter/README.md)
-- **Preprocessing script** — [Kiwi tokenization (Mac)](scripts/sentiment_preprocessing_mac-users.py) · [Windows](scripts/sentiment_preprocessing_windows-users.py)
-- **Sentiment dictionaries (KNU)** — [positive.txt](sentiment_dic/positive.txt) · [negative.txt](sentiment_dic/negative.txt) · [about these files](sentiment_dic/README.md)
-
-**Orange workflow**: File → Corpus → Python Script (paste the preprocessing script) → Corpus (re-map to `processed_text`) → Sentiment Analysis (Method: *Custom Dictionary*, load `positive.txt` + `negative.txt`) → Box Plot.
-
-**Advanced/reference** (not required):
-- [Full KNU dictionary with intensity scores](sentiment_dic/SentiWord_Dict.txt) — use in R with `read_tsv()` for weighted analysis
-- [Chen & Skiena (2014) Korean lexicon](sentiment_dic/positive_words_ko.txt) — what Orange's built-in Multilingual method uses if you pick that option instead
+**Organizing your files:** Create subfolders within your `/data` directory by corpus or file type — e.g., `/data/president_speeches/`, `/data/scripts/`. This keeps things tidy as the semester accumulates files.
 
 ---
 
-## How to use a dataset
+## Datasets
 
+| Week(s) | Dataset | Description | Download |
+|---------|---------|-------------|----------|
+| 2–5 | Presidential Speeches | 749 democratic-era presidential speeches (Roh Tae-woo – Moon Jae-in), sampled from 5,840. See [README](president_speeches/README.md). | [CSV](president_speeches/president_speeches_democratic_era.csv) (~4.4 MB) |
+| 2–5 | Presidential Speeches (Small) | 100 randomly selected speeches from the last three presidents. Use this if Orange runs slowly with the full file. | [CSV](president_speeches/president_speeches_small.csv) (~500 KB) |
+| 5 | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 67-book NIKH corpus (1895–2016). Includes a pre-tokenized `processed_text` column. See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | [CSV](nikh_textbooks/nikh_textbooks_demo.csv) (~1.8 MB) |
+| 7 | NIKH Clustering Demo | 11 Korean history textbooks (3 Colonial, 4 Authoritarian, 4 Democratic) for the Week 7 clustering exercise. Contains `full_text` for preprocessing in Orange. | [CSV](nikh_textbooks/nikh_clustering_demo.csv) (~3.1 MB) |
+| 9 | Moon Jae-in Tweets | 3,148 tweets from @moonriver365 (2012–2020), with `favorites`, `retweets`, and a `period3` column (Pre-presidency / Transition / Presidency). See [README](moon_twitter/README.md). | [CSV](moon_twitter/moon_twitter.csv) |
+
+---
+
+## Scripts
+
+| Week(s) | Script | Description | Download |
+|---------|--------|-------------|----------|
+| 3–8 | Korean Preprocessing (Mac) | POS-based Kiwi tokenization for Orange Data Mining. Auto-installs kiwipiepy. Keeps NNG and NNP tags (nouns only). | [Python](scripts/custom_preprocessing_mac-users.py) |
+| 3–8 | Korean Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | [Python](scripts/custom_preprocessing_windows-users.py) |
+| 3 | Korean Preprocessing — Annotated | Fully annotated Mac version. Read this to understand what each step does and why. | [Python](scripts/korean_preprocessing_annotated-mac-ver.py) |
+| 9 | Sentiment Preprocessing (Mac) | Kiwi tokenization for sentiment analysis. Auto-installs kiwipiepy. Keeps NNG, NNP, VV, and VA tags (nouns + verbs + adjectives). | [Python](scripts/sentiment_preprocessing_mac-users.py) |
+| 9 | Sentiment Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | [Python](scripts/sentiment_preprocessing_windows-users.py) |
+
+---
+
+## Dictionaries & Word Lists
+
+| Week(s) | File | Description | Download |
+|---------|------|-------------|----------|
+| 4–8 | Korean Stopwords | 678 Korean stopwords (particles, auxiliaries, common grammatical words). Load in Preprocess Text → Filtering → Stopwords → From File. | [TXT](stopwords_ko.txt) |
+| 9 | KNU Positive Word List | 4,868 positive-polarity Korean words (Park et al. 2018, Kunsan National University). Load in the Sentiment Analysis widget as the positive word list. | [TXT](sentiment_dic/positive.txt) |
+| 9 | KNU Negative Word List | 9,824 negative-polarity Korean words (Park et al. 2018). Load in the Sentiment Analysis widget as the negative word list. | [TXT](sentiment_dic/negative.txt) |
+| Reference | KNU Full Dictionary | Original SentiWord_Dict with polarity and intensity scores. For use in R with `read_tsv()` for weighted sentiment analysis. | [TXT](sentiment_dic/SentiWord_Dict.txt) |
+
+---
+
+## How to Use
+
+**Datasets:**
 1. Download the CSV file
-2. Save it to a subfolder in your course GitHub repo (e.g., `/data/moon_twitter/`)
+2. Save it to a subfolder in your GitHub repository (e.g., `/data/moon_twitter/`)
 3. Commit and push via GitHub Desktop
-4. In Orange, drop a **Corpus** widget on the canvas and load the CSV
+4. Load the file in Orange using the **Corpus** widget
 
-## How to use a Python script in Orange
+**Scripts:**
+1. Download the `.py` file for your operating system
+2. In Orange, add a **Python Script** widget and paste the code
+3. Change `TEXT_COLUMN` to match your corpus's text column name
+4. Connect it to your data flow and run
 
-1. Download the `.py` file for your OS (Mac or Windows)
-2. In Orange, drop a **Python Script** widget onto the canvas and connect a Corpus widget to its input
-3. Double-click the Python Script widget and paste the code
-4. At the top of the script, change `TEXT_COLUMN = '...'` to match your corpus's text column name
-5. Click the ▶ (Run) button — the output adds a `processed_text` column
-
-## Reference
-
-- [Scripts README](scripts/README.md) — what each script does, including instructor-only files
-- [NLP Corpora for Korean Studies](https://github.com/scdenney/nlp_corpora) — full source corpora and documentation
+**Dictionaries:**
+1. Download the `.txt` file and save it somewhere you can find it (e.g., `/data/sentiment_dic/`)
+2. In Orange, open the relevant widget — Preprocess Text for stopwords, Sentiment Analysis for the KNU lists
+3. Point the widget to the file using the file picker in its settings
