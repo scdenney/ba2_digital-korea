@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 6 Midterm — Answer Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 800px; margin: 2rem auto; padding: 0 1.5rem;
+    color: #1f2937; line-height: 1.6; background: #f9fafb;
+  }
+  h1 { font-size: 1.5rem; color: #002147; margin-bottom: 0.25rem; }
+  .subtitle { color: #6b7280; font-size: 0.9rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
+  .question-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+  }
+  .q-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+  .q-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #002147; color: #fff; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+  }
+  .q-text { font-weight: 600; font-size: 0.95rem; color: #002147; }
+  .choices { list-style: none; margin: 0.5rem 0 0.75rem; }
+  .choices li {
+    padding: 0.4rem 0.6rem; margin-bottom: 0.3rem;
+    border-radius: 4px; font-size: 0.88rem;
+  }
+  .choices li.correct {
+    background: #ecfdf5; border: 1px solid #6ee7b7;
+    font-weight: 600; color: #065f46;
+  }
+  .choices li.correct::before { content: "✓  "; }
+  .choices li.wrong { color: #6b7280; }
+  .choices li.wrong::before { content: "    "; }
+  .explanation {
+    background: #eff6ff; border-left: 3px solid #3b82f6;
+    padding: 0.6rem 0.9rem; border-radius: 0 4px 4px 0;
+    font-size: 0.85rem; color: #1e40af; line-height: 1.6;
+  }
+  .grading {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 1.25rem 1.5rem; margin-top: 2rem;
+  }
+  .grading h2 { font-size: 1.1rem; color: #002147; margin-bottom: 0.75rem; }
+  .grading table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .grading th, .grading td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
+  .grading th { font-weight: 600; color: #374151; }
+  .rubric { margin-top: 0.75rem; font-size: 0.85rem; }
+  .rubric dt { font-weight: 700; display: inline; }
+  .rubric dd { display: inline; margin-left: 0; }
+  .rubric dd::after { content: ""; display: block; margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+<h1>Midterm Assessment — Answer Guide</h1>
+<p class="subtitle">For in-class review after the assessment</p>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">1</span>
+    <span class="q-text">In computational text analysis, what is a token?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">A single word as separated by spaces in the original text</li>
+  <li class="wrong">A numerical value representing a word’s frequency in the corpus</li>
+  <li class="correct">A unit of text, such as a word, morpheme, or character, that serves as the basic unit of analysis</li>
+  <li class="wrong">A complete sentence that has been cleaned and preprocessed</li>
+  </ul>
+  <div class="explanation">A token is the basic unit that text gets broken into for analysis. Unlike a raw space-separated word (which in Korean is an eojeol containing multiple morphemes), a token can be a morpheme, word, or character depending on the tokenization level chosen.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">2</span>
+    <span class="q-text">Korean can be tokenized at multiple levels: sentence, eojeol, morpheme, syllable, and jamo. At which level do our preprocessing scripts tokenize Korean text using Kiwi?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">Sentence level — splitting text into full sentences</li>
+  <li class="wrong">Eojeol level — splitting on spaces</li>
+  <li class="correct">Morpheme level — decomposing words into their smallest meaningful units</li>
+  <li class="wrong">Syllable level — splitting into individual syllable blocks</li>
+  </ul>
+  <div class="explanation">Korean can be tokenized at many levels, but our Kiwi-based preprocessing scripts operate at the morpheme level, decomposing eojeols into their smallest meaningful parts and tagging each with a POS label.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">3</span>
+    <span class="q-text">Why do we remove stopwords like 있다, 하다, and 것 even though they may pass POS filtering?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">They are misspelled</li>
+  <li class="wrong">They are too short to analyze</li>
+  <li class="correct">They are high-frequency words that carry little topical meaning</li>
+  <li class="wrong">They only appear in certain eras of text</li>
+  </ul>
+  <div class="explanation">Words like 있다, 하다, and 것 are grammatically valid and pass noun/verb POS filters, but they appear so frequently and carry so little topical information that they add noise rather than signal to the analysis.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">4</span>
+    <span class="q-text">The sentence 경제를 배운다 contains two eojeols. What does Kiwi produce when it analyzes the eojeol 경제를?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">A single token: 경제를</li>
+  <li class="correct">Two morphemes with POS tags: 경제/NNG + 를/JKO</li>
+  <li class="wrong">The base form 경제 with the particle deleted</li>
+  <li class="wrong">A frequency count of how often 경제 appears in the document</li>
+  </ul>
+  <div class="explanation">Kiwi performs morphological analysis: it breaks the eojeol into its constituent morphemes and assigns a POS tag to each. 경제 is tagged NNG (common noun) and 를 is tagged JKO (object particle). POS filtering then keeps 경제 and discards 를.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">5</span>
+    <span class="q-text">The Bag of Words model is a deliberate simplification. What does it discard?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">Word frequencies and document metadata</li>
+  <li class="correct">Word order, grammar, and context</li>
+  <li class="wrong">The number of documents in the corpus</li>
+  <li class="wrong">Information about which words appear in which documents</li>
+  </ul>
+  <div class="explanation">BoW deliberately throws away word order, grammar, and context. This is a drastic simplification, but it works because which words a document uses often characterizes it well enough for many analytical tasks.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">6</span>
+    <span class="q-text">Your presidential speeches dataframe has 749 rows (one per speech) and 7 columns (president, date, title, etc.). After preprocessing and running Bag of Words, the resulting DTM has 749 rows and over 10,000 columns. Why did the number of columns change so dramatically?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">The Bag of Words widget duplicated the metadata columns for each document</li>
+  <li class="correct">Each unique word in the corpus becomes its own column, so the DTM has one column per word rather than one column per metadata field</li>
+  <li class="wrong">The preprocessing script created a new column for every sentence in every speech</li>
+  <li class="wrong">Orange automatically generates extra columns for TF, IDF, and TF-IDF for each original column</li>
+  </ul>
+  <div class="explanation">The original dataframe has metadata columns (president, date, etc.). After BoW, every unique word in the corpus becomes its own column in the DTM. With thousands of unique words, the DTM has thousands of columns — a fundamentally different shape from the original 7-column dataframe.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">7</span>
+    <span class="q-text">If a word has high TF in a document but low TF-IDF, what does that tell you?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">The word is important and distinctive for that document</li>
+  <li class="correct">The word is frequent in this document but also common across the corpus, so it is not distinctive</li>
+  <li class="wrong">The preprocessing pipeline failed for that word</li>
+  <li class="wrong">The word should be added to the stopword list</li>
+  </ul>
+  <div class="explanation">TF-IDF = TF × IDF. If TF is high but TF-IDF is low, then IDF must be very low — meaning the word appears in most documents across the corpus. It’s frequent here, but it’s frequent everywhere, so it doesn’t distinguish this document.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">8</span>
+    <span class="q-text">In Orange Data Mining, what does the Bag of Words widget produce from your preprocessed corpus?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">A filtered version of the corpus with only the most important words remaining in the text</li>
+  <li class="correct">A document-term matrix — a numerical table where rows are documents, columns are words, and cells are counts or weights</li>
+  <li class="wrong">A frequency-ranked list of all words in the corpus, sorted from most to least common</li>
+  <li class="wrong">A preprocessed corpus with stopwords removed and morphemes tagged</li>
+  </ul>
+  <div class="explanation">The Bag of Words widget is the step that converts text into numbers. It takes the preprocessed corpus and produces a DTM — the numerical representation that all downstream analysis (word clouds, bar plots, etc.) draws from.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">9</span>
+    <span class="q-text">Speech A is 5,000 words long and contains the word 경제 (economy) 20 times. Speech B is 500 words long and contains 경제 10 times. Based on raw term frequency alone, Speech A has the higher count. Why can this be misleading, and how do we address it?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">It is not misleading — higher raw counts always mean the word is more important in that document</li>
+  <li class="correct">Longer documents naturally produce higher counts for every word. Normalization scales each document to the same length so they can be fairly compared</li>
+  <li class="wrong">The word should be removed as a stopword since it appears in both speeches</li>
+  <li class="wrong">You should only compare speeches by the same president to avoid this problem</li>
+  </ul>
+  <div class="explanation">A 5,000-word speech will naturally contain higher raw counts for almost every word compared to a 500-word speech. The rate of 경제 is actually higher in Speech B (10/500 = 2%) than Speech A (20/5000 = 0.4%). Normalization scales each document to the same length, removing this document-length bias so documents can be compared fairly.</div>
+</div>
+
+<div class="question-card">
+  <div class="q-header">
+    <span class="q-num">10</span>
+    <span class="q-text">In TF-IDF, the IDF (Inverse Document Frequency) component gives a higher score to certain words. Which words receive the highest IDF scores, and why is this useful?</span>
+  </div>
+  <ul class="choices">
+  <li class="wrong">Words that appear most frequently in the corpus, because frequent words are the most informative</li>
+  <li class="correct">Words that appear in very few documents, because rarity across the corpus signals that a word is distinctive and informative</li>
+  <li class="wrong">Words with the most syllables, because longer words tend to carry more meaning</li>
+  <li class="wrong">Words that appear exactly once in every document, because even distribution means they are neutral</li>
+  </ul>
+  <div class="explanation">IDF = log(N/DF). Words appearing in nearly every document get IDF close to 0 (uninformative). Words appearing in only a few documents get high IDF scores because their rarity makes them useful for distinguishing those documents from the rest of the corpus.</div>
+</div>
+
+<div class="grading">
+  <h2>Grading Formula</h2>
+  <table>
+    <tr><th>Component</th><th>Scoring</th><th>Weight</th></tr>
+    <tr><td>Concepts Quiz (10 questions)</td><td>1 point each</td><td>Weighted to <strong>8 points</strong>: (raw / 10) × 8</td></tr>
+    <tr><td>Preprocessing Task</td><td>0, 1, or 2 points</td><td><strong>2 points</strong></td></tr>
+    <tr><td><strong>Total</strong></td><td></td><td><strong>out of 10</strong></td></tr>
+  </table>
+  <div class="rubric">
+    <p style="font-weight:600; margin-bottom:0.4rem;">Preprocessing task rubric:</p>
+    <dl>
+      <dt>0 —</dt><dd>Did not preprocess or did not follow directions (e.g., loaded a previous workflow)</dd>
+      <dt>1 —</dt><dd>Attempted but incomplete: missing steps, pipeline errors, or output not clean</dd>
+      <dt>2 —</dt><dd>Successful end-to-end preprocessing with clean Word Cloud output and thoughtful reflection</dd>
+    </dl>
+  </div>
+</div>
+
+</body>
+</html>

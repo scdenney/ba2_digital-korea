@@ -16,7 +16,7 @@ Lecture slides and Orange Data Mining workflows are posted here after each sessi
 | 3 | Feb. 16 | Text Preprocessing Basics | [PDF](week03-preprocessing.pdf) | [SVG](odm_screenshots/ba2_week03.svg?v=2) |
 | 4 | Feb. 23 | From Words to Numbers: BoW & TF-IDF | [PDF](week04-bow-tfidf.pdf) | [PNG](odm_screenshots/week04.png) |
 | 5 | Mar. 02 | Practice & Deepen Lab | [PDF](week05-practice-deepen.pdf) | [PNG](odm_screenshots/week05.png) |
-| 6 | Mar. 09 | Midterm Review & Assessment | [Answer Guide](../assignments/week06-answer-guide.html) | — |
+| 6 | Mar. 09 | Midterm Review & Assessment | [Answers](../assignments/week06-answer-guide.html) | — |
 | 7 | Mar. 16 | Clustering | [PDF](week07-clustering.pdf) | [PNG](odm_screenshots/week07.png) |
 | 8 | Mar. 30 | Word Embeddings | [PDF](week08_embeddings.pdf) | [JPEG](odm_screenshots/week08.jpeg) |
 | 9 | Apr. 13 | Sentiment Analysis | [PDF](week09-sentiment.pdf) | [JPEG](odm_screenshots/week09.jpeg) |
