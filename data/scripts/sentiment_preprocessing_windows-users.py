@@ -29,13 +29,6 @@ POS_TAGS = [
 
 REMOVE_NUMBERS = True
 MIN_TOKEN_LENGTH = 2
-MIN_DOC_FREQ = 0.0
-MAX_DOC_FREQ = 1.0
-
-STOPWORDS = {
-    '있다', '없다', '되다', '하다', '그', '저', '이', '것', '등', '및',
-    '수', '때', '년', '월', '일', '더', '또', '즉', '통해', '위해'
-}
 
 # ===== PREPROCESSING =====
 def clean_text(text):
@@ -57,15 +50,10 @@ def preprocess(text):
     tokens = kiwi.tokenize(text)
     morphemes = [token.form for token in tokens if token.tag in POS_TAGS]
 
-    filtered = []
-    for w in morphemes:
-        if w in STOPWORDS:
-            continue
-        if len(w) < MIN_TOKEN_LENGTH:
-            continue
-        if REMOVE_NUMBERS and w.isdigit():
-            continue
-        filtered.append(w)
+    filtered = [
+        w for w in morphemes
+        if len(w) >= MIN_TOKEN_LENGTH and not (REMOVE_NUMBERS and w.isdigit())
+    ]
 
     return ' '.join(filtered)
 
