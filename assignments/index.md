@@ -249,7 +249,7 @@ Use the study guide to review all key concepts, the preprocessing pipeline, BoW/
 **Assigned:** Mar. 09
 **Due:** Mar. 16 (before class)
 
-**[Midterm Answer Guide](week06-answer-guide.html)**
+**[Midterm Answers](week06-answer-guide.html)**
 
 **R Programming:**
 

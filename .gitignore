@@ -5,7 +5,6 @@
 private/
 
 # Assessment guides and instructor materials
-assignments/week06-answer-guide.*
 assignments/week06-midterm.qsf
 
 # Local preview and instructor files
