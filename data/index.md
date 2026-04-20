@@ -19,8 +19,8 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 |---------|---------|-------------|----------|
 | 2–5 | Presidential Speeches | 749 democratic-era presidential speeches (Roh Tae-woo – Moon Jae-in), sampled from 5,840. See [README](president_speeches/README.md). | <a href="president_speeches/president_speeches_democratic_era.csv" download>CSV</a> (~4.4 MB) |
 | 2–5 | Presidential Speeches (Small) | 100 randomly selected speeches from the last three presidents. Use this if Orange runs slowly with the full file. | <a href="president_speeches/president_speeches_small.csv" download>CSV</a> (~500 KB) |
-| 5 | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 67-book NIKH corpus (1895–2016). Includes a pre-tokenized `processed_text` column. See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | <a href="nikh_textbooks/nikh_textbooks_demo.csv" download>CSV</a> (~1.8 MB) |
-| 7 | NIKH Clustering Demo | 11 Korean history textbooks (3 Colonial, 4 Authoritarian, 4 Democratic) for the Week 7 clustering exercise. Contains `full_text` for preprocessing in Orange. | <a href="nikh_textbooks/nikh_clustering_demo.csv" download>CSV</a> (~3.1 MB) |
+| 5, 10 | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 67-book NIKH corpus (1895–2016). Includes a pre-tokenized `processed_text` column. The smaller option for the Week 10 LDA assignment. See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | <a href="nikh_textbooks/nikh_textbooks_demo.csv" download>CSV</a> (~1.8 MB) |
+| 7, 10 | NIKH Clustering Demo | 11 Korean history textbooks (3 Colonial, 4 Authoritarian, 4 Democratic). Used for the Week 7 clustering exercise, and also an option for the Week 10 LDA assignment. Contains `full_text` for preprocessing in Orange. | <a href="nikh_textbooks/nikh_clustering_demo.csv" download>CSV</a> (~3.1 MB) |
 | 9 | Moon Jae-in Tweets | 3,148 tweets from @moonriver365 (2012–2020), with `favorites`, `retweets`, and a `period3` column (Pre-presidency / Transition / Presidency). See [README](moon_twitter/README.md). | <a href="moon_twitter/moon_twitter.csv" download>CSV</a> |
 
 ---
@@ -29,8 +29,8 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 
 | Week(s) | Script | Description | Download |
 |---------|--------|-------------|----------|
-| 3–8 | Korean Preprocessing (Mac) | POS-based Kiwi tokenization for Orange Data Mining. Auto-installs kiwipiepy. Keeps NNG and NNP tags (nouns only). | <a href="scripts/custom_preprocessing_mac-users.py" download>Python</a> |
-| 3–8 | Korean Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | <a href="scripts/custom_preprocessing_windows-users.py" download>Python</a> |
+| 3–8, 10 | Korean Preprocessing (Mac) | POS-based Kiwi tokenization for Orange Data Mining. Auto-installs kiwipiepy. Keeps NNG and NNP tags (nouns only). | <a href="scripts/custom_preprocessing_mac-users.py" download>Python</a> |
+| 3–8, 10 | Korean Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | <a href="scripts/custom_preprocessing_windows-users.py" download>Python</a> |
 | 3 | Korean Preprocessing — Annotated | Fully annotated Mac version. Read this to understand what each step does and why. | <a href="scripts/korean_preprocessing_annotated-mac-ver.py" download>Python</a> |
 | 9 | Sentiment Preprocessing (Mac) | Kiwi tokenization for sentiment analysis. Auto-installs kiwipiepy. Keeps NNG, NNP, VV, and VA tags (nouns + verbs + adjectives). | <a href="scripts/sentiment_preprocessing_mac-users.py" download>Python</a> |
 | 9 | Sentiment Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | <a href="scripts/sentiment_preprocessing_windows-users.py" download>Python</a> |
@@ -41,7 +41,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 
 | Week(s) | File | Description | Download |
 |---------|------|-------------|----------|
-| 4–8 | Korean Stopwords | 678 Korean stopwords (particles, auxiliaries, common grammatical words). Load in Preprocess Text → Filtering → Stopwords → From File. | <a href="stopwords_ko.txt" download>TXT</a> |
+| 4–8, 10 | Korean Stopwords | 678 Korean stopwords (particles, auxiliaries, common grammatical words). Load in Preprocess Text → Filtering → Stopwords → From File. | <a href="stopwords_ko.txt" download>TXT</a> |
 | 9 | KNU Positive Word List | 4,868 positive-polarity Korean words (Park et al. 2018, Kunsan National University). Load in the Sentiment Analysis widget as the positive word list. | <a href="sentiment_dic/positive.txt" download>TXT</a> |
 | 9 | KNU Negative Word List | 9,824 negative-polarity Korean words (Park et al. 2018). Load in the Sentiment Analysis widget as the negative word list. | <a href="sentiment_dic/negative.txt" download>TXT</a> |
 | Reference | KNU Full Dictionary | Original SentiWord_Dict with polarity and intensity scores. For use in R with `read_tsv()` for weighted sentiment analysis. | <a href="sentiment_dic/SentiWord_Dict.txt" download>TXT</a> |
