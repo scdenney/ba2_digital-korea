@@ -1,0 +1,1571 @@
+{
+  "corpus": {
+    "n_books": 67,
+    "source": "NIKH (국사편찬위원회) via nlp_corpora",
+    "era_counts": {
+      "Authoritarian": 27,
+      "Democratic": 22,
+      "Colonial": 18
+    },
+    "year_min": 1895,
+    "year_max": 2016
+  },
+  "preprocessing": {
+    "tokenizer": "kiwipiepy (Kiwi)",
+    "pos_tags_kept": [
+      "NNG",
+      "NNP"
+    ],
+    "min_token_length": 2,
+    "stopwords_count": 684,
+    "min_doc_freq_books": 3,
+    "max_doc_freq_prop": 0.95,
+    "vocabulary_size_before_filter": 42602,
+    "vocabulary_size_after_filter": 17786,
+    "total_tokens_after_filter": 1342080
+  },
+  "lda": {
+    "k_values": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      12
+    ],
+    "default_k": 5,
+    "best_k_by_cv": 3,
+    "best_coherence_cv": 0.5569,
+    "passes": 15,
+    "iterations": 200,
+    "random_seed": 20260420
+  },
+  "coherence": [
+    {
+      "k": 3,
+      "coherence_cv": 0.5569
+    },
+    {
+      "k": 4,
+      "coherence_cv": 0.5275
+    },
+    {
+      "k": 5,
+      "coherence_cv": 0.4841
+    },
+    {
+      "k": 6,
+      "coherence_cv": 0.4689
+    },
+    {
+      "k": 7,
+      "coherence_cv": 0.4778
+    },
+    {
+      "k": 8,
+      "coherence_cv": 0.4658
+    },
+    {
+      "k": 10,
+      "coherence_cv": 0.4614
+    },
+    {
+      "k": 12,
+      "coherence_cv": 0.4747
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": 0,
+      "top_words": [
+        {
+          "word": "신라",
+          "weight": 0.01172
+        },
+        {
+          "word": "기원전",
+          "weight": 0.01118
+        },
+        {
+          "word": "고구려",
+          "weight": 0.01061
+        },
+        {
+          "word": "백제",
+          "weight": 0.00914
+        },
+        {
+          "word": "기원후",
+          "weight": 0.00678
+        },
+        {
+          "word": "아들",
+          "weight": 0.00633
+        },
+        {
+          "word": "원년",
+          "weight": 0.00584
+        },
+        {
+          "word": "즉위",
+          "weight": 0.00583
+        },
+        {
+          "word": "태조",
+          "weight": 0.0055
+        },
+        {
+          "word": "청나라",
+          "weight": 0.00332
+        },
+        {
+          "word": "명나라",
+          "weight": 0.00322
+        },
+        {
+          "word": "재위",
+          "weight": 0.00311
+        },
+        {
+          "word": "병사",
+          "weight": 0.0031
+        },
+        {
+          "word": "기원",
+          "weight": 0.00307
+        },
+        {
+          "word": "황제",
+          "weight": 0.003
+        }
+      ]
+    },
+    {
+      "topic_id": 1,
+      "top_words": [
+        {
+          "word": "운동",
+          "weight": 0.0115
+        },
+        {
+          "word": "민족",
+          "weight": 0.00822
+        },
+        {
+          "word": "정부",
+          "weight": 0.00787
+        },
+        {
+          "word": "정치",
+          "weight": 0.00685
+        },
+        {
+          "word": "독립",
+          "weight": 0.0061
+        },
+        {
+          "word": "신라",
+          "weight": 0.00571
+        },
+        {
+          "word": "사회",
+          "weight": 0.00513
+        },
+        {
+          "word": "농민",
+          "weight": 0.00505
+        },
+        {
+          "word": "고구려",
+          "weight": 0.00486
+        },
+        {
+          "word": "중국",
+          "weight": 0.00483
+        },
+        {
+          "word": "경제",
+          "weight": 0.00455
+        },
+        {
+          "word": "활동",
+          "weight": 0.00417
+        },
+        {
+          "word": "문화",
+          "weight": 0.00399
+        },
+        {
+          "word": "정책",
+          "weight": 0.00389
+        },
+        {
+          "word": "지역",
+          "weight": 0.00387
+        }
+      ]
+    },
+    {
+      "topic_id": 2,
+      "top_words": [
+        {
+          "word": "사회",
+          "weight": 0.01183
+        },
+        {
+          "word": "문화",
+          "weight": 0.01146
+        },
+        {
+          "word": "신라",
+          "weight": 0.00902
+        },
+        {
+          "word": "시대",
+          "weight": 0.0089
+        },
+        {
+          "word": "정치",
+          "weight": 0.00805
+        },
+        {
+          "word": "생산",
+          "weight": 0.00787
+        },
+        {
+          "word": "고구려",
+          "weight": 0.00703
+        },
+        {
+          "word": "발전",
+          "weight": 0.007
+        },
+        {
+          "word": "생활",
+          "weight": 0.00625
+        },
+        {
+          "word": "발달",
+          "weight": 0.00617
+        },
+        {
+          "word": "민족",
+          "weight": 0.00592
+        },
+        {
+          "word": "불교",
+          "weight": 0.00507
+        },
+        {
+          "word": "귀족",
+          "weight": 0.00496
+        },
+        {
+          "word": "삼국",
+          "weight": 0.00469
+        },
+        {
+          "word": "세기",
+          "weight": 0.00462
+        }
+      ]
+    },
+    {
+      "topic_id": 3,
+      "top_words": [
+        {
+          "word": "문화",
+          "weight": 0.01118
+        },
+        {
+          "word": "세기",
+          "weight": 0.00936
+        },
+        {
+          "word": "정치",
+          "weight": 0.00921
+        },
+        {
+          "word": "중국",
+          "weight": 0.00804
+        },
+        {
+          "word": "영국",
+          "weight": 0.00782
+        },
+        {
+          "word": "세계",
+          "weight": 0.00756
+        },
+        {
+          "word": "발전",
+          "weight": 0.00707
+        },
+        {
+          "word": "시대",
+          "weight": 0.00669
+        },
+        {
+          "word": "유럽",
+          "weight": 0.00648
+        },
+        {
+          "word": "발달",
+          "weight": 0.00639
+        },
+        {
+          "word": "사회",
+          "weight": 0.00633
+        },
+        {
+          "word": "프랑스",
+          "weight": 0.00548
+        },
+        {
+          "word": "민족",
+          "weight": 0.0053
+        },
+        {
+          "word": "경제",
+          "weight": 0.00494
+        },
+        {
+          "word": "혁명",
+          "weight": 0.00489
+        }
+      ]
+    },
+    {
+      "topic_id": 4,
+      "top_words": [
+        {
+          "word": "운동",
+          "weight": 0.01888
+        },
+        {
+          "word": "민족",
+          "weight": 0.01272
+        },
+        {
+          "word": "정부",
+          "weight": 0.01098
+        },
+        {
+          "word": "독립",
+          "weight": 0.01013
+        },
+        {
+          "word": "일제",
+          "weight": 0.00761
+        },
+        {
+          "word": "경제",
+          "weight": 0.00741
+        },
+        {
+          "word": "사회",
+          "weight": 0.00739
+        },
+        {
+          "word": "활동",
+          "weight": 0.0061
+        },
+        {
+          "word": "한국",
+          "weight": 0.00586
+        },
+        {
+          "word": "전개",
+          "weight": 0.00548
+        },
+        {
+          "word": "근대",
+          "weight": 0.00505
+        },
+        {
+          "word": "대한",
+          "weight": 0.0049
+        },
+        {
+          "word": "농민",
+          "weight": 0.00474
+        },
+        {
+          "word": "교육",
+          "weight": 0.00464
+        },
+        {
+          "word": "정치",
+          "weight": 0.00431
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "book_id": "ta_p51r",
+      "title": "국사교본",
+      "full_title": "국사교본",
+      "era": "Authoritarian",
+      "year": 1946,
+      "level": "General",
+      "n_tokens": 16151,
+      "weights": [
+        0.5864,
+        0.0,
+        0.3147,
+        0.0169,
+        0.082
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p61r",
+      "title": "우리나라의 생활",
+      "full_title": "우리나라의 생활",
+      "era": "Authoritarian",
+      "year": 1948,
+      "level": "General",
+      "n_tokens": 15821,
+      "weights": [
+        0.4423,
+        0.0043,
+        0.4577,
+        0.0219,
+        0.0737
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e11",
+      "title": "초등학교 사회생활 6-1(1차)",
+      "full_title": "초등학교 사회생활 6-1(1차)",
+      "era": "Authoritarian",
+      "year": 1954,
+      "level": "Elementary",
+      "n_tokens": 6509,
+      "weights": [
+        0.0621,
+        0.0539,
+        0.2869,
+        0.3384,
+        0.2587
+      ],
+      "dominant_topic": 3
+    },
+    {
+      "book_id": "ta_h11",
+      "title": "고등학교 국사 1차",
+      "full_title": "고등학교 국사 1차",
+      "era": "Authoritarian",
+      "year": 1954,
+      "level": "High School",
+      "n_tokens": 15058,
+      "weights": [
+        0.2299,
+        0.0,
+        0.723,
+        0.0,
+        0.047
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m11",
+      "title": "중학교 국사 1차",
+      "full_title": "중학교 국사 1차",
+      "era": "Authoritarian",
+      "year": 1954,
+      "level": "Middle School",
+      "n_tokens": 12689,
+      "weights": [
+        0.2023,
+        0.0987,
+        0.4365,
+        0.1578,
+        0.1046
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e21",
+      "title": "초등학교 사회 6-1(2차)",
+      "full_title": "초등학교 사회 6-1(2차)",
+      "era": "Authoritarian",
+      "year": 1963,
+      "level": "Elementary",
+      "n_tokens": 5944,
+      "weights": [
+        0.0046,
+        0.0,
+        0.44,
+        0.4276,
+        0.1278
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h21",
+      "title": "고등학교 국사 2차",
+      "full_title": "고등학교 국사 2차",
+      "era": "Authoritarian",
+      "year": 1963,
+      "level": "High School",
+      "n_tokens": 18626,
+      "weights": [
+        0.0838,
+        0.0,
+        0.557,
+        0.0236,
+        0.3355
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m21",
+      "title": "중학교 국사 2차",
+      "full_title": "중학교 국사 2차",
+      "era": "Authoritarian",
+      "year": 1963,
+      "level": "Middle School",
+      "n_tokens": 19879,
+      "weights": [
+        0.0,
+        0.0185,
+        0.1015,
+        0.88,
+        0.0
+      ],
+      "dominant_topic": 3
+    },
+    {
+      "book_id": "ta_e31",
+      "title": "초등학교 국사 5(3차)",
+      "full_title": "초등학교 국사 5(3차)",
+      "era": "Authoritarian",
+      "year": 1973,
+      "level": "Elementary",
+      "n_tokens": 4368,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e32",
+      "title": "초등학교 국사 6(3차)",
+      "full_title": "초등학교 국사 6(3차)",
+      "era": "Authoritarian",
+      "year": 1973,
+      "level": "Elementary",
+      "n_tokens": 6074,
+      "weights": [
+        0.0281,
+        0.027,
+        0.6381,
+        0.0511,
+        0.2557
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h31",
+      "title": "고등학교 국사 3차",
+      "full_title": "고등학교 국사 3차",
+      "era": "Authoritarian",
+      "year": 1973,
+      "level": "High School",
+      "n_tokens": 32565,
+      "weights": [
+        0.0056,
+        0.0,
+        0.7027,
+        0.0,
+        0.2916
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h32",
+      "title": "고등학교 세계사(3차)",
+      "full_title": "고등학교 세계사(3차)",
+      "era": "Authoritarian",
+      "year": 1973,
+      "level": "High School",
+      "n_tokens": 30751,
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "dominant_topic": 3
+    },
+    {
+      "book_id": "ta_m31",
+      "title": "중학교 국사 3차",
+      "full_title": "중학교 국사 3차",
+      "era": "Authoritarian",
+      "year": 1973,
+      "level": "Middle School",
+      "n_tokens": 25505,
+      "weights": [
+        0.0016,
+        0.0,
+        0.6359,
+        0.0086,
+        0.3539
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e41",
+      "title": "초등학교 사회 5-2(4차)",
+      "full_title": "초등학교 사회 5-2(4차)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "Elementary",
+      "n_tokens": 5534,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e42",
+      "title": "초등학교 사회 6-2(4차)",
+      "full_title": "초등학교 사회 6-2(4차)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "Elementary",
+      "n_tokens": 6308,
+      "weights": [
+        0.0266,
+        0.2629,
+        0.5217,
+        0.0128,
+        0.176
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h41",
+      "title": "고등학교 국사 4차(상)",
+      "full_title": "고등학교 국사 4차(상)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "High School",
+      "n_tokens": 17931,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h42",
+      "title": "고등학교 국사 4차(하)",
+      "full_title": "고등학교 국사 4차(하)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "High School",
+      "n_tokens": 19439,
+      "weights": [
+        0.0,
+        0.0,
+        0.1251,
+        0.0,
+        0.8749
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "ta_m41",
+      "title": "중학교 국사 4차(상)",
+      "full_title": "중학교 국사 4차(상)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "Middle School",
+      "n_tokens": 14263,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m42",
+      "title": "중학교 국사 4차(하)",
+      "full_title": "중학교 국사 4차(하)",
+      "era": "Authoritarian",
+      "year": 1981,
+      "level": "Middle School",
+      "n_tokens": 15454,
+      "weights": [
+        0.0,
+        0.0,
+        0.0289,
+        0.0041,
+        0.9671
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "ta_e51",
+      "title": "역대 국사교과서",
+      "full_title": "역대 국사교과서",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "Elementary",
+      "n_tokens": 5607,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_e52",
+      "title": "초등학교 사회 6-1(5차)",
+      "full_title": "초등학교 사회 6-1(5차)",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "Elementary",
+      "n_tokens": 7032,
+      "weights": [
+        0.0,
+        0.4573,
+        0.2181,
+        0.0248,
+        0.2998
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "ta_h51",
+      "title": "고등학교 국사 5차(상)",
+      "full_title": "고등학교 국사 5차(상)",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "High School",
+      "n_tokens": 22864,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h52",
+      "title": "고등학교 국사 5차(하)",
+      "full_title": "고등학교 국사 5차(하)",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "High School",
+      "n_tokens": 25398,
+      "weights": [
+        0.0,
+        0.0,
+        0.0378,
+        0.0,
+        0.9622
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "ta_m51",
+      "title": "중학교 국사 5차(상)",
+      "full_title": "중학교 국사 5차(상)",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "Middle School",
+      "n_tokens": 14832,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m52",
+      "title": "중학교 국사 5차(하)",
+      "full_title": "중학교 국사 5차(하)",
+      "era": "Authoritarian",
+      "year": 1987,
+      "level": "Middle School",
+      "n_tokens": 14800,
+      "weights": [
+        0.0,
+        0.0,
+        0.0082,
+        0.0,
+        0.9918
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-18(1,90)1",
+      "title": "우리는 민족 중흥의 역사적 사명을 띠고 이 땅에 태어났",
+      "full_title": "우리는 민족 중흥의 역사적 사명을 띠고 이 땅에 태어났",
+      "era": "Authoritarian",
+      "year": 1990,
+      "level": "High School",
+      "n_tokens": 23797,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "H-19(1,90)1",
+      "title": "국사",
+      "full_title": "국사",
+      "era": "Authoritarian",
+      "year": 1991,
+      "level": "Middle School",
+      "n_tokens": 15437,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_p101r",
+      "title": "대동청사 1책",
+      "full_title": "대동청사 1책",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "General",
+      "n_tokens": 7353,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p102r",
+      "title": "대동청사 2책",
+      "full_title": "대동청사 2책",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "General",
+      "n_tokens": 4778,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p111r",
+      "title": "국조사",
+      "full_title": "국조사",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "General",
+      "n_tokens": 13426,
+      "weights": [
+        0.9974,
+        0.0,
+        0.0,
+        0.0,
+        0.0026
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p11r",
+      "title": "조선역사 상",
+      "full_title": "조선역사 상",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 4265,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p12r",
+      "title": "조선역사 중",
+      "full_title": "조선역사 중",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 2751,
+      "weights": [
+        0.9999,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p13r",
+      "title": "조선역사 하",
+      "full_title": "조선역사 하",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 4813,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p21r",
+      "title": "조선역대사략 권1",
+      "full_title": "조선역대사략 권1",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 10846,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p22r",
+      "title": "조선역대사략 권2",
+      "full_title": "조선역대사략 권2",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 6100,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p23r",
+      "title": "조선역대사략 권3",
+      "full_title": "조선역대사략 권3",
+      "era": "Colonial",
+      "year": 1895,
+      "level": "Public schools",
+      "n_tokens": 9856,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p71r",
+      "title": "보통교과 동국역사(1권)",
+      "full_title": "보통교과 동국역사(1권)",
+      "era": "Colonial",
+      "year": 1899,
+      "level": "Elementary",
+      "n_tokens": 14446,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p72r",
+      "title": "보통교과 동국역사(2권)",
+      "full_title": "보통교과 동국역사(2권)",
+      "era": "Colonial",
+      "year": 1899,
+      "level": "Elementary",
+      "n_tokens": 9370,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p81r",
+      "title": "동국사략 상",
+      "full_title": "동국사략 상",
+      "era": "Colonial",
+      "year": 1906,
+      "level": "General",
+      "n_tokens": 15089,
+      "weights": [
+        0.9539,
+        0.0,
+        0.0461,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p82r",
+      "title": "동국사략 하",
+      "full_title": "동국사략 하",
+      "era": "Colonial",
+      "year": 1906,
+      "level": "General",
+      "n_tokens": 12866,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p91r",
+      "title": "초등대한역사",
+      "full_title": "초등대한역사",
+      "era": "Colonial",
+      "year": 1908,
+      "level": "Elementary",
+      "n_tokens": 7118,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p31r",
+      "title": "심상소학국사보충아동용 - 1",
+      "full_title": "심상소학국사보충아동용 - 1",
+      "era": "Colonial",
+      "year": 1940,
+      "level": "Elementary",
+      "n_tokens": 1773,
+      "weights": [
+        0.9662,
+        0.0,
+        0.0338,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p32r",
+      "title": "심상소학국사보충아동용 - 2",
+      "full_title": "심상소학국사보충아동용 - 2",
+      "era": "Colonial",
+      "year": 1940,
+      "level": "Elementary",
+      "n_tokens": 2860,
+      "weights": [
+        0.9419,
+        0.0,
+        0.0,
+        0.0,
+        0.0581
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p41r",
+      "title": "심상소학국사보충교재 교수참고서 - 1",
+      "full_title": "심상소학국사보충교재 교수참고서 - 1",
+      "era": "Colonial",
+      "year": 1940,
+      "level": "Elementary",
+      "n_tokens": 9177,
+      "weights": [
+        0.9141,
+        0.0,
+        0.0859,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_p42r",
+      "title": "심상소학국사보충교재 교수참고서 - 2",
+      "full_title": "심상소학국사보충교재 교수참고서 - 2",
+      "era": "Colonial",
+      "year": 1940,
+      "level": "Elementary",
+      "n_tokens": 42902,
+      "weights": [
+        0.8948,
+        0.0,
+        0.0,
+        0.0,
+        0.1052
+      ],
+      "dominant_topic": 0
+    },
+    {
+      "book_id": "ta_e61",
+      "title": "초등학교 사회 6-1(6차)",
+      "full_title": "초등학교 사회 6-1(6차)",
+      "era": "Democratic",
+      "year": 1995,
+      "level": "Elementary",
+      "n_tokens": 8867,
+      "weights": [
+        0.0,
+        0.9466,
+        0.0,
+        0.0,
+        0.0534
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "ta_h61",
+      "title": "고등학교 국사 6차(상)",
+      "full_title": "고등학교 국사 6차(상)",
+      "era": "Democratic",
+      "year": 1995,
+      "level": "High School",
+      "n_tokens": 26342,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_h62",
+      "title": "고등학교 국사 6차(하)",
+      "full_title": "고등학교 국사 6차(하)",
+      "era": "Democratic",
+      "year": 1995,
+      "level": "High School",
+      "n_tokens": 30245,
+      "weights": [
+        0.0,
+        0.0,
+        0.011,
+        0.0,
+        0.989
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "ta_m61",
+      "title": "중학교 국사 6차(상)",
+      "full_title": "중학교 국사 6차(상)",
+      "era": "Democratic",
+      "year": 1995,
+      "level": "Middle School",
+      "n_tokens": 18069,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m62",
+      "title": "중학교 국사 6차(하)",
+      "full_title": "중학교 국사 6차(하)",
+      "era": "Democratic",
+      "year": 1995,
+      "level": "Middle School",
+      "n_tokens": 17624,
+      "weights": [
+        0.0,
+        0.0746,
+        0.0,
+        0.0,
+        0.9254
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-21(1,2001)1",
+      "title": "국사 편찬 위원회",
+      "full_title": "국사 편찬 위원회",
+      "era": "Democratic",
+      "year": 2001,
+      "level": "Middle School",
+      "n_tokens": 18414,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "H-2(1,2002)",
+      "title": "국사 편찬 위원회",
+      "full_title": "국사 편찬 위원회",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "High School",
+      "n_tokens": 55661,
+      "weights": [
+        0.0,
+        0.0853,
+        0.7534,
+        0.0,
+        0.1613
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "H-6(1,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "High School",
+      "n_tokens": 59487,
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-7(1,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "High School",
+      "n_tokens": 54118,
+      "weights": [
+        0.0,
+        0.0039,
+        0.0,
+        0.0,
+        0.9961
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-9(5,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "High School",
+      "n_tokens": 46502,
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "ta_e71",
+      "title": "초등학교 사회 6-1(7차)",
+      "full_title": "초등학교 사회 6-1(7차)",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "Elementary",
+      "n_tokens": 9127,
+      "weights": [
+        0.0,
+        0.9308,
+        0.0692,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "ta_h71",
+      "title": "고등학교 국사 7차",
+      "full_title": "고등학교 국사 7차",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "High School",
+      "n_tokens": 53427,
+      "weights": [
+        0.0,
+        0.0563,
+        0.7176,
+        0.0,
+        0.2261
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "ta_m71",
+      "title": "중학교 국사 7차",
+      "full_title": "중학교 국사 7차",
+      "era": "Democratic",
+      "year": 2002,
+      "level": "Middle School",
+      "n_tokens": 34584,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "H-20(1,2001)1",
+      "title": "국사 편찬 위원회",
+      "full_title": "국사 편찬 위원회",
+      "era": "Democratic",
+      "year": 2004,
+      "level": "High School",
+      "n_tokens": 29533,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "H-1(1,2006)",
+      "title": "국사편찬위원회 국정도서편찬위원회",
+      "full_title": "국사편찬위원회 국정도서편찬위원회",
+      "era": "Democratic",
+      "year": 2006,
+      "level": "Middle School",
+      "n_tokens": 36169,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "H-2(2,2006)",
+      "title": "국사 편찬 위원회",
+      "full_title": "국사 편찬 위원회",
+      "era": "Democratic",
+      "year": 2006,
+      "level": "High School",
+      "n_tokens": 54671,
+      "weights": [
+        0.0,
+        0.0534,
+        0.6644,
+        0.0,
+        0.2822
+      ],
+      "dominant_topic": 2
+    },
+    {
+      "book_id": "H-5(1,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2007,
+      "level": "High School",
+      "n_tokens": 64271,
+      "weights": [
+        0.0,
+        0.0014,
+        0.0,
+        0.0,
+        0.9986
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-8(1,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2007,
+      "level": "High School",
+      "n_tokens": 58622,
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-10(4,2007)",
+      "title": "한국근현대사",
+      "full_title": "한국근현대사",
+      "era": "Democratic",
+      "year": 2008,
+      "level": "High School",
+      "n_tokens": 69205,
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "dominant_topic": 4
+    },
+    {
+      "book_id": "H-39(1,2002)",
+      "title": "국사 편찬 위원회",
+      "full_title": "국사 편찬 위원회",
+      "era": "Democratic",
+      "year": 2009,
+      "level": "Middle School",
+      "n_tokens": 36606,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "H-57(1,2016)",
+      "title": "한국사",
+      "full_title": "한국사",
+      "era": "Democratic",
+      "year": 2013,
+      "level": "High School",
+      "n_tokens": 69998,
+      "weights": [
+        0.0035,
+        0.6995,
+        0.073,
+        0.0,
+        0.224
+      ],
+      "dominant_topic": 1
+    },
+    {
+      "book_id": "H-54(2,2016)",
+      "title": "한국사",
+      "full_title": "한국사",
+      "era": "Democratic",
+      "year": 2016,
+      "level": "High School",
+      "n_tokens": 66629,
+      "weights": [
+        0.0,
+        0.6576,
+        0.0947,
+        0.0,
+        0.2477
+      ],
+      "dominant_topic": 1
+    }
+  ],
+  "era_topic_mix": {
+    "Colonial": [
+      0.9816,
+      0.0,
+      0.0092,
+      0.0,
+      0.0092
+    ],
+    "Authoritarian": [
+      0.062,
+      0.0342,
+      0.5642,
+      0.1099,
+      0.2297
+    ],
+    "Democratic": [
+      0.0002,
+      0.2959,
+      0.2902,
+      0.0,
+      0.4138
+    ]
+  },
+  "ldavis_html_path": "topic_modeling_ldavis.html"
+}

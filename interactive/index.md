@@ -247,6 +247,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/topic-modeling-explorer' | relative_url }}">
+      <div class="exercise-card-accent accent-teal"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 10</div>
+        <div class="exercise-card-title">Topic Modeling (LDA): Korean History Textbooks</div>
+        <p class="exercise-card-desc">Fit LDA on the full 67-book NIKH corpus. See coherence scores help pick <em>k</em>, read the discovered topics, watch era-level topic mixtures shift across colonial, authoritarian, and democratic textbooks, and explore the result in LDAvis.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">NIKH Textbooks</span>
+        <span class="exercise-tag">LDA</span>
+        <span class="exercise-tag">Coherence</span>
+        <span class="exercise-tag">LDAvis</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
