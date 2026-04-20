@@ -187,11 +187,15 @@ The periodization follows the course convention: <span class="era-badge era-badg
 </p>
 
 <p class="narrative">
-For the R walkthroughs below we use the <strong>11-book clustering demo</strong> (the same corpus from Week 7), not the full 67 books. The same code runs on any CSV with a <code>full_text</code> column, so you can swap in the 9-book demo or the full corpus later.
+The R walkthroughs below run the same pipeline the visuals on this page use: the <strong>full 67-book NIKH corpus</strong>, noun-only tokenization, a 5%&ndash;95% document-frequency filter, and LDA at <em>k</em> = 5. Download <code>nikh_corpus.csv</code> from the <a href="https://github.com/scdenney/nlp_corpora/tree/main/data/nikh">nlp_corpora repo</a> (or clone the repo) and save it to your <code>data/</code> folder before running the code.
 </p>
 
+<div class="callout callout-note">
+  <strong>R vs. the interactive.</strong> The interactive uses gensim's variational-Bayes LDA in Python. R's <code>topicmodels</code> uses Gibbs sampling. Same algorithm family, different solver and different random stream, so the topics you get in R will look similar in <em>content</em> but will not be byte-identical to the ones shown above. If your 67-book fit is slow, swap in the 11-book clustering demo or the 9-book demo from the <a href="{{ '/data/' | relative_url }}">Data &amp; Scripts</a> page &mdash; the code works on any CSV with a <code>full_text</code> column.
+</div>
+
 <details class="code-ribbon">
-  <summary><span class="ribbon-label">Show R code: load the 11-book NIKH corpus and stopwords</span><span class="ribbon-tag">R</span></summary>
+  <summary><span class="ribbon-label">Show R code: load the full 67-book NIKH corpus and stopwords</span><span class="ribbon-tag">R</span></summary>
   <div class="code-ribbon-body">
     <div class="code-block">
       <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -202,8 +206,17 @@ For the R walkthroughs below we use the <strong>11-book clustering demo</strong>
 <span class="r-function">library</span>(topicmodels)   <span class="r-comment"># LDA</span>
 <span class="r-function">library</span>(LDAvis)        <span class="r-comment"># interactive topic visualization</span>
 
-<span class="r-comment"># ── Load the clustering demo corpus (11 books) ────────────────────</span>
-corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/nikh_textbooks/nikh_clustering_demo.csv"</span>)
+<span class="r-comment"># ── Load the full 67-book NIKH corpus ─────────────────────────────</span>
+<span class="r-comment"># Download once from the nlp_corpora repo and save to your data/ folder:</span>
+<span class="r-comment">#   https://github.com/scdenney/nlp_corpora/blob/main/data/nikh/nikh_corpus.csv</span>
+corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/nikh_corpus.csv"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">drop_na</span>(full_text, book_id) <span class="r-operator">|&gt;</span>
+  <span class="r-function">distinct</span>(book_id, .keep_all <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(era <span class="r-operator">=</span> <span class="r-function">case_when</span>(
+    period <span class="r-operator">%in%</span> <span class="r-function">c</span>(<span class="r-string">"Colonial"</span>, <span class="r-string">"Late Choson"</span>) <span class="r-operator">~</span> <span class="r-string">"Colonial"</span>,
+    period <span class="r-operator">==</span> <span class="r-string">"Democratic"</span>                        <span class="r-operator">~</span> <span class="r-string">"Democratic"</span>,
+    <span class="r-keyword">TRUE</span>                                          <span class="r-operator">~</span> <span class="r-string">"Authoritarian"</span>
+  ))
 
 <span class="r-comment"># ── Korean stopwords ──────────────────────────────────────────────</span>
 stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"data/stopwords_ko.txt"</span>) <span class="r-operator">|&gt;</span>
@@ -211,11 +224,10 @@ stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read
   <span class="r-function">discard</span>(<span class="r-operator">~</span> .x <span class="r-operator">==</span> <span class="r-string">""</span>)
 
 corpus <span class="r-operator">|&gt;</span>
-  <span class="r-function">select</span>(book_id, title, era, year) <span class="r-operator">|&gt;</span>
-  <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">11</span>)</code></pre>
+  <span class="r-function">count</span>(era, name <span class="r-operator">=</span> <span class="r-string">"books"</span>)</code></pre>
     </div>
     <div class="callout callout-info">
-      <strong>About the packages:</strong> <code>elbird</code> wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same tokenizer used in our Orange scripts. <code>topicmodels</code> is the standard R package for LDA. <code>LDAvis</code> is the R sibling of pyLDAvis.
+      <strong>About the packages:</strong> <code>elbird</code> wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same tokenizer used in our Orange scripts. <code>topicmodels</code> is the standard R package for LDA. <code>LDAvis</code> is the R sibling of pyLDAvis. The era recoding collapses the five raw period labels into the three-era view used on this page.
     </div>
   </div>
 </details>
@@ -272,15 +284,17 @@ counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&g
   <span class="r-function">count</span>(book_id, word)
 
 <span class="r-comment"># ── Document-frequency filter ─────────────────────────────────────</span>
-<span class="r-comment"># Keep words that appear in at least 2 books and in at most 90% of books.</span>
+<span class="r-comment"># Same thresholds as the Python pipeline: in ≥ 5% of books and ≤ 95%.</span>
 n_docs <span class="r-operator">&lt;-</span> <span class="r-function">n_distinct</span>(counts<span class="r-operator">$</span>book_id)
+min_df <span class="r-operator">&lt;-</span> <span class="r-function">max</span>(<span class="r-number">2</span>, <span class="r-function">floor</span>(<span class="r-number">0.05</span> <span class="r-operator">*</span> n_docs))
+max_df <span class="r-operator">&lt;-</span> <span class="r-function">floor</span>(<span class="r-number">0.95</span> <span class="r-operator">*</span> n_docs)
 
 doc_freq <span class="r-operator">&lt;-</span> counts <span class="r-operator">|&gt;</span>
   <span class="r-function">distinct</span>(book_id, word) <span class="r-operator">|&gt;</span>
   <span class="r-function">count</span>(word, name <span class="r-operator">=</span> <span class="r-string">"df"</span>)
 
 keep_words <span class="r-operator">&lt;-</span> doc_freq <span class="r-operator">|&gt;</span>
-  <span class="r-function">filter</span>(df <span class="r-operator">&gt;=</span> <span class="r-number">2</span>, df <span class="r-operator">&lt;=</span> <span class="r-number">0.9</span> <span class="r-operator">*</span> n_docs) <span class="r-operator">|&gt;</span>
+  <span class="r-function">filter</span>(df <span class="r-operator">&gt;=</span> min_df, df <span class="r-operator">&lt;=</span> max_df) <span class="r-operator">|&gt;</span>
   <span class="r-function">pull</span>(word)
 
 counts_filt <span class="r-operator">&lt;-</span> counts <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(word <span class="r-operator">%in%</span> keep_words)
@@ -378,15 +392,15 @@ Below are the topics from <strong>k = <span id="kDefault">6</span></strong>, eac
   <div class="code-ribbon-body">
     <div class="code-block">
       <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-      <pre><code><span class="r-comment"># ── Fit the model ─────────────────────────────────────────────────</span>
-<span class="r-function">set.seed</span>(<span class="r-number">42</span>)
+      <pre><code><span class="r-comment"># ── Fit the model (k = 5 matches the interactive's default) ───────</span>
+<span class="r-function">set.seed</span>(<span class="r-number">20260420</span>)
 k <span class="r-operator">&lt;-</span> <span class="r-number">5</span>
 
 lda_fit <span class="r-operator">&lt;-</span> <span class="r-function">LDA</span>(
   dtm,
   k       <span class="r-operator">=</span> k,
   method  <span class="r-operator">=</span> <span class="r-string">"Gibbs"</span>,
-  control <span class="r-operator">=</span> <span class="r-function">list</span>(iter <span class="r-operator">=</span> <span class="r-number">500</span>, seed <span class="r-operator">=</span> <span class="r-number">42</span>)
+  control <span class="r-operator">=</span> <span class="r-function">list</span>(iter <span class="r-operator">=</span> <span class="r-number">500</span>, burnin <span class="r-operator">=</span> <span class="r-number">200</span>, seed <span class="r-operator">=</span> <span class="r-number">20260420</span>)
 )
 
 <span class="r-comment"># ── β: topic–word probabilities (ϕ_k(w)) ──────────────────────────</span>
@@ -480,7 +494,7 @@ dominant <span class="r-operator">&lt;-</span> gamma <span class="r-operator">|&
             by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>) <span class="r-operator">|&gt;</span>
   <span class="r-function">arrange</span>(year)
 
-<span class="r-function">print</span>(dominant, n <span class="r-operator">=</span> <span class="r-number">11</span>)
+<span class="r-function">print</span>(dominant, n <span class="r-operator">=</span> <span class="r-function">nrow</span>(dominant))
 
 <span class="r-comment"># ── Era-level topic mix ───────────────────────────────────────────</span>
 era_mix <span class="r-operator">&lt;-</span> gamma <span class="r-operator">|&gt;</span>
