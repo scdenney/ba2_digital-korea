@@ -180,7 +180,7 @@
 \section{Review \& Check-In}
 
 \begin{frame}{From Feeling to Theme}{Week 9 asked \emph{how} a text feels; Week 10 asks \emph{what} it is about}
-  \textbf{Last week (sentiment):} a text has a \textbf{tone} — positive or negative.
+  \textbf{Last week (sentiment):} a text has a \textbf{tone}, positive or negative.
   \begin{center}
     \poschip{감사} \; $+$ \; \poschip{희망} \; $+$ \; \negchip{위기} \; $\Rightarrow$ \; positive/negative \emph{score}
   \end{center}
@@ -196,26 +196,26 @@
   \emph{Topics:} what themes run through this collection of texts?
 \end{frame}
 
-\begin{frame}{Two Classification Styles, One Week Apart}{Both use a bag of words — they ask different questions of it}
+\begin{frame}{Two Classification Styles, One Week Apart}{Both use a bag of words; they ask different questions of it}
   \begin{columns}[T, onlytextwidth]
     \column{0.48\textwidth}
       \textbf{Dictionary sentiment (Week 9)}
       \begin{itemize}
-        \item \emph{Supervised by a lexicon} — you bring the word lists
+        \item \emph{Supervised by a lexicon}: you bring the word lists
         \item One score per document
         \item Output: a \emph{number} (positive or negative)
       \end{itemize}
     \column{0.48\textwidth}
       \textbf{Topic modeling (Week 10)}
       \begin{itemize}
-        \item \emph{Unsupervised} — no lexicon, no labels
+        \item \emph{Unsupervised}: no lexicon, no labels
         \item Many weights per document
         \item Output: a \emph{set of themes} and how much each document uses each one
       \end{itemize}
   \end{columns}
   \vspace{1em}
-  Topic modeling is the first \textbf{fully unsupervised} method since clustering (Week 7) —
-  but where clustering gives each document \emph{one} group, LDA gives it a \emph{mixture}.
+  Topic modeling is the first \textbf{fully unsupervised} method since clustering (Week 7).
+  Where clustering gives each document \emph{one} group, LDA gives it a \emph{mixture}.
 \end{frame}
 
 % ==================================================================
@@ -238,11 +238,11 @@
   \begin{itemize}
     \item A \textbf{topic} is a group of words that tend to appear together across the corpus.
     \item Each \textbf{document} is represented as a \textbf{mixture of topics}.
-    \item The algorithm does not know, in advance, what the topics are — it \emph{discovers} them.
+    \item The algorithm does not know, in advance, what the topics are. It \emph{discovers} them.
   \end{itemize}
 
   \vspace{0.6em}
-  Topic modeling answers three questions at once:
+  Topic modeling answers three questions:
   \begin{enumerate}
     \item What themes appear across the documents?
     \item How much of each theme does a given document contain?
@@ -274,7 +274,7 @@
 % ==================================================================
 \section{LDA: The Intuition}
 
-\begin{frame}{Latent Dirichlet Allocation, in Plain Words}{The most widely used topic model — and the one Orange runs}
+\begin{frame}{Latent Dirichlet Allocation, in Plain Words}{The most widely used topic model; Orange runs it}
   LDA (Blei, Ng \& Jordan, 2003) makes two simple assumptions:
   \begin{enumerate}
     \item Each \textbf{document} is made up of several \textbf{topics}, in some proportion.
@@ -290,7 +290,7 @@
   You, the researcher, specify one number: the \textbf{number of topics $k$}.
 \end{frame}
 
-\begin{frame}{The Generative Story}{A thought experiment — how LDA imagines a document is written}
+\begin{frame}{The Generative Story}{A thought experiment about how LDA imagines a document is written}
   Pretend you are about to write a document. LDA imagines you do this:
   \begin{enumerate}
     \item Pick a \textbf{mixture} of topics (``this book will be 70\% ancient, 20\% colonial, 10\% modern'').
@@ -358,7 +358,7 @@
 % ==================================================================
 \section{Choosing the Number of Topics}
 
-\begin{frame}{How Many Topics ($k$)?}{You pick $k$ — the algorithm doesn't pick it for you}
+\begin{frame}{How Many Topics ($k$)?}{You pick $k$: the algorithm doesn't pick it for you}
   \begin{itemize}
     \item \textbf{Too few} ($k=2$): topics are so broad they aren't useful (``history'' vs.\ ``not history'').
     \item \textbf{Too many} ($k=50$): topics fragment, overlap, and fill with noise.
@@ -385,21 +385,21 @@
 % ==================================================================
 \section{The Orange Pipeline}
 
-\begin{frame}{The Topic Modelling Widget in Orange}{Input a Corpus, pick a method, set $k$ --- read topics out the other side}
+\begin{frame}{The Topic Modelling Widget in Orange}{Input a Corpus, pick a method, set $k$, read topics out the other side}
   \begin{columns}[T, onlytextwidth]
     \column{0.48\textwidth}
       \textbf{Three methods available}
       \begin{itemize}
-        \item \textbf{LSI} — Latent Semantic Indexing (SVD on the term--document matrix; fast, not probabilistic)
-        \item \textbf{HDP} — Hierarchical Dirichlet Process (non-parametric; $k$ is \emph{inferred})
-        \item \textbf{LDA} — Latent Dirichlet Allocation (our choice this week)
+        \item \textbf{LSI} (Latent Semantic Indexing): SVD on the term--document matrix; fast, not probabilistic
+        \item \textbf{HDP} (Hierarchical Dirichlet Process): non-parametric; $k$ is \emph{inferred}
+        \item \textbf{LDA} (Latent Dirichlet Allocation): our choice this week
       \end{itemize}
     \column{0.48\textwidth}
-      \textbf{Main setting for LDA}
+      \textbf{What you set for LDA}
       \begin{itemize}
-        \item \texttt{Number of topics}: the $k$ you pick
-        \item Results change run to run — LDA uses random initialisation
-        \item Click \emph{Commit} (or enable \emph{Commit Automatically}) to refit
+        \item \texttt{Number of topics}: the $k$ you pick (default 10)
+        \item \emph{That's it.} Alpha, eta, iterations, seed are fixed at gensim defaults
+        \item Click \emph{Commit}, or enable \emph{Commit Automatically}, to refit
       \end{itemize}
   \end{columns}
 
@@ -411,25 +411,24 @@
   \end{callblue}
 \end{frame}
 
-\begin{frame}{Inputs and Outputs at a Glance}{What the widget expects on the left, what it emits on the right}
+\begin{frame}{Inputs, Outputs, and Where Each Goes}{One input port, three output ports, four downstream widgets}
   \begin{center}
     \small
-    \begin{tabular}{@{}l l@{}}
+    \begin{tabular}{@{}l l l@{}}
       \toprule
-      \textbf{Port}  & \textbf{What it carries} \\
+      \textbf{Port}  & \textbf{What it carries} & \textbf{Plug into \ldots} \\
       \midrule
-      Input: \emph{Corpus}              & Your preprocessed documents (tokens, not raw text) \\
-      Output: \emph{Corpus}             & The same corpus with \textbf{topic weight columns} appended \\
-      Output: \emph{Topics}             & A table of every topic's top words and weights \\
-      Output: \emph{All Topics}         & The full topic--word distribution ($\phi$) \\
-      Output: \emph{Selected Topic}     & Just the topic you clicked in the widget \\
+      In: \emph{Corpus}              & Preprocessed documents (tokens)                    & --- \\
+      Out: \emph{Corpus}             & Corpus with \textbf{topic weight} columns appended & Data Table, Box Plot by era \\
+      Out: \emph{Topics}             & Top words of the \emph{selected} topic             & Word Cloud \\
+      Out: \emph{All Topics}         & Full topic--word matrix ($\phi$)                  & Heatmap, LDAvis \\
       \bottomrule
     \end{tabular}
   \end{center}
 
   \vspace{0.5em}
-  These outputs drive the rest of the workflow: a \emph{Word Cloud} from \emph{Selected Topic},
-  a \emph{Data Table} from \emph{Corpus}, a \emph{Heatmap} or \emph{Box Plot} grouped by era, and so on.
+  Clicking a topic row in the widget updates the \emph{Topics} output; the other two ports always carry the full fit.
+  Results change from run to run because LDA uses random initialisation.
 \end{frame}
 
 \begin{frame}{A Minimum Orange Workflow}{Five widgets from raw CSV to interpretable topics}
@@ -442,7 +441,7 @@
       }
       \node[widget] (corpus)  {Corpus\\ \scriptsize(nikh CSV)};
       \node[widget, right=of corpus]   (prep)    {Preprocess\\ Text};
-      \node[widget, right=of prep]     (script)  {Python\\ Script (Kiwi)};
+      \node[widget, right=of prep]     (script)  {Python Script\\ \scriptsize Kiwi, nouns};
       \node[widget, right=of script]   (topic)   {Topic\\ Modelling};
       \node[widget, right=of topic, fill=corallight] (view) {Word Cloud\\ / Data Table};
       \draw[arr] (corpus)  -- (prep);
@@ -456,14 +455,14 @@
   \begin{itemize}
     \item \textbf{Corpus.} Load \texttt{nikh\_clustering\_demo.csv}; mark \texttt{full\_text} as the text feature.
     \item \textbf{Preprocess Text.} Lowercase, tokenise by word, drop stopwords (Korean list provided), filter by document frequency if the corpus is large.
-    \item \textbf{Python Script.} Run the Kiwi morphological tokeniser (keep NNG, NNP — \emph{nouns only} for topic modeling).
+    \item \textbf{Python Script.} Paste \texttt{custom\_preprocessing\_mac-users.py} from the Data \& Scripts page. It already defaults to nouns only (NNG, NNP).
     \item \textbf{Topic Modelling.} Method = LDA, Number of topics = 4 or 5, click Commit.
     \item \textbf{Word Cloud / Data Table.} Inspect each topic's top words, then open the Corpus output to see the mix per book.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Nouns Only for Topic Modeling}{Why our preprocessing differs from Week 9}
-  Week 9 sentiment kept \textbf{nouns, verbs, and adjectives} — feeling lives in verbs and adjectives too.
+  Week 9 sentiment kept \textbf{nouns, verbs, and adjectives}, because feeling lives in verbs and adjectives too.
   For topic modeling we keep \textbf{nouns only}.
 
   \vspace{0.5em}
@@ -481,28 +480,24 @@
 
   \vspace{0.6em}
   \begin{callcoral}[Why not verbs?]
-    Topics are about \emph{what a text is about} — and in Korean, \emph{what} is carried by nouns.
+    Topics are about \emph{what a text is about}, and in Korean, \emph{what} is carried by nouns.
     Verbs like 하다 (\emph{do}) and 되다 (\emph{become}) appear everywhere; they blur topics rather than separate them.
     Drop them, and the themes sharpen.
   \end{callcoral}
 \end{frame}
 
-\begin{frame}{Reading the Output: Top-Words and Topic Weights}{Two views of the same LDA fit}
-  \textbf{In the widget itself:} each topic shows as a row with its top words, sized by weight.
-  Click a topic to send its words to a Word Cloud.
-
-  \vspace{0.4em}
-  \textbf{Downstream of the widget:}
+\begin{frame}{LDAvis: The Interactive View}{A sibling widget in orange3-text, not an add-on you install separately}
+  Pipe the \emph{All Topics} output into the \textbf{LDAvis} widget and you get an interactive view of the model.
   \begin{itemize}
-    \item Send the \emph{Corpus} output to a \emph{Data Table} — every row is a book, every new column is a topic weight.
-    \item Send it to a \emph{Box Plot} grouped by \texttt{era} to compare topic use across Colonial / Authoritarian / Democratic textbooks.
-    \item Send the \emph{All Topics} output to a \emph{Heatmap} for a topic--word overview.
+    \item \textbf{Map} on the left: each circle is a topic, circle size is prevalence, distance is dissimilarity.
+    \item \textbf{Bar chart} on the right: red = how often the word appears in the selected topic, grey = how often across the whole corpus.
+    \item \textbf{$\lambda$ slider} blends raw frequency ($\lambda = 1$) with distinctiveness ($\lambda = 0$).
   \end{itemize}
 
   \vspace{0.4em}
-  \begin{callblue}[LDAvis if you can install it]
-    The LDAvis add-on renders topics on an MDS map, with a \textbf{$\lambda$ slider} that blends raw frequency ($\lambda=1$)
-    with distinctiveness ($\lambda=0$). Best practice: $\lambda \approx 0.2$--$0.35$.
+  \begin{callblue}[Practical tip]
+    At $\lambda = 1$ the top words are whatever is frequent in the topic, which is often the same across topics. At
+    $\lambda \approx 0.2$--$0.35$ you see the words that make each topic \emph{distinctive}. Start at $0.3$.
   \end{callblue}
 \end{frame}
 
@@ -543,10 +538,10 @@
   \end{enumerate}
 
   \vspace{0.6em}
-  \begin{callcoral}[A research choice --- not a given]
+  \begin{callcoral}[A research choice, not a given]
     The \texttt{era} labels (Colonial / Authoritarian / Democratic) are an \emph{editorial} split
-    from the corpus metadata. Different historians might draw the lines differently ---
-    the periodisation is part of your analysis, not a fact handed to you by the algorithm.
+    from the corpus metadata. Different historians might draw the lines differently.
+    The periodisation is part of your analysis, not a fact handed to you by the algorithm.
   \end{callcoral}
 \end{frame}
 
@@ -580,7 +575,7 @@
 \begin{frame}{Strengths of LDA}{What the method is good for}
   \begin{itemize}
     \item \textbf{Exploratory.} Reveals structure in corpora too large to close-read.
-    \item \textbf{Mixture-aware.} A textbook can be 60\% colonial-era and 40\% modernisation --- clustering could not say that.
+    \item \textbf{Mixture-aware.} A textbook can be 60\% colonial-era and 40\% modernisation; clustering could not say that.
     \item \textbf{Comparative.} Topic weights are numbers: you can group by era, decade, author, level.
     \item \textbf{Portable.} The same widget works on tweets, speeches, newspaper articles, or textbook chapters.
   \end{itemize}
@@ -589,7 +584,7 @@
 \begin{frame}{Limitations of LDA}{What the method will \emph{not} do for you}
   \begin{itemize}
     \item \textbf{Topics are statistical, not semantic.} They are co-occurrence patterns; \emph{you} give them names.
-    \item \textbf{Sensitive to preprocessing.} Change stopwords, POS filter, or document length --- topics change.
+    \item \textbf{Sensitive to preprocessing.} Change stopwords, POS filter, or document length: topics change.
     \item \textbf{Sensitive to $k$.} Re-running with $k=3$ vs $k=7$ gives different themes.
     \item \textbf{Non-deterministic.} Two runs with the same $k$ can produce different topic orderings (and sometimes different topics).
     \item \textbf{Junk topics happen.} Expect one or two topics to be incoherent at any given $k$.
@@ -608,7 +603,7 @@
     \item For each topic, read the \textbf{top 10--15 words}. Draft a label that covers most of them.
     \item Open the \emph{Corpus} output and find the 2--3 books with the \textbf{highest weight} for each topic. Does the book title fit your label?
     \item Look for \textbf{one ``junk'' topic} and be honest about it.
-    \item Compare topic weights across \texttt{era} --- a \emph{Box Plot} grouped by era is usually enough.
+    \item Compare topic weights across \texttt{era}. A \emph{Box Plot} grouped by era is usually enough.
   \end{enumerate}
 \end{frame}
 
@@ -616,7 +611,7 @@
 \section{Looking Ahead}
 
 \begin{frame}{For the Lab}{Interactive, workflow, short write-up}
-  \textbf{Explore.} Work through the NIKH clustering interactive on the course website --- note which books cluster together
+  \textbf{Explore.} Work through the NIKH clustering interactive on the course website. Note which books cluster together,
   and hold that in your head while you run LDA.
 
   \vspace{0.4em}
@@ -649,7 +644,7 @@
   \end{center}
 
   \vspace{0.6em}
-  \textbf{Recommended reading.} Grimmer, Roberts \& Stewart --- Chapter 13: \emph{Topic Models}.
+  \textbf{Recommended reading.} Grimmer, Roberts \& Stewart, Chapter 13: \emph{Topic Models}.
 
   \vspace{0.4em}
   \textbf{Next week.} Week 11: Final review and assessment. Bring questions about the Research Methods Project (Week 12).
