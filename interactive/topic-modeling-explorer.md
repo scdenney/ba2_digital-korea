@@ -114,7 +114,7 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 </div>
 
 <p class="narrative">
-In lecture we ran LDA on an 11-book sample so the workflow would fit in a class session. Here we run it on the <strong>full 67-book NIKH corpus</strong> &mdash; every surviving Korean history textbook the National Institute of Korean History collected, from 1895 through 2016. The method is the same: Kiwi tokenisation on nouns, stopword removal, document-frequency filtering, LDA on the bag-of-words counts.
+In lecture we ran LDA on an 11-book sample so the workflow would fit in a class session. Here we run it on the <strong>full 67-book NIKH corpus</strong> &mdash; every surviving Korean history textbook the National Institute of Korean History collected, from 1895 through 2016. The method is the same: Kiwi tokenization on nouns, stopword removal, document-frequency filtering, LDA on the bag-of-words counts.
 </p>
 
 <p class="narrative">
@@ -124,7 +124,7 @@ Three things become visible on the full corpus that the 11-book demo couldn't sh
 <ul class="narrative">
   <li>How <strong>coherence scores</strong> can help you pick <em>k</em> (we'll explain what coherence is &mdash; Orange doesn't surface this metric).</li>
   <li>What the discovered topics look like when the model has enough data to separate themes it couldn't separate on 11 books.</li>
-  <li>How the <strong>era-level topic mix</strong> shifts: colonial-era textbooks emphasise different things than post-1987 democratic-era ones.</li>
+  <li>How the <strong>era-level topic mix</strong> shifts: colonial-era textbooks emphasize different things than post-1987 democratic-era ones.</li>
 </ul>
 
 <!-- ====================================================================== -->
@@ -136,7 +136,7 @@ Three things become visible on the full corpus that the 11-book demo couldn't sh
 <div id="corpusStats" class="stats-grid"></div>
 
 <p class="narrative">
-The periodisation follows the course convention: <span class="era-badge era-badge-colonial">Colonial</span> for Japanese-colonial-era textbooks (roughly 1895&ndash;1945), <span class="era-badge era-badge-authoritarian">Authoritarian</span> for the developmental-state decades (1946&ndash;1987), and <span class="era-badge era-badge-democratic">Democratic</span> for the post-1987 period. The Authoritarian period dominates the corpus by book count because that is when the state published textbooks most intensively.
+The periodization follows the course convention: <span class="era-badge era-badge-colonial">Colonial</span> for Japanese-colonial-era textbooks (roughly 1895&ndash;1945), <span class="era-badge era-badge-authoritarian">Authoritarian</span> for the developmental-state decades (1946&ndash;1987), and <span class="era-badge era-badge-democratic">Democratic</span> for the post-1987 period. The Authoritarian period dominates the corpus by book count because that is when the state published textbooks most intensively.
 </p>
 
 <!-- ====================================================================== -->
@@ -150,7 +150,7 @@ We apply the exact pipeline from the Orange demo, just scripted in Python instea
 </p>
 
 <ol class="narrative">
-  <li><strong>Tokenise</strong> each book with <a href="https://github.com/bab2min/kiwipiepy" target="_blank" rel="noopener">Kiwi</a>.</li>
+  <li><strong>Tokenize</strong> each book with <a href="https://github.com/bab2min/kiwipiepy" target="_blank" rel="noopener">Kiwi</a>.</li>
   <li>Keep only <strong>nouns</strong> (<code>NNG</code>, <code>NNP</code>).</li>
   <li>Drop <strong>stopwords</strong> and tokens shorter than 2 characters.</li>
   <li>Drop terms that appear in <strong>very few books</strong> (likely OCR noise) or in <strong>almost every book</strong> (nearly-universal, uninformative).</li>
@@ -173,11 +173,11 @@ We apply the exact pipeline from the Orange demo, just scripted in Python instea
 </div>
 
 <p class="narrative">
-In class we said <em>k</em> is a research choice with no universal rule. One tool that can help &mdash; but that Orange's Topic Modelling widget does not surface &mdash; is a <strong>coherence score</strong>.
+In class we said <em>k</em> is a research choice with no universal rule. One tool that can help &mdash; but that Orange's Topic Modeling widget does not surface &mdash; is a <strong>coherence score</strong>.
 </p>
 
 <div class="callout callout-note">
-  <strong>What is coherence?</strong> A topic is <em>coherent</em> when its top words tend to co-occur in short windows of text across the corpus. A human who reads them together should recognise them as belonging to the same theme. The <code>c_v</code> coherence score formalises this intuition: it measures how often each pair of top words from a topic appears together (relative to chance), averaged across topics. Higher is usually better. See <a href="https://aclanthology.org/E14-1056/" target="_blank" rel="noopener">Röder et al. (2015)</a> for the full definition.
+  <strong>What is coherence?</strong> A topic is <em>coherent</em> when its top words tend to co-occur in short windows of text across the corpus. A human who reads them together should recognize them as belonging to the same theme. The <code>c_v</code> coherence score formalizes this intuition: it measures how often each pair of top words from a topic appears together (relative to chance), averaged across topics. Higher is usually better. See <a href="https://aclanthology.org/E14-1056/" target="_blank" rel="noopener">Röder et al. (2015)</a> for the full definition.
 </div>
 
 <p class="narrative">
@@ -218,11 +218,11 @@ Below are the topics from <strong>k = <span id="kDefault">6</span></strong>, eac
 </div>
 
 <p class="narrative">
-LDA hands each document a mixture over topics &mdash; the <em>θ<sub>d</sub>(k)</em> row from lecture. The bar on each row below shows that mixture. The colour of each segment matches the topic colour above.
+LDA hands each document a mixture over topics &mdash; the <em>θ<sub>d</sub>(k)</em> row from lecture. The bar on each row below shows that mixture. The color of each segment matches the topic color above.
 </p>
 
 <div class="callout callout-note">
-  <strong>What is a topic mixture?</strong> LDA does not sort each book into one topic. It treats every book as a blend. A single textbook might be, say, 40% ancient history, 30% colonial resistance, and smaller shares of the other topics. The coloured bar on each row shows that blend for one book.
+  <strong>What is a topic mixture?</strong> LDA does not sort each book into one topic. It treats every book as a blend. A single textbook might be, say, 40% ancient history, 30% colonial resistance, and smaller shares of the other topics. The colored bar on each row shows that blend for one book.
 </div>
 
 <div class="doc-controls">
@@ -466,7 +466,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
       return '<button class="topic-tab' + (i === activeTopic ? " active" : "") +
              '" data-topic="' + i + '" style="' +
              (i === activeTopic ? "" : "border-color:" + TOPIC_COLORS[i] + ";color:" + TOPIC_COLORS[i]) +
-             '">T' + t.topic_id + " · " + SUGGESTED_LABELS[i] + '</button>';
+             '">T' + (t.topic_id + 1) + " · " + SUGGESTED_LABELS[i] + '</button>';
     }).join("");
     container.querySelectorAll(".topic-tab").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -493,7 +493,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
 
     panel.innerHTML =
       '<div class="topic-panel" style="border-top:3px solid ' + color + '">' +
-      '<div class="topic-panel-title">Topic ' + t.topic_id + ' &mdash; ' + SUGGESTED_LABELS[activeTopic] + '</div>' +
+      '<div class="topic-panel-title">Topic ' + (t.topic_id + 1) + ' &mdash; ' + SUGGESTED_LABELS[activeTopic] + '</div>' +
       '<div class="topic-panel-sub">Top ' + t.top_words.length + ' words with their topic&ndash;word weights (&#981;<sub>k</sub>(w)).</div>' +
       '<div class="topic-words-grid">' + rows + '</div>' +
       '</div>';
@@ -521,7 +521,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
       tbody.innerHTML = docs.map(function (d) {
         var eraClass = "era-badge era-badge-" + d.era.toLowerCase();
         var mix = d.weights.map(function (w, i) {
-          return w > 0 ? '<div class="mix-seg" style="width:' + (w * 100).toFixed(2) + '%;background:' + TOPIC_COLORS[i] + '" title="T' + i + ' · ' + SUGGESTED_LABELS[i] + ' · ' + (w * 100).toFixed(1) + '%"></div>' : "";
+          return w > 0 ? '<div class="mix-seg" style="width:' + (w * 100).toFixed(2) + '%;background:' + TOPIC_COLORS[i] + '" title="T' + (i + 1) + ' · ' + SUGGESTED_LABELS[i] + ' · ' + (w * 100).toFixed(1) + '%"></div>' : "";
         }).join("");
         return '<tr>' +
           '<td title="' + escapeHTML(d.full_title) + '">' + escapeHTML(d.title) + '</td>' +
@@ -529,7 +529,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
           '<td>' + (d.year || "") + '</td>' +
           '<td>' + d.n_tokens.toLocaleString() + '</td>' +
           '<td><div class="mix-bar">' + mix + '</div></td>' +
-          '<td style="color:' + TOPIC_COLORS[d.dominant_topic] + ';font-weight:700">T' + d.dominant_topic + '</td>' +
+          '<td style="color:' + TOPIC_COLORS[d.dominant_topic] + ';font-weight:700">T' + (d.dominant_topic + 1) + '</td>' +
           '</tr>';
       }).join("");
     }
@@ -544,7 +544,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
       var mix = DATA.era_topic_mix[era];
       var bars = mix.map(function (w, i) {
         return '<div class="topic-word-row">' +
-          '<div class="topic-word" style="font-size:0.78rem;min-width:7rem">T' + i + ' · ' + SUGGESTED_LABELS[i] + '</div>' +
+          '<div class="topic-word" style="font-size:0.78rem;min-width:7rem">T' + (i + 1) + ' · ' + SUGGESTED_LABELS[i] + '</div>' +
           '<div class="topic-word-bar-track"><div class="topic-word-bar-fill" style="width:' + (w * 100).toFixed(1) + '%;background:' + TOPIC_COLORS[i] + '"></div></div>' +
           '<div class="topic-word-weight">' + (w * 100).toFixed(1) + '%</div>' +
           '</div>';
@@ -563,7 +563,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
       { words: ["일제", "독립", "저항", "항일", "식민"],                  label: "Colonial era & resistance" },
       { words: ["중국", "세기", "세계", "러시아", "영국", "일본", "유럽"], label: "World history & foreign relations" },
       { words: ["문화", "사회", "생활", "전통", "시대"],                  label: "Culture & society" },
-      { words: ["산업화", "경제", "발전", "수출", "성장"],                label: "Industrialisation & growth" },
+      { words: ["산업화", "경제", "발전", "수출", "성장"],                label: "Industrialization & growth" },
       { words: ["민주", "시민", "참여", "투표", "선거"],                  label: "Democracy & civic life" },
       { words: ["농민", "생산", "토지", "노동", "농업"],                  label: "Peasants, production, society" },
       { words: ["조선", "왕", "성리학"],                                  label: "Joseon dynasty" },
