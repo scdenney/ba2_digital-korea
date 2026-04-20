@@ -39,9 +39,9 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 .era-badge-democratic    { background: #cffafe; color: #155e75; }
 
 /* ── Coherence chart ─────────────────────────────────────────────── */
-.coherence-svg-wrap { border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; background: #fafafa; overflow-x: auto; }
-.coherence-svg-wrap svg { display: block; width: 100%; height: 260px; }
-.coherence-note { font-size: 0.82rem; color: #6b7280; margin-top: 0.4rem; }
+.coherence-svg-wrap { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 0.75rem 0.5rem; background: #fafafa; overflow-x: auto; }
+.coherence-svg-wrap svg { display: block; width: 100%; height: 340px; }
+.coherence-note { font-size: 0.82rem; color: #6b7280; margin-top: 0.6rem; }
 
 /* ── Topic browser ───────────────────────────────────────────────── */
 .topic-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 0.75rem; }
@@ -177,7 +177,7 @@ We fit LDA at several values of <em>k</em> and compute <code>c_v</code> for each
 </p>
 
 <div class="coherence-svg-wrap">
-  <svg id="coherenceChart" viewBox="0 0 640 260" preserveAspectRatio="none"></svg>
+  <svg id="coherenceChart" viewBox="0 0 680 340" preserveAspectRatio="none"></svg>
 </div>
 
 <p class="coherence-note" id="coherenceNote"></p>
@@ -322,8 +322,8 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
     var cards = [
       { label: "Books", value: c.n_books },
       { label: "Year range", value: c.year_min + "&ndash;" + c.year_max },
-      { label: "Colonial",      value: c.era_counts.Colonial      || 0, sub: "1895&ndash;1945" },
-      { label: "Authoritarian", value: c.era_counts.Authoritarian || 0, sub: "1946&ndash;1987" },
+      { label: "Colonial",      value: c.era_counts.Colonial      || 0, sub: "pre-1945" },
+      { label: "Authoritarian", value: c.era_counts.Authoritarian || 0, sub: "1946&ndash;1991" },
       { label: "Democratic",    value: c.era_counts.Democratic    || 0, sub: "post-1987" },
     ];
     grid.innerHTML = cards.map(function (x) {
@@ -360,12 +360,12 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
     if (!pts || !pts.length) return;
     var svg = document.getElementById("coherenceChart");
     // Layout
-    var W = 640, H = 260, m = { t: 20, r: 20, b: 40, l: 48 };
+    var W = 680, H = 340, m = { t: 46, r: 28, b: 58, l: 62 };
     var xs = pts.map(function (p) { return p.k; });
     var ys = pts.map(function (p) { return p.coherence_cv; });
     var xMin = Math.min.apply(null, xs), xMax = Math.max.apply(null, xs);
     var yMin = Math.min.apply(null, ys), yMax = Math.max.apply(null, ys);
-    var yPad = (yMax - yMin) * 0.2 || 0.05;
+    var yPad = (yMax - yMin) * 0.25 || 0.05;
     yMin -= yPad; yMax += yPad;
 
     function sx(x) { return m.l + (x - xMin) / (xMax - xMin) * (W - m.l - m.r); }
@@ -377,33 +377,37 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
     for (var i = 0; i <= yTicks; i++) {
       var v = yMin + (yMax - yMin) * i / yTicks;
       parts.push('<line x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + sy(v) + '" y2="' + sy(v) + '" stroke="#e2e8f0"/>');
-      parts.push('<text x="' + (m.l - 8) + '" y="' + (sy(v) + 4) + '" text-anchor="end" font-size="10" fill="#94a3b8">' + v.toFixed(2) + '</text>');
+      parts.push('<text x="' + (m.l - 10) + '" y="' + (sy(v) + 4) + '" text-anchor="end" font-size="11" fill="#94a3b8">' + v.toFixed(2) + '</text>');
     }
     // x ticks
     pts.forEach(function (p) {
-      parts.push('<text x="' + sx(p.k) + '" y="' + (H - m.b + 16) + '" text-anchor="middle" font-size="10" fill="#64748b">' + p.k + '</text>');
+      parts.push('<text x="' + sx(p.k) + '" y="' + (H - m.b + 18) + '" text-anchor="middle" font-size="11" fill="#64748b">' + p.k + '</text>');
     });
-    parts.push('<text x="' + (m.l + (W - m.l - m.r) / 2) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">number of topics (k)</text>');
-    parts.push('<text transform="rotate(-90) translate(' + (-(H / 2)) + ',14)" font-size="11" fill="#475569" font-weight="600" text-anchor="middle">coherence (c_v)</text>');
+    parts.push('<text x="' + (m.l + (W - m.l - m.r) / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-size="12" fill="#475569" font-weight="600">number of topics (k)</text>');
+    parts.push('<text transform="rotate(-90) translate(' + (-(H / 2)) + ',18)" font-size="12" fill="#475569" font-weight="600" text-anchor="middle">coherence (c_v)</text>');
 
     // line
     var d = pts.map(function (p, i) { return (i === 0 ? "M" : "L") + sx(p.k) + "," + sy(p.coherence_cv); }).join(" ");
     parts.push('<path d="' + d + '" fill="none" stroke="#001158" stroke-width="2"/>');
 
-    // best point
+    // best point + default point
     var best = pts.reduce(function (a, b) { return b.coherence_cv > a.coherence_cv ? b : a; });
-    // points
     pts.forEach(function (p) {
       var isBest = p.k === best.k;
       var isDefault = p.k === DATA.lda.default_k;
-      parts.push('<circle cx="' + sx(p.k) + '" cy="' + sy(p.coherence_cv) + '" r="' + (isBest ? 6 : 4) +
+      parts.push('<circle cx="' + sx(p.k) + '" cy="' + sy(p.coherence_cv) + '" r="' + (isBest ? 6 : (isDefault ? 6 : 4)) +
                  '" fill="' + (isBest ? "#22c55e" : (isDefault ? "#ea580c" : "#001158")) + '"/>');
       if (isBest) {
-        parts.push('<text x="' + sx(p.k) + '" y="' + (sy(p.coherence_cv) - 12) +
-                   '" text-anchor="middle" font-size="10" fill="#166534" font-weight="700">best</text>');
+        var bx = sx(p.k), by = sy(p.coherence_cv);
+        parts.push('<line x1="' + bx + '" x2="' + bx + '" y1="' + (by - 10) + '" y2="' + (by - 22) + '" stroke="#166534" stroke-width="1.2"/>');
+        parts.push('<text x="' + bx + '" y="' + (by - 26) +
+                   '" text-anchor="middle" font-size="11" fill="#166534" font-weight="700">best · k=' + p.k + '</text>');
       } else if (isDefault) {
-        parts.push('<text x="' + sx(p.k) + '" y="' + (sy(p.coherence_cv) - 12) +
-                   '" text-anchor="middle" font-size="10" fill="#9a3412" font-weight="700">shown below</text>');
+        var dx = sx(p.k), dy = sy(p.coherence_cv);
+        // place label BELOW default point so it doesn't collide with the line trending up from the right
+        parts.push('<line x1="' + dx + '" x2="' + dx + '" y1="' + (dy + 10) + '" y2="' + (dy + 22) + '" stroke="#9a3412" stroke-width="1.2"/>');
+        parts.push('<text x="' + dx + '" y="' + (dy + 34) +
+                   '" text-anchor="middle" font-size="11" fill="#9a3412" font-weight="700">shown below · k=' + p.k + '</text>');
       }
     });
 
@@ -458,7 +462,7 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
     panel.innerHTML =
       '<div class="topic-panel" style="border-top:3px solid ' + color + '">' +
       '<div class="topic-panel-title">Topic ' + t.topic_id + ' &mdash; ' + SUGGESTED_LABELS[activeTopic] + '</div>' +
-      '<div class="topic-panel-sub">Top ' + t.top_words.length + ' words with their topic&ndash;word weights ($\\phi_k(w)$).</div>' +
+      '<div class="topic-panel-sub">Top ' + t.top_words.length + ' words with their topic&ndash;word weights (&#981;<sub>k</sub>(w)).</div>' +
       '<div class="topic-words-grid">' + rows + '</div>' +
       '</div>';
   }
