@@ -14,7 +14,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds, calc}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins, breakable}
 \usepackage{amsmath, amssymb}
@@ -180,20 +180,72 @@
 \section{Review \& Check-In}
 
 \begin{frame}{From Feeling to Theme}{Week 9 asked \emph{how} a text feels; Week 10 asks \emph{what} it is about}
-  \textbf{Last week (sentiment):} a text has a \textbf{tone}, positive or negative.
+  \textbf{Last week (sentiment):} each text gets \emph{one number} --- a tone.
   \begin{center}
-    \poschip{감사} \; $+$ \; \poschip{희망} \; $+$ \; \negchip{위기} \; $\Rightarrow$ \; positive/negative \emph{score}
+    \poschip{감사} \; $+$ \; \poschip{희망} \; $+$ \; \negchip{위기} \; $\Rightarrow$ \; a positive/negative \emph{score}
+  \end{center}
+
+  \vspace{0.6em}
+  \textbf{This week (topics):} each text gets \emph{several numbers} --- a mixture of themes.
+  \begin{center}
+    \emph{One textbook} \; $\Rightarrow$ \;
+    \begin{tikzpicture}[baseline={(0,0.15)}]
+      \fill[corallight]    (0,0)   rectangle (2.4,0.5);
+      \fill[bluesoftlight] (2.4,0) rectangle (3.6,0.5);
+      \fill[greenposlight] (3.6,0) rectangle (4.2,0.5);
+      \draw[slatelight, thin] (0,0) rectangle (4.2,0.5);
+      \node[font=\scriptsize\itshape] at (1.2,0.25) {Ancient};
+      \node[font=\scriptsize\itshape] at (3.0,0.25) {Colonial};
+      \node[font=\scriptsize\itshape] at (3.9,0.25) {Mod.};
+    \end{tikzpicture}
   \end{center}
 
   \vspace{0.4em}
-  \textbf{This week (topics):} a text is about \textbf{several things at once}, in different proportions.
+  \emph{Sentiment:} \textbf{how} does the text feel? \\
+  \emph{Topics:} \textbf{what} themes run through this collection of texts?
+\end{frame}
+
+\begin{frame}{Your Turn: What's This Topic About?}{Each list is the top six words of one topic. What would you label it?}
+  \vspace{0.3em}
+
+  \textbf{1.} \quad \tokbox{고구려} \; \tokbox{백제} \; \tokbox{신라} \; \tokbox{삼국} \; \tokbox{왕} \; \tokbox{시대}
+  \vspace{0.4em}
+
+  \textbf{2.} \quad \tokbox{일제} \; \tokbox{독립} \; \tokbox{저항} \; \tokbox{운동} \; \tokbox{항일} \; \tokbox{식민}
+  \vspace{0.4em}
+
+  \textbf{3.} \quad \tokbox{경제} \; \tokbox{산업화} \; \tokbox{발전} \; \tokbox{성장} \; \tokbox{정부} \; \tokbox{수출}
+  \vspace{0.4em}
+
+  \textbf{4.} \quad \tokbox{때} \; \tokbox{것} \; \tokbox{사람} \; \tokbox{이후} \; \tokbox{처음} \; \tokbox{등}
+
+  \vspace{0.9em}
+  \begin{callblue}[Discuss with a neighbour]
+    What label fits each list? Which one is harder than the others, and why?
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{Your Turn: Answers}{What the labels might be --- and what that tells us about the method}
+  \vspace{0.1em}
   \begin{center}
-    \tokbox{조선} \; \tokbox{왕조} \; \tokbox{문화} \; $\Rightarrow$ \; a \emph{mixture} of themes
+    \small
+    \begin{tabular}{@{}c l l@{}}
+      \toprule
+      \textbf{\#} & \textbf{Top words} & \textbf{A plausible label} \\
+      \midrule
+      1 & 고구려, 백제, 신라, 삼국, 왕, 시대 & Ancient \& Three Kingdoms \\
+      2 & 일제, 독립, 저항, 운동, 항일, 식민 & Colonial era / resistance \\
+      3 & 경제, 산업화, 발전, 성장, 정부, 수출 & Modernisation \\
+      4 & 때, 것, 사람, 이후, 처음, 등 & \emph{Junk: common function words} \\
+      \bottomrule
+    \end{tabular}
   \end{center}
 
-  \vspace{0.4em}
-  \emph{Sentiment:} does the text feel positive or negative? \\
-  \emph{Topics:} what themes run through this collection of texts?
+  \vspace{0.5em}
+  \begin{callcoral}[The takeaway]
+    This \emph{is} what LDA produces: ranked lists of words. The \textbf{model} finds co-occurring words;
+    \textbf{you} read them and assign the label. Topic 4 reminds us that ``junk'' topics happen --- part of your job is to catch them.
+  \end{callcoral}
 \end{frame}
 
 \begin{frame}{Two Classification Styles, One Week Apart}{Both use a bag of words; they ask different questions of it}
@@ -282,9 +334,9 @@
   \end{enumerate}
 
   \vspace{0.6em}
-  \emph{Latent} because the topics are hidden; we only observe words.\\
-  \emph{Dirichlet} is a probability distribution that makes the mixtures well-behaved.\\
-  \emph{Allocation} because the model allocates each word in each document to one of the topics.
+  \emph{Latent} --- the topics are hidden; we only observe words.\\
+  \emph{Dirichlet} --- a statistical recipe for proportions (e.g., 70\% + 20\% + 10\%). It is the math behind ``a document is a mixture of topics.'' You do not need to work with it directly.\\
+  \emph{Allocation} --- the model allocates each word in each document to one of the topics.
 
   \vspace{0.6em}
   You, the researcher, specify one number: the \textbf{number of topics $k$}.
@@ -313,14 +365,59 @@
   LDA runs this story \textbf{backwards}: given the words we actually see, it infers the topics and the per-document mixtures.
 \end{frame}
 
-\begin{frame}{Two Things LDA Gives You}{Everything else in Orange is a view of these two tables}
+\begin{frame}{Drawing Words from a Bag into Topic Bins}{Running the story backwards: each word in a document is assigned to a topic}
+  \vspace{0.2em}
+  \begin{center}
+    \begin{tikzpicture}[
+      every node/.style={font=\small},
+      bag/.style={draw=slate, very thick, rounded corners=10pt,
+                  minimum width=3.8cm, minimum height=2.7cm, fill=white},
+      bin/.style={draw=slate, thick, rounded corners=5pt,
+                  minimum width=3.4cm, minimum height=1.1cm, align=center, inner sep=3pt},
+      wA/.style={text=coral,     font=\small\bfseries},
+      wB/.style={text=bluesoft,  font=\small\bfseries},
+      wC/.style={text=greenpos,  font=\small\bfseries},
+      arr/.style={-Stealth, thick, slate},
+    ]
+    \node[bag] (doc) at (0,0) {};
+    \node[anchor=south, font=\footnotesize\itshape] at (doc.north) {a document};
+    \node[wA] at ($(doc.center)+(-1.0, 0.8)$) {고구려};
+    \node[wB] at ($(doc.center)+( 0.5, 0.8)$) {일제};
+    \node[wA] at ($(doc.center)+(-0.2, 0.25)$) {백제};
+    \node[wC] at ($(doc.center)+( 0.9, 0.15)$) {경제};
+    \node[wB] at ($(doc.center)+(-0.9,-0.3)$) {독립};
+    \node[wA] at ($(doc.center)+( 0.2,-0.35)$) {삼국};
+    \node[wB] at ($(doc.center)+( 1.0,-0.8)$) {저항};
+    \node[wA] at ($(doc.center)+(-0.5,-0.9)$) {신라};
+
+    \node[bin, fill=corallight]    (T1) at ( 5.8, 1.4) {\textbf{Topic 1 --- Ancient}\\\footnotesize 고구려 · 백제 · 신라 · 삼국};
+    \node[bin, fill=bluesoftlight] (T2) at ( 5.8, 0.0) {\textbf{Topic 2 --- Colonial}\\\footnotesize 일제 · 독립 · 저항 · 항일};
+    \node[bin, fill=greenposlight] (T3) at ( 5.8,-1.4) {\textbf{Topic 3 --- Modern}\\\footnotesize 경제 · 산업화 · 발전};
+
+    \draw[arr] (doc.east) -- (T1.west);
+    \draw[arr] (doc.east) -- (T2.west);
+    \draw[arr] (doc.east) -- (T3.west);
+
+    \node[anchor=north, font=\footnotesize] at ($(doc.south)+(0,-0.1)$)
+      {\textcolor{coral}{50\% Ancient} \, · \, \textcolor{bluesoft}{37\% Colonial} \, · \, \textcolor{greenpos}{13\% Modern}};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.2em}
+  \small LDA reads each word, assigns it to a topic (the colour), and reports the proportions --- that is the document's topic \emph{mixture}.
+\end{frame}
+
+\begin{frame}{Two Key Probability Distributions}{What LDA estimates --- every Orange output is a view of one of these}
   \begin{columns}[T, onlytextwidth]
-    \column{0.48\textwidth}
-      \textbf{1.\ Topic $\to$ word weights}\\
-      \emph{How much does each topic use each word?}
+    \column{0.5\textwidth}
+      \begin{center}
+        $\phi_k(w) = p(w \mid k)$
+      \end{center}
+      \emph{How strongly topic $k$ uses word $w$.}\\
+      \textbf{Defines the topics.}
       \vspace{0.3em}
       \begin{center}
-        \small
+        \scriptsize
         \begin{tabular}{@{}l r r r@{}}
           \toprule
             & T1 & T2 & T3 \\
@@ -333,12 +430,15 @@
         \end{tabular}
       \end{center}
 
-    \column{0.48\textwidth}
-      \textbf{2.\ Document $\to$ topic weights}\\
-      \emph{How much does each document use each topic?}
+    \column{0.5\textwidth}
+      \begin{center}
+        $\theta_d(k) = p(k \mid d)$
+      \end{center}
+      \emph{How strongly document $d$ uses topic $k$.}\\
+      \textbf{Describes the documents.}
       \vspace{0.3em}
       \begin{center}
-        \small
+        \scriptsize
         \begin{tabular}{@{}l r r r@{}}
           \toprule
           Book & T1 & T2 & T3 \\
@@ -351,8 +451,10 @@
       \end{center}
   \end{columns}
 
-  \vspace{0.8em}
-  Columns of table 1 \emph{define} the topics; rows of table 2 \emph{describe} the documents.
+  \vspace{0.3em}
+  \begin{callblue}[In Orange]
+    $\phi$ is the \emph{All Topics} port; $\theta$ becomes columns on the \emph{Corpus} output. Word Cloud, Heatmap, and LDAvis are all views of these two tables.
+  \end{callblue}
 \end{frame}
 
 % ==================================================================
@@ -385,29 +487,28 @@
 % ==================================================================
 \section{The Orange Pipeline}
 
-\begin{frame}{The Topic Modelling Widget in Orange}{Input a Corpus, pick a method, set $k$, read topics out the other side}
+\begin{frame}{The Topic Modelling Widget in Orange}{Input a Corpus, set $k$, read topics out the other side}
   \begin{columns}[T, onlytextwidth]
     \column{0.48\textwidth}
-      \textbf{Three methods available}
+      \textbf{What Orange does}
       \begin{itemize}
-        \item \textbf{LSI} (Latent Semantic Indexing): SVD on the term--document matrix; fast, not probabilistic
-        \item \textbf{HDP} (Hierarchical Dirichlet Process): non-parametric; $k$ is \emph{inferred}
-        \item \textbf{LDA} (Latent Dirichlet Allocation): our choice this week
+        \item Fits an LDA model to your preprocessed corpus
+        \item Shows top words per topic in a side panel
+        \item Exports the two tables ($\phi$ and $\theta$) as data you can pipe into other widgets
       \end{itemize}
     \column{0.48\textwidth}
-      \textbf{What you set for LDA}
+      \textbf{What you set}
       \begin{itemize}
-        \item \texttt{Number of topics}: the $k$ you pick (default 10)
-        \item \emph{That's it.} Alpha, eta, iterations, seed are fixed at gensim defaults
+        \item \texttt{Number of topics} $k$: start with 4 or 5 for our demo
         \item Click \emph{Commit}, or enable \emph{Commit Automatically}, to refit
+        \item Everything else (alpha, iterations, seed) stays at defaults
       \end{itemize}
   \end{columns}
 
   \vspace{0.6em}
-  \begin{callblue}[Why LDA and not LSI or HDP?]
-    LDA produces \emph{probability distributions} that are easy to read as mixtures, and its $k$ is something you
-    deliberately choose rather than let the algorithm decide. HDP is tempting but harder to interpret for a first pass;
-    LSI is great for search but less natural for labelling themes.
+  \begin{callblue}[A note on methods]
+    Orange also offers LSI and HDP as alternative methods in the same widget. We use LDA throughout this course
+    because it produces readable topic \emph{mixtures} and lets you choose $k$ directly.
   \end{callblue}
 \end{frame}
 
@@ -645,9 +746,39 @@
 
   \vspace{0.6em}
   \textbf{Recommended reading.} Grimmer, Roberts \& Stewart, Chapter 13: \emph{Topic Models}.
+\end{frame}
+
+\begin{frame}{Week 11: Final Review \& Assessment}{May 11 --- covering Weeks 7--10}
+  \textbf{On the day:}
+  \begin{itemize}
+    \item \textbf{10-question assessment} via Qualtrics (same platform as the midterm).
+    \item \textbf{Application exercise.} Apply \emph{one} of the methods you have learned ---
+      clustering, word embeddings, sentiment, or LDA --- to a question I will pose,
+      using a dataset I will provide on the day.
+    \item Come prepared to use \emph{any} of them. You will pick your method once you see the task.
+    \item Followed by a review of the term and a look ahead to the Research Methods Project.
+  \end{itemize}
 
   \vspace{0.4em}
-  \textbf{Next week.} Week 11: Final review and assessment. Bring questions about the Research Methods Project (Week 12).
+  \begin{callblue}[Between today and May 11]
+    We do not meet. I will email you more information about the Research Methods Project in the meantime.
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{Week 12: Research Methods Project Workshop}{May 18 --- our last meeting}
+  A working session for your final paper.
+  \begin{itemize}
+    \item In-class assistance from me and peer support from your classmates.
+    \item Bring whatever you are stuck on: a research question, a dataset, a draft, a half-finished pipeline.
+    \item Troubleshoot together, plan the write-up, ask questions.
+    \item This is our last chance to come together as a group.
+  \end{itemize}
+
+  \vspace{0.4em}
+  \begin{callcoral}[What to expect]
+    Attendance is expected. The environment is supportive --- not an assessment. Come prepared to work on
+    your project and to help a classmate with theirs.
+  \end{callcoral}
 \end{frame}
 
 \end{document}

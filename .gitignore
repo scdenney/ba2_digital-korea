@@ -20,6 +20,16 @@ CLAUDE.md
 # LaTeX source files (directory and local symlink)
 presentations/tex
 
+# LaTeX build artifacts (sources live in presentations/src/)
+presentations/src/*.aux
+presentations/src/*.log
+presentations/src/*.nav
+presentations/src/*.out
+presentations/src/*.snm
+presentations/src/*.toc
+presentations/src/*.vrb
+presentations/src/*.pdf
+
 # Orange Data Mining files (directory and local symlink)
 odm_files
 setup-sync.sh
