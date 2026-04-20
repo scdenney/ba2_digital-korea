@@ -39,8 +39,8 @@ title: Syllabus
               <li><a href="#week-8">Week 8 (Mar. 30)</a></li>
               <li><a href="#week-9">Week 9 (Apr. 13)</a></li>
               <li><a href="#week-10">Week 10 (Apr. 20)</a></li>
-              <li><a href="#week-11">Week 11 (May 11)</a></li>
-              <li><a href="#week-12">Week 12 (May 18)</a></li>
+              <li><a href="#week-11">Week 11 (May 4)</a></li>
+              <li><a href="#week-12">Week 12 (May 11)</a></li>
             </ul>
           </li>
         </ul>
@@ -367,7 +367,7 @@ Topic modeling finds hidden thematic structure in document collections. Latent D
 
 ---
 
-### Week 11 (May 11): Final Review & Assessment {#week-11}
+### Week 11 (May 4): Final Review & Assessment {#week-11}
 
 This second assessment, administered in class, evaluates understanding of core concepts and practical skills developed from Week 7.
 
@@ -380,7 +380,7 @@ Following the assessment, we will review our learning across the entire course, 
 
 ---
 
-### Week 12 (May 18): Research Methods Project Workshop {#week-12}
+### Week 12 (May 11): Research Methods Project Workshop {#week-12}
 
 This intensive workshop session provides dedicated time for students to work on their Research Methods Projects in a supportive environment. The RMP requires students to apply course methods to a research question, generating data and analysis that will both constitute a grade ('Project on Research Methods') and inform their final papers. 
 

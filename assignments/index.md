@@ -452,7 +452,7 @@ Watch the following tutorial before the next class. It walks through topic model
 <div class="assignment-content" markdown="1">
 
 **Assigned:** Apr. 20
-**Due:** May 11 (before class)
+**Due:** May 4 (before class)
 
 This is the **final assignment** for the course. You will reproduce the in-class LDA pipeline on one of the NIKH corpora and interpret the topics you find.
 

@@ -21,5 +21,5 @@ Lecture slides and Orange Data Mining workflows are posted here after each sessi
 | 8 | Mar. 30 | Word Embeddings | [PDF](week08_embeddings.pdf) | [JPEG](odm_screenshots/week08.jpeg) |
 | 9 | Apr. 13 | Sentiment Analysis | [PDF](week09-sentiment.pdf) | [JPEG](odm_screenshots/week09.jpeg) |
 | 10 | Apr. 20 | Topic Modeling (LDA) | [PDF](week10-topic-modeling.pdf) | [PNG](odm_screenshots/week10.png) |
-| 11 | May 11 | Final Review & Assessment | — | — |
-| 12 | May 18 | Research Methods Project Workshop | — | — |
+| 11 | May 4 | Final Review & Assessment | — | — |
+| 12 | May 11 | Research Methods Project Workshop | — | — |

@@ -9,7 +9,7 @@ title: Home
 **Instructor:** Dr. Steven Denney<br>
 **Time:** Mondays, 15:15-17:00<br>
 **Location:** Huizinga 0.09 (DH Lab) & Arsenaal B0.05<br>
-**Duration:** 12 sessions (February 02 - May 18)
+**Duration:** 12 sessions (February 02 - May 11)
 
 ---
 
@@ -60,8 +60,8 @@ By the end of this course, you will be able to:
 | 8 | Mar. 30 | Word Embeddings |
 | 9 | Apr. 13 | Sentiment Analysis - Dictionary & Rule-Based |
 | 10 | Apr. 20 | Topic Modeling (LDA) |
-| 11 | May 11 | Final Review & Assessment |
-| 12 | May 18 | Research Methods Project Workshop |
+| 11 | May 4 | Final Review & Assessment |
+| 12 | May 11 | Research Methods Project Workshop |
 
 See the [Syllabus]({{ '/syllabus/syllabus.html' | relative_url }}) for detailed weekly content, readings, and assignments.
 
