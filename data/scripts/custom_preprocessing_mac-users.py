@@ -39,8 +39,8 @@ POS_TAGS = [
 
 REMOVE_NUMBERS = True
 MIN_TOKEN_LENGTH = 2
-MIN_DOC_FREQ = 0.1   # Minimum proportion of documents a word must appear in (10%)
-MAX_DOC_FREQ = 0.9   # Maximum proportion of documents a word can appear in (90%)
+MIN_DOC_FREQ = 0.01   # Minimum proportion of documents a word must appear in (1%)
+MAX_DOC_FREQ = 0.09   # Maximum proportion of documents a word can appear in (99%)
 
 STOPWORDS = {
     '있다', '없다', '되다', '하다', '그', '저', '이', '것', '등', '및',
