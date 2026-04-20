@@ -205,7 +205,28 @@
   \emph{Topics:} \textbf{what} themes run through this collection of texts?
 \end{frame}
 
-\begin{frame}{Your Turn: What's This Topic About?}{Each list is the top six words of one topic. What would you label it?}
+\begin{frame}{Your Turn: Warm-up in English}{Shout out a label for each list --- no wrong answers}
+  \vspace{0.3em}
+
+  \textbf{1.} \quad \tokbox{kimchi} \; \tokbox{bulgogi} \; \tokbox{ramyeon} \; \tokbox{soju} \; \tokbox{rice} \; \tokbox{banchan}
+  \vspace{0.4em}
+
+  \textbf{2.} \quad \tokbox{BTS} \; \tokbox{idol} \; \tokbox{fandom} \; \tokbox{album} \; \tokbox{stage} \; \tokbox{concert}
+  \vspace{0.4em}
+
+  \textbf{3.} \quad \tokbox{king} \; \tokbox{palace} \; \tokbox{scholar} \; \tokbox{dynasty} \; \tokbox{robe} \; \tokbox{sword}
+  \vspace{0.4em}
+
+  \textbf{4.} \quad \tokbox{subway} \; \tokbox{cafe} \; \tokbox{apartment} \; \tokbox{delivery} \; \tokbox{convenience} \; \tokbox{night}
+
+  \vspace{0.9em}
+  \begin{callblue}[What you just did]
+    You read six words and inferred a theme. An LDA model does the same thing, just in reverse:
+    it reads documents and groups the words that tend to co-occur into lists like these.
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{Your Turn: Now in Korean}{Same game --- each list is the top six words of one topic}
   \vspace{0.3em}
 
   \textbf{1.} \quad \tokbox{고구려} \; \tokbox{백제} \; \tokbox{신라} \; \tokbox{삼국} \; \tokbox{왕} \; \tokbox{시대}
@@ -217,15 +238,15 @@
   \textbf{3.} \quad \tokbox{경제} \; \tokbox{산업화} \; \tokbox{발전} \; \tokbox{성장} \; \tokbox{정부} \; \tokbox{수출}
   \vspace{0.4em}
 
-  \textbf{4.} \quad \tokbox{때} \; \tokbox{것} \; \tokbox{사람} \; \tokbox{이후} \; \tokbox{처음} \; \tokbox{등}
+  \textbf{4.} \quad \tokbox{민족} \; \tokbox{정체성} \; \tokbox{민주} \; \tokbox{시민} \; \tokbox{통일} \; \tokbox{문화}
 
   \vspace{0.9em}
   \begin{callblue}[Discuss with a neighbour]
-    What label fits each list? Which one is harder than the others, and why?
+    What label fits each list? Are any two close to each other?
   \end{callblue}
 \end{frame}
 
-\begin{frame}{Your Turn: Answers}{What the labels might be --- and what that tells us about the method}
+\begin{frame}{Your Turn: Answers}{Plausible labels for the Korean lists}
   \vspace{0.1em}
   \begin{center}
     \small
@@ -236,7 +257,7 @@
       1 & 고구려, 백제, 신라, 삼국, 왕, 시대 & Ancient \& Three Kingdoms \\
       2 & 일제, 독립, 저항, 운동, 항일, 식민 & Colonial era / resistance \\
       3 & 경제, 산업화, 발전, 성장, 정부, 수출 & Modernisation \\
-      4 & 때, 것, 사람, 이후, 처음, 등 & \emph{Junk: common function words} \\
+      4 & 민족, 정체성, 민주, 시민, 통일, 문화 & Modern Korean identity \\
       \bottomrule
     \end{tabular}
   \end{center}
@@ -244,30 +265,30 @@
   \vspace{0.5em}
   \begin{callcoral}[The takeaway]
     This \emph{is} what LDA produces: ranked lists of words. The \textbf{model} finds co-occurring words;
-    \textbf{you} read them and assign the label. Topic 4 reminds us that ``junk'' topics happen --- part of your job is to catch them.
+    \textbf{you} read them and assign the label. Labels are interpretations, not facts ---
+    a list about \emph{nation}, \emph{democracy}, \emph{citizenship}, \emph{identity} could plausibly be read two ways.
   \end{callcoral}
 \end{frame}
 
-\begin{frame}{Two Classification Styles, One Week Apart}{Both use a bag of words; they ask different questions of it}
-  \begin{columns}[T, onlytextwidth]
-    \column{0.48\textwidth}
-      \textbf{Dictionary sentiment (Week 9)}
-      \begin{itemize}
-        \item \emph{Supervised by a lexicon}: you bring the word lists
-        \item One score per document
-        \item Output: a \emph{number} (positive or negative)
-      \end{itemize}
-    \column{0.48\textwidth}
-      \textbf{Topic modeling (Week 10)}
-      \begin{itemize}
-        \item \emph{Unsupervised}: no lexicon, no labels
-        \item Many weights per document
-        \item Output: a \emph{set of themes} and how much each document uses each one
-      \end{itemize}
-  \end{columns}
-  \vspace{1em}
-  Topic modeling is the first \textbf{fully unsupervised} method since clustering (Week 7).
-  Where clustering gives each document \emph{one} group, LDA gives it a \emph{mixture}.
+\begin{frame}{Where LDA Fits Among Our Methods}{Each method gives a different \emph{kind} of answer about a document}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}c l l@{}}
+      \toprule
+      \textbf{Week} & \textbf{Method}              & \textbf{What each document gets} \\
+      \midrule
+      7    & Clustering (K-means, hierarchical)   & \emph{one} group (a hard label)               \\
+      8    & Word embeddings                      & a vector --- a position in meaning space       \\
+      9    & Dictionary sentiment                 & \emph{one} score (a tone)                      \\
+      \textbf{10} & \textbf{LDA (topic modeling)} & \textbf{a \emph{mixture} over themes (many weights)} \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.8em}
+  Clustering and sentiment each give a \emph{single} answer per document. Embeddings give a fixed representation.\\
+  \textbf{LDA is the first method that gives each document a \emph{multi-valued} answer} ---
+  a document isn't one thing, it is a blend of several, in different proportions.
 \end{frame}
 
 % ==================================================================
@@ -302,29 +323,8 @@
   \end{enumerate}
 \end{frame}
 
-\begin{frame}{What a ``Topic'' Looks Like}{Fictional but plausible examples from Korean history textbooks}
-  A topic is a ranked list of words with weights.
-  We read the top words and \emph{assign} a label ourselves.
-
-  \vspace{0.6em}
-  \begin{center}
-    \begin{tabular}{@{}l l l@{}}
-      \toprule
-      \textbf{Topic} & \textbf{Top words (Korean)} & \textbf{Our label} \\
-      \midrule
-      T1 & 고구려, 백제, 신라, 삼국, 왕, 시대   & Ancient Korea \\
-      T2 & 일제, 독립, 저항, 운동, 항일, 식민   & Colonial era \\
-      T3 & 산업화, 경제, 발전, 민주화, 성장, 정부 & Modernization \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-
-  \vspace{0.6em}
-  The \emph{model} gives us columns 1 and 2; the \emph{researcher} gives column 3.
-\end{frame}
-
 % ==================================================================
-\section{LDA: The Intuition}
+\section{How LDA Works}
 
 \begin{frame}{Latent Dirichlet Allocation, in Plain Words}{The most widely used topic model; Orange runs it}
   LDA (Blei, Ng \& Jordan, 2003) makes two simple assumptions:
@@ -411,11 +411,11 @@
   \begin{columns}[T, onlytextwidth]
     \column{0.5\textwidth}
       \begin{center}
-        $\phi_k(w) = p(w \mid k)$
+        $\underbrace{\phi_k(w)}_{\substack{\text{\tiny weight of word $w$}\\ \text{\tiny in topic $k$}}} \;=\; \underbrace{p(w \mid k)}_{\substack{\text{\tiny probability of $w$}\\ \text{\tiny given topic $k$}}}$
       \end{center}
-      \emph{How strongly topic $k$ uses word $w$.}\\
-      \textbf{Defines the topics.}
-      \vspace{0.3em}
+      \vspace{0.4em}
+      \centerline{\textbf{Defines the topics.}}
+      \vspace{0.2em}
       \begin{center}
         \scriptsize
         \begin{tabular}{@{}l r r r@{}}
@@ -432,11 +432,11 @@
 
     \column{0.5\textwidth}
       \begin{center}
-        $\theta_d(k) = p(k \mid d)$
+        $\underbrace{\theta_d(k)}_{\substack{\text{\tiny weight of topic $k$}\\ \text{\tiny in document $d$}}} \;=\; \underbrace{p(k \mid d)}_{\substack{\text{\tiny probability of topic $k$}\\ \text{\tiny given document $d$}}}$
       \end{center}
-      \emph{How strongly document $d$ uses topic $k$.}\\
-      \textbf{Describes the documents.}
-      \vspace{0.3em}
+      \vspace{0.4em}
+      \centerline{\textbf{Describes the documents.}}
+      \vspace{0.2em}
       \begin{center}
         \scriptsize
         \begin{tabular}{@{}l r r r@{}}
@@ -451,7 +451,7 @@
       \end{center}
   \end{columns}
 
-  \vspace{0.3em}
+  \vspace{0.2em}
   \begin{callblue}[In Orange]
     $\phi$ is the \emph{All Topics} port; $\theta$ becomes columns on the \emph{Corpus} output. Word Cloud, Heatmap, and LDAvis are all views of these two tables.
   \end{callblue}
@@ -507,8 +507,29 @@
 
   \vspace{0.6em}
   \begin{callblue}[A note on methods]
-    Orange also offers LSI and HDP as alternative methods in the same widget. We use LDA throughout this course
-    because it produces readable topic \emph{mixtures} and lets you choose $k$ directly.
+    LDA is not the only way to do topic modeling --- there are a couple of other methods available in the same widget. We use LDA throughout this course because it produces readable topic \emph{mixtures} and lets you choose $k$ directly. The others are described in an appendix slide if you are curious.
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{What the Widget Actually Eats}{Bag-of-word counts, built internally --- no separate widget needed}
+  LDA works on a \textbf{term--document matrix of word counts}: rows are documents,
+  columns are words, each cell is how many times that word appears in that document.
+  That is a \textbf{bag of words}.
+
+  \vspace{0.5em}
+  \begin{itemize}
+    \item You do \emph{not} add a \texttt{Bag of Words} widget to the pipeline.
+      Orange's \texttt{Topic Modelling} widget builds the count matrix internally from your preprocessed tokens.
+    \item You do \emph{not} pass TF--IDF weights into LDA. The algorithm models word \emph{counts}
+      (it treats a document as if words were drawn from topic urns), so raw frequencies are what it expects.
+    \item Preprocessing is what shapes the bag: stopword removal, POS filter, frequency trimming.
+      Garbage in, garbage out.
+  \end{itemize}
+
+  \vspace{0.4em}
+  \begin{callblue}[Where this fits in Weeks 4--5]
+    BoW and TF--IDF are two ways of representing a corpus. BoW is \emph{counts}; TF--IDF is \emph{counts reweighted} to emphasise distinctive words.
+    LDA uses BoW; earlier in the term we used TF--IDF for search-like tasks and clustering.
   \end{callblue}
 \end{frame}
 
@@ -779,6 +800,56 @@
     Attendance is expected. The environment is supportive --- not an assessment. Come prepared to work on
     your project and to help a classmate with theirs.
   \end{callcoral}
+\end{frame}
+
+% ==================================================================
+\appendix
+\section{Appendix: Other Topic Modeling Methods}
+
+\begin{frame}{Appendix: Other Topic Modeling Methods}{LSI, HDP, NMF --- three alternatives you may see in the literature}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l l@{}}
+      \toprule
+      \textbf{Method} & \textbf{How it works}                                  & \textbf{When useful} \\
+      \midrule
+      LSI & A linear-algebra trick (SVD) on the term--document matrix.       & Search and information retrieval; \\
+          & Produces ``latent dimensions,'' not probability distributions.    & fast, but topics are hard to read. \\[0.4em]
+      NMF & Factorises the (non-negative) term--document matrix into          & Often produces sharper, more \\
+          & a word part and a document part. Not probabilistic, but           & coherent topics than LDA; \\
+          & topics often look clean.                                          & common in recent NLP work. \\[0.4em]
+      HDP & A non-parametric cousin of LDA: you don't pick $k$ ---             & When you genuinely don't know \\
+          & the model infers the number of topics from the data.              & how many topics to ask for. \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.6em}
+  All three are available in Orange's Topic Modelling widget. We stay with LDA in this course because it
+  produces probability mixtures that are easy to teach and because you pick $k$ deliberately.
+\end{frame}
+
+\begin{frame}{Appendix: Quick Comparison}{How each method answers the same two questions LDA answers}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l c c c@{}}
+      \toprule
+                                & \textbf{LDA} & \textbf{LSI} & \textbf{NMF} \\
+      \midrule
+      Probabilistic?            & yes          & no           & no           \\
+      Output: topic--word       & $\phi_k(w)$, probabilities & loadings & non-negative weights \\
+      Output: doc--topic        & $\theta_d(k)$, mixture    & coordinates & non-negative weights \\
+      You choose $k$?           & yes          & yes          & yes          \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.5em}
+  \textbf{HDP} sits outside this table because $k$ is inferred rather than chosen. Its output is still a topic mixture per document, like LDA.
+
+  \vspace{0.4em}
+  \textbf{Practical advice.} If LDA gives you incoherent topics no matter what $k$ you choose, NMF is the
+  obvious next thing to try. It uses the same preprocessing pipeline.
 \end{frame}
 
 \end{document}
