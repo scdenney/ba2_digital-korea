@@ -222,35 +222,18 @@
 
 \begin{frame}{What You Just Did}{Six words in, a theme out --- that is the topic-modeling move}
   \vspace{0.4em}
-  \begin{center}
-    \begin{tikzpicture}[
-      every node/.style={font=\small},
-      wordlist/.style={font=\small, align=left},
-      arr/.style={-Stealth, thick, slate},
-      label/.style={font=\small\bfseries, text=slate, align=left},
-    ]
-      \node[wordlist] (l1) at (0,2.4) {\tokbox{kimchi} \tokbox{bulgogi} \tokbox{soju}\ldots};
-      \node[wordlist] (l2) at (0,1.2) {\tokbox{BTS} \tokbox{idol} \tokbox{fandom}\ldots};
-      \node[wordlist] (l3) at (0,0)   {\tokbox{king} \tokbox{palace} \tokbox{dynasty}\ldots};
-      \node[wordlist] (l4) at (0,-1.2){\tokbox{subway} \tokbox{cafe} \tokbox{apartment}\ldots};
 
-      \node[label, right=2.6cm of l1] (t1) {\textit{Food}};
-      \node[label, right=2.6cm of l2] (t2) {\textit{K-pop}};
-      \node[label, right=2.6cm of l3] (t3) {\textit{Historical drama / sageuk}};
-      \node[label, right=2.6cm of l4] (t4) {\textit{Modern Seoul life}};
+  {\small
+  \begin{tabular}{@{}l @{\ } l @{\quad$\longrightarrow$\quad} l@{}}
+    \textbf{1.} & \tokbox{kimchi}\,\tokbox{bulgogi}\,\tokbox{ramyeon}\,\tokbox{soju}\,\tokbox{rice}\,\tokbox{banchan} & \textit{\textbf{Food}} \\[0.4em]
+    \textbf{2.} & \tokbox{BTS}\,\tokbox{idol}\,\tokbox{fandom}\,\tokbox{album}\,\tokbox{stage}\,\tokbox{concert} & \textit{\textbf{K-pop}} \\[0.4em]
+    \textbf{3.} & \tokbox{king}\,\tokbox{palace}\,\tokbox{scholar}\,\tokbox{dynasty}\,\tokbox{robe}\,\tokbox{sword} & \textit{\textbf{Historical drama}} \\[0.4em]
+    \textbf{4.} & \tokbox{subway}\,\tokbox{cafe}\,\tokbox{apartment}\,\tokbox{delivery}\,\tokbox{convenience}\,\tokbox{night} & \textit{\textbf{Modern Seoul life}} \\
+  \end{tabular}
+  }
 
-      \draw[arr] (l1.east) -- (t1.west);
-      \draw[arr] (l2.east) -- (t2.west);
-      \draw[arr] (l3.east) -- (t3.west);
-      \draw[arr] (l4.east) -- (t4.west);
-    \end{tikzpicture}
-  \end{center}
-
-  \vspace{0.3em}
-  \begin{callblue}[What you just did]
-    You read six co-occurring words and inferred a theme. LDA does the opposite direction:
-    it reads a corpus and returns lists like the ones on the left, for \emph{you} to label.
-  \end{callblue}
+  \vspace{0.7em}
+  {\footnotesize\itshape You read six co-occurring words and inferred a theme. LDA does the opposite --- it reads a corpus and returns lists like these for \emph{you} to label.}
 \end{frame}
 
 \begin{frame}{Now in Korean}{Same game --- each list is the top six words of one topic}
@@ -313,9 +296,10 @@
   \end{center}
 
   \vspace{0.8em}
-  Clustering and sentiment each give a \emph{single} answer per document. Embeddings give a fixed representation.\\
-  \textbf{LDA is the first method that gives each document a \emph{multi-valued} answer} ---
-  a document isn't one thing, it is a blend of several, in different proportions.
+  Clustering and sentiment each give a \emph{single} answer per document; embeddings give a fixed representation.
+
+  \vspace{0.5em}
+  \textbf{LDA is the first method that gives each document a \emph{multi-valued} answer.} A document isn't one thing, it is a mix of things.
 \end{frame}
 
 % ==================================================================
@@ -361,15 +345,18 @@
   \end{enumerate}
 
   \vspace{0.4em}
-  It reads a corpus as a \textbf{term--document matrix of word counts} --- a bag of words, not TF--IDF weights.
+  \textbf{Input:} a term--document matrix of word counts --- a bag of words, not TF--IDF weights.
 
   \vspace{0.4em}
-  \emph{Latent} --- the topics are hidden; we only observe words.\\
-  \emph{Dirichlet} --- a statistical recipe for proportions (e.g., 70\% + 20\% + 10\%). It is the math behind ``a document is a mixture of topics.'' You do not need to work with it directly.\\
-  \emph{Allocation} --- the model allocates each word in each document to one of the topics.
+  \textbf{Unpacking the name:}
+  \begin{itemize}
+    \item \textbf{Latent} --- topics are hidden; we only observe words.
+    \item \textbf{Dirichlet} --- the math for proportions (e.g., 70\% + 20\% + 10\%). You don't work with it directly.
+    \item \textbf{Allocation} --- each word in each document gets allocated to one of the topics.
+  \end{itemize}
 
   \vspace{0.3em}
-  You, the researcher, specify one number: the \textbf{number of topics $k$}.
+  You, the researcher, specify one number: $k$, the \textbf{number of topics}.
 \end{frame}
 
 \begin{frame}{The Generative Story}{A thought experiment about how LDA imagines a document is written}
@@ -548,19 +535,27 @@
 \end{frame}
 
 \begin{frame}{A Minimum Orange Workflow}{Load, tokenise, preprocess, model, visualise}
-  \vspace{0.8em}
+  \vspace{1.2em}
   \begin{center}
-    \includegraphics[width=\linewidth]{../odm_screenshots/week10.png}
-  \end{center}
-
-  \vspace{0.4em}
-  \begin{center}
-    \begin{tikzpicture}[every node/.style={font=\small}]
-      \node[font=\small, text=slatelight] (l) {\ldots\ Topic Modelling};
-      \node[font=\small, text=slate, right=0.6cm of l] (arr) {$\Longrightarrow$};
-      \node[draw=slate, thick, rounded corners=20pt, fill=corallight,
-            minimum width=2.4cm, minimum height=1.0cm, right=0.6cm of arr]
-            (ldavis) {\textbf{LDAvis}};
+    \begin{tikzpicture}[node distance=0.25cm, every node/.style={font=\footnotesize}]
+      \tikzset{
+        widget/.style={draw=slate, rounded corners=3pt, fill=bluesoftlight,
+                       inner sep=4pt, minimum height=2em, text width=1.55cm, align=center},
+        arr/.style={-Stealth, thick, slate},
+      }
+      \node[widget] (file)    {File};
+      \node[widget, right=of file]    (corpus)  {Corpus};
+      \node[widget, right=of corpus]  (script)  {Python\\Script};
+      \node[widget, right=of script]  (corpus2) {Corpus (2)};
+      \node[widget, right=of corpus2] (prep)    {Preprocess Text};
+      \node[widget, right=of prep]    (topic)   {Topic Modelling};
+      \node[widget, right=of topic, fill=corallight] (ldavis) {LDAvis};
+      \draw[arr] (file)    -- (corpus);
+      \draw[arr] (corpus)  -- (script);
+      \draw[arr] (script)  -- (corpus2);
+      \draw[arr] (corpus2) -- (prep);
+      \draw[arr] (prep)    -- (topic);
+      \draw[arr] (topic)   -- (ldavis);
     \end{tikzpicture}
   \end{center}
 \end{frame}
@@ -649,30 +644,6 @@
   \end{callcoral}
 \end{frame}
 
-\begin{frame}{What to Expect in the Demo Output}{Plausible topics for an LDA with $k=4$ on this corpus}
-  \begin{center}
-    \small
-    \begin{tabular}{@{}l l l@{}}
-      \toprule
-      \textbf{Topic} & \textbf{Likely top words}                    & \textbf{Our working label} \\
-      \midrule
-      T1 & 고구려, 백제, 신라, 삼국, 왕조, 시대      & Ancient \& pre-modern states \\
-      T2 & 조선, 왕, 시대, 성리학, 문화             & Joseon dynasty \\
-      T3 & 일제, 독립, 운동, 저항, 식민, 항일        & Colonial / resistance \\
-      T4 & 민주, 경제, 산업화, 발전, 정부, 국민      & Modern Korea \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-
-  \vspace{0.6em}
-  What we \emph{expect} to see in the document--topic table:
-  \begin{itemize}
-    \item 1940 textbooks skewed toward T1--T2 (the Japanese colonial authorities taught a ``pre-modern'' Korea).
-    \item 1980s textbooks mixing T3 strongly (the colonial period \emph{as} a topic).
-    \item 2002 textbooks spreading weight across T1--T4 (broadest coverage).
-  \end{itemize}
-\end{frame}
-
 % ==================================================================
 \section{Interpreting Topics Responsibly}
 
@@ -701,34 +672,27 @@
   \end{callcoral}
 \end{frame}
 
-\begin{frame}{Best Practices for Interpretation}{The checklist we will use in the demo}
-  \begin{enumerate}
-    \item Run LDA twice with the same $k$. Are the topics stable? If not, raise or lower $k$.
-    \item For each topic, read the \textbf{top 10--15 words}. Draft a label that covers most of them.
-    \item Open the \emph{Corpus} output and find the 2--3 books with the \textbf{highest weight} for each topic. Does the book title fit your label?
-    \item Look for \textbf{one ``junk'' topic} and be honest about it.
-    \item Compare topic weights across \texttt{era}. A \emph{Box Plot} grouped by era is usually enough.
-  \end{enumerate}
-\end{frame}
-
 % ==================================================================
 \section{Looking Ahead}
 
-\begin{frame}{For the Lab}{Interactive, workflow, short write-up}
-  \textbf{Explore.} Work through the NIKH clustering interactive on the course website. Note which books cluster together,
-  and hold that in your head while you run LDA.
+\begin{frame}{Final Assignment}{Reproduce today's pipeline and interpret the topics --- push to GitHub}
+  This week's submission is your \textbf{final assignment} for the course.
 
-  \vspace{0.4em}
-  \textbf{Build.} The 5-widget Orange pipeline on \texttt{nikh\_clustering\_demo.csv}:
-  Corpus $\to$ Preprocess $\to$ Python Script (Kiwi, nouns only) $\to$ Topic Modelling (LDA, $k=4$) $\to$ Word Cloud.
+  \vspace{0.5em}
+  \textbf{1. Use} one of the NIKH corpora from the \emph{Data \& Scripts} page --- the 9-book or the 11-book sample.
 
-  \vspace{0.4em}
-  \textbf{Write.} 3--4 sentences per topic:
+  \vspace{0.3em}
+  \textbf{2. Reproduce} today's Orange pipeline: File $\to$ Corpus $\to$ Python Script (Kiwi) $\to$ Corpus $\to$ Preprocess Text $\to$ Topic Modelling $\to$ LDAvis.
+
+  \vspace{0.3em}
+  \textbf{3. Interpret.} Pick one (or both):
   \begin{itemize}
-    \item your label for the topic;
-    \item the top 5 words that earned that label;
-    \item which era(s) use it most, read off the \emph{Corpus} output.
+    \item A modification of the \textbf{LDAvis} view --- adjust $\lambda$, select a topic, and describe what you see.
+    \item A reflection on the \textbf{topic output} --- the labels you gave each topic, which eras use which, what surprised you.
   \end{itemize}
+
+  \vspace{0.3em}
+  \textbf{4. Submit} by pushing your work to GitHub this week.
 \end{frame}
 
 \begin{frame}{Where This Leaves Us}{A map of the semester so far}
@@ -755,10 +719,8 @@
   \textbf{On the day:}
   \begin{itemize}
     \item \textbf{10-question assessment} via Qualtrics (same platform as the midterm).
-    \item \textbf{Application exercise.} Apply \emph{one} of the methods you have learned ---
-      clustering, word embeddings, sentiment, or LDA --- to a question I will pose,
-      using a dataset I will provide on the day.
-    \item Come prepared to use \emph{any} of them. You will pick your method once you see the task.
+    \item \textbf{Application exercise.} Apply \emph{at least two} of the methods you have learned in the second half of the course --- clustering, word embeddings, sentiment, or LDA --- to a question I will pose, using a dataset I will provide on the day.
+    \item Come prepared to use \emph{any} of them. You will choose which to combine once you see the task.
     \item Followed by a review of the term and a look ahead to the Research Methods Project.
   \end{itemize}
 
