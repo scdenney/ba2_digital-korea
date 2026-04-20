@@ -83,6 +83,53 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 .ldavis-wrap { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; }
 .ldavis-wrap iframe { display: block; width: 100%; height: 720px; border: 0; }
 
+/* ── Code blocks ─────────────────────────────────────────────────── */
+.code-block { position: relative; margin: 1rem 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.4rem 0.75rem; background: #f1f5f9; border-bottom: 1px solid #e2e8f0;
+  font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.copy-btn {
+  padding: 0.2rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff;
+  font-size: 0.72rem; color: #64748b; cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.copy-btn:hover { background: #f8fafc; border-color: var(--leiden-blue); color: var(--leiden-blue); }
+.copy-btn.copied { background: #ecfdf5; border-color: #6ee7b7; color: #059669; }
+.code-block pre {
+  margin: 0; padding: 1rem; background: #1e293b; color: #e2e8f0;
+  font-size: 0.82rem; line-height: 1.55; overflow-x: auto;
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+.code-block pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+.code-block .r-comment  { color: #94a3b8; font-style: italic; }
+.code-block .r-string   { color: #86efac; }
+.code-block .r-function { color: #93c5fd; }
+.code-block .r-keyword  { color: #c4b5fd; }
+.code-block .r-number   { color: #fde68a; }
+.code-block .r-operator { color: #f9a8d4; }
+
+/* ── R code ribbon (collapsible) ─────────────────────────────────── */
+.code-ribbon { margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.code-ribbon summary {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1rem; background: linear-gradient(to right, #1e293b, #334155);
+  color: #e2e8f0; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; user-select: none; list-style: none; transition: background 0.2s;
+}
+.code-ribbon summary::-webkit-details-marker { display: none; }
+.code-ribbon summary::before { content: "\25B6"; font-size: 0.65rem; transition: transform 0.2s; flex-shrink: 0; }
+.code-ribbon[open] summary::before { transform: rotate(90deg); }
+.code-ribbon summary:hover { background: linear-gradient(to right, #0f172a, #1e293b); }
+.code-ribbon summary .ribbon-label { flex: 1; }
+.code-ribbon summary .ribbon-tag {
+  padding: 0.12rem 0.45rem; border-radius: 4px; font-size: 0.68rem; font-weight: 700;
+  background: rgba(255,255,255,0.12); color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.code-ribbon .code-ribbon-body { border-top: 1px solid #334155; }
+.code-ribbon .code-block { margin: 0; border: none; border-radius: 0; }
+.code-ribbon .callout    { margin: 0; border-radius: 0; border-left-width: 3px; }
+
 @media (max-width: 700px) {
   .ldavis-wrap iframe { height: 560px; }
 }
@@ -139,6 +186,40 @@ Three things become visible on the full corpus that the 11-book demo couldn't sh
 The periodization follows the course convention: <span class="era-badge era-badge-colonial">Colonial</span> for Japanese-colonial-era textbooks (roughly 1895&ndash;1945), <span class="era-badge era-badge-authoritarian">Authoritarian</span> for the developmental-state decades (1946&ndash;1987), and <span class="era-badge era-badge-democratic">Democratic</span> for the post-1987 period. The Authoritarian period dominates the corpus by book count because that is when the state published textbooks most intensively.
 </p>
 
+<p class="narrative">
+For the R walkthroughs below we use the <strong>11-book clustering demo</strong> (the same corpus from Week 7), not the full 67 books. The same code runs on any CSV with a <code>full_text</code> column, so you can swap in the 9-book demo or the full corpus later.
+</p>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: load the 11-book NIKH corpus and stopwords</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Packages ──────────────────────────────────────────────────────</span>
+<span class="r-function">library</span>(tidyverse)
+<span class="r-function">library</span>(tidytext)
+<span class="r-function">library</span>(elbird)        <span class="r-comment"># Korean morphological analysis (Kiwi)</span>
+<span class="r-function">library</span>(topicmodels)   <span class="r-comment"># LDA</span>
+<span class="r-function">library</span>(LDAvis)        <span class="r-comment"># interactive topic visualization</span>
+
+<span class="r-comment"># ── Load the clustering demo corpus (11 books) ────────────────────</span>
+corpus <span class="r-operator">&lt;-</span> <span class="r-function">read_csv</span>(<span class="r-string">"data/nikh_textbooks/nikh_clustering_demo.csv"</span>)
+
+<span class="r-comment"># ── Korean stopwords ──────────────────────────────────────────────</span>
+stopwords_ko <span class="r-operator">&lt;-</span> <span class="r-function">read_lines</span>(<span class="r-string">"data/stopwords_ko.txt"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">str_trim</span>() <span class="r-operator">|&gt;</span>
+  <span class="r-function">discard</span>(<span class="r-operator">~</span> .x <span class="r-operator">==</span> <span class="r-string">""</span>)
+
+corpus <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(book_id, title, era, year) <span class="r-operator">|&gt;</span>
+  <span class="r-function">print</span>(n <span class="r-operator">=</span> <span class="r-number">11</span>)</code></pre>
+    </div>
+    <div class="callout callout-info">
+      <strong>About the packages:</strong> <code>elbird</code> wraps <a href="https://github.com/bab2min/Kiwi">Kiwi</a>, the same tokenizer used in our Orange scripts. <code>topicmodels</code> is the standard R package for LDA. <code>LDAvis</code> is the R sibling of pyLDAvis.
+    </div>
+  </div>
+</details>
+
 <!-- ====================================================================== -->
 <div class="section-heading">
   <span class="section-number">3</span>
@@ -161,6 +242,60 @@ We apply the exact pipeline from the Orange demo, just scripted in Python instea
 <div class="callout callout-tip">
   LDA reads raw <em>counts</em>, not TF&ndash;IDF weights. The document-frequency filter replaces what TF&ndash;IDF's IDF step would do: it removes words that are too common or too rare to help separate topics.
 </div>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: tokenize with Kiwi, filter, and build a document-term matrix</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Helper: tokenize one text with Kiwi via elbird ────────────────</span>
+tokenize_kiwi <span class="r-operator">&lt;-</span> <span class="r-keyword">function</span>(text) {
+  result <span class="r-operator">&lt;-</span> <span class="r-function">tokenize</span>(text, flatten <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)
+  <span class="r-function">tibble</span>(form <span class="r-operator">=</span> result<span class="r-operator">$</span>form, tag <span class="r-operator">=</span> result<span class="r-operator">$</span>tag)
+}
+
+<span class="r-comment"># ── Tokenize and keep only nouns ──────────────────────────────────</span>
+tokens <span class="r-operator">&lt;-</span> corpus <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(book_id, era, full_text) <span class="r-operator">|&gt;</span>
+  <span class="r-function">mutate</span>(morphemes <span class="r-operator">=</span> <span class="r-function">map</span>(full_text, tokenize_kiwi)) <span class="r-operator">|&gt;</span>
+  <span class="r-function">unnest</span>(morphemes) <span class="r-operator">|&gt;</span>
+  <span class="r-function">filter</span>(
+    tag <span class="r-operator">%in%</span> <span class="r-function">c</span>(<span class="r-string">"NNG"</span>, <span class="r-string">"NNP"</span>),
+    <span class="r-operator">!</span>form <span class="r-operator">%in%</span> stopwords_ko,
+    <span class="r-function">str_length</span>(form) <span class="r-operator">&gt;=</span> <span class="r-number">2</span>,
+    <span class="r-operator">!</span><span class="r-function">str_detect</span>(form, <span class="r-string">"^[0-9]+$"</span>)
+  ) <span class="r-operator">|&gt;</span>
+  <span class="r-function">select</span>(book_id, era, word <span class="r-operator">=</span> form)
+
+<span class="r-comment"># ── Count (book, word) ────────────────────────────────────────────</span>
+counts <span class="r-operator">&lt;-</span> tokens <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(book_id, word)
+
+<span class="r-comment"># ── Document-frequency filter ─────────────────────────────────────</span>
+<span class="r-comment"># Keep words that appear in at least 2 books and in at most 90% of books.</span>
+n_docs <span class="r-operator">&lt;-</span> <span class="r-function">n_distinct</span>(counts<span class="r-operator">$</span>book_id)
+
+doc_freq <span class="r-operator">&lt;-</span> counts <span class="r-operator">|&gt;</span>
+  <span class="r-function">distinct</span>(book_id, word) <span class="r-operator">|&gt;</span>
+  <span class="r-function">count</span>(word, name <span class="r-operator">=</span> <span class="r-string">"df"</span>)
+
+keep_words <span class="r-operator">&lt;-</span> doc_freq <span class="r-operator">|&gt;</span>
+  <span class="r-function">filter</span>(df <span class="r-operator">&gt;=</span> <span class="r-number">2</span>, df <span class="r-operator">&lt;=</span> <span class="r-number">0.9</span> <span class="r-operator">*</span> n_docs) <span class="r-operator">|&gt;</span>
+  <span class="r-function">pull</span>(word)
+
+counts_filt <span class="r-operator">&lt;-</span> counts <span class="r-operator">|&gt;</span> <span class="r-function">filter</span>(word <span class="r-operator">%in%</span> keep_words)
+
+<span class="r-comment"># ── Cast to a document-term matrix for topicmodels ────────────────</span>
+dtm <span class="r-operator">&lt;-</span> counts_filt <span class="r-operator">|&gt;</span>
+  <span class="r-function">cast_dtm</span>(document <span class="r-operator">=</span> book_id, term <span class="r-operator">=</span> word, value <span class="r-operator">=</span> n)
+
+<span class="r-function">dim</span>(dtm)   <span class="r-comment"># books × vocabulary size</span></code></pre>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Why a DTM?</strong> <code>topicmodels::LDA()</code> expects a <code>DocumentTermMatrix</code>, which is just the raw count table in a shape it understands. <code>cast_dtm()</code> from tidytext does the conversion from a long tidy tibble.
+    </div>
+  </div>
+</details>
 
 <!-- ====================================================================== -->
 <div class="section-heading">
@@ -194,6 +329,33 @@ We fit LDA at several values of <em>k</em> and compute <code>c_v</code> for each
 Coherence isn't the last word. Two topics can look equally &ldquo;coherent&rdquo; to the algorithm but not equally useful for your research question. And coherence rewards models that use a narrower vocabulary, which can hide real variety. Read it as one signal, together with reading the topics themselves.
 </p>
 
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: compare several values of <em>k</em> with ldatuning</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Package for k-selection metrics ───────────────────────────────</span>
+<span class="r-function">library</span>(ldatuning)
+
+<span class="r-comment"># ── Fit LDA at several k values and score each fit ────────────────</span>
+tune <span class="r-operator">&lt;-</span> <span class="r-function">FindTopicsNumber</span>(
+  dtm,
+  topics  <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-number">3</span>, <span class="r-number">4</span>, <span class="r-number">5</span>, <span class="r-number">6</span>, <span class="r-number">7</span>, <span class="r-number">8</span>, <span class="r-number">10</span>, <span class="r-number">12</span>),
+  metrics <span class="r-operator">=</span> <span class="r-function">c</span>(<span class="r-string">"Arun2010"</span>, <span class="r-string">"CaoJuan2009"</span>, <span class="r-string">"Deveaud2014"</span>),
+  method  <span class="r-operator">=</span> <span class="r-string">"Gibbs"</span>,
+  control <span class="r-operator">=</span> <span class="r-function">list</span>(seed <span class="r-operator">=</span> <span class="r-number">42</span>),
+  mc.cores <span class="r-operator">=</span> <span class="r-number">2</span>,
+  verbose <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>
+)
+
+<span class="r-function">FindTopicsNumber_plot</span>(tune)</code></pre>
+    </div>
+    <div class="callout callout-info">
+      <strong>How to read the plot:</strong> <code>Deveaud2014</code> should be high (maximize), while <code>Arun2010</code> and <code>CaoJuan2009</code> should be low (minimize). The best <em>k</em> is a compromise. These are not identical to the <code>c_v</code> score we plot above, but they answer the same question: which <em>k</em> gives the cleanest topics.
+    </div>
+  </div>
+</details>
+
 <!-- ====================================================================== -->
 <div class="section-heading">
   <span class="section-number">5</span>
@@ -210,6 +372,40 @@ Below are the topics from <strong>k = <span id="kDefault">6</span></strong>, eac
 
 <div id="topicTabs" class="topic-tabs"></div>
 <div id="topicPanel"></div>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: fit LDA and inspect the top words per topic</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Fit the model ─────────────────────────────────────────────────</span>
+<span class="r-function">set.seed</span>(<span class="r-number">42</span>)
+k <span class="r-operator">&lt;-</span> <span class="r-number">5</span>
+
+lda_fit <span class="r-operator">&lt;-</span> <span class="r-function">LDA</span>(
+  dtm,
+  k       <span class="r-operator">=</span> k,
+  method  <span class="r-operator">=</span> <span class="r-string">"Gibbs"</span>,
+  control <span class="r-operator">=</span> <span class="r-function">list</span>(iter <span class="r-operator">=</span> <span class="r-number">500</span>, seed <span class="r-operator">=</span> <span class="r-number">42</span>)
+)
+
+<span class="r-comment"># ── β: topic–word probabilities (ϕ_k(w)) ──────────────────────────</span>
+beta <span class="r-operator">&lt;-</span> <span class="r-function">tidy</span>(lda_fit, matrix <span class="r-operator">=</span> <span class="r-string">"beta"</span>)
+
+<span class="r-comment"># Top 15 words per topic</span>
+top_words <span class="r-operator">&lt;-</span> beta <span class="r-operator">|&gt;</span>
+  <span class="r-function">group_by</span>(topic) <span class="r-operator">|&gt;</span>
+  <span class="r-function">slice_max</span>(beta, n <span class="r-operator">=</span> <span class="r-number">15</span>, with_ties <span class="r-operator">=</span> <span class="r-keyword">FALSE</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ungroup</span>() <span class="r-operator">|&gt;</span>
+  <span class="r-function">arrange</span>(topic, <span class="r-function">desc</span>(beta))
+
+<span class="r-function">print</span>(top_words, n <span class="r-operator">=</span> k <span class="r-operator">*</span> <span class="r-number">15</span>)</code></pre>
+    </div>
+    <div class="callout callout-tip">
+      <strong>What is β (beta)?</strong> It is the <em>topic–word</em> matrix: for each topic, the probability of each word. In lecture we called this ϕ<sub>k</sub>(w). The tidytext <code>tidy()</code> function pulls it out of a fitted model in long format so you can pipe and plot it.
+    </div>
+  </div>
+</details>
 
 <!-- ====================================================================== -->
 <div class="section-heading">
@@ -266,6 +462,42 @@ Averaging each era's topic mixtures gives you a sense of which themes each perio
 </p>
 <div id="eraTopicCards" class="era-topic-grid"></div>
 
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: document–topic mixtures and era averages</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── γ: document–topic proportions (θ_d(k)) ────────────────────────</span>
+gamma <span class="r-operator">&lt;-</span> <span class="r-function">tidy</span>(lda_fit, matrix <span class="r-operator">=</span> <span class="r-string">"gamma"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">rename</span>(book_id <span class="r-operator">=</span> document)
+
+<span class="r-comment"># Dominant topic per book</span>
+dominant <span class="r-operator">&lt;-</span> gamma <span class="r-operator">|&gt;</span>
+  <span class="r-function">group_by</span>(book_id) <span class="r-operator">|&gt;</span>
+  <span class="r-function">slice_max</span>(gamma, n <span class="r-operator">=</span> <span class="r-number">1</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">ungroup</span>() <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, title, era, year),
+            by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">arrange</span>(year)
+
+<span class="r-function">print</span>(dominant, n <span class="r-operator">=</span> <span class="r-number">11</span>)
+
+<span class="r-comment"># ── Era-level topic mix ───────────────────────────────────────────</span>
+era_mix <span class="r-operator">&lt;-</span> gamma <span class="r-operator">|&gt;</span>
+  <span class="r-function">left_join</span>(corpus <span class="r-operator">|&gt;</span> <span class="r-function">select</span>(book_id, era), by <span class="r-operator">=</span> <span class="r-string">"book_id"</span>) <span class="r-operator">|&gt;</span>
+  <span class="r-function">group_by</span>(era, topic) <span class="r-operator">|&gt;</span>
+  <span class="r-function">summarise</span>(share <span class="r-operator">=</span> <span class="r-function">mean</span>(gamma), .groups <span class="r-operator">=</span> <span class="r-string">"drop"</span>)
+
+era_mix <span class="r-operator">|&gt;</span>
+  <span class="r-function">pivot_wider</span>(names_from <span class="r-operator">=</span> topic, values_from <span class="r-operator">=</span> share,
+              names_prefix <span class="r-operator">=</span> <span class="r-string">"T"</span>)</code></pre>
+    </div>
+    <div class="callout callout-tip">
+      <strong>What is γ (gamma)?</strong> The <em>document–topic</em> matrix: for each book, the proportion of each topic. In lecture we called this θ<sub>d</sub>(k). Averaging γ within an era gives you the era-level topic mix shown in the cards above.
+    </div>
+  </div>
+</details>
+
 <!-- ====================================================================== -->
 <div class="section-heading">
   <span class="section-number">7</span>
@@ -283,6 +515,36 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
 <p class="narrative" style="margin-top:0.75rem;font-size:0.85rem;color:#6b7280">
   Opens in an iframe. If it feels cramped, <a id="ldavisLink" href="{{ '/interactive/topic_modeling_ldavis.html' | relative_url }}" target="_blank" rel="noopener">open it in a new tab</a>.
 </p>
+
+<details class="code-ribbon">
+  <summary><span class="ribbon-label">Show R code: build the same LDAvis view from your fitted model</span><span class="ribbon-tag">R</span></summary>
+  <div class="code-ribbon-body">
+    <div class="code-block">
+      <div class="code-block-header"><span>R</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="r-comment"># ── Extract the pieces LDAvis expects ─────────────────────────────</span>
+phi   <span class="r-operator">&lt;-</span> <span class="r-function">posterior</span>(lda_fit)<span class="r-operator">$</span>terms     <span class="r-comment"># K × V, rows sum to 1</span>
+theta <span class="r-operator">&lt;-</span> <span class="r-function">posterior</span>(lda_fit)<span class="r-operator">$</span>topics    <span class="r-comment"># D × K, rows sum to 1</span>
+vocab <span class="r-operator">&lt;-</span> <span class="r-function">colnames</span>(phi)
+
+doc_lengths <span class="r-operator">&lt;-</span> <span class="r-function">as.matrix</span>(dtm) <span class="r-operator">|&gt;</span> <span class="r-function">rowSums</span>()
+term_freqs  <span class="r-operator">&lt;-</span> <span class="r-function">as.matrix</span>(dtm) <span class="r-operator">|&gt;</span> <span class="r-function">colSums</span>()
+
+<span class="r-comment"># ── Build the JSON and open it in a browser ───────────────────────</span>
+json <span class="r-operator">&lt;-</span> <span class="r-function">createJSON</span>(
+  phi            <span class="r-operator">=</span> phi,
+  theta          <span class="r-operator">=</span> theta,
+  doc.length     <span class="r-operator">=</span> doc_lengths,
+  vocab          <span class="r-operator">=</span> vocab,
+  term.frequency <span class="r-operator">=</span> term_freqs
+)
+
+<span class="r-function">serVis</span>(json, out.dir <span class="r-operator">=</span> <span class="r-string">"lda_view"</span>, open.browser <span class="r-operator">=</span> <span class="r-keyword">TRUE</span>)</code></pre>
+    </div>
+    <div class="callout callout-info">
+      <strong>What <code>serVis()</code> does:</strong> writes the LDAvis HTML to <code>lda_view/</code> and opens it in your browser. The λ slider, circle map, and bar chart work the same as the iframe above. Share the folder with a classmate and they can open <code>index.html</code> to see your model.
+    </div>
+  </div>
+</details>
 
 <!-- ====================================================================== -->
 <div class="section-heading">
@@ -586,5 +848,18 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
       return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
     });
   }
+
+  // ── Copy button ─────────────────────────────────────────────────
+  window.copyCode = function (btn) {
+    var pre = btn.closest(".code-block").querySelector("pre code");
+    navigator.clipboard.writeText(pre.textContent).then(function () {
+      btn.textContent = "Copied!";
+      btn.classList.add("copied");
+      setTimeout(function () {
+        btn.textContent = "Copy";
+        btn.classList.remove("copied");
+      }, 1500);
+    });
+  };
 })();
 </script>
