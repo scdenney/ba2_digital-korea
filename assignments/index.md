@@ -454,28 +454,22 @@ Watch the following tutorial before the next class. It walks through topic model
 **Assigned:** Apr. 20
 **Due:** May 4 (before class)
 
-This is the **final assignment** for the course. You will reproduce the in-class LDA pipeline on one of the NIKH corpora and interpret the topics you find.
+This is the **final assignment** for the course. Run the LDA pipeline we used in class on one of the NIKH corpora and interpret what the model finds. You already know the Orange workflow from earlier weeks, so the focus here is reading the topics, not wiring up widgets.
 
-**Pick a corpus** from the [Data & Scripts]({{ '/data/' | relative_url }}) page:
+**Pick a corpus.** Options, smallest to largest:
 
-- **11-book NIKH Clustering Demo** (the in-class corpus). Raw text in a `full_text` column. You run the preprocessing script yourself.
-- **9-book NIKH History Textbooks (Demo).** Already tokenized in a `processed_text` column. Slightly smaller, and you can skip the Python Script step if you use that column.
+- **9-book NIKH History Textbooks (Demo)** from the [Data & Scripts]({{ '/data/' | relative_url }}) page. Already tokenized in a `processed_text` column, so you can skip the Python Script step.
+- **11-book NIKH Clustering Demo** from the same page. Raw text in `full_text`; you preprocess it yourself (Kiwi, nouns only). This was the in-class corpus.
+- **Full 67-book NIKH corpus** from the [nlp_corpora repo](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). Optional and more advanced. Only try this if your machine has the memory to handle it. Orange can slow down or crash on a corpus this large, so save your workflow often and be ready to fall back to the 11-book sample if it hangs.
 
-**Build the Orange workflow:**
-
-1. **File** or **Corpus** widget: load the CSV you chose
-2. **Python Script** widget: paste the Korean Preprocessing script for your OS (nouns only, tags NNG and NNP). Skip this step if you are using the `processed_text` column of the 9-book corpus.
-3. **Corpus** widget (second): map the text field to the processed column
-4. **Preprocess Text** widget: tokenize by whitespace, load the Korean stopword list from the Data page
-5. **Topic Modeling** widget: set Method to **Latent Dirichlet Allocation**. For the 11-book sample, try `k = 3` (the in-class setting). For the 9-book sample or a larger run, try `k = 5` or `6`.
-6. **LDAvis** widget: connect it to the **All Topics** output
+For `k`, try 3 on the 11-book sample (the in-class setting) or 5 to 6 on the 9-book and 67-book corpora. If you are unsure which to use, pick the 9-book: it is the simplest path.
 
 **Interpret.** Pick one path, or do both:
 
-- **LDAvis view.** Adjust the λ slider (start around 0.3 to see distinctive words), click through a few topics, and describe what you see.
-- **Topic output.** Read the top words for each topic, give each one a short label of your own, and comment on which era seems to use which topics most.
+- **LDAvis view.** Adjust the λ slider (start around 0.3 to see distinctive words), click through a few topics, and describe what you see. Which topics sit far apart on the map? Which overlap?
+- **Topic output.** Read the top words for each topic in the Topic Modeling widget, give each one a short label of your own, and comment on which era seems to use which topics most.
 
-**Write-up.** Create `analysis.md` in your `week10/` folder. A few paragraphs is plenty. Say which corpus and which `k` you chose, what the topics look like, and what you took away.
+**Write-up.** Create `analysis.md` in your `week10/` folder. A few paragraphs is plenty. Say which corpus and which `k` you chose, what the topics look like, and what you took away. The [Topic Modeling explorer]({{ '/interactive/topic-modeling-explorer' | relative_url }}) shows the same kind of output on the full 67-book corpus if you want a reference while you work.
 
 **Submitting your work:**
 
@@ -485,8 +479,6 @@ Add the following to a `week10/` folder in your repository:
 - Your write-up (`analysis.md`)
 
 Commit and push, then confirm your files appear on github.com.
-
-**Reference.** The [Topic Modeling explorer]({{ '/interactive/topic-modeling-explorer' | relative_url }}) shows the same pipeline run on the full 67-book NIKH corpus. Useful while you work on your own fit.
 
 </div>
 </details>
