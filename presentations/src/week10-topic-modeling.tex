@@ -1,0 +1,659 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% ---- Engine / fonts -------------------------------------------------
+\usepackage{fontspec}
+\setsansfont{Liberation Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK KR}
+\setCJKsansfont{Noto Sans CJK KR}
+
+% ---- Packages -------------------------------------------------------
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\usepackage{amsmath, amssymb}
+
+% ---- Palette (matches week09) ---------------------------------------
+\definecolor{slate}{HTML}{4B586B}
+\definecolor{slatedark}{HTML}{3A4554}
+\definecolor{slatelight}{HTML}{7A8699}
+\definecolor{coral}{HTML}{C97865}
+\definecolor{corallight}{HTML}{F1DED7}
+\definecolor{greenpos}{HTML}{7FA06B}
+\definecolor{greenposlight}{HTML}{DFE8D2}
+\definecolor{bluesoft}{HTML}{8AA5C2}
+\definecolor{bluesoftlight}{HTML}{DCE4EE}
+\definecolor{rulegrey}{HTML}{B8BFCA}
+
+% ---- Beamer theme (custom) -----------------------------------------
+\setbeamercolor{normal text}{fg=slatedark, bg=white}
+\setbeamercolor{structure}{fg=slate}
+\setbeamercolor{frametitle}{fg=slate, bg=white}
+\setbeamercolor{framesubtitle}{fg=slatelight, bg=white}
+\setbeamercolor{title}{fg=white, bg=slate}
+\setbeamercolor{author}{fg=slatedark}
+\setbeamercolor{institute}{fg=slatelight}
+\setbeamercolor{date}{fg=slatelight}
+\setbeamercolor{itemize item}{fg=slate}
+\setbeamercolor{itemize subitem}{fg=slate}
+\setbeamercolor{enumerate item}{fg=coral}
+
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\small, series=\bfseries}
+\setbeamerfont{title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{subtitle}{size=\large, series=\bfseries}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{date}{size=\small}
+
+\setbeamertemplate{itemize item}{\raisebox{0.25ex}{\rule{4pt}{4pt}}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.35ex}{\rule{3pt}{3pt}}}
+\setbeamertemplate{navigation symbols}{}
+
+% Frametitle with coral rule below
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \vspace*{0.8em}
+  \begin{beamercolorbox}[wd=\paperwidth, leftskip=1.1em, rightskip=1em]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle\par
+    \ifx\insertframesubtitle\@empty\else
+      \vspace{0.15em}\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par
+    \fi
+    \vspace{0.25em}
+    {\color{coral}\rule{\dimexpr\paperwidth-2.1em\relax}{0.8pt}}%
+  \end{beamercolorbox}%
+  \vspace*{0.3em}
+}
+
+% Footline: course title left, page / total right
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox to \paperwidth{%
+    \hspace*{1.1em}{\scriptsize\color{slatelight}BA2: Digital Korea}%
+    \hfill%
+    {\scriptsize\color{slatelight}\insertframenumber\,/\,\inserttotalframenumber}%
+    \hspace*{1.1em}%
+  }%
+  \vspace{0.7em}%
+}
+
+% Title page
+\setbeamertemplate{title page}{%
+  \vfill
+  \begin{beamercolorbox}[wd=0.9\paperwidth, center, rounded=true, shadow=true, sep=1.2em]{title}%
+    \usebeamerfont{title}\inserttitle\par
+    \vspace{0.4em}
+    {\usebeamerfont{subtitle}\color{white!85}\insertsubtitle}
+  \end{beamercolorbox}%
+  \vfill
+  \begin{center}
+    {\usebeamerfont{author}\color{slatedark}\insertauthor\par}
+    \vspace{0.6em}
+    {\usebeamerfont{institute}\color{slatelight}\insertinstitute\par}
+    \vspace{1.2em}
+    {\usebeamerfont{date}\color{slatelight}\insertdate}
+  \end{center}
+  \vfill
+}
+
+% Section title (big centered text + coral rule)
+\AtBeginSection[]{%
+  \begin{frame}[plain, noframenumbering]
+    \vfill
+    \centering
+    {\color{slate}\fontsize{32pt}{38pt}\selectfont\bfseries\insertsection\par}
+    \vspace{0.6em}
+    {\color{coral}\rule{0.22\paperwidth}{0.6pt}}
+    \vfill
+  \end{frame}%
+}
+
+% ---- Callout-box helpers -------------------------------------------
+\newtcolorbox{callcoral}[1][]{%
+  enhanced, breakable, sharp corners,
+  colback=corallight, colframe=corallight,
+  coltitle=white, colbacktitle=coral,
+  fonttitle=\bfseries,
+  title={#1},
+  left=1em, right=1em, top=0.5em, bottom=0.6em,
+  boxrule=0pt, titlerule=0pt,
+}
+\newtcolorbox{callblue}[1][]{%
+  enhanced, breakable, sharp corners,
+  colback=bluesoftlight, colframe=bluesoftlight,
+  coltitle=white, colbacktitle=bluesoft,
+  fonttitle=\bfseries,
+  title={#1},
+  left=1em, right=1em, top=0.5em, bottom=0.6em,
+  boxrule=0pt, titlerule=0pt,
+}
+
+% Little token boxes (for inline diagrams)
+\newcommand{\tokbox}[2][bluesoftlight]{%
+  \tikz[baseline=(N.base)]\node[draw=slatelight, rounded corners=2pt,
+        fill=#1, inner sep=3pt, font=\small] (N) {#2};%
+}
+\newcommand{\poschip}[1]{%
+  \tikz[baseline=(N.base)]\node[draw=greenpos, rounded corners=2pt,
+        fill=greenposlight, inner sep=3pt, font=\small] (N) {#1};%
+}
+\newcommand{\negchip}[1]{%
+  \tikz[baseline=(N.base)]\node[draw=coral, rounded corners=2pt,
+        fill=corallight, inner sep=3pt, font=\small] (N) {#1};%
+}
+
+% ---- Meta -----------------------------------------------------------
+\title{BA2: Digital Korea}
+\subtitle{Week 10: Topic Modeling (LDA)}
+\author{Steven Denney}
+\institute{Korean Studies\\Leiden University}
+\date{April 20, 2026}
+
+\begin{document}
+
+% ==================================================================
+\begin{frame}[plain, noframenumbering]
+  \titlepage
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Today's Agenda}
+  \begin{enumerate}
+    \item Review \& check-in: from feeling to theme
+    \item What is topic modeling?
+    \item LDA: the intuition
+    \item Choosing $k$ (the number of topics)
+    \item Orange's Topic Modelling widget under the hood
+    \item Application: the NIKH Korean history textbook corpus
+    \item Interpreting topics responsibly
+    \item Looking ahead
+  \end{enumerate}
+\end{frame}
+
+% ==================================================================
+\section{Review \& Check-In}
+
+\begin{frame}{From Feeling to Theme}{Week 9 asked \emph{how} a text feels; Week 10 asks \emph{what} it is about}
+  \textbf{Last week (sentiment):} a text has a \textbf{tone} — positive or negative.
+  \begin{center}
+    \poschip{감사} \; $+$ \; \poschip{희망} \; $+$ \; \negchip{위기} \; $\Rightarrow$ \; positive/negative \emph{score}
+  \end{center}
+
+  \vspace{0.4em}
+  \textbf{This week (topics):} a text is about \textbf{several things at once}, in different proportions.
+  \begin{center}
+    \tokbox{조선} \; \tokbox{왕조} \; \tokbox{문화} \; $\Rightarrow$ \; a \emph{mixture} of themes
+  \end{center}
+
+  \vspace{0.4em}
+  \emph{Sentiment:} does the text feel positive or negative? \\
+  \emph{Topics:} what themes run through this collection of texts?
+\end{frame}
+
+\begin{frame}{Two Classification Styles, One Week Apart}{Both use a bag of words — they ask different questions of it}
+  \begin{columns}[T, onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{Dictionary sentiment (Week 9)}
+      \begin{itemize}
+        \item \emph{Supervised by a lexicon} — you bring the word lists
+        \item One score per document
+        \item Output: a \emph{number} (positive or negative)
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{Topic modeling (Week 10)}
+      \begin{itemize}
+        \item \emph{Unsupervised} — no lexicon, no labels
+        \item Many weights per document
+        \item Output: a \emph{set of themes} and how much each document uses each one
+      \end{itemize}
+  \end{columns}
+  \vspace{1em}
+  Topic modeling is the first \textbf{fully unsupervised} method since clustering (Week 7) —
+  but where clustering gives each document \emph{one} group, LDA gives it a \emph{mixture}.
+\end{frame}
+
+% ==================================================================
+\section{What Is Topic Modeling?}
+
+\begin{frame}{From a Sea of Text to Hidden Structure}{The problem: corpora too big to read, too important to ignore}
+  \begin{itemize}
+    \item The NIKH corpus we will use today covers \textbf{67 Korean history textbooks} (1895--2016).
+    \item Even the 11-book demo already runs past a \emph{million characters of Korean prose}.
+    \item You cannot close-read it all. You also cannot reduce it to a single number.
+  \end{itemize}
+  \vspace{0.4em}
+  \begin{callblue}[The topic modeling question]
+    What \textbf{themes} run through this collection, \textbf{how much} does each document use each theme,
+    and \textbf{which words} define each theme?
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{Topic Modeling: The Basic Idea}{An unsupervised method for discovering hidden thematic structure}
+  \begin{itemize}
+    \item A \textbf{topic} is a group of words that tend to appear together across the corpus.
+    \item Each \textbf{document} is represented as a \textbf{mixture of topics}.
+    \item The algorithm does not know, in advance, what the topics are — it \emph{discovers} them.
+  \end{itemize}
+
+  \vspace{0.6em}
+  Topic modeling answers three questions at once:
+  \begin{enumerate}
+    \item What themes appear across the documents?
+    \item How much of each theme does a given document contain?
+    \item Which words \emph{define} each theme?
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{What a ``Topic'' Looks Like}{Fictional but plausible examples from Korean history textbooks}
+  A topic is a ranked list of words with weights.
+  We read the top words and \emph{assign} a label ourselves.
+
+  \vspace{0.6em}
+  \begin{center}
+    \begin{tabular}{@{}l l l@{}}
+      \toprule
+      \textbf{Topic} & \textbf{Top words (Korean)} & \textbf{Our label} \\
+      \midrule
+      T1 & 고구려, 백제, 신라, 삼국, 왕, 시대   & Ancient Korea \\
+      T2 & 일제, 독립, 저항, 운동, 항일, 식민   & Colonial era \\
+      T3 & 산업화, 경제, 발전, 민주화, 성장, 정부 & Modernization \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.6em}
+  The \emph{model} gives us columns 1 and 2; the \emph{researcher} gives column 3.
+\end{frame}
+
+% ==================================================================
+\section{LDA: The Intuition}
+
+\begin{frame}{Latent Dirichlet Allocation, in Plain Words}{The most widely used topic model — and the one Orange runs}
+  LDA (Blei, Ng \& Jordan, 2003) makes two simple assumptions:
+  \begin{enumerate}
+    \item Each \textbf{document} is made up of several \textbf{topics}, in some proportion.
+    \item Each \textbf{topic} is made up of \textbf{words that tend to occur together}.
+  \end{enumerate}
+
+  \vspace{0.6em}
+  \emph{Latent} because the topics are hidden; we only observe words.\\
+  \emph{Dirichlet} is a probability distribution that makes the mixtures well-behaved.\\
+  \emph{Allocation} because the model allocates each word in each document to one of the topics.
+
+  \vspace{0.6em}
+  You, the researcher, specify one number: the \textbf{number of topics $k$}.
+\end{frame}
+
+\begin{frame}{The Generative Story}{A thought experiment — how LDA imagines a document is written}
+  Pretend you are about to write a document. LDA imagines you do this:
+  \begin{enumerate}
+    \item Pick a \textbf{mixture} of topics (``this book will be 70\% ancient, 20\% colonial, 10\% modern'').
+    \item For each word in the document:
+      \begin{itemize}
+        \item pick one \emph{topic} from the mixture,
+        \item pick one \emph{word} from that topic's vocabulary,
+        \item write it down.
+      \end{itemize}
+  \end{enumerate}
+
+  \vspace{0.8em}
+  \begin{center}
+    \tokbox[bluesoftlight]{\textbf{Document}} \; \tikz[baseline=-0.5ex]{\draw[-Stealth, thick, slate] (0,0) -- (0.9,0);} \;
+    \tokbox[corallight]{\textbf{Topic}} \; \tikz[baseline=-0.5ex]{\draw[-Stealth, thick, slate] (0,0) -- (0.9,0);} \;
+    \tokbox[greenposlight]{\textbf{Word}}
+  \end{center}
+
+  \vspace{0.4em}
+  LDA runs this story \textbf{backwards}: given the words we actually see, it infers the topics and the per-document mixtures.
+\end{frame}
+
+\begin{frame}{Two Things LDA Gives You}{Everything else in Orange is a view of these two tables}
+  \begin{columns}[T, onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{1.\ Topic $\to$ word weights}\\
+      \emph{How much does each topic use each word?}
+      \vspace{0.3em}
+      \begin{center}
+        \small
+        \begin{tabular}{@{}l r r r@{}}
+          \toprule
+            & T1 & T2 & T3 \\
+          \midrule
+          고구려   & 0.08 & 0.00 & 0.00 \\
+          일제    & 0.00 & 0.09 & 0.01 \\
+          산업화  & 0.00 & 0.00 & 0.07 \\
+          시대    & 0.04 & 0.02 & 0.02 \\
+          \bottomrule
+        \end{tabular}
+      \end{center}
+
+    \column{0.48\textwidth}
+      \textbf{2.\ Document $\to$ topic weights}\\
+      \emph{How much does each document use each topic?}
+      \vspace{0.3em}
+      \begin{center}
+        \small
+        \begin{tabular}{@{}l r r r@{}}
+          \toprule
+          Book & T1 & T2 & T3 \\
+          \midrule
+          1940 elementary     & 0.05 & 0.85 & 0.10 \\
+          1981 middle school  & 0.30 & 0.15 & 0.55 \\
+          2002 high school    & 0.35 & 0.10 & 0.55 \\
+          \bottomrule
+        \end{tabular}
+      \end{center}
+  \end{columns}
+
+  \vspace{0.8em}
+  Columns of table 1 \emph{define} the topics; rows of table 2 \emph{describe} the documents.
+\end{frame}
+
+% ==================================================================
+\section{Choosing the Number of Topics}
+
+\begin{frame}{How Many Topics ($k$)?}{You pick $k$ — the algorithm doesn't pick it for you}
+  \begin{itemize}
+    \item \textbf{Too few} ($k=2$): topics are so broad they aren't useful (``history'' vs.\ ``not history'').
+    \item \textbf{Too many} ($k=50$): topics fragment, overlap, and fill with noise.
+    \item Try several values and inspect the topics each time.
+  \end{itemize}
+
+  \vspace{0.6em}
+  \begin{center}
+    \begin{tabular}{@{}l l@{}}
+      \toprule
+      \textbf{Corpus size} & \textbf{Try $k$ in the range} \\
+      \midrule
+      10--50 documents   & 3--6 topics \\
+      50--200 documents  & 5--12 topics \\
+      200+ documents     & 10--20 topics \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.5em}
+  For our 11-book NIKH demo we will start with \textbf{$k=4$} or \textbf{$k=5$}.
+\end{frame}
+
+% ==================================================================
+\section{The Orange Pipeline}
+
+\begin{frame}{The Topic Modelling Widget in Orange}{Input a Corpus, pick a method, set $k$ --- read topics out the other side}
+  \begin{columns}[T, onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{Three methods available}
+      \begin{itemize}
+        \item \textbf{LSI} — Latent Semantic Indexing (SVD on the term--document matrix; fast, not probabilistic)
+        \item \textbf{HDP} — Hierarchical Dirichlet Process (non-parametric; $k$ is \emph{inferred})
+        \item \textbf{LDA} — Latent Dirichlet Allocation (our choice this week)
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{Main setting for LDA}
+      \begin{itemize}
+        \item \texttt{Number of topics}: the $k$ you pick
+        \item Results change run to run — LDA uses random initialisation
+        \item Click \emph{Commit} (or enable \emph{Commit Automatically}) to refit
+      \end{itemize}
+  \end{columns}
+
+  \vspace{0.6em}
+  \begin{callblue}[Why LDA and not LSI or HDP?]
+    LDA produces \emph{probability distributions} that are easy to read as mixtures, and its $k$ is something you
+    deliberately choose rather than let the algorithm decide. HDP is tempting but harder to interpret for a first pass;
+    LSI is great for search but less natural for labelling themes.
+  \end{callblue}
+\end{frame}
+
+\begin{frame}{Inputs and Outputs at a Glance}{What the widget expects on the left, what it emits on the right}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l@{}}
+      \toprule
+      \textbf{Port}  & \textbf{What it carries} \\
+      \midrule
+      Input: \emph{Corpus}              & Your preprocessed documents (tokens, not raw text) \\
+      Output: \emph{Corpus}             & The same corpus with \textbf{topic weight columns} appended \\
+      Output: \emph{Topics}             & A table of every topic's top words and weights \\
+      Output: \emph{All Topics}         & The full topic--word distribution ($\phi$) \\
+      Output: \emph{Selected Topic}     & Just the topic you clicked in the widget \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.5em}
+  These outputs drive the rest of the workflow: a \emph{Word Cloud} from \emph{Selected Topic},
+  a \emph{Data Table} from \emph{Corpus}, a \emph{Heatmap} or \emph{Box Plot} grouped by era, and so on.
+\end{frame}
+
+\begin{frame}{A Minimum Orange Workflow}{Five widgets from raw CSV to interpretable topics}
+  \begin{center}
+    \begin{tikzpicture}[node distance=0.35cm, every node/.style={font=\small}]
+      \tikzset{
+        widget/.style={draw=slate, rounded corners=3pt, fill=bluesoftlight,
+                       inner sep=5pt, minimum height=2.2em, text width=2.2cm, align=center},
+        arr/.style={-Stealth, thick, slate},
+      }
+      \node[widget] (corpus)  {Corpus\\ \scriptsize(nikh CSV)};
+      \node[widget, right=of corpus]   (prep)    {Preprocess\\ Text};
+      \node[widget, right=of prep]     (script)  {Python\\ Script (Kiwi)};
+      \node[widget, right=of script]   (topic)   {Topic\\ Modelling};
+      \node[widget, right=of topic, fill=corallight] (view) {Word Cloud\\ / Data Table};
+      \draw[arr] (corpus)  -- (prep);
+      \draw[arr] (prep)    -- (script);
+      \draw[arr] (script)  -- (topic);
+      \draw[arr] (topic)   -- (view);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.5em}
+  \begin{itemize}
+    \item \textbf{Corpus.} Load \texttt{nikh\_clustering\_demo.csv}; mark \texttt{full\_text} as the text feature.
+    \item \textbf{Preprocess Text.} Lowercase, tokenise by word, drop stopwords (Korean list provided), filter by document frequency if the corpus is large.
+    \item \textbf{Python Script.} Run the Kiwi morphological tokeniser (keep NNG, NNP — \emph{nouns only} for topic modeling).
+    \item \textbf{Topic Modelling.} Method = LDA, Number of topics = 4 or 5, click Commit.
+    \item \textbf{Word Cloud / Data Table.} Inspect each topic's top words, then open the Corpus output to see the mix per book.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Nouns Only for Topic Modeling}{Why our preprocessing differs from Week 9}
+  Week 9 sentiment kept \textbf{nouns, verbs, and adjectives} — feeling lives in verbs and adjectives too.
+  For topic modeling we keep \textbf{nouns only}.
+
+  \vspace{0.5em}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l l@{}}
+      \toprule
+      \textbf{POS tag} & \textbf{Meaning}       & \textbf{Example} \\
+      \midrule
+      NNG              & Common noun (일반명사)   & 독립 \emph{(independence)} \\
+      NNP              & Proper noun (고유명사)   & 고구려 \emph{(Goguryeo)} \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.6em}
+  \begin{callcoral}[Why not verbs?]
+    Topics are about \emph{what a text is about} — and in Korean, \emph{what} is carried by nouns.
+    Verbs like 하다 (\emph{do}) and 되다 (\emph{become}) appear everywhere; they blur topics rather than separate them.
+    Drop them, and the themes sharpen.
+  \end{callcoral}
+\end{frame}
+
+\begin{frame}{Reading the Output: Top-Words and Topic Weights}{Two views of the same LDA fit}
+  \textbf{In the widget itself:} each topic shows as a row with its top words, sized by weight.
+  Click a topic to send its words to a Word Cloud.
+
+  \vspace{0.4em}
+  \textbf{Downstream of the widget:}
+  \begin{itemize}
+    \item Send the \emph{Corpus} output to a \emph{Data Table} — every row is a book, every new column is a topic weight.
+    \item Send it to a \emph{Box Plot} grouped by \texttt{era} to compare topic use across Colonial / Authoritarian / Democratic textbooks.
+    \item Send the \emph{All Topics} output to a \emph{Heatmap} for a topic--word overview.
+  \end{itemize}
+
+  \vspace{0.4em}
+  \begin{callblue}[LDAvis if you can install it]
+    The LDAvis add-on renders topics on an MDS map, with a \textbf{$\lambda$ slider} that blends raw frequency ($\lambda=1$)
+    with distinctiveness ($\lambda=0$). Best practice: $\lambda \approx 0.2$--$0.35$.
+  \end{callblue}
+\end{frame}
+
+% ==================================================================
+\section{Application: The NIKH Corpus}
+
+\begin{frame}{The NIKH Corpus}{Korean history textbooks from three political eras}
+  The National Institute of Korean History corpus (\emph{국사편찬위원회}) collects
+  Korean history textbooks spanning 1895--2016. For today's demo we use the
+  \textbf{11-book clustering sample} already on the course website.
+
+  \vspace{0.5em}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l c l@{}}
+      \toprule
+      \textbf{Era}                 & \textbf{Books} & \textbf{Examples}                                       \\
+      \midrule
+      Colonial (1940)               & 3              & 심상소학국사보충아동용 1--2; 교수참고서                   \\
+      Authoritarian (1973--1987)    & 4              & 중학교 국사 3차 (1973); 고등학교 국사 4차 (1981); \ldots  \\
+      Democratic (1995--2002)       & 4              & 고등학교 국사 6차 (1995); 초등학교 사회 6-1 7차 (2002)     \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.5em}
+  The corpus is \emph{small in document count} (11) but \emph{large in prose}
+  (tens to hundreds of thousands of characters per book). That is exactly the
+  shape of corpus LDA was designed for.
+\end{frame}
+
+\begin{frame}{Research Questions for the Demo}{What we will ask of the NIKH corpus in class}
+  \begin{enumerate}
+    \item What themes run through Korean history textbooks as a group?
+    \item Do Colonial-era textbooks emphasise different topics than post-1987 Democratic-era ones?
+    \item Is there a topic that is more prominent in elementary versus high-school textbooks?
+    \item Are some topics near-universal (every textbook uses them) and others era-specific?
+  \end{enumerate}
+
+  \vspace{0.6em}
+  \begin{callcoral}[A research choice --- not a given]
+    The \texttt{era} labels (Colonial / Authoritarian / Democratic) are an \emph{editorial} split
+    from the corpus metadata. Different historians might draw the lines differently ---
+    the periodisation is part of your analysis, not a fact handed to you by the algorithm.
+  \end{callcoral}
+\end{frame}
+
+\begin{frame}{What to Expect in the Demo Output}{Plausible topics for an LDA with $k=4$ on this corpus}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l l@{}}
+      \toprule
+      \textbf{Topic} & \textbf{Likely top words}                    & \textbf{Our working label} \\
+      \midrule
+      T1 & 고구려, 백제, 신라, 삼국, 왕조, 시대      & Ancient \& pre-modern states \\
+      T2 & 조선, 왕, 시대, 성리학, 문화             & Joseon dynasty \\
+      T3 & 일제, 독립, 운동, 저항, 식민, 항일        & Colonial / resistance \\
+      T4 & 민주, 경제, 산업화, 발전, 정부, 국민      & Modern Korea \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.6em}
+  What we \emph{expect} to see in the document--topic table:
+  \begin{itemize}
+    \item 1940 textbooks skewed toward T1--T2 (the Japanese colonial authorities taught a ``pre-modern'' Korea).
+    \item 1980s textbooks mixing T3 strongly (the colonial period \emph{as} a topic).
+    \item 2002 textbooks spreading weight across T1--T4 (broadest coverage).
+  \end{itemize}
+\end{frame}
+
+% ==================================================================
+\section{Interpreting Topics Responsibly}
+
+\begin{frame}{Strengths of LDA}{What the method is good for}
+  \begin{itemize}
+    \item \textbf{Exploratory.} Reveals structure in corpora too large to close-read.
+    \item \textbf{Mixture-aware.} A textbook can be 60\% colonial-era and 40\% modernisation --- clustering could not say that.
+    \item \textbf{Comparative.} Topic weights are numbers: you can group by era, decade, author, level.
+    \item \textbf{Portable.} The same widget works on tweets, speeches, newspaper articles, or textbook chapters.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Limitations of LDA}{What the method will \emph{not} do for you}
+  \begin{itemize}
+    \item \textbf{Topics are statistical, not semantic.} They are co-occurrence patterns; \emph{you} give them names.
+    \item \textbf{Sensitive to preprocessing.} Change stopwords, POS filter, or document length --- topics change.
+    \item \textbf{Sensitive to $k$.} Re-running with $k=3$ vs $k=7$ gives different themes.
+    \item \textbf{Non-deterministic.} Two runs with the same $k$ can produce different topic orderings (and sometimes different topics).
+    \item \textbf{Junk topics happen.} Expect one or two topics to be incoherent at any given $k$.
+  \end{itemize}
+
+  \vspace{0.3em}
+  \begin{callcoral}[A useful reminder]
+    Grimmer, Roberts \& Stewart: \emph{``All quantitative models of language are wrong, but some are useful.''}
+    LDA is a \textbf{reading aid}, not an oracle.
+  \end{callcoral}
+\end{frame}
+
+\begin{frame}{Best Practices for Interpretation}{The checklist we will use in the demo}
+  \begin{enumerate}
+    \item Run LDA twice with the same $k$. Are the topics stable? If not, raise or lower $k$.
+    \item For each topic, read the \textbf{top 10--15 words}. Draft a label that covers most of them.
+    \item Open the \emph{Corpus} output and find the 2--3 books with the \textbf{highest weight} for each topic. Does the book title fit your label?
+    \item Look for \textbf{one ``junk'' topic} and be honest about it.
+    \item Compare topic weights across \texttt{era} --- a \emph{Box Plot} grouped by era is usually enough.
+  \end{enumerate}
+\end{frame}
+
+% ==================================================================
+\section{Looking Ahead}
+
+\begin{frame}{For the Lab}{Interactive, workflow, short write-up}
+  \textbf{Explore.} Work through the NIKH clustering interactive on the course website --- note which books cluster together
+  and hold that in your head while you run LDA.
+
+  \vspace{0.4em}
+  \textbf{Build.} The 5-widget Orange pipeline on \texttt{nikh\_clustering\_demo.csv}:
+  Corpus $\to$ Preprocess $\to$ Python Script (Kiwi, nouns only) $\to$ Topic Modelling (LDA, $k=4$) $\to$ Word Cloud.
+
+  \vspace{0.4em}
+  \textbf{Write.} 3--4 sentences per topic:
+  \begin{itemize}
+    \item your label for the topic;
+    \item the top 5 words that earned that label;
+    \item which era(s) use it most, read off the \emph{Corpus} output.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Where This Leaves Us}{A map of the semester so far}
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l l@{}}
+      \toprule
+      \textbf{Week} & \textbf{Method}                    & \textbf{What it gives you} \\
+      \midrule
+      4--5 & BoW / TF--IDF                              & descriptive word frequencies \\
+      7    & Clustering (K-means, hierarchical)         & one group per document \\
+      8    & Word embeddings                            & meaning as vectors \\
+      9    & Dictionary sentiment                       & a tone score per document \\
+      \textbf{10} & \textbf{LDA topic modeling}        & \textbf{a theme mixture per document} \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.6em}
+  \textbf{Recommended reading.} Grimmer, Roberts \& Stewart --- Chapter 13: \emph{Topic Models}.
+
+  \vspace{0.4em}
+  \textbf{Next week.} Week 11: Final review and assessment. Bring questions about the Research Methods Project (Week 12).
+\end{frame}
+
+\end{document}
+
