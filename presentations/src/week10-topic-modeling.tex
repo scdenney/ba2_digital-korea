@@ -205,7 +205,7 @@
   \emph{Topics:} \textbf{what} themes run through this collection of texts?
 \end{frame}
 
-\begin{frame}{Your Turn: Warm-up in English}{Shout out a label for each list --- no wrong answers}
+\begin{frame}{Warm-up in English}{Shout out a label for each list --- no wrong answers}
   \vspace{0.3em}
 
   \textbf{1.} \quad \tokbox{kimchi} \; \tokbox{bulgogi} \; \tokbox{ramyeon} \; \tokbox{soju} \; \tokbox{rice} \; \tokbox{banchan}
@@ -218,15 +218,42 @@
   \vspace{0.4em}
 
   \textbf{4.} \quad \tokbox{subway} \; \tokbox{cafe} \; \tokbox{apartment} \; \tokbox{delivery} \; \tokbox{convenience} \; \tokbox{night}
+\end{frame}
 
-  \vspace{0.9em}
+\begin{frame}{What You Just Did}{Six words in, a theme out --- that is the topic-modeling move}
+  \vspace{0.4em}
+  \begin{center}
+    \begin{tikzpicture}[
+      every node/.style={font=\small},
+      wordlist/.style={font=\small, align=left},
+      arr/.style={-Stealth, thick, slate},
+      label/.style={font=\small\bfseries, text=slate, align=left},
+    ]
+      \node[wordlist] (l1) at (0,2.4) {\tokbox{kimchi} \tokbox{bulgogi} \tokbox{soju}\ldots};
+      \node[wordlist] (l2) at (0,1.2) {\tokbox{BTS} \tokbox{idol} \tokbox{fandom}\ldots};
+      \node[wordlist] (l3) at (0,0)   {\tokbox{king} \tokbox{palace} \tokbox{dynasty}\ldots};
+      \node[wordlist] (l4) at (0,-1.2){\tokbox{subway} \tokbox{cafe} \tokbox{apartment}\ldots};
+
+      \node[label, right=2.6cm of l1] (t1) {\textit{Food}};
+      \node[label, right=2.6cm of l2] (t2) {\textit{K-pop}};
+      \node[label, right=2.6cm of l3] (t3) {\textit{Historical drama / sageuk}};
+      \node[label, right=2.6cm of l4] (t4) {\textit{Modern Seoul life}};
+
+      \draw[arr] (l1.east) -- (t1.west);
+      \draw[arr] (l2.east) -- (t2.west);
+      \draw[arr] (l3.east) -- (t3.west);
+      \draw[arr] (l4.east) -- (t4.west);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.3em}
   \begin{callblue}[What you just did]
-    You read six words and inferred a theme. An LDA model does the same thing, just in reverse:
-    it reads documents and groups the words that tend to co-occur into lists like these.
+    You read six co-occurring words and inferred a theme. LDA does the opposite direction:
+    it reads a corpus and returns lists like the ones on the left, for \emph{you} to label.
   \end{callblue}
 \end{frame}
 
-\begin{frame}{Your Turn: Now in Korean}{Same game --- each list is the top six words of one topic}
+\begin{frame}{Now in Korean}{Same game --- each list is the top six words of one topic}
   \vspace{0.3em}
 
   \textbf{1.} \quad \tokbox{고구려} \; \tokbox{백제} \; \tokbox{신라} \; \tokbox{삼국} \; \tokbox{왕} \; \tokbox{시대}
@@ -246,7 +273,7 @@
   \end{callblue}
 \end{frame}
 
-\begin{frame}{Your Turn: Answers}{Plausible labels for the Korean lists}
+\begin{frame}{Now in Korean: Answers}{Plausible labels for the Korean lists}
   \vspace{0.1em}
   \begin{center}
     \small
@@ -333,12 +360,15 @@
     \item Each \textbf{topic} is made up of \textbf{words that tend to occur together}.
   \end{enumerate}
 
-  \vspace{0.6em}
+  \vspace{0.4em}
+  It reads a corpus as a \textbf{term--document matrix of word counts} --- a bag of words, not TF--IDF weights.
+
+  \vspace{0.4em}
   \emph{Latent} --- the topics are hidden; we only observe words.\\
   \emph{Dirichlet} --- a statistical recipe for proportions (e.g., 70\% + 20\% + 10\%). It is the math behind ``a document is a mixture of topics.'' You do not need to work with it directly.\\
   \emph{Allocation} --- the model allocates each word in each document to one of the topics.
 
-  \vspace{0.6em}
+  \vspace{0.3em}
   You, the researcher, specify one number: the \textbf{number of topics $k$}.
 \end{frame}
 
@@ -451,37 +481,23 @@
       \end{center}
   \end{columns}
 
-  \vspace{0.2em}
-  \begin{callblue}[In Orange]
-    $\phi$ is the \emph{All Topics} port; $\theta$ becomes columns on the \emph{Corpus} output. Word Cloud, Heatmap, and LDAvis are all views of these two tables.
-  \end{callblue}
 \end{frame}
 
 % ==================================================================
 \section{Choosing the Number of Topics}
 
-\begin{frame}{How Many Topics ($k$)?}{You pick $k$: the algorithm doesn't pick it for you}
+\begin{frame}{How Many Topics ($k$)?}{You pick $k$; no universal rule --- research question and corpus size guide you}
   \begin{itemize}
-    \item \textbf{Too few} ($k=2$): topics are so broad they aren't useful (``history'' vs.\ ``not history'').
-    \item \textbf{Too many} ($k=50$): topics fragment, overlap, and fill with noise.
-    \item Try several values and inspect the topics each time.
+    \item $k$ is a research choice. A coarse $k=2$ can be plenty if you only want to distinguish two broad things; a fine-grained $k=20$ makes sense on a big, heterogeneous corpus.
+    \item Practical move: start small, \emph{read the topics}, and raise $k$ only if they feel too broad.
+    \item Larger corpora can support more topics; smaller corpora usually shouldn't be asked for many.
   \end{itemize}
 
-  \vspace{0.6em}
-  \begin{center}
-    \begin{tabular}{@{}l l@{}}
-      \toprule
-      \textbf{Corpus size} & \textbf{Try $k$ in the range} \\
-      \midrule
-      10--50 documents   & 3--6 topics \\
-      50--200 documents  & 5--12 topics \\
-      200+ documents     & 10--20 topics \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-
-  \vspace{0.5em}
-  For our 11-book NIKH demo we will start with \textbf{$k=4$} or \textbf{$k=5$}.
+  \vspace{0.4em}
+  \begin{callblue}[For today's demo]
+    \textbf{11-book NIKH sample:} we will use \textbf{$k=3$} (preselected).\\
+    \textbf{Full 67-book corpus:} \textbf{$k=5$} or \textbf{$6$} would be a reasonable starting point.
+  \end{callblue}
 \end{frame}
 
 % ==================================================================
@@ -511,28 +527,6 @@
   \end{callblue}
 \end{frame}
 
-\begin{frame}{What the Widget Actually Eats}{Bag-of-word counts, built internally --- no separate widget needed}
-  LDA works on a \textbf{term--document matrix of word counts}: rows are documents,
-  columns are words, each cell is how many times that word appears in that document.
-  That is a \textbf{bag of words}.
-
-  \vspace{0.5em}
-  \begin{itemize}
-    \item You do \emph{not} add a \texttt{Bag of Words} widget to the pipeline.
-      Orange's \texttt{Topic Modelling} widget builds the count matrix internally from your preprocessed tokens.
-    \item You do \emph{not} pass TF--IDF weights into LDA. The algorithm models word \emph{counts}
-      (it treats a document as if words were drawn from topic urns), so raw frequencies are what it expects.
-    \item Preprocessing is what shapes the bag: stopword removal, POS filter, frequency trimming.
-      Garbage in, garbage out.
-  \end{itemize}
-
-  \vspace{0.4em}
-  \begin{callblue}[Where this fits in Weeks 4--5]
-    BoW and TF--IDF are two ways of representing a corpus. BoW is \emph{counts}; TF--IDF is \emph{counts reweighted} to emphasise distinctive words.
-    LDA uses BoW; earlier in the term we used TF--IDF for search-like tasks and clustering.
-  \end{callblue}
-\end{frame}
-
 \begin{frame}{Inputs, Outputs, and Where Each Goes}{One input port, three output ports, four downstream widgets}
   \begin{center}
     \small
@@ -553,34 +547,22 @@
   Results change from run to run because LDA uses random initialisation.
 \end{frame}
 
-\begin{frame}{A Minimum Orange Workflow}{Five widgets from raw CSV to interpretable topics}
+\begin{frame}{A Minimum Orange Workflow}{Load, tokenise, preprocess, model, visualise}
+  \vspace{0.8em}
   \begin{center}
-    \begin{tikzpicture}[node distance=0.35cm, every node/.style={font=\small}]
-      \tikzset{
-        widget/.style={draw=slate, rounded corners=3pt, fill=bluesoftlight,
-                       inner sep=5pt, minimum height=2.2em, text width=2.2cm, align=center},
-        arr/.style={-Stealth, thick, slate},
-      }
-      \node[widget] (corpus)  {Corpus\\ \scriptsize(nikh CSV)};
-      \node[widget, right=of corpus]   (prep)    {Preprocess\\ Text};
-      \node[widget, right=of prep]     (script)  {Python Script\\ \scriptsize Kiwi, nouns};
-      \node[widget, right=of script]   (topic)   {Topic\\ Modelling};
-      \node[widget, right=of topic, fill=corallight] (view) {Word Cloud\\ / Data Table};
-      \draw[arr] (corpus)  -- (prep);
-      \draw[arr] (prep)    -- (script);
-      \draw[arr] (script)  -- (topic);
-      \draw[arr] (topic)   -- (view);
-    \end{tikzpicture}
+    \includegraphics[width=\linewidth]{../odm_screenshots/week10.png}
   \end{center}
 
-  \vspace{0.5em}
-  \begin{itemize}
-    \item \textbf{Corpus.} Load \texttt{nikh\_clustering\_demo.csv}; mark \texttt{full\_text} as the text feature.
-    \item \textbf{Preprocess Text.} Lowercase, tokenise by word, drop stopwords (Korean list provided), filter by document frequency if the corpus is large.
-    \item \textbf{Python Script.} Paste \texttt{custom\_preprocessing\_mac-users.py} from the Data \& Scripts page. It already defaults to nouns only (NNG, NNP).
-    \item \textbf{Topic Modelling.} Method = LDA, Number of topics = 4 or 5, click Commit.
-    \item \textbf{Word Cloud / Data Table.} Inspect each topic's top words, then open the Corpus output to see the mix per book.
-  \end{itemize}
+  \vspace{0.4em}
+  \begin{center}
+    \begin{tikzpicture}[every node/.style={font=\small}]
+      \node[font=\small, text=slatelight] (l) {\ldots\ Topic Modelling};
+      \node[font=\small, text=slate, right=0.6cm of l] (arr) {$\Longrightarrow$};
+      \node[draw=slate, thick, rounded corners=20pt, fill=corallight,
+            minimum width=2.4cm, minimum height=1.0cm, right=0.6cm of arr]
+            (ldavis) {\textbf{LDAvis}};
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Nouns Only for Topic Modeling}{Why our preprocessing differs from Week 9}
