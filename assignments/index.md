@@ -447,6 +447,50 @@ Watch the following tutorial before the next class. It walks through topic model
 </div>
 </details>
 
+<details>
+<summary>Week 10: Topic Modeling (LDA) Final Assignment</summary>
+<div class="assignment-content" markdown="1">
+
+**Assigned:** Apr. 20
+**Due:** May 11 (before class)
+
+This is the **final assignment** for the course. You will reproduce the in-class LDA pipeline on one of the NIKH corpora and interpret the topics you find.
+
+**Pick a corpus** from the [Data & Scripts]({{ '/data/' | relative_url }}) page:
+
+- **11-book NIKH Clustering Demo** (the in-class corpus). Raw text in a `full_text` column. You run the preprocessing script yourself.
+- **9-book NIKH History Textbooks (Demo).** Already tokenised in a `processed_text` column. Slightly smaller, and you can skip the Python Script step if you use that column.
+
+**Build the Orange workflow:**
+
+1. **File** or **Corpus** widget: load the CSV you chose
+2. **Python Script** widget: paste the Korean Preprocessing script for your OS (nouns only, tags NNG and NNP). Skip this step if you are using the `processed_text` column of the 9-book corpus.
+3. **Corpus** widget (second): map the text field to the processed column
+4. **Preprocess Text** widget: tokenise by whitespace, load the Korean stopword list from the Data page
+5. **Topic Modelling** widget: set Method to **Latent Dirichlet Allocation**. For the 11-book sample, try `k = 3` (the in-class setting). For the 9-book sample or a larger run, try `k = 5` or `6`.
+6. **LDAvis** widget: connect it to the **All Topics** output
+
+**Interpret.** Pick one path, or do both:
+
+- **LDAvis view.** Adjust the λ slider (start around 0.3 to see distinctive words), click through a few topics, and describe what you see.
+- **Topic output.** Read the top words for each topic, give each one a short label of your own, and comment on which era seems to use which topics most.
+
+**Write-up.** Create `analysis.md` in your `week10/` folder. A few paragraphs is plenty. Say which corpus and which `k` you chose, what the topics look like, and what you took away.
+
+**Submitting your work:**
+
+Add the following to a `week10/` folder in your repository:
+- Your Orange workflow file (`.ows`)
+- Two screenshots (`.png`): one of the Topic Modelling widget output, one of the LDAvis view at the λ you picked
+- Your write-up (`analysis.md`)
+
+Commit and push, then confirm your files appear on github.com.
+
+**Reference.** The [Topic Modeling explorer]({{ '/interactive/topic-modeling-explorer' | relative_url }}) shows the same pipeline run on the full 67-book NIKH corpus. Useful while you work on your own fit.
+
+</div>
+</details>
+
 </div>
 
 ---

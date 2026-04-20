@@ -39,8 +39,8 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 .era-badge-democratic    { background: #cffafe; color: #155e75; }
 
 /* ── Coherence chart ─────────────────────────────────────────────── */
-.coherence-svg-wrap { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 0.75rem 0.5rem; background: #fafafa; overflow-x: auto; }
-.coherence-svg-wrap svg { display: block; width: 100%; height: 340px; }
+.coherence-svg-wrap { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 0.75rem 0.5rem; background: #fafafa; }
+.coherence-svg-wrap svg { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto; }
 .coherence-note { font-size: 0.82rem; color: #6b7280; margin-top: 0.6rem; }
 
 /* ── Topic browser ───────────────────────────────────────────────── */
@@ -109,6 +109,10 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
   <h2>What we're doing, and why</h2>
 </div>
 
+<div class="callout callout-note">
+  <strong>New to LDA? Start here.</strong> LDA is a sorting tool for words. It reads a pile of books and notices which words tend to show up together. Words that keep co-occurring end up in the same group, and each group is called a <em>topic</em>. You read the top words in a topic and decide what theme they point to. No topic arrives with a name attached; the labels on this page are readings we wrote, and you are welcome to disagree.
+</div>
+
 <p class="narrative">
 In lecture we ran LDA on an 11-book sample so the workflow would fit in a class session. Here we run it on the <strong>full 67-book NIKH corpus</strong> &mdash; every surviving Korean history textbook the National Institute of Korean History collected, from 1895 through 2016. The method is the same: Kiwi tokenisation on nouns, stopword removal, document-frequency filtering, LDA on the bag-of-words counts.
 </p>
@@ -164,6 +168,10 @@ We apply the exact pipeline from the Orange demo, just scripted in Python instea
   <h2>Choosing <em>k</em>: coherence scores</h2>
 </div>
 
+<div class="callout callout-note">
+  <strong>What is <em>k</em>?</strong> It is the number of topics you ask LDA to find. If you set <em>k</em> = 5, the model splits the vocabulary across 5 groups. Pick <em>k</em> too small and unrelated themes get mashed together. Pick <em>k</em> too large and one theme ends up split into look-alike pieces. There is no single right answer, which is why we use measures like coherence to help us pick.
+</div>
+
 <p class="narrative">
 In class we said <em>k</em> is a research choice with no universal rule. One tool that can help &mdash; but that Orange's Topic Modelling widget does not surface &mdash; is a <strong>coherence score</strong>.
 </p>
@@ -177,7 +185,7 @@ We fit LDA at several values of <em>k</em> and compute <code>c_v</code> for each
 </p>
 
 <div class="coherence-svg-wrap">
-  <svg id="coherenceChart" viewBox="0 0 680 340" preserveAspectRatio="none"></svg>
+  <svg id="coherenceChart" viewBox="0 0 680 340" aria-label="Coherence (c_v) by number of topics"></svg>
 </div>
 
 <p class="coherence-note" id="coherenceNote"></p>
@@ -196,6 +204,10 @@ Coherence isn't the last word. Two topics can look equally &ldquo;coherent&rdquo
 Below are the topics from <strong>k = <span id="kDefault">6</span></strong>, each with its top 15 words and a suggested label (the label is ours, not the algorithm's &mdash; you can disagree with it and propose your own).
 </p>
 
+<div class="callout callout-note">
+  <strong>How to read a topic.</strong> Each tab below is one topic. The list of words inside is what LDA judged most central to it. The bar next to each word shows how strongly that word belongs to the topic. The title at the top of the tab is our reading of those words. Try it yourself: read the words and ask what theme they point to before you look at our label.
+</div>
+
 <div id="topicTabs" class="topic-tabs"></div>
 <div id="topicPanel"></div>
 
@@ -208,6 +220,10 @@ Below are the topics from <strong>k = <span id="kDefault">6</span></strong>, eac
 <p class="narrative">
 LDA hands each document a mixture over topics &mdash; the <em>θ<sub>d</sub>(k)</em> row from lecture. The bar on each row below shows that mixture. The colour of each segment matches the topic colour above.
 </p>
+
+<div class="callout callout-note">
+  <strong>What is a topic mixture?</strong> LDA does not sort each book into one topic. It treats every book as a blend. A single textbook might be, say, 40% ancient history, 30% colonial resistance, and smaller shares of the other topics. The coloured bar on each row shows that blend for one book.
+</div>
 
 <div class="doc-controls">
   <label>Filter by era:
@@ -392,22 +408,38 @@ LDAvis is an interactive map of the LDA model. The left-hand circles are topics 
 
     // best point + default point
     var best = pts.reduce(function (a, b) { return b.coherence_cv > a.coherence_cv ? b : a; });
+
+    // Edge-aware label placement: keep labels off the y-axis labels at left
+    // and off the chart's right edge. Tick line hidden when label sits
+    // alongside the dot (left/right edges) since they'd be on top of each other.
+    function placeLabel(px, py, text, color, below) {
+      var nearLeft  = (px - m.l) < 50;
+      var nearRight = ((W - m.r) - px) < 50;
+      if (nearLeft || nearRight) {
+        var lx     = nearLeft ? px + 11 : px - 11;
+        var anchor = nearLeft ? "start" : "end";
+        var ly     = py + (below ? 4 : -2);
+        parts.push('<text x="' + lx + '" y="' + ly +
+                   '" text-anchor="' + anchor + '" font-size="11" fill="' + color + '" font-weight="700">' + text + '</text>');
+      } else {
+        var tickY1 = below ? py + 10 : py - 10;
+        var tickY2 = below ? py + 22 : py - 22;
+        var textY  = below ? py + 34 : py - 26;
+        parts.push('<line x1="' + px + '" x2="' + px + '" y1="' + tickY1 + '" y2="' + tickY2 + '" stroke="' + color + '" stroke-width="1.2"/>');
+        parts.push('<text x="' + px + '" y="' + textY +
+                   '" text-anchor="middle" font-size="11" fill="' + color + '" font-weight="700">' + text + '</text>');
+      }
+    }
+
     pts.forEach(function (p) {
       var isBest = p.k === best.k;
       var isDefault = p.k === DATA.lda.default_k;
       parts.push('<circle cx="' + sx(p.k) + '" cy="' + sy(p.coherence_cv) + '" r="' + (isBest ? 6 : (isDefault ? 6 : 4)) +
                  '" fill="' + (isBest ? "#22c55e" : (isDefault ? "#ea580c" : "#001158")) + '"/>');
       if (isBest) {
-        var bx = sx(p.k), by = sy(p.coherence_cv);
-        parts.push('<line x1="' + bx + '" x2="' + bx + '" y1="' + (by - 10) + '" y2="' + (by - 22) + '" stroke="#166534" stroke-width="1.2"/>');
-        parts.push('<text x="' + bx + '" y="' + (by - 26) +
-                   '" text-anchor="middle" font-size="11" fill="#166534" font-weight="700">best · k=' + p.k + '</text>');
+        placeLabel(sx(p.k), sy(p.coherence_cv), "best · k=" + p.k, "#166534", false);
       } else if (isDefault) {
-        var dx = sx(p.k), dy = sy(p.coherence_cv);
-        // place label BELOW default point so it doesn't collide with the line trending up from the right
-        parts.push('<line x1="' + dx + '" x2="' + dx + '" y1="' + (dy + 10) + '" y2="' + (dy + 22) + '" stroke="#9a3412" stroke-width="1.2"/>');
-        parts.push('<text x="' + dx + '" y="' + (dy + 34) +
-                   '" text-anchor="middle" font-size="11" fill="#9a3412" font-weight="700">shown below · k=' + p.k + '</text>');
+        placeLabel(sx(p.k), sy(p.coherence_cv), "shown below · k=" + p.k, "#9a3412", true);
       }
     });
 
