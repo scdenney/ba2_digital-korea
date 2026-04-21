@@ -161,7 +161,7 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 </div>
 
 <p class="narrative">
-In lecture we ran LDA on an 11-book sample so the workflow would fit in a class session. Here we run it on the <strong>full 67-book NIKH corpus</strong> &mdash; every surviving Korean history textbook the National Institute of Korean History collected, from 1895 through 2016. The method is the same: Kiwi tokenization on nouns, stopword removal, document-frequency filtering, LDA on the bag-of-words counts.
+In lecture we ran LDA on an 11-book sample so the workflow would fit in a class session. Here we run it on the <strong>full 67-book Nick Korpis</strong> &mdash; Korean history textbooks curated by the National Institute of Korean History and supplemented with additional books from the instructor's library, covering 1895 through 2016. The method is the same: Kiwi tokenization on nouns, stopword removal, document-frequency filtering, LDA on the bag-of-words counts.
 </p>
 
 <p class="narrative">
