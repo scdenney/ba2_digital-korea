@@ -45,6 +45,19 @@ title: Assignments
 .assignment-accordion .assignment-content {
   padding: 0 1.25rem 1.25rem 1.25rem;
 }
+
+.assessment-ribbon {
+  background: #f5f8fc;
+  border-left: 4px solid #1e6bb8;
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.assessment-ribbon p {
+  margin: 0.25rem 0 0;
+}
 </style>
 
 # Assignments
@@ -54,6 +67,12 @@ Assignments are posted here as they are assigned. Not every week has an assignme
 **Standing policy:** All assignments are due by the beginning of the next class unless otherwise specified.
 
 ---
+
+<div class="assessment-ribbon" markdown="1">
+**Final Assessment Prep:** [Week 11 Assessment Study Guide (PDF)]({{ '/presentations/week11-study-guide.pdf' | relative_url }})
+
+The Week 11 final assessment will follow the same format as the midterm: an online concepts quiz (~20 min) and an in-class Orange application exercise (~20 min). It covers Weeks 7–10.
+</div>
 
 <div class="assignment-accordion">
 
