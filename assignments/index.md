@@ -499,19 +499,15 @@ It covers the second-half methods from Weeks 7–10: clustering, word embeddings
 </details>
 
 <details>
-<summary>Final Paper: Research Report with Replication Repo (Due 5 June)</summary>
+<summary>Final Paper (Due 5 June)</summary>
 <div class="assignment-content" markdown="1">
 
-**Released:** 4 May (in class)
-**Workshop:** Monday 11 May (Week 12) — bring dataset choice + draft RQ
-**Due:** 23:59 on **Friday 5 June 2026** (Brightspace)
+**Workshop:** Monday 11 May (Week 12). **Come prepared:** before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question phrased as a single sentence. If you'd prefer a different corpus from `scdenney/nlp_corpora` outside the menu, email me before the workshop.
+**Due:** 23:59 on **Friday 5 June 2026** (Brightspace).
 
-Pick one corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data), generate a research question, and write a **2,000–5,000-word** research report using methods from this course. Submit a PDF *and* a public GitHub replication repository structured to FAIR principles.
+A short research report (2,000–5,000 words) using one corpus from the menu, supported by a public GitHub replication repository structured to FAIR principles.
 
-**Full brief & rubric:** [Final Paper page]({{ '/final-paper/' | relative_url }})
-**PDF brief:** [Download]({{ '/presentations/week12-final-paper-brief.pdf' | relative_url }})
-**Dataset menu:** [github.com/scdenney/ba2-final-paper-data](https://github.com/scdenney/ba2-final-paper-data)
-**Writing style:** [BAKS Style Guide](https://scdenney.github.io/thesis-supervision/)
+See the [Final Paper Workshop page]({{ '/final-paper/' | relative_url }}) for the brief, rubric, and dataset menu.
 
 </div>
 </details>

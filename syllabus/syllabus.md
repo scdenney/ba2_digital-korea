@@ -385,7 +385,7 @@ Following the assessment, we will review our learning across the entire course, 
 The Week 12 workshop is built around the [final paper]({{ '/final-paper/' | relative_url }}). Arrive with a corpus picked from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and a draft research question phrased as a single sentence. We will review your dataset choice and research question together in conversation, and you will workshop your analysis plan with classmates who are working on different corpora and will see issues you miss.
 
 **Bring to class:**
-- Your chosen dataset (one of the ten on the menu)
+- Your chosen dataset (one of the ten on the menu, or a different corpus from `scdenney/nlp_corpora` you've cleared with me by email beforehand)
 - A draft research question, phrased as a single sentence
 
 **Format:**

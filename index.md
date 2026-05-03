@@ -61,7 +61,7 @@ By the end of this course, you will be able to:
 | 9 | Apr. 13 | Sentiment Analysis - Dictionary & Rule-Based |
 | 10 | Apr. 20 | Topic Modeling (LDA) |
 | 11 | May 4 | Final Review & Assessment |
-| 12 | May 11 | Research Methods Workshop · [Final Paper Brief]({{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}) · [Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) · [Final Paper page]({{ '/final-paper/' | relative_url }}) |
+| 12 | May 11 | [Final Paper Workshop]({{ '/final-paper/' | relative_url }}) |
 
 See the [Syllabus]({{ '/syllabus/syllabus.html' | relative_url }}) for detailed weekly content, readings, and assignments.
 
