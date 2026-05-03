@@ -499,15 +499,22 @@ It covers the second-half methods from Weeks 7–10: clustering, word embeddings
 </details>
 
 <details>
-<summary>Final Paper (Due 5 June)</summary>
+<summary>Week 12: Final Paper (Workshop May 11; paper due 5 June)</summary>
 <div class="assignment-content" markdown="1">
 
-**Workshop:** Monday 11 May (Week 12). **Come prepared:** before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question phrased as a single sentence. If you'd prefer a different corpus from `scdenney/nlp_corpora` outside the menu, email me before the workshop.
-**Due:** 23:59 on **Friday 5 June 2026** (Brightspace).
+**Workshop date:** Monday, May 11 (in class)
 
-A short research report (2,000–5,000 words) using one corpus from the menu, supported by a public GitHub replication repository structured to FAIR principles.
+**Paper due:** Friday, June 5, 23:59 (Brightspace)
 
-See the [Final Paper Workshop page]({{ '/final-paper/' | relative_url }}) for the brief, rubric, and dataset menu.
+**Final Paper page:** [Brief, rubric, and dataset menu]({{ '/final-paper/' | relative_url }})
+
+The final paper is a short research report (2,000–5,000 words) using one corpus from the curated dataset menu, supported by a public GitHub replication repository structured to FAIR principles. The paper is marked out of 10.
+
+**Come prepared to the May 11 workshop.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
+
+In class, you will present your dataset and question to me for review, and then workshop your analysis plan with classmates working on different corpora.
+
+If you would prefer a corpus from `scdenney/nlp_corpora` that is not on the menu, email me before the workshop so I know what you are working on.
 
 </div>
 </details>

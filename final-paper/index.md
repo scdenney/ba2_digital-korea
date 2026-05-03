@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Week 12: Final Paper Workshop"
+title: "Week 12: Final Paper"
 ---
 
 <style>
@@ -36,28 +36,25 @@ title: "Week 12: Final Paper Workshop"
 }
 </style>
 
-# Week 12: Final Paper Workshop
+# Week 12: Final Paper
 
-<p class="fp-meta">Monday 11 May 2026, in class &middot; Final paper due Friday 5 June 2026, 23:59 (Brightspace)</p>
+<p class="fp-meta">Workshop: Monday 11 May 2026, in class &middot; Paper due: Friday 5 June 2026, 23:59 (Brightspace)</p>
 
-The Week 12 workshop is built around the final paper — a short research report (2,000–5,000 words) using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository.
+The final paper is a short research report (2,000–5,000 words) using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository. The paper is marked out of 10.
 
 <div class="fp-buttons">
-  <a href="{{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}">Brief<small>PDF · 4 pp</small></a>
-  <a href="{{ '/presentations/week12-final-paper-rubric.pdf' | relative_url }}">Rubric<small>PDF · 100 pts</small></a>
+  <a href="{{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}">Brief<small>PDF · 3 pp</small></a>
+  <a href="{{ '/presentations/week12-final-paper-rubric.pdf' | relative_url }}">Rubric<small>PDF · 1 pp</small></a>
   <a href="https://github.com/scdenney/ba2-final-paper-data">Dataset Menu<small>GitHub · 10 corpora</small></a>
 </div>
 
-## Workshop (11 May)
+## Workshop (Monday 11 May)
 
-**Come prepared.** Before class, you need to think about which dataset you want to use and what question you want to ask. Bring to class:
+**Come prepared.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
 
-- One corpus picked from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data).
-- A draft research question, phrased as a single sentence.
+In class, you will present your dataset and question to me for review. After that, you will workshop your analysis plan with classmates working on different corpora.
 
-If you would prefer a different corpus from [`scdenney/nlp_corpora`](https://github.com/scdenney/nlp_corpora) outside the menu, email me before the workshop so I know what you are working on.
-
-In class, we will review your dataset and research question together, and you will workshop your analysis plan with classmates working on different corpora.
+If you would prefer a corpus from [`scdenney/nlp_corpora`](https://github.com/scdenney/nlp_corpora) that is not on the menu, email me before the workshop so I know what you are working on.
 
 ## What you submit
 
