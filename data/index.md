@@ -22,6 +22,7 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 | 5, 10 | NIKH History Textbooks (Demo) | 9 Korean history textbooks across 3 eras (Colonial, Authoritarian, Democratic), sampled from the 67-book NIKH corpus (1895–2016). Includes a pre-tokenized `processed_text` column. The smaller option for the Week 10 LDA assignment. See [full corpus documentation](https://github.com/scdenney/nlp_corpora/tree/main/data/nikh). | <a href="nikh_textbooks/nikh_textbooks_demo.csv" download>CSV</a> (~1.8 MB) |
 | 7, 10 | NIKH Clustering Demo | 11 Korean history textbooks (3 Colonial, 4 Authoritarian, 4 Democratic). Used for the Week 7 clustering exercise, and also an option for the Week 10 LDA assignment. Contains `full_text` for preprocessing in Orange. | <a href="nikh_textbooks/nikh_clustering_demo.csv" download>CSV</a> (~3.1 MB) |
 | 9 | Moon Jae-in Tweets | 3,148 tweets from @moonriver365 (2012–2020), with `favorites`, `retweets`, and a `period3` column (Pre-presidency / Transition / Presidency). See [README](moon_twitter/README.md). | <a href="moon_twitter/moon_twitter.csv" download>CSV</a> |
+| Final Paper | Final Paper Dataset Menu | Curated 10-corpus menu for the final research paper. Hosted in a dedicated repo so the course site stays lightweight. Pick one corpus, write a 2,000–5,000-word research paper. | <a href="https://github.com/scdenney/ba2-final-paper-data">Repo</a> |
 
 ---
 

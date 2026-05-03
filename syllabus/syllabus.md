@@ -96,11 +96,11 @@ Information and guidelines are provided in class. Methods assessments (Week 6 an
 
 #### Final Paper {#final-paper}
 
-The final paper is a 3,000-word research report (+/- 10%) applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper should include an introduction, literature review, methods section, results, and conclusion.
+The final paper is a short research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper is **2,000–5,000 words** (excluding references, figures/tables, and appendix material), built around a corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and supported by a public, FAIR-structured GitHub replication repository. The paper includes a research question, brief literature review, data and methods section, analysis and findings, and a summary and conclusion.
 
-Students are expected to use their Research Methods Project as the basis for the paper. More information and guidelines will be provided in class. The final paper is due two weeks after the end of the course.
+The full brief and rubric are on the [Final Paper page]({{ '/final-paper/' | relative_url }}). Students bring a chosen dataset and a draft research question to the **11 May (Week 12) workshop**, where the question and dataset are reviewed in conversation and students workshop their analysis plans with classmates. The paper is due **Friday 5 June 2026, 23:59** on Brightspace.
 
-*A resit is possible for a failing grade on the final paper. However, a reset will only constitute a re-grade of the final paper's proportion of the overall grade and can only be attempted if an original final paper was submitted.*
+*A resit is possible for a failing grade on the final paper. However, a resit will only constitute a re-grade of the final paper's proportion of the overall grade and can only be attempted if an original final paper was submitted.*
 
 ---
 
@@ -380,25 +380,23 @@ Following the assessment, we will review our learning across the entire course, 
 
 ---
 
-### Week 12 (May 11): Research Methods Project Workshop {#week-12}
+### Week 12 (May 11): Research Methods Workshop & Final Paper Planning {#week-12}
 
-This intensive workshop session provides dedicated time for students to work on their Research Methods Projects in a supportive environment. The RMP requires students to apply course methods to a research question, generating data and analysis that will both constitute a grade ('Project on Research Methods') and inform their final papers. 
+The Week 12 workshop is built around the [final paper]({{ '/final-paper/' | relative_url }}). Arrive with a corpus picked from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and a draft research question phrased as a single sentence. We will review your dataset choice and research question together in conversation, and you will workshop your analysis plan with classmates who are working on different corpora and will see issues you miss.
 
-More information about this workshop will be provided in class.
-
-**Topics:**
-- Hands-on project development
-- Troubleshooting technical challenges
-- Interpreting results
-- Preparing analysis for final paper
+**Bring to class:**
+- Your chosen dataset (one of the ten on the menu)
+- A draft research question, phrased as a single sentence
 
 **Format:**
-- "Hackathon" style collaborative workshop
-- Instructor and peer consultation
-- Technical support and guidance
+- Brief one-on-one review of dataset choice and research question
+- "Hackathon" style collaborative workshop with peer consultation
+- Instructor and peer support for planning the analysis
 
 **Orange Data Mining:**
-- Review and apply relevant tutorials from throughout the semester as needed for project requirements
+- Review and apply relevant tutorials from throughout the semester as needed for your project
+
+**Final paper due:** Friday 5 June 2026, 23:59 (Brightspace).
 
 
 *Note: This schedule is subject to adjustment based on class progress and needs. Any changes will be communicated in advance.*
