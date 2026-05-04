@@ -119,7 +119,7 @@ Pick one or both. Download links below.
 - **`dataset2_bluehouse_petitions_sample.csv`** — 360 citizen petitions from the Cheong Wa Dae online platform, 2017–2018, balanced 60 per category. Useful columns: `category`, `year`, `votes`, `title`, `text`.
   · <a href="{{ '/data/week11_assessment/dataset2_bluehouse_petitions_sample.csv' | relative_url }}" download>Download CSV (~600 KB)</a>
 
-Reference: [data dictionary]({{ '/data/week11_assessment/data_dictionary.md' | relative_url }}) (Korean→English key for the petition `category` values; era reference for the KJYG `era` values) and the [full corpus README]({{ '/data/week11_assessment/README.md' | relative_url }}).
+Reference: [data dictionary]({{ '/data/week11_assessment/data_dictionary.html' | relative_url }}) — Korean→English key for the petition `category` values, and the era reference for the KJYG `era` values.
 
 ### The three sub-tasks
 
