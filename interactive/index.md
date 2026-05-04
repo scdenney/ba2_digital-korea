@@ -266,52 +266,19 @@ title: Interactive
   </div>
 
   <div class="exercise-card">
-    <a href="{{ '/interactive/kjyg-final-exemplar' | relative_url }}">
+    <a href="{{ '/interactive/final-assessment-exemplars' | relative_url }}">
       <div class="exercise-card-accent accent-amber"></div>
       <div class="exercise-card-body">
-        <div class="exercise-card-week">Week 11 &middot; Final Assessment exemplar (Task A)</div>
-        <div class="exercise-card-title">KJYG Sentiment Across Leader Eras</div>
-        <p class="exercise-card-desc">A worked answer to Task A of the final assessment. KNU dictionary scoring on Kiwi-tokenized <em>Kyongje Yongu</em> articles by leader era (Kim Il-sung / Kim Jong-il / Kim Jong-un), with a box plot, a yearly trend, pairwise t-tests, and an honest discussion of what the score does and does not measure.</p>
+        <div class="exercise-card-week">Week 11 &middot; Final Assessment</div>
+        <div class="exercise-card-title">Final Assessment Exemplars (Tasks A, B, C)</div>
+        <p class="exercise-card-desc">Three worked examples on a single page, one per Final Assessment task: KJYG sentiment by leader era, LDA on the Cheong Wa Dae petitions, and hierarchical clustering on KJYG. Each task expands to show the research question, method, figures, and a short interpretation. Use these as a reference for the kind of answer the rubric rewards.</p>
       </div>
       <div class="exercise-card-footer">
         <span class="exercise-tag">KJYG</span>
-        <span class="exercise-tag">Sentiment</span>
-        <span class="exercise-tag">KNU Dictionary</span>
-        <span class="exercise-tag">Exemplar</span>
-      </div>
-    </a>
-  </div>
-
-  <div class="exercise-card">
-    <a href="{{ '/interactive/petitions-lda-exemplar' | relative_url }}">
-      <div class="exercise-card-accent accent-teal"></div>
-      <div class="exercise-card-body">
-        <div class="exercise-card-week">Week 11 &middot; Final Assessment exemplar (Task B)</div>
-        <div class="exercise-card-title">Petition Topics Across Categories</div>
-        <p class="exercise-card-desc">A worked answer to Task B. LDA at k=8 on 360 Cheong Wa Dae citizen petitions, with topic labels in plain language, a category &times; topic heatmap, and a discussion of which topics align with one official category and which cross-cut.</p>
-      </div>
-      <div class="exercise-card-footer">
         <span class="exercise-tag">Cheong Wa Dae</span>
+        <span class="exercise-tag">Sentiment</span>
         <span class="exercise-tag">LDA</span>
-        <span class="exercise-tag">Topic Modeling</span>
-        <span class="exercise-tag">Exemplar</span>
-      </div>
-    </a>
-  </div>
-
-  <div class="exercise-card">
-    <a href="{{ '/interactive/kjyg-clustering-exemplar' | relative_url }}">
-      <div class="exercise-card-accent accent-violet"></div>
-      <div class="exercise-card-body">
-        <div class="exercise-card-week">Week 11 &middot; Final Assessment exemplar (Task C)</div>
-        <div class="exercise-card-title">Clustering KJYG into Four Distinctive Voices</div>
-        <p class="exercise-card-desc">A worked answer to Task C. Ward clustering on TF-IDF KJYG vectors at k=4, with each cluster labeled and characterized by its distinctive vocabulary (TF-IDF over-representation) and mean KNU sentiment, and a discussion of where the clusters do and don't track the leader eras.</p>
-      </div>
-      <div class="exercise-card-footer">
-        <span class="exercise-tag">KJYG</span>
         <span class="exercise-tag">Clustering</span>
-        <span class="exercise-tag">TF-IDF</span>
-        <span class="exercise-tag">Exemplar</span>
       </div>
     </a>
   </div>
