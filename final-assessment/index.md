@@ -32,18 +32,19 @@ title: Final Assessment
   font-weight: 600;
   margin-top: 0.5rem;
 }
-.quiz-placeholder {
+.quiz-button {
   display: block;
-  background: #f3f4f6;
-  color: #4b586b;
+  background: #002147;
+  color: #fff !important;
   text-align: center;
   padding: 0.75rem 1.25rem;
   border-radius: 6px;
   font-weight: 600;
   font-size: 1rem;
   margin: 1rem 0;
-  border: 1px dashed #c8ccd3;
+  text-decoration: none !important;
 }
+.quiz-button:hover { background: #003366; }
 .warning-box {
   background: #fef2f2;
   border-left: 3px solid #ef4444;
@@ -88,7 +89,9 @@ The assessment has two parts, both completed during class on your laptop. The qu
 
 Ten multiple-choice questions covering Weeks 7–10. Auto-graded, one point per correct answer.
 
-<div class="quiz-placeholder">The Qualtrics link will be provided in class on 4 May.</div>
+<a class="quiz-button" href="https://leidenuniv.fra1.qualtrics.com/jfe/form/SV_3DBRb2leZ7F2oXc" target="_blank" rel="noopener">Take the Quiz</a>
+
+**Please take this on your laptop** (not your phone).
 
 - 10 multiple-choice questions, one per page
 - Work independently
