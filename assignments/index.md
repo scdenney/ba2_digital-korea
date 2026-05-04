@@ -484,16 +484,16 @@ Commit and push, then confirm your files appear on github.com.
 </details>
 
 <details>
-<summary>Week 11: Final Assessment Prep</summary>
+<summary>Week 11: Final Assessment</summary>
 <div class="assignment-content" markdown="1">
 
-**Assessment date:** May 4 (in class)
+**Assessment date:** Monday, 4 May 2026 (in class)
+
+**Final Assessment page:** [Schedule, datasets, and rubric]({{ '/final-assessment/' | relative_url }})
 
 **Study Guide:** [Week 11 Assessment Study Guide (PDF)]({{ '/presentations/week11-study-guide.pdf' | relative_url }})
 
-The **Week 11 final assessment** will follow the same format as the midterm: an online concepts quiz (~20 min) and an in-class Orange application exercise (~20 min).
-
-It covers the second-half methods from Weeks 7–10: clustering, word embeddings, sentiment analysis, and LDA/topic modeling.
+The **final assessment** has two parts, completed in class on your laptop: an online concepts quiz (~15 min) and an Orange Data Mining application exercise (~45 min). It covers the second-half methods from Weeks 7–10: clustering, word embeddings, sentiment analysis, and LDA / topic modeling.
 
 </div>
 </details>
