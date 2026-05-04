@@ -40,17 +40,17 @@ title: "Week 12: Final Paper"
 
 <p class="fp-meta">Workshop: Monday 11 May 2026, in class &middot; Paper due: Friday 5 June 2026, 23:59 (Brightspace)</p>
 
-The final paper is a short research report (2,000–5,000 words) using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository. The paper is marked out of 10.
+The final paper is a short research report (**2,500–6,000 words**) using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository. The paper is marked out of 10.
 
 <div class="fp-buttons">
-  <a href="{{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}">Brief<small>PDF · 3 pp</small></a>
+  <a href="{{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}">Brief<small>PDF · 4 pp</small></a>
   <a href="{{ '/presentations/week12-final-paper-rubric.pdf' | relative_url }}">Rubric<small>PDF · 1 pp</small></a>
-  <a href="https://github.com/scdenney/ba2-final-paper-data">Dataset Menu<small>GitHub · 10 corpora</small></a>
+  <a href="https://github.com/scdenney/ba2-final-paper-data">Dataset Menu<small>GitHub · 11 corpora</small></a>
 </div>
 
 ## Workshop (Monday 11 May)
 
-**Come prepared.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
+**Come prepared.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that the corpus can answer. Question and dataset need to fit together.
 
 In class, you will present your dataset and question to me for review. After that, you will workshop your analysis plan with classmates working on different corpora.
 
@@ -60,7 +60,7 @@ If you would prefer a corpus from [`scdenney/nlp_corpora`](https://github.com/sc
 
 By **23:59 on Friday 5 June 2026**, on Brightspace:
 
-- **The paper** as a single PDF (2,000–5,000 words).
+- **The paper** as a single PDF (2,500–6,000 words).
 - **The URL** of your public replication repository, structured per the FAIR principles.
 
 Full requirements, structure, and grading detail are in the brief and rubric.

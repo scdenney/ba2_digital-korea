@@ -96,7 +96,7 @@ Information and guidelines are provided in class. Methods assessments (Week 6 an
 
 #### Final Paper {#final-paper}
 
-The final paper is a short research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper is **2,000–5,000 words** (excluding references, figures/tables, and appendix material), built around a corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and supported by a public, FAIR-structured GitHub replication repository. The paper includes a research question, brief literature review, data and methods section, analysis and findings, and a summary and conclusion.
+The final paper is a short research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper is **2,500–6,000 words** (excluding references, figures/tables, and appendix material; 2,500 is a hard minimum, with a 10% tolerance over 6,000), built around a corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and supported by a public, FAIR-structured GitHub replication repository. The paper includes a research question, brief literature review, data and methods section, analysis and findings, and a summary and conclusion.
 
 The full brief and rubric are on the [Final Paper page]({{ '/final-paper/' | relative_url }}). Students bring a chosen dataset and a draft research question to the **11 May (Week 12) workshop**, where the question and dataset are reviewed in conversation and students workshop their analysis plans with classmates. The paper is due **Friday 5 June 2026, 23:59** on Brightspace.
 
