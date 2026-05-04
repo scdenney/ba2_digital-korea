@@ -54,7 +54,7 @@ The final paper is a short research report (**2,500–6,000 words**) using one c
 
 In class, you will present your dataset and question to me for review. After that, you will workshop your analysis plan with classmates working on different corpora.
 
-If you would prefer a corpus from [`scdenney/nlp_corpora`](https://github.com/scdenney/nlp_corpora) that is not on the menu, email me before the workshop so I know what you are working on.
+If you would prefer a corpus from [`scdenney/nlp_corpora`](https://github.com/scdenney/nlp_corpora) that is not on the menu, or another corpus entirely, email me before the workshop. I will consider it, but it needs approval.
 
 ## What you submit
 

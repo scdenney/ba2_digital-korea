@@ -499,22 +499,22 @@ It covers the second-half methods from Weeks 7–10: clustering, word embeddings
 </details>
 
 <details>
-<summary>Week 12: Final Paper (Workshop May 11; paper due 5 June)</summary>
+<summary>Week 12: Final Paper (Workshop 11 May; paper due 5 June)</summary>
 <div class="assignment-content" markdown="1">
 
-**Workshop date:** Monday, May 11 (in class)
+**Workshop:** Monday, 11 May 2026 (in class)
 
-**Paper due:** Friday, June 5, 23:59 (Brightspace)
+**Paper due:** Friday, 5 June 2026, 23:59 (Brightspace)
 
 **Final Paper page:** [Brief, rubric, and dataset menu]({{ '/final-paper/' | relative_url }})
 
 The final paper is a short research report (2,500–6,000 words) using one corpus from the curated dataset menu, supported by a public GitHub replication repository structured to FAIR principles. The paper is marked out of 10.
 
-**Come prepared to the May 11 workshop.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
+**Come prepared to the 11 May workshop.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
 
 In class, you will present your dataset and question to me for review, and then workshop your analysis plan with classmates working on different corpora.
 
-If you would prefer a corpus from `scdenney/nlp_corpora` that is not on the menu, email me before the workshop so I know what you are working on.
+If you would prefer a corpus from `scdenney/nlp_corpora` that is not on the menu, or another corpus, email me before the workshop. I will consider it, but it needs approval.
 
 </div>
 </details>
