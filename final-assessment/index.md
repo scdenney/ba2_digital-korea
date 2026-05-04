@@ -112,10 +112,14 @@ For each sub-task, your answer rests on a visualization. **Box Plot, violin plot
 
 ### Datasets
 
-Two CSVs and a short Korean→English data-dictionary key for the petition category values are linked from the [Data & Scripts]({{ '/data/' | relative_url }}) page (Week 11 row). Pick one or both:
+Pick one or both. Download links below.
 
 - **`dataset1_kjyg_sample.csv`** — 360 articles from *Kyongje Yongu* (경제연구), the DPRK economics journal, 1987–2017. Balanced 120 articles per leader era (Kim Il-sung, Kim Jong-il, Kim Jong-un). Useful columns: `era`, `year`, `issue`, `title`, `text`.
+  · <a href="{{ '/data/week11_assessment/dataset1_kjyg_sample.csv' | relative_url }}" download>Download CSV (~3.1 MB)</a>
 - **`dataset2_bluehouse_petitions_sample.csv`** — 360 citizen petitions from the Cheong Wa Dae online platform, 2017–2018, balanced 60 per category. Useful columns: `category`, `year`, `votes`, `title`, `text`.
+  · <a href="{{ '/data/week11_assessment/dataset2_bluehouse_petitions_sample.csv' | relative_url }}" download>Download CSV (~600 KB)</a>
+
+Reference: [data dictionary]({{ '/data/week11_assessment/data_dictionary.md' | relative_url }}) (Korean→English key for the petition `category` values; era reference for the KJYG `era` values) and the [full corpus README]({{ '/data/week11_assessment/README.md' | relative_url }}).
 
 ### The three sub-tasks
 
