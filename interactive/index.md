@@ -265,6 +265,23 @@ title: Interactive
     </a>
   </div>
 
+  <div class="exercise-card">
+    <a href="{{ '/interactive/kjyg-final-exemplar' | relative_url }}">
+      <div class="exercise-card-accent accent-amber"></div>
+      <div class="exercise-card-body">
+        <div class="exercise-card-week">Week 11 &middot; Final Assessment exemplar</div>
+        <div class="exercise-card-title">KJYG Sentiment Across Leader Eras</div>
+        <p class="exercise-card-desc">A worked answer to Task A of the final assessment. KNU dictionary scoring on Kiwi-tokenized <em>Kyongje Yongu</em> articles by leader era (Kim Il-sung / Kim Jong-il / Kim Jong-un), with a box plot, a yearly trend, pairwise t-tests, and an honest discussion of what the score does and does not measure.</p>
+      </div>
+      <div class="exercise-card-footer">
+        <span class="exercise-tag">KJYG</span>
+        <span class="exercise-tag">Sentiment</span>
+        <span class="exercise-tag">KNU Dictionary</span>
+        <span class="exercise-tag">Exemplar</span>
+      </div>
+    </a>
+  </div>
+
 </div>
 
 </div>
