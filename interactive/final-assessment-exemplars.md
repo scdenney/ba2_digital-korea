@@ -48,7 +48,7 @@ table.summary-table, table.compact-table { width: 100%; border-collapse: collaps
 </div>
 
 <div class="intro-box">
-The figures below come from a Python pipeline that uses the same building blocks Orange does (Kiwi morphological tokenization, the KNU sentiment dictionary, scikit-learn LDA, hierarchical clustering with Ward linkage). Your Orange runs will produce close but slightly different numbers because random seeds and the exact preprocessing options differ. Read these as examples of the kind of answer the rubric rewards. An ideal answer states a clear research question, describes the method before showing results, cites a labeled figure from the prose, and ends with a short interpretation that ties the result to context.
+The figures below come from a Python pipeline that uses the same building blocks Orange does (Kiwi morphological tokenization, the KNU sentiment dictionary, scikit-learn LDA, hierarchical clustering with Ward linkage). Your Orange runs will produce close but slightly different numbers because random seeds and the exact preprocessing options differ. Read these as examples of the kind of answer the rubric rewards. An ideal answer states a clear research question, describes the method before showing results, cites a labeled figure from the prose, and ends with a short interpretation that explains the result.
 </div>
 
 <details class="task-box" open>
@@ -77,14 +77,14 @@ The figures below come from a Python pipeline that uses the same building blocks
 </tbody>
 </table>
 
-<p>The pattern is U-shaped. Kim Il-sung scores highest, Kim Jong-il lowest, Kim Jong-un partially recovers. The Il-sung vs. Jong-il gap is statistically distinguishable (Welch t = +2.35, p = 0.020); the other two pairs are not.</p>
+<p>The pattern is U-shaped. Kim Il-sung scores highest, Kim Jong-il lowest, Kim Jong-un sits between. The Il-sung vs. Jong-il gap is statistically distinguishable (Welch t = +2.35, p = 0.020); the other two pairs are not.</p>
 
 <div class="figure-block">
 <img src="kjyg_sentiment_yearly.png" alt="Mean sentiment by year, 1987 to 2017">
 <div class="figure-caption"><strong>Figure 2.</strong> Mean sentiment by year. Vertical lines mark leader transitions.</div>
 </div>
 
-<p>The dip lives in the late 1990s, around the Arduous March famine years. Kim Jong-un articles climb back toward the late Kim Il-sung baseline without quite reaching it.</p>
+<p>The dip is in the late 1990s, around the Arduous March famine years. Kim Jong-un articles are higher on average than Kim Jong-il articles but still lower than the late Kim Il-sung baseline.</p>
 
 <h3>Interpretation</h3>
 <p>Era-level sentiment shifts track historical shocks more than they track regimes. The Kim Jong-il era looks more negative on average because the famine-era articles drag the mean down. By the 2010s the register has shifted toward "our-style economic management" language, which carries higher KNU positivity.</p>
@@ -127,7 +127,7 @@ The figures below come from a Python pipeline that uses the same building blocks
 
 <p>Five of the eight topics align tightly with one official category. T0 (civil-service jobs) concentrates in Jobs at 0.33. T2 (hospitals) peaks in Health and welfare at 0.23. T3 (gender) is sharpest of all, concentrating at 0.41 in Human rights / gender equality.</p>
 
-<p>Two topics cross-cut. T5 (inter-Korean and presidential politics) sits at 0.27 in Political reform and 0.25 in Foreign / unification / defense. The shared vocabulary (대통령, 정치, 북한) belongs to both categories at once.</p>
+<p>Two topics cross-cut. T5 (inter-Korean and presidential politics) sits at 0.27 in Political reform and 0.25 in Foreign / unification / defense. The shared vocabulary (대통령, 정치, 북한) is common to petitions in both categories.</p>
 
 <div class="figure-block">
 <img src="petitions_sharpest_topic.png" alt="Bar chart showing concentration of T3 by category">
@@ -135,7 +135,7 @@ The figures below come from a Python pipeline that uses the same building blocks
 </div>
 
 <h3>Interpretation</h3>
-<p>LDA recovers most of the categorical structure the platform's editors put in place. The topics that cross-cut are where the analysis earns its keep: petitions about the executive branch and petitions about North-South relations talk in similar words, even when their official category differs.</p>
+<p>LDA finds most of the categorical structure the platform's editors put in place. The cross-cutting topics are the more interesting result: petitions about the executive branch and petitions about North-South relations use overlapping vocabulary, even when their official category differs.</p>
 
 <h3>Limitations</h3>
 <p>Topic count is a choice. At k=6 the topics collapse toward the official categories. At k=12 several fragment. Topic labels are also interpretive: "gender and punishment" is one defensible reading of T3.</p>
@@ -169,7 +169,7 @@ The figures below come from a Python pipeline that uses the same building blocks
 </tbody>
 </table>
 
-<p>Cluster 1 is the only cluster with negative mean sentiment. The vocabulary explains why: 위기 (crisis), 제국주의 (imperialism), 미제 (US imperialism), 독점 (monopoly). The negativity targets capitalism and the United States.</p>
+<p>Cluster 1 is the only cluster with negative mean sentiment. The vocabulary explains why: 위기 (crisis), 제국주의 (imperialism), 미제 (US imperialism), 독점 (monopoly). The negative scoring is about capitalism and the United States, not about North Korea itself.</p>
 
 <div class="figure-block">
 <img src="kjyg_cluster_era.png" alt="Within-cluster era distribution heatmap">
@@ -179,7 +179,7 @@ The figures below come from a Python pipeline that uses the same building blocks
 <p>Cluster 4 (mass-line collectivism) is 67% Kim Il-sung. Cluster 3 (Songun) is 58% Kim Jong-il, exactly when Songun was the operative state policy. Cluster 2 (technical economics, the largest at n=193) skews plurality Kim Jong-un at 44%, consistent with the post-2012 "our-style economic management" rhetoric. Cluster 1 (anti-imperialist polemic) is roughly even across all three eras.</p>
 
 <h3>Interpretation</h3>
-<p><em>Kyongje Yongu</em> runs at least four distinct registers at once. Two are era-specific; two are steady-state. The Task A finding that Kim Jong-il-era articles are slightly more negative on average is partly explained here: the negativity lives in cluster 1, which is roughly era-stable. What changes between eras is the mix of the other registers.</p>
+<p><em>Kyongje Yongu</em> uses at least four distinct registers. Two are era-specific; two are present in every era. The Task A finding that Kim Jong-il-era articles are slightly more negative on average is partly explained here: the negative scoring is concentrated in cluster 1, which is roughly the same size in every era. What changes between eras is the mix of the other three registers.</p>
 
 <h3>Limitations</h3>
 <p>Cluster sizes are uneven. Cluster 2 contains 54% of all articles. Trying complete linkage or k-means at the same k would help check whether the imbalance is real or an artifact of the chosen distance.</p>
@@ -187,7 +187,7 @@ The figures below come from a Python pipeline that uses the same building blocks
 </details>
 
 <div class="tip-box">
-<strong>The pattern repeats across all three tasks.</strong> A clear research question, the method described before results, a labeled figure cited from the prose, a short interpretation that ties the result to context, and an honest note on what the method misses. That is the answer at the top of the rubric.
+<strong>The pattern repeats across all three tasks.</strong> A clear research question, the method described before results, a labeled figure cited from the prose, a short interpretation that explains the result, and an honest note on what the method misses. That is the answer at the top of the rubric.
 </div>
 
 </div>
