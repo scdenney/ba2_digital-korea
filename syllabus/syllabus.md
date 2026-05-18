@@ -86,7 +86,7 @@ Participation is based on attendance and completion of the short skills work ass
 
 Full attendance is not only expected but, for a hands-on class such as this, extremely important. Each class you are marked as present (1) or absent (0). If you miss a class, you must catch up immediately by reviewing lecture material and consulting your peers. With exceptions for extenuating circumstances, absences are not excused and no extensions for assignments will be granted.
 
-For the final participation calculation, the mandatory R programming items were credited as complete for students who remained active in the course. The separately assessed GitHub/Orange deliverables were the Orange corpus/demo or workflow assignments for Weeks 2, 3, 4, 7, 8, 9, and 10. These were checked against the student's GitHub repository. The assignment component is calculated as the proportion of completed items, scaled to 10, with any approved extra credit added afterward according to the course policy.
+For the final participation calculation, the mandatory R programming items were credited as complete for students who remained active in the course. The separately assessed GitHub/Orange deliverables were the required Orange workflow assignments for Weeks 4, 7, 8, 9, and 10. These were checked against each student's GitHub repository. The Week 2 and Week 3 Orange Data Mining practice work was optional and was not counted against students in the participation calculation. The assignment component is calculated as the proportion of completed required items, scaled to 10. Any approved extra credit is applied separately to the final course mark, not folded into this assignment component.
 
 #### Research Methods Project {#research-methods-project}
 
