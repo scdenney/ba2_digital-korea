@@ -40,7 +40,7 @@ title: "Week 12: Final Paper"
 
 <p class="fp-meta">Workshop: Monday 11 May 2026, in class &middot; Paper due: Friday 5 June 2026, 23:59 (Brightspace)</p>
 
-The final paper is a short research report (**2,500–6,000 words**) using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository. You can do the analysis in Orange Data Mining or in R — your choice; R is an option, not a requirement. The paper is marked out of 10.
+The final paper is a short research report using one corpus from the curated dataset menu, supported by a public, FAIR-structured GitHub replication repository. It must be **2,500–6,000 words**, excluding references, figures/tables, and appendix material. The 2,500-word minimum is firm; papers may exceed 6,000 words by up to 10% before a length penalty applies. You can do the analysis in Orange Data Mining or in R — your choice; R is an option, not a requirement. The paper is marked out of 10.
 
 <div class="fp-buttons">
   <a href="{{ '/presentations/week12-final-paper-brief.pdf' | relative_url }}">Brief<small>PDF · 4 pp</small></a>
@@ -58,6 +58,6 @@ If you would prefer a corpus from [`scdenney/nlp_corpora`](https://github.com/sc
 
 ## What you submit
 
-By **23:59 on Friday 5 June 2026**, on Brightspace: **your paper as a single PDF** (2,500–6,000 words). There is no separate field for a repository URL — embed the link to your public, FAIR-structured replication repository as a footnote on the paper's title, using the suggested replication-package wording in the brief.
+By **23:59 on Friday 5 June 2026**, submit **one PDF** on Brightspace. The PDF must contain the paper itself and a footnote on the title with the URL of your public, FAIR-structured replication repository. There is no separate Brightspace field for the repository URL, so the title footnote is where the link must appear. Use the suggested replication-package wording in the brief.
 
 Full requirements, structure, and grading detail are in the brief and rubric.

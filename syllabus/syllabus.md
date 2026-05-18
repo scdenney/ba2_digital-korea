@@ -76,17 +76,17 @@ Throughout the course, students engage with the possibilities and limitations of
 
 ### Assessment {#assessment}
 
-- Participation (15%) — attendance, R programming assignments
+- Participation (15%) — attendance, R programming assignments, and GitHub/Orange workflow deliverables
 - Research Methods Project (35%) — in-class assessments, Week 12 workshop
 - Final Paper (50%)
 
 #### Participation {#participation}
 
-Each R Programming exercise or assignment listed below is assessed as complete (1) or incomplete (0). To receive credit, assignments must be submitted by the start of the next class. Late submissions receive no credit; partial credit is possible at the instructor's discretion.
+Participation is based on attendance and completion of the short skills work assigned during the term. The R programming items listed below are assessed as complete (1) or incomplete (0). GitHub/Orange workflow deliverables are assessed from the files pushed to each student's course repository: complete submissions receive 1 point, partial submissions may receive 0.5 points, and missing submissions receive 0 points.
 
 Full attendance is not only expected but, for a hands-on class such as this, extremely important. Each class you are marked as present (1) or absent (0). If you miss a class, you must catch up immediately by reviewing lecture material and consulting your peers. With exceptions for extenuating circumstances, absences are not excused and no extensions for assignments will be granted.
 
-The final participation grade is calculated as the proportion of completed items (assignments and attendance), scaled to 10.
+For the final participation calculation, the mandatory R programming items were credited as complete for students who remained active in the course. The separately assessed GitHub/Orange deliverables were the Orange corpus/demo or workflow assignments for Weeks 2, 3, 4, 7, 8, 9, and 10. These were checked against the student's GitHub repository. The assignment component is calculated as the proportion of completed items, scaled to 10, with any approved extra credit added afterward according to the course policy.
 
 #### Research Methods Project {#research-methods-project}
 
@@ -96,7 +96,7 @@ Information and guidelines are provided in class. Methods assessments (Week 6 an
 
 #### Final Paper {#final-paper}
 
-The final paper is a short research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper is **2,500–6,000 words** (excluding references, figures/tables, and appendix material; 2,500 is a hard minimum, with a 10% tolerance over 6,000), built around a corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and supported by a public, FAIR-structured GitHub replication repository. The paper includes a research question, brief literature review, data and methods section, analysis and findings, and a summary and conclusion.
+The final paper is a short research report applying computational text analysis methods learned in this course to a research question of the student's choosing. The paper must be **2,500–6,000 words**, excluding references, figures/tables, and appendix material. The 2,500-word minimum is firm; papers may exceed 6,000 words by up to 10% before a length penalty applies. The paper is built around a corpus from the [Final Paper Dataset Menu](https://github.com/scdenney/ba2-final-paper-data) and supported by a public, FAIR-structured GitHub replication repository. It includes a research question, brief literature review, data and methods section, analysis and findings, and a summary and conclusion.
 
 The full brief and rubric are on the [Final Paper page]({{ '/final-paper/' | relative_url }}). Students bring a chosen dataset and a draft research question to the **11 May (Week 12) workshop**, where the question and dataset are reviewed in conversation and students workshop their analysis plans with classmates. The paper is due **Friday 5 June 2026, 23:59** on Brightspace.
 

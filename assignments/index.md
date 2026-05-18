@@ -508,7 +508,7 @@ The **final assessment** has two parts, completed in class on your laptop: an on
 
 **Final Paper page:** [Brief, rubric, and dataset menu]({{ '/final-paper/' | relative_url }})
 
-The final paper is a short research report (2,500–6,000 words) using one corpus from the curated dataset menu. Submit a single PDF; the URL of your public, FAIR-structured GitHub replication repository goes in a footnote on the paper's title (suggested wording is in the brief). The paper is marked out of 10.
+The final paper is a short research report using one corpus from the curated dataset menu. It must be 2,500–6,000 words, excluding references, figures/tables, and appendix material. Submit a single PDF; the URL of your public, FAIR-structured GitHub replication repository goes in a footnote on the paper's title (suggested wording is in the brief). The paper is marked out of 10.
 
 **Come prepared to the 11 May workshop.** Before class, pick one corpus from the [dataset menu](https://github.com/scdenney/ba2-final-paper-data) and draft a research question — phrased as a single sentence — that your chosen corpus can plausibly answer. The question and the dataset need to be linked: the question should be answerable with the corpus you pick.
 
