@@ -14,22 +14,16 @@
         <h1 class="site-title">{{ site.title }}</h1>
         <p class="site-description">{{ site.description }}</p>
         <nav class="site-nav">
-          <span class="nav-group">
-            <a href="{{ '/' | relative_url }}">Home</a>
-            <a href="{{ '/syllabus/syllabus.html' | relative_url }}">Syllabus</a>
-            <a href="{{ '/getting-started/' | relative_url }}">Getting Started</a>
-          </span>
-          <span class="nav-group">
-            <a href="{{ '/presentations/' | relative_url }}">Presentations</a>
-            <a href="{{ '/data/' | relative_url }}">Data &amp; Scripts</a>
-            <a href="{{ '/interactive/' | relative_url }}">Interactive</a>
-          </span>
-          <span class="nav-group">
-            <a href="{{ '/assignments/' | relative_url }}">Assignments</a>
-            <a href="{{ '/midterm/' | relative_url }}">Midterm</a>
-            <a href="{{ '/final-assessment/' | relative_url }}">Final Assessment</a>
-            <a href="{{ '/final-paper/' | relative_url }}">Final Paper</a>
-          </span>
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} class="is-active"{% endif %}>Home</a>
+          <a href="{{ '/syllabus/syllabus.html' | relative_url }}"{% if page.url contains '/syllabus/' %} class="is-active"{% endif %}>Syllabus</a>
+          <a href="{{ '/getting-started/' | relative_url }}"{% if page.url contains '/getting-started/' %} class="is-active"{% endif %}>Getting Started</a>
+          <a href="{{ '/presentations/' | relative_url }}"{% if page.url contains '/presentations/' %} class="is-active"{% endif %}>Presentations</a>
+          <a href="{{ '/data/' | relative_url }}"{% if page.url contains '/data/' %} class="is-active"{% endif %}>Data &amp; Scripts</a>
+          <a href="{{ '/interactive/' | relative_url }}"{% if page.url contains '/interactive/' %} class="is-active"{% endif %}>Interactive</a>
+          <a href="{{ '/assignments/' | relative_url }}"{% if page.url contains '/assignments/' %} class="is-active"{% endif %}>Assignments</a>
+          <a href="{{ '/midterm/' | relative_url }}"{% if page.url contains '/midterm/' %} class="is-active"{% endif %}>Midterm</a>
+          <a href="{{ '/final-assessment/' | relative_url }}"{% if page.url contains '/final-assessment/' %} class="is-active"{% endif %}>Final Assessment</a>
+          <a href="{{ '/final-paper/' | relative_url }}"{% if page.url contains '/final-paper/' %} class="is-active"{% endif %}>Final Paper</a>
         </nav>
       </div>
     </header>
