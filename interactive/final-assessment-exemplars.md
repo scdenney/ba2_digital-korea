@@ -4,7 +4,7 @@ title: "Final Assessment Exemplars"
 ---
 
 <style>
-:root { --leiden-blue: #001158; }
+.exemplar-page { --leiden-blue: #001158; }
 
 .exemplar-page { max-width: 100%; }
 
@@ -44,7 +44,7 @@ table.summary-table, table.compact-table { width: 100%; border-collapse: collaps
 
 <div class="exemplar-header">
 <h1>Final Assessment Exemplars</h1>
-<div class="meta">Three worked examples, one per Final Assessment task. Click a task to expand.</div>
+<div class="meta">Three exemplars, one per Final Assessment task. Click a task to expand.</div>
 </div>
 
 <div class="intro-box">

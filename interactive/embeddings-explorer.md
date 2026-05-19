@@ -4,7 +4,7 @@ title: "Word Embeddings: Presidential Speeches"
 ---
 
 <style>
-:root { --leiden-blue: #001158; }
+.demo-app { --leiden-blue: #001158; }
 .demo-app { max-width: 100%; }
 .demo-header { margin-bottom: 1.5rem; margin-top: 1rem; }
 .demo-header h1 { margin: 0 0 0.5rem; font-size: 1.6rem; color: var(--leiden-blue); }

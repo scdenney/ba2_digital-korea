@@ -5,7 +5,7 @@ title: "Sentiment Analysis: Moon Jae-in's Tweets"
 
 <style>
 /* ── Page layout ─────────────────────────────────────────────────── */
-:root { --leiden-blue: #001158; --pos-green: #22863a; --neg-red: #b33030; --neu-gray: #6b7280; }
+.tutorial-page { --leiden-blue: #001158; --pos-green: #22863a; --neg-red: #b33030; --neu-gray: #6b7280; }
 .tutorial-page { max-width: 100%; }
 
 .tutorial-header {

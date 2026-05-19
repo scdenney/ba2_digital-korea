@@ -271,7 +271,7 @@ title: Interactive
       <div class="exercise-card-body">
         <div class="exercise-card-week">Week 11 &middot; Final Assessment</div>
         <div class="exercise-card-title">Final Assessment Exemplars (Tasks A, B, C)</div>
-        <p class="exercise-card-desc">Three worked examples on a single page, one per Final Assessment task: KJYG sentiment by leader era, LDA on the Cheong Wa Dae petitions, and hierarchical clustering on KJYG. Each task expands to show the research question, method, figures, and a short interpretation. Use these as a reference for the kind of answer the rubric rewards.</p>
+        <p class="exercise-card-desc">Three exemplars on a single page, one per Final Assessment task: KJYG sentiment by leader era, LDA on the Cheong Wa Dae petitions, and hierarchical clustering on KJYG. Each task expands to show the research question, method, figures, and a short interpretation. Use these as a reference for the kind of answer the rubric rewards.</p>
       </div>
       <div class="exercise-card-footer">
         <span class="exercise-tag">KJYG</span>

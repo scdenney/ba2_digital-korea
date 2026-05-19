@@ -37,5 +37,56 @@
         <p>Korean Studies · Leiden University</p>
       </div>
     </footer>
+
+    <script>
+    (function() {
+      var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.page-toc a[href^="#"]'));
+      if (tocLinks.length === 0) return;
+
+      var linkById = {};
+      tocLinks.forEach(function(link) {
+        var id = decodeURIComponent(link.getAttribute('href').slice(1));
+        if (id) linkById[id] = link;
+      });
+
+      var headings = Array.prototype.slice
+        .call(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]'))
+        .filter(function(h) { return Object.prototype.hasOwnProperty.call(linkById, h.id); });
+      if (headings.length === 0) return;
+
+      var OFFSET = 120;
+      var lastActive = null;
+
+      function update() {
+        var current = headings[0];
+        for (var i = 0; i < headings.length; i++) {
+          if (headings[i].getBoundingClientRect().top <= OFFSET) {
+            current = headings[i];
+          } else {
+            break;
+          }
+        }
+        var activeLink = linkById[current.id];
+        if (activeLink === lastActive) return;
+        lastActive = activeLink;
+        tocLinks.forEach(function(link) {
+          if (link === activeLink) link.classList.add('is-active');
+          else link.classList.remove('is-active');
+        });
+      }
+
+      var ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() { update(); ticking = false; });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    })();
+    </script>
   </body>
 </html>

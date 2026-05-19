@@ -4,7 +4,7 @@ title: "Topic Modeling (LDA): Korean History Textbooks"
 ---
 
 <style>
-:root { --leiden-blue: #001158; }
+.tutorial-page { --leiden-blue: #001158; }
 .tutorial-page { max-width: 100%; }
 
 .tutorial-header { margin-top: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; }
