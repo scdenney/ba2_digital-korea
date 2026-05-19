@@ -16,6 +16,7 @@ midterm/answer-guide.html
 
 # Project instructions
 CLAUDE.md
+.claude/
 
 # LaTeX source files (directory and local symlink)
 presentations/tex
