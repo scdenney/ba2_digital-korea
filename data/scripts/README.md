@@ -12,6 +12,16 @@ Python scripts for Orange Data Mining Python Script widgets, plus R scripts for 
 | [`custom_preprocessing_windows-users.py`](custom_preprocessing_windows-users.py) | Same as above, but assumes `kiwipiepy` is already installed (`pip install kiwipiepy` in a terminal). |
 | [`korean_preprocessing_annotated-mac-ver.py`](korean_preprocessing_annotated-mac-ver.py) | Line-by-line annotated version of the Mac script. Read this if you want to understand what each step does. |
 
+### For Hanmun-mixed corpora (Colonial Magazines, Kaebyok, older newspapers)
+
+For text with heavy Hanja (Chinese characters). These convert each Hanja to its Korean **reading** (學生 → 학생 — a reading, *not* a meaning translation), tokenize with Kiwi, and route Classical-Chinese (Hanmun) articles to character-level tokenization. Output adds a `text_type` column (`korean` / `hanmun`) so you can analyze the two separately.
+
+| File | Purpose |
+|------|---------|
+| [`hanja_preprocessing_mac-users.py`](hanja_preprocessing_mac-users.py) | Orange Python Script widget (Mac). Auto-installs `kiwipiepy` and `hanja`. |
+| [`hanja_preprocessing_windows-users.py`](hanja_preprocessing_windows-users.py) | Same, Windows (assumes `pip install kiwipiepy hanja`). |
+| [`hanja_preprocessing.R`](hanja_preprocessing.R) | RStudio version (reticulate → Kiwi + `hanja`). For students preprocessing in R. |
+
 ### For Week 9 (sentiment analysis)
 
 | File | Purpose |
