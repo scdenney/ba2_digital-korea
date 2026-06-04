@@ -37,8 +37,9 @@ Datasets are sampled subsets of larger corpora maintained in the [NLP Corpora fo
 | 3 | Korean Preprocessing — Annotated | Fully annotated Mac version. Read this to understand what each step does and why. | <a href="scripts/korean_preprocessing_annotated-mac-ver.py" download>Python</a> |
 | 9 | Sentiment Preprocessing (Mac) | Kiwi tokenization for sentiment analysis. Auto-installs kiwipiepy. Keeps NNG, NNP, VV, and VA tags (nouns + verbs + adjectives). | <a href="scripts/sentiment_preprocessing_mac-users.py" download>Python</a> |
 | 9 | Sentiment Preprocessing (Windows) | Same as above; kiwipiepy must be pre-installed. | <a href="scripts/sentiment_preprocessing_windows-users.py" download>Python</a> |
-| Final paper | Hanja Preprocessing (Mac) | Hanja-aware variant for Hanmun-mixed corpora (Colonial Magazines, *Kaebyok*, older newspaper articles). Converts Chinese characters to their Hangul readings, then runs Kiwi tokenization. Auto-installs `kiwipiepy` and `hanja`. | <a href="scripts/hanja_preprocessing_mac-users.py" download>Python</a> |
+| Final paper | Hanja Preprocessing (Mac) | Hanja-aware variant for Hanmun-mixed corpora (Colonial Magazines, *Kaebyok*, older newspapers). Converts Hanja to Hangul readings then runs Kiwi; routes mostly-Classical-Chinese (Hanmun) articles to character-level tokenization and tags each `korean`/`hanmun`. Auto-installs `kiwipiepy` and `hanja`. | <a href="scripts/hanja_preprocessing_mac-users.py" download>Python</a> |
 | Final paper | Hanja Preprocessing (Windows) | Same as above; `kiwipiepy` and `hanja` must be pre-installed (`pip install kiwipiepy hanja`). | <a href="scripts/hanja_preprocessing_windows-users.py" download>Python</a> |
+| Final paper | Hanja Preprocessing (RStudio) | R version (reticulate → Kiwi + `hanja`) for analysis in R. Same routing and `text_type` output as the Orange scripts. | <a href="scripts/hanja_preprocessing.R" download>R</a> |
 
 ---
 
