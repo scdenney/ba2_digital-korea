@@ -77,7 +77,7 @@ Throughout the course, students engage with the possibilities and limitations of
 ### Assessment {#assessment}
 
 - Participation (15%) — attendance, R programming assignments, and GitHub/Orange workflow deliverables
-- Research Methods Project (35%) — in-class assessments, Week 12 workshop
+- Research Methods Project (35%) — Week 6 midterm review and Week 11 final assessment, equally weighted (17.5% each)
 - Final Paper (50%)
 
 #### Participation {#participation}
@@ -90,9 +90,7 @@ For the final participation calculation, the mandatory R programming items were 
 
 #### Research Methods Project {#research-methods-project}
 
-The Research Methods Project (RMP) requires students to apply course methods to a research question of their choosing, generating data and analysis that will both constitute a grade and inform their final papers. The RMP is due at the end of Week 12. It will be assessed out of 10.
-
-Information and guidelines are provided in class. Methods assessments (Week 6 and Week 11) also contribute to this grade. Each assessment is a multiple choice and/or short answer test administered in class, also out of 10 total points. The final grade is the average of the RMP and assessments.
+The Research Methods Project (RMP) component is assessed through the two in-class methods assessments: the **Week 6 midterm review** and the **Week 11 final assessment**. Each is a multiple choice and/or short answer test administered in class, marked out of 10. The two assessments are **weighted equally — 17.5% each — and together make up the 35% RMP component**. They test the computational text-analysis methods taught across the term and, together with the Week 12 workshop, prepare students for the final paper. Information and guidelines are provided in class.
 
 #### Final Paper {#final-paper}
 
