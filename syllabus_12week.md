@@ -87,7 +87,7 @@ Additional short modules may be assigned later, depending on time and fit.
 
 ## GitHub Repository Requirement
 
-See the ["how-to" guide](repo_how-to.md) (located in the syllabus folder) on how to get started with GitHub and repo management.
+See the [Getting Started guide]({{ '/getting-started/#github-setup' | relative_url }}) for an introduction to GitHub and repository management.
 
 You are required to maintain a **private GitHub repository** for this course:
 
@@ -365,7 +365,7 @@ All course materials (corpora, tutorials, assignment instructions) are provided 
 - **Course Repository:** [https://github.com/scdenney/ba3_text_as_data](https://github.com/scdenney/ba3_text_as_data)
 - **Orange Tutorials:** [YouTube Playlist](https://www.youtube.com/playlist?list=PLmNPvQr9Tf-ZSDLwOzxpvY-HrE0yv-8Fy)
 - **Orange Documentation:** [https://orangedatamining.com/docs/](https://orangedatamining.com/docs/)
-- **GitHub Guide:** See `repo_how-to.md` in syllabus folder
+- **GitHub Guide:** See the [Getting Started guide]({{ '/getting-started/#github-setup' | relative_url }})
 - **Markdown Guide:** See `markdown_how-to.md` in syllabus folder
 
 For technical issues with Orange or GitHub, consult documentation first, then bring questions to class or office hours.

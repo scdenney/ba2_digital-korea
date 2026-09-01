@@ -1,92 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ page.title }} | {{ site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#12224a">
+    <meta name="description" content="{{ page.description | default: site.description | escape }}">
+    <title>{% if page.title and page.title != "Home" %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+    <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
   </head>
-  <body>
+  <body class="{% if page.body_class %}{{ page.body_class }}{% endif %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <header class="site-header">
-      <div class="container">
-        <a href="https://github.com/scdenney/ba2_digital-korea" class="github-link" target="_blank" rel="noopener">View on GitHub</a>
-        <p class="site-eyebrow">Leiden University · Korean Studies</p>
-        <h1 class="site-title">{{ site.title }}</h1>
-        <p class="site-description">{{ site.description }}</p>
-        <nav class="site-nav">
-          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} class="is-active"{% endif %}>Home</a>
-          <a href="{{ '/syllabus/syllabus.html' | relative_url }}"{% if page.url contains '/syllabus/' %} class="is-active"{% endif %}>Syllabus</a>
-          <a href="{{ '/getting-started/' | relative_url }}"{% if page.url contains '/getting-started/' %} class="is-active"{% endif %}>Getting Started</a>
-          <a href="{{ '/presentations/' | relative_url }}"{% if page.url contains '/presentations/' %} class="is-active"{% endif %}>Presentations</a>
-          <a href="{{ '/data/' | relative_url }}"{% if page.url contains '/data/' %} class="is-active"{% endif %}>Data &amp; Scripts</a>
-          <a href="{{ '/interactive/' | relative_url }}"{% if page.url contains '/interactive/' %} class="is-active"{% endif %}>Interactive</a>
-          <a href="{{ '/assignments/' | relative_url }}"{% if page.url contains '/assignments/' %} class="is-active"{% endif %}>Assignments</a>
-          <a href="{{ '/midterm/' | relative_url }}"{% if page.url contains '/midterm/' %} class="is-active"{% endif %}>Midterm</a>
-          <a href="{{ '/final-assessment/' | relative_url }}"{% if page.url contains '/final-assessment/' %} class="is-active"{% endif %}>Final Assessment</a>
-          <a href="{{ '/final-paper/' | relative_url }}"{% if page.url contains '/final-paper/' %} class="is-active"{% endif %}>Final Paper</a>
+      <div class="shell header-inner">
+        <a class="brand" href="{{ '/' | relative_url }}" aria-label="BA2 Digital Korea home">
+          <span class="brand-mark" aria-hidden="true">
+            <span>D</span><span class="brand-letter-accent">i</span><span>K</span>
+          </span>
+          <span class="brand-copy">
+            <strong>{{ site.short_title }}</strong>
+            <small>BA2 · Spring 2026</small>
+          </span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+          <span class="sr-only">Toggle navigation</span>
+          <span aria-hidden="true">Menu</span>
+        </button>
+
+        <nav id="site-navigation" class="site-nav" aria-label="Primary navigation">
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+          <a href="{{ '/syllabus/syllabus.html' | relative_url }}"{% if page.url contains '/syllabus/' %} aria-current="page"{% endif %}>Syllabus</a>
+          <a href="{{ '/getting-started/' | relative_url }}"{% if page.url contains '/getting-started/' %} aria-current="page"{% endif %}>Start here</a>
+          <a href="{{ '/assignments/' | relative_url }}"{% if page.url contains '/assignments/' %} aria-current="page"{% endif %}>Assignments</a>
+
+          {% assign materials_active = false %}
+          {% if page.url contains '/presentations/' or page.url contains '/data/' or page.url contains '/interactive/' %}{% assign materials_active = true %}{% endif %}
+          <details class="nav-dropdown{% if materials_active %} is-active{% endif %}">
+            <summary>Materials</summary>
+            <div class="nav-dropdown-menu">
+              <a href="{{ '/presentations/' | relative_url }}"{% if page.url contains '/presentations/' %} aria-current="page"{% endif %}>Slides</a>
+              <a href="{{ '/data/' | relative_url }}"{% if page.url contains '/data/' %} aria-current="page"{% endif %}>Data &amp; scripts</a>
+              <a href="{{ '/interactive/' | relative_url }}"{% if page.url contains '/interactive/' %} aria-current="page"{% endif %}>Interactive exercises</a>
+            </div>
+          </details>
+
+          {% assign assessment_active = false %}
+          {% if page.url contains '/midterm/' or page.url contains '/final-assessment/' or page.url contains '/final-paper/' %}{% assign assessment_active = true %}{% endif %}
+          <details class="nav-dropdown{% if assessment_active %} is-active{% endif %}">
+            <summary>Assessments</summary>
+            <div class="nav-dropdown-menu">
+              <a href="{{ '/midterm/' | relative_url }}"{% if page.url contains '/midterm/' %} aria-current="page"{% endif %}>Midterm</a>
+              <a href="{{ '/final-assessment/' | relative_url }}"{% if page.url contains '/final-assessment/' %} aria-current="page"{% endif %}>Final assessment</a>
+              <a href="{{ '/final-paper/' | relative_url }}"{% if page.url contains '/final-paper/' %} aria-current="page"{% endif %}>Final paper</a>
+            </div>
+          </details>
         </nav>
       </div>
     </header>
 
-    <main class="container">
-      {{ content }}
+    <main id="main-content">
+      {% if page.url == '/' %}
+        {{ content }}
+      {% else %}
+        <div class="shell content-shell">
+          {{ content }}
+        </div>
+      {% endif %}
     </main>
 
     <footer class="site-footer">
-      <div class="container">
-        <p>Korean Studies · Leiden University</p>
+      <div class="shell footer-grid">
+        <div>
+          <strong>BA2 Digital Korea</strong>
+          <p>Korean Studies · Leiden University</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/scdenney/ba2_digital-korea">GitHub repository</a>
+          <a href="{{ '/syllabus/syllabus.html#course-policies' | relative_url }}">Course policies</a>
+          <span>Spring 2026</span>
+        </div>
       </div>
     </footer>
 
-    <script>
-    (function() {
-      var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.page-toc a[href^="#"]'));
-      if (tocLinks.length === 0) return;
-
-      var linkById = {};
-      tocLinks.forEach(function(link) {
-        var id = decodeURIComponent(link.getAttribute('href').slice(1));
-        if (id) linkById[id] = link;
-      });
-
-      var headings = Array.prototype.slice
-        .call(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]'))
-        .filter(function(h) { return Object.prototype.hasOwnProperty.call(linkById, h.id); });
-      if (headings.length === 0) return;
-
-      var OFFSET = 120;
-      var lastActive = null;
-
-      function update() {
-        var current = headings[0];
-        for (var i = 0; i < headings.length; i++) {
-          if (headings[i].getBoundingClientRect().top <= OFFSET) {
-            current = headings[i];
-          } else {
-            break;
-          }
-        }
-        var activeLink = linkById[current.id];
-        if (activeLink === lastActive) return;
-        lastActive = activeLink;
-        tocLinks.forEach(function(link) {
-          if (link === activeLink) link.classList.add('is-active');
-          else link.classList.remove('is-active');
-        });
-      }
-
-      var ticking = false;
-      function onScroll() {
-        if (!ticking) {
-          window.requestAnimationFrame(function() { update(); ticking = false; });
-          ticking = true;
-        }
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
-      update();
-    })();
-    </script>
+    <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   </body>
 </html>

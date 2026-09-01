@@ -1,4 +1,11 @@
-title: BA2 Digital Korea
-description: "Introduction to computational text analysis"
-theme: jekyll-theme-cayman
+title: "BA2 Digital Korea"
+short_title: "Digital Korea"
+description: "Computational text analysis for Korean Studies"
+url: "https://scdenney.github.io"
+baseurl: "/ba2_digital-korea"
+repository: "scdenney/ba2_digital-korea"
+academic_year: "2025–2026"
+instructor: "Dr. Steven Denney"
+timezone: "Europe/Amsterdam"
+markdown: kramdown
 show_downloads: false
